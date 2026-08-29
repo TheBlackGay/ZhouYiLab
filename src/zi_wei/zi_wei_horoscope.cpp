@@ -113,13 +113,8 @@ namespace ZhouYi::ZiWei {
                 .si_hua = {}  // 需要根据大限天干获取四化
             };
             
-            // 获取大限四化
-            auto si_hua_map = get_si_hua_table(start_gan);
-            int si_hua_idx = 0;
-            for (const auto& [star, si_hua_type] : si_hua_map) {
-                if (si_hua_idx < 4) {
-                    result[idx].si_hua[si_hua_idx++] = string(to_zh(star));
-                }
+            for (size_t si_hua_idx = 0; si_hua_idx < 4; ++si_hua_idx) {
+                result[idx].si_hua[si_hua_idx] = get_si_hua_star_names(start_gan)[si_hua_idx];
             }
         }
         
@@ -130,35 +125,29 @@ namespace ZhouYi::ZiWei {
 
     /**
      * @brief 获取小限宫位
-     * 
-     * 口诀：
-     * 小限从寅宫起1岁，阳男阴女顺行，
-     * 阴男阳女逆行，每岁一宫。
-     * 
-     * 童限特殊规则（1-6岁）：
-     * 一命二财三疾厄，四岁夫妻五福德，
-     * 六岁事业为童限，专就宫垣视吉凶。
+     *
+     * 生年支确定一岁起宫，男命顺行、女命逆行，每岁一宫。
      */
     XiaoXianData get_xiao_xian(int age, bool is_male, DiZhi year_zhi) {
-        // 童限特殊处理（1-6岁）
-        if (age >= 1 && age <= 6) {
-            // 命宫、财帛、疾厄、夫妻、福德、官禄
-            constexpr array<int, 6> tong_xian_gong = {0, 1, 8, 3, 10, 6};
-            return XiaoXianData{
-                .age = age,
-                .gong_index = tong_xian_gong[age - 1]
-            };
+        if (age < 1) {
+            throw invalid_argument("小限虚岁必须大于等于1");
         }
-        
-        // 正常小限计算
-        int zhi_idx = static_cast<int>(year_zhi);
-        bool yang_zhi = (zhi_idx % 2 == 0);
-        bool shun_xing = (is_male == yang_zhi);
-        
-        // 从寅宫（索引0）起1岁
-        int xiao_xian_index = shun_xing 
-            ? fix_index(0 + (age - 1)) 
-            : fix_index(0 - (age - 1));
+
+        int start_gong;
+        if (year_zhi == DiZhi::Yin || year_zhi == DiZhi::Wu || year_zhi == DiZhi::Xu) {
+            start_gong = 2;  // 辰宫
+        } else if (year_zhi == DiZhi::Shen || year_zhi == DiZhi::Zi || year_zhi == DiZhi::Chen) {
+            start_gong = 8;  // 戌宫
+        } else if (year_zhi == DiZhi::Hai || year_zhi == DiZhi::Mao || year_zhi == DiZhi::Wei) {
+            start_gong = 11; // 丑宫
+        } else {
+            start_gong = 5;  // 未宫
+        }
+
+        int offset = age - 1;
+        int xiao_xian_index = is_male
+            ? fix_index(start_gong + offset)
+            : fix_index(start_gong - offset);
         
         return XiaoXianData{
             .age = age,
@@ -185,13 +174,9 @@ namespace ZhouYi::ZiWei {
         int liu_nian_index = (zhi_idx + 10) % 12;  // 子=10, 丑=11, 寅=0...
         
         // 获取流年四化
-        auto si_hua_map = get_si_hua_table(year_gan);
         array<string, 4> si_hua = {};
-        int si_hua_idx = 0;
-        for (const auto& [star, si_hua_type] : si_hua_map) {
-            if (si_hua_idx < 4) {
-                si_hua[si_hua_idx++] = string(to_zh(star));
-            }
+        for (size_t si_hua_idx = 0; si_hua_idx < 4; ++si_hua_idx) {
+            si_hua[si_hua_idx] = get_si_hua_star_names(year_gan)[si_hua_idx];
         }
         
         return LiuNianData{
@@ -208,41 +193,44 @@ namespace ZhouYi::ZiWei {
     /**
      * @brief 获取流月宫位
      * 
-     * 算法：
-     * 1. 从流年地支起命宫，逆数到生月所在宫位
-     * 2. 再从该宫位起正月，顺数到流月
+     * 斗君法：流年太岁宫起正月，逆数到出生农历月；
+     * 该宫起子时顺数到出生时辰得到斗君，斗君起正月顺排流月命宫。
      */
     LiuYueData get_liu_yue(
         int lunar_month,
-        int birth_month,
-        TianGan month_gan,
-        DiZhi month_zhi,
-        DiZhi year_zhi,
-        int ming_index
+        int birth_lunar_month,
+        DiZhi birth_hour_zhi,
+        TianGan year_gan,
+        DiZhi year_zhi
     ) {
-        int year_zhi_idx = static_cast<int>(year_zhi);
-        int liu_nian_index = (year_zhi_idx + 10) % 12;
-        
-        // 从流年宫位逆数到生月
-        int birth_month_index = fix_index(liu_nian_index - (birth_month - 1));
-        
-        // 从生月宫位顺数到当前月
-        int liu_yue_index = fix_index(birth_month_index + (lunar_month - 1));
+        if (lunar_month < 1 || lunar_month > 12 ||
+            birth_lunar_month < 1 || birth_lunar_month > 12) {
+            throw invalid_argument("农历月份必须在1到12之间");
+        }
+
+        int tai_sui_index = (static_cast<int>(year_zhi) + 10) % 12;
+        int birth_month_index = fix_index(tai_sui_index - (birth_lunar_month - 1));
+        int dou_jun_index = fix_index(
+            birth_month_index + static_cast<int>(birth_hour_zhi));
+        int liu_yue_index = fix_index(dou_jun_index + lunar_month - 1);
+
+        int first_month_gan_index =
+            (static_cast<int>(year_gan) % 5 * 2 + 2) % 10;
+        TianGan month_gan = static_cast<TianGan>(
+            (first_month_gan_index + lunar_month - 1) % 10);
+        DiZhi month_zhi = static_cast<DiZhi>((lunar_month + 1) % 12);
         
         // 获取流月四化
-        auto si_hua_map = get_si_hua_table(month_gan);
         array<string, 4> si_hua = {};
-        int si_hua_idx = 0;
-        for (const auto& [star, si_hua_type] : si_hua_map) {
-            if (si_hua_idx < 4) {
-                si_hua[si_hua_idx++] = string(to_zh(star));
-            }
+        for (size_t si_hua_idx = 0; si_hua_idx < 4; ++si_hua_idx) {
+            si_hua[si_hua_idx] = get_si_hua_star_names(month_gan)[si_hua_idx];
         }
         
         return LiuYueData{
             .month = lunar_month,
             .tian_gan = month_gan,
             .di_zhi = month_zhi,
+            .dou_jun_index = dou_jun_index,
             .gong_index = liu_yue_index,
             .si_hua = si_hua
         };
@@ -253,7 +241,7 @@ namespace ZhouYi::ZiWei {
     /**
      * @brief 获取流日宫位
      * 
-     * 算法：从流月宫位起初一，顺数到流日
+     * 算法：从流月命宫起初一，顺数到流日
      */
     LiuRiData get_liu_ri(
         int lunar_day,
@@ -261,17 +249,13 @@ namespace ZhouYi::ZiWei {
         DiZhi day_zhi,
         int liu_yue_index
     ) {
-        // 从流月宫位起初一，顺数到流日
+        // 从流月命宫起初一，顺数到流日
         int liu_ri_index = fix_index(liu_yue_index + (lunar_day - 1));
         
         // 获取流日四化
-        auto si_hua_map = get_si_hua_table(day_gan);
         array<string, 4> si_hua = {};
-        int si_hua_idx = 0;
-        for (const auto& [star, si_hua_type] : si_hua_map) {
-            if (si_hua_idx < 4) {
-                si_hua[si_hua_idx++] = string(to_zh(star));
-            }
+        for (size_t si_hua_idx = 0; si_hua_idx < 4; ++si_hua_idx) {
+            si_hua[si_hua_idx] = get_si_hua_star_names(day_gan)[si_hua_idx];
         }
         
         return LiuRiData{
@@ -288,25 +272,21 @@ namespace ZhouYi::ZiWei {
     /**
      * @brief 获取流时宫位
      * 
-     * 算法：从流日宫位起子时，顺数到流时
+     * 算法：从流日命宫起子时，顺数到流时
      */
     LiuShiData get_liu_shi(
         DiZhi hour_zhi,
         TianGan hour_gan,
         int liu_ri_index
     ) {
-        // 从流日宫位起子时，顺数到流时
+        // 从流日命宫起子时，顺数到流时
         int hour_idx = static_cast<int>(hour_zhi);
         int liu_shi_index = fix_index(liu_ri_index + hour_idx);
         
         // 获取流时四化
-        auto si_hua_map = get_si_hua_table(hour_gan);
         array<string, 4> si_hua = {};
-        int si_hua_idx = 0;
-        for (const auto& [star, si_hua_type] : si_hua_map) {
-            if (si_hua_idx < 4) {
-                si_hua[si_hua_idx++] = string(to_zh(star));
-            }
+        for (size_t si_hua_idx = 0; si_hua_idx < 4; ++si_hua_idx) {
+            si_hua[si_hua_idx] = get_si_hua_star_names(hour_gan)[si_hua_idx];
         }
         
         return LiuShiData{

@@ -66,6 +66,7 @@ export namespace ZhouYi::ZiWei {
         int month;               // 农历月份
         TianGan tian_gan;        // 流月天干
         DiZhi di_zhi;            // 流月地支
+        int dou_jun_index;       // 流年斗君（正月流月命宫）
         int gong_index;          // 所在宫位索引
         array<string, 4> si_hua; // 流月四化星
         
@@ -130,9 +131,9 @@ export namespace ZhouYi::ZiWei {
     /**
      * @brief 获取指定虚岁的小限宫位
      * 
-     * 口诀：
-     * 小限从寅宫起1岁，阳男阴女顺行，
-     * 阴男阳女逆行，每岁一宫。
+     * 生年支确定一岁起宫，男命顺行、女命逆行，每岁一宫：
+     * 寅午戌年由辰宫起，申子辰年由戌宫起，
+     * 亥卯未年由丑宫起，巳酉丑年由未宫起。
      * 
      * @param age 虚岁
      * @param is_male 是否为男性
@@ -161,34 +162,34 @@ export namespace ZhouYi::ZiWei {
     /**
      * @brief 获取流月宫位
      * 
-     * 算法：
-     * 1. 从流年地支起命宫，逆数到生月所在宫位
-     * 2. 再从该宫位起正月，顺数到流月
+     * 斗君法：流年太岁宫起正月，逆数到出生农历月；
+     * 该宫起子时顺数到出生时辰得到斗君，斗君起正月顺排流月命宫。
+     * 流月天干按流年干五虎遁，流月地支正月起寅。
      * 
      * @param lunar_month 农历月份
-     * @param birth_month 出生月份
+     * @param birth_lunar_month 出生农历月份
+     * @param birth_hour_zhi 出生时辰地支
+     * @param year_gan 流年天干
      * @param year_zhi 流年地支
-     * @param ming_index 命宫索引
      * @return 流月数据
      */
     LiuYueData get_liu_yue(
         int lunar_month,
-        int birth_month,
-        TianGan month_gan,
-        DiZhi month_zhi,
-        DiZhi year_zhi,
-        int ming_index
+        int birth_lunar_month,
+        DiZhi birth_hour_zhi,
+        TianGan year_gan,
+        DiZhi year_zhi
     );
 
     /**
      * @brief 获取流日宫位
      * 
-     * 算法：从流月宫位起初一，顺数到流日
+     * 算法：从流月命宫起初一，顺数到流日；闰月归月由调用方确定。
      * 
      * @param lunar_day 农历日
      * @param day_gan 流日天干
      * @param day_zhi 流日地支
-     * @param liu_yue_index 流月宫位索引
+     * @param liu_yue_index 流月命宫索引
      * @return 流日数据
      */
     LiuRiData get_liu_ri(
@@ -201,7 +202,7 @@ export namespace ZhouYi::ZiWei {
     /**
      * @brief 获取流时宫位
      * 
-     * 算法：从流日宫位起子时，顺数到流时
+     * 算法：从流日命宫起子时，顺数到流时
      * 
      * @param hour_zhi 时辰地支
      * @param hour_gan 流时天干

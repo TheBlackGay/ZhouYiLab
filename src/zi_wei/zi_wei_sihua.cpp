@@ -67,77 +67,21 @@ namespace ZhouYi::ZiWei {
 
     array<optional<ZhuXing>, 4> get_si_hua_stars(TianGan gan) {
         array<optional<ZhuXing>, 4> result = {nullopt, nullopt, nullopt, nullopt};
-        
-        switch (gan) {
-            case TianGan::Jia:
-                result[0] = ZhuXing::LianZhen;  // 化禄
-                result[1] = ZhuXing::PoJun;     // 化权
-                result[2] = ZhuXing::WuQu;      // 化科
-                result[3] = ZhuXing::TaiYang;   // 化忌
-                break;
-            case TianGan::Yi:
-                result[0] = ZhuXing::TianJi;
-                result[1] = ZhuXing::TianLiang;
-                result[2] = ZhuXing::ZiWei;
-                result[3] = ZhuXing::TaiYin;
-                break;
-            case TianGan::Bing:
-                result[0] = ZhuXing::TianTong;
-                result[1] = ZhuXing::TianJi;
-                result[3] = ZhuXing::LianZhen;
-                break;
-            case TianGan::Ding:
-                result[0] = ZhuXing::TaiYin;
-                result[1] = ZhuXing::TianTong;
-                result[2] = ZhuXing::TianJi;
-                result[3] = ZhuXing::JuMen;
-                break;
-            case TianGan::Wu:
-                result[0] = ZhuXing::TanLang;
-                result[1] = ZhuXing::TaiYin;
-                result[3] = ZhuXing::TianJi;
-                break;
-            case TianGan::Ji:
-                result[0] = ZhuXing::WuQu;
-                result[1] = ZhuXing::TanLang;
-                result[2] = ZhuXing::TianLiang;
-                break;
-            case TianGan::Geng:
-                result[0] = ZhuXing::TaiYang;
-                result[1] = ZhuXing::WuQu;
-                result[2] = ZhuXing::TaiYin;
-                result[3] = ZhuXing::TianTong;
-                break;
-            case TianGan::Xin:
-                result[0] = ZhuXing::JuMen;
-                result[1] = ZhuXing::TaiYang;
-                break;
-            case TianGan::Ren:
-                result[0] = ZhuXing::TianLiang;
-                result[1] = ZhuXing::ZiWei;
-                result[3] = ZhuXing::WuQu;
-                break;
-            case TianGan::Gui:
-                result[0] = ZhuXing::PoJun;
-                result[1] = ZhuXing::JuMen;
-                result[2] = ZhuXing::TaiYin;
-                result[3] = ZhuXing::TanLang;
-                break;
+        const auto stars = get_si_hua_star_names(gan);
+        for (size_t si_hua_idx = 0; si_hua_idx < stars.size(); ++si_hua_idx) {
+            for (int star_idx = 0; star_idx < static_cast<int>(ZhuXing::COUNT); ++star_idx) {
+                const auto star = static_cast<ZhuXing>(star_idx);
+                if (to_zh(star) == stars[si_hua_idx]) {
+                    result[si_hua_idx] = star;
+                    break;
+                }
+            }
         }
-        
         return result;
     }
 
     optional<SiHua> get_star_si_hua_type(TianGan gan, ZhuXing star) {
-        auto si_hua_stars = get_si_hua_stars(gan);
-        
-        for (size_t i = 0; i < 4; ++i) {
-            if (si_hua_stars[i].has_value() && si_hua_stars[i].value() == star) {
-                return static_cast<SiHua>(i);  // 0=禄, 1=权, 2=科, 3=忌
-            }
-        }
-        
-        return nullopt;
+        return get_si_hua_type(gan, to_zh(star));
     }
 
     // ============= SiHuaSystem 实现 =============
@@ -158,21 +102,11 @@ namespace ZhouYi::ZiWei {
             gong_gan_si_hua_[i].gong_gan = gan;
             
             // 获取该天干的四化星
-            auto si_hua_stars = get_si_hua_stars(gan);
+            const auto si_hua_stars = get_si_hua_star_names(gan);
             
             // 查找四化星所在的宫位
             for (int si_hua_idx = 0; si_hua_idx < 4; ++si_hua_idx) {
-                if (!si_hua_stars[si_hua_idx].has_value()) {
-                    gong_gan_si_hua_[i].si_hua_list[si_hua_idx] = SiHuaInfo{
-                        .type = static_cast<SiHua>(si_hua_idx),
-                        .star_name = "",
-                        .gong_index = -1
-                    };
-                    continue;
-                }
-                
-                auto star = si_hua_stars[si_hua_idx].value();
-                string star_name = string(to_zh(star));
+                string star_name = string(si_hua_stars[si_hua_idx]);
                 
                 // 在12个宫位中查找该星
                 int star_gong = -1;

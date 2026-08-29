@@ -170,7 +170,20 @@ export namespace ZhouYi::ZiWei {
     pair<int, int> get_kong_jie_index(DiZhi hour_zhi);
 
     /**
-     * @brief 四化表（年干四化）
+     * @brief 获取天干四化星名，固定按禄、权、科、忌顺序返回。
+     */
+    array<string_view, 4> get_si_hua_star_names(TianGan year_gan);
+
+    /**
+     * @brief 获取指定星曜在天干四化中的类型，支持主星与辅星。
+     */
+    optional<SiHua> get_si_hua_type(TianGan year_gan, string_view star_name);
+
+    /**
+     * @brief 四化表（年干四化）的主星兼容投影。
+     *
+     * 文昌、文曲、左辅、右弼等辅星四化不包含在此返回值中；
+     * 新代码应使用 get_si_hua_star_names 或 get_si_hua_type。
      */
     map<ZhuXing, SiHua> get_si_hua_table(TianGan year_gan);
 
