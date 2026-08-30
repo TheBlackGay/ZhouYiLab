@@ -187,21 +187,28 @@ form.addEventListener('submit', async event => {
   setLoading(true);
   try {
     const payload = {
-      birth: dateAndTime('#birth-date', '#birth-time'),
-      gender: form.elements.gender.value,
-      age: Number(document.querySelector('#age').value),
-      options: {
-        trueSolarTime: trueSolarInput.checked,
-        longitude: Number(document.querySelector('#longitude').value),
-        standardMeridian: Number(document.querySelector('#meridian').value),
-        daylightSavingMinutes: Number(document.querySelector('#dst').value),
+      birth: {
+        ...dateAndTime('#birth-date', '#birth-time'),
+        second: 0,
+        gender: form.elements.gender.value,
       },
-      target: dateAndTime('#target-date', '#target-time'),
+      time_correction: {
+        mode: trueSolarInput.checked ? 'true_solar_time' : 'standard_time',
+        longitude: Number(document.querySelector('#longitude').value),
+        standard_meridian: Number(document.querySelector('#meridian').value),
+        daylight_saving_minutes: Number(document.querySelector('#dst').value),
+      },
+      target: {
+        ...dateAndTime('#target-date', '#target-time'),
+        second: 0,
+        age: Number(document.querySelector('#age').value),
+        layers: ['decade', 'minor', 'annual', 'monthly', 'daily', 'hourly'],
+      },
     };
-    const response = await fetch('/api/calculate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    const data = await response.json();
-    if (!response.ok || data.error) throw new Error(data.error || '排盘失败');
-    render(data);
+    const response = await fetch('/api/v1/ziwei/fortune', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const result = await response.json();
+    if (!response.ok || !result.success) throw new Error(result.error?.message || '排盘失败');
+    render({ ...result.data.chart, target: result.data.target, fortune: result.data.fortune });
   } catch (error) {
     errorBox.textContent = error.message;
     errorBox.hidden = false;
