@@ -1,8 +1,8 @@
 # ZhouYiLab 紫微斗数 HTTP API
 
 > API 版本：`v1`
-> 文档版本：`1.1.0`
-> 更新日期：`2026-08-30`
+> 文档版本：`1.3.0`
+> 更新日期：`2026-08-31`
 > 字符编码：UTF-8
 > 当前服务：本地 Python HTTP 适配层 + C++ 紫微斗数计算核心
 
@@ -17,9 +17,9 @@
 | 出生真太阳时校正 | `POST` | `/api/v1/ziwei/time-correction` | 已实现 |
 | 本命盘计算 | `POST` | `/api/v1/ziwei/charts` | 已实现 |
 | 运限计算 | `POST` | `/api/v1/ziwei/fortune` | 已实现 |
-| 十二宫及格局解读 | `POST` | `/api/v1/ziwei/analysis` | 预留，尚未开放 |
+| 本命十二宫结构化解读 | `POST` | `/api/v1/ziwei/analysis` | 已实现 |
 
-本命盘、真太阳时和运限已经通过接口提供。命盘解读必须遵守[紫微斗数命盘与运限分析准则](./紫微斗数命盘与运限分析准则.md)，在规则引擎完成前不得返回占位性分析结果。
+本命盘、真太阳时、运限和本命结构化解读已经通过接口提供。命盘解读必须遵守[紫微斗数命盘与运限分析准则](./紫微斗数命盘与运限分析准则.md)。`1.3.0` 的解读接口只开放本命层，大限和流年结构化解读完成前不得返回占位性结果。
 
 ## 2. 基本约定
 
@@ -59,7 +59,7 @@ Content-Type: application/json
   "data": {},
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.1.0",
+    "algorithm_version": "zhouyilab-core/1.3.0",
     "request_id": "b416827b90274e5c837d1ef12f39e776"
   }
 }
@@ -76,7 +76,7 @@ Content-Type: application/json
   },
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.1.0",
+    "algorithm_version": "zhouyilab-core/1.3.0",
     "request_id": "e2481168ad76405995b163e0a758fe2d"
   }
 }
@@ -158,7 +158,7 @@ Content-Type: application/json
   },
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.1.0",
+    "algorithm_version": "zhouyilab-core/1.3.0",
     "request_id": "..."
   }
 }
@@ -175,7 +175,7 @@ Content-Type: application/json
 ```json
 {
   "api_version": "v1",
-  "algorithm_version": "zhouyilab-core/1.1.0",
+  "algorithm_version": "zhouyilab-core/1.3.0",
   "capabilities": [
     "natal_chart",
     "true_solar_time",
@@ -184,11 +184,16 @@ Content-Type: application/json
     "annual",
     "monthly",
     "daily",
-    "hourly"
+    "hourly",
+    "fortune_transit_stars",
+    "natal_shen_sha",
+    "natal_analysis_fragments"
   ],
   "genders": ["male", "female"],
   "time_correction_modes": ["standard_time", "true_solar_time"],
-  "fortune_layers": ["decade", "minor", "annual", "monthly", "daily", "hourly"]
+  "fortune_layers": ["decade", "minor", "annual", "monthly", "daily", "hourly"],
+  "analysis_layers": ["natal"],
+  "analysis_input_modes": ["chart_request", "chart"]
 }
 ```
 
@@ -298,6 +303,9 @@ Content-Type: application/json
 | `sha_xing_detail` | Star[] | 煞星明细 |
 | `za_yao` | string[] | 兼容字段，仅星名 |
 | `za_yao_detail` | Star[] | 杂曜明细 |
+| `shen_sha` | ShenSha | 长生、博士、岁前、将前四套十二神在本宫的值 |
+
+`ShenSha` 对象包含 `chang_sheng_12`、`bo_shi_12`、`sui_qian_12`、`jiang_qian_12` 四个可选字符串字段。分类字段必须保留，不能因为“小耗、大耗、病符”等名称与其他星曜重复而合并。
 
 ### 7.2 Star 星曜对象
 
@@ -309,7 +317,7 @@ Content-Type: application/json
 }
 ```
 
-`si_hua` 为可选字段。`liang_du` 当前可能值为 `庙、旺、得、利、平、陷`。
+`si_hua` 与 `liang_du` 均为可选字段。`liang_du` 来自版本化星曜亮度表，可能值为 `庙、旺、得、利、平、陷、不`；配置为空白或 `-` 时不返回该字段，也不参与结构化解读。
 
 ## 8. 运限计算
 
@@ -402,6 +410,15 @@ Content-Type: application/json
         {"type": "权", "star": "天机"},
         {"type": "科", "star": "文昌"},
         {"type": "忌", "star": "廉贞"}
+      ],
+      "transit_stars": [
+        {
+          "name": "天喜",
+          "display_name": "年喜",
+          "palace_index": 10,
+          "palace": "奴仆宫",
+          "liang_du": "旺"
+        }
       ]
     },
     "liu_yue": {
@@ -417,6 +434,8 @@ Content-Type: application/json
 ```
 
 `fortune` 只包含请求的层级。客户端必须按字段是否存在进行渲染，不能假设六层始终全部返回。
+
+除小限外，各层的 `transit_stars` 返回魁、钺、昌、曲、禄、羊、陀、马、鸾、喜十类流曜；流年另含年解。`name` 是标准星名，`display_name` 是层级简称：大限使用“大”前缀，流年、流月、流日、流时分别使用“年、月、日、时”，例如天喜显示为“大喜、年喜、月喜、日喜、时喜”。`liang_du` 按实际落宫从亮度配置补充，无资料时省略。
 
 ## 9. 状态码与错误码
 
@@ -467,31 +486,136 @@ POST /api/calculate
 | 固定返回全部层级 | `target.layers` 按需返回 |
 | 裸数据或字符串错误 | `success/data/error/meta` 统一包络 |
 
-## 12. 解读接口预留
+## 12. 本命结构化解读
 
-未来的 `/api/v1/ziwei/analysis` 应支持：
+### `POST /api/v1/ziwei/analysis`
+
+将本命盘事实、宫位象义、星曜象义、三方四正、四化及命中的静态规则输出为可追溯分析碎片。接口不生成最终命理文章，返回的碎片用于页面校验和后续 AI 场景化表达。
+
+可以使用 `chart_request` 让服务端即时排盘：
 
 ```json
 {
-  "chart_request": {},
+  "chart_request": {
+    "birth": {
+      "year": 1994,
+      "month": 12,
+      "day": 8,
+      "hour": 9,
+      "minute": 5,
+      "gender": "male"
+    },
+    "time_correction": {
+      "mode": "standard_time"
+    }
+  },
   "scope": {
-    "layers": ["natal", "decade", "annual"],
-    "focus_palaces": ["命宫", "官禄宫"],
-    "depth": "full"
+    "layers": ["natal"],
+    "focus_palaces": ["父母宫"],
+    "scenarios": ["职场"]
   }
 }
 ```
 
-正式实现必须：
+也可以将 `/api/v1/ziwei/charts` 返回的命盘对象放入 `chart` 字段。`chart` 与 `chart_request` 必须且只能提供一个。
 
-1. 本命、大限、流年分别完成十二宫和格局分析。
-2. 独立分析完成后才进行跨层叠加。
-3. 流月、流日、流时按请求计算。
-4. 每条事实携带 `source_layer`。
-5. 每个格局携带 `effect_palace` 和 `effect_subject`。
-6. 返回命中的规则 ID、版本和证据，不能只返回自然语言。
+`scope` 字段：
 
-在上述条件完成前，此路径保持 `404 ENDPOINT_NOT_FOUND`，避免客户端误用不完整结果。
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `layers` | string[] | 否 | `1.3.0` 只支持 `["natal"]` |
+| `focus_palaces` | string[] | 否 | 指定需要分析的宫位；默认分析十二宫 |
+| `scenarios` | string[] | 否 | 按配置中的中文场景精确筛选衍生定义；省略时返回全部候选场景 |
+
+响应中的 `data`：
+
+```json
+{
+  "chart": {},
+  "analysis": {
+    "analysis_version": "1.3.0",
+    "layer": "natal",
+    "scope": {},
+    "config": {},
+    "fragment_contract": {},
+    "palaces": [],
+    "fragments": [],
+    "ai_packet": {},
+    "ai_context": {}
+  }
+}
+```
+
+分析碎片示例：
+
+```json
+{
+  "fragment_id": "natal.parents.star_in_palace.self.lingxing.6",
+  "type": "star_in_palace",
+  "source_layer": "natal",
+  "effect_palace": "父母宫",
+  "effect_subject": ["哺育与保护来源", "直接权威", "认可与文书", "上层传递"],
+  "facts": {
+    "focus_palace": "父母宫",
+    "physical_palace": "父母宫",
+    "relation": "self",
+    "star": "铃星",
+    "brightness": "平",
+    "transformation": null
+  },
+  "palace_original_meanings": [],
+  "star_original_meanings": [],
+  "star_derived_meanings": [],
+  "modifiers": [],
+  "evidence": [],
+  "confidence": {
+    "level": "baseline",
+    "reason": "命盘事实与宫位、星曜象义均可追溯"
+  }
+}
+```
+
+碎片类型：
+
+| 类型 | 说明 |
+|---|---|
+| `palace_symbolism` | 焦点宫的原始定义和场景衍生 |
+| `star_in_palace` | 星曜实际坐入焦点宫 |
+| `four_directions` | 星曜从三合宫或对宫作用于焦点宫，保留实际落宫 |
+| `transformation` | 本命四化修正，不改变实际落宫和归属宫位 |
+| `combination` | 命中静态配置中的星曜组合 |
+| `pattern` | 命中静态配置中的宫位规则或格局 |
+| `shen_sha_in_palace` | 当前宫的十二神辅助信号，保留长生、博士、岁前、将前系统身份 |
+| `unconfigured_star` | 仅保留盘面事实，因静态象义未校订而不进入推理结论 |
+
+每个 `palaces[]` 同时返回以下结构化字段：
+
+| 字段 | 说明 |
+|---|---|
+| `sections.palace_symbolism` | 宫位原始定义碎片 ID |
+| `sections.self_stars` | 本宫星曜碎片 ID |
+| `sections.triad_stars` | 两个三合宫星曜碎片 ID |
+| `sections.opposite_stars` | 对宫星曜碎片 ID |
+| `sections.transformations` | 独立四化修正碎片 ID；星曜碎片只通过 `related_fragment_ids` 引用，不重复计权 |
+| `sections.patterns` | 同宫组合、格局和宫位规则碎片 ID |
+| `sections.shen_sha` | 四套十二神碎片 ID |
+| `sections.unconfigured` | 未配置星曜事实碎片 ID |
+| `signal_summary` | 确定性的核心、辅助、张力信号 ID 及配置覆盖情况 |
+
+`ai_packet` 是给后续 AI 场景化表达使用的最小输入包。它只引用有效碎片 ID，并明确允许归纳、连接场景和简化语言；禁止重新排盘、改变宫位归属、合并不同十二神系统或发明格局。
+
+接口保证：
+
+1. 本命层按焦点宫分别完成十二宫、三方四正和已配置规则分析。
+2. 每条事实携带 `source_layer`。
+3. 三方四正星曜保留 `physical_palace` 和 `relation`，不能伪装成本宫坐星。
+4. 每个格局携带 `effect_palace` 和 `effect_subject`。
+5. 返回命中的配置 ID、版本和证据，不能只返回自然语言。
+6. `ai_packet` 和 `ai_context` 明确 AI 只能归纳和改写，不得重新排盘或发明格局。
+7. 四化只由独立 `transformation` 碎片承担修正权重，星曜碎片不得重复携带四化 modifier。
+8. 十二神按四套系统独立解析，同名的博士大耗与岁前大耗不能合并。
+
+当前第 1 条只完成本命层。请求 `decade`、`annual` 等未开放层级时返回 `400 INVALID_REQUEST`，不会返回不完整分析。
 
 ## 13. cURL 示例
 

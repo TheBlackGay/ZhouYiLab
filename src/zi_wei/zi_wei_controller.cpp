@@ -148,7 +148,7 @@ namespace ZhouYi::ZiWei {
             for (const auto& star : palace.zhu_xing) {
                 json s;
                 s["name"] = star.name;
-                s["liang_du"] = string(to_zh(star.liang_du));
+                if (star.liang_du.has_value()) s["liang_du"] = string(to_zh(*star.liang_du));
                 if (star.si_hua.has_value()) {
                     s["si_hua"] = string(to_zh(*star.si_hua));
                 }
@@ -162,7 +162,7 @@ namespace ZhouYi::ZiWei {
                 p["fu_xing"].push_back(star.name);
                 json s;
                 s["name"] = star.name;
-                s["liang_du"] = string(to_zh(star.liang_du));
+                if (star.liang_du.has_value()) s["liang_du"] = string(to_zh(*star.liang_du));
                 if (star.si_hua.has_value()) {
                     s["si_hua"] = string(to_zh(*star.si_hua));
                 }
@@ -176,7 +176,7 @@ namespace ZhouYi::ZiWei {
                 p["sha_xing"].push_back(star.name);
                 json s;
                 s["name"] = star.name;
-                s["liang_du"] = string(to_zh(star.liang_du));
+                if (star.liang_du.has_value()) s["liang_du"] = string(to_zh(*star.liang_du));
                 if (star.si_hua.has_value()) {
                     s["si_hua"] = string(to_zh(*star.si_hua));
                 }
@@ -190,11 +190,26 @@ namespace ZhouYi::ZiWei {
                 p["za_yao"].push_back(star.name);
                 json s;
                 s["name"] = star.name;
-                s["liang_du"] = string(to_zh(star.liang_du));
+                if (star.liang_du.has_value()) s["liang_du"] = string(to_zh(*star.liang_du));
                 if (star.si_hua.has_value()) {
                     s["si_hua"] = string(to_zh(*star.si_hua));
                 }
                 p["za_yao_detail"].push_back(s);
+            }
+
+            // 四套十二神分别保留分类，避免同名神煞与星曜混淆。
+            p["shen_sha"] = json::object();
+            if (palace.chang_sheng.has_value()) {
+                p["shen_sha"]["chang_sheng_12"] = string(to_zh(*palace.chang_sheng));
+            }
+            if (palace.bo_shi.has_value()) {
+                p["shen_sha"]["bo_shi_12"] = string(to_zh(*palace.bo_shi));
+            }
+            if (palace.sui_qian.has_value()) {
+                p["shen_sha"]["sui_qian_12"] = string(to_zh(*palace.sui_qian));
+            }
+            if (palace.jiang_qian.has_value()) {
+                p["shen_sha"]["jiang_qian_12"] = string(to_zh(*palace.jiang_qian));
             }
             
             j["palaces"].push_back(p);

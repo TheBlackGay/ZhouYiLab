@@ -241,8 +241,8 @@ export namespace ZhouYi::ZiWei {
         LiuShiData liu_shi;              // 流时
         
         // 各运限的流耀星
-        array<HoroscopeStarData, 12> da_xian_stars;  // 大限星（运魁、运钺...）
-        array<HoroscopeStarData, 12> liu_nian_stars; // 流年星（流魁、流钺...）
+        array<HoroscopeStarData, 12> da_xian_stars;  // 大限星（大魁、大钺...）
+        array<HoroscopeStarData, 12> liu_nian_stars; // 流年星（年魁、年钺...）
         array<HoroscopeStarData, 12> liu_yue_stars;  // 流月星（月魁、月钺...）
         array<HoroscopeStarData, 12> liu_ri_stars;   // 流日星（日魁、日钺...）
         array<HoroscopeStarData, 12> liu_shi_stars;  // 流时星（时魁、时钺...）

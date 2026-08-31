@@ -10,6 +10,13 @@ const desktopPositions = [13, 9, 5, 1, 2, 3, 4, 8, 12, 16, 15, 14];
 const layerNames = { da_xian: '大限', xiao_xian: '小限', liu_nian: '流年', liu_yue: '流月', liu_ri: '流日', liu_shi: '流时' };
 const layerColors = { all: '#18201d', da_xian: '#59625d', liu_nian: '#286fa6', liu_yue: '#bc681b', liu_ri: '#7650a3', liu_shi: '#a83232' };
 let currentData = null;
+let currentAnalysis = null;
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, character => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
+  })[character]);
+}
 
 function parts(value) {
   const [date, time] = value.split('T');
@@ -56,6 +63,23 @@ function starDetails(palace, detailKey, legacyKey) {
   return (palace[legacyKey] || []).map(name => ({ name, liang_du: '' }));
 }
 
+function shenShaMarkup(palace) {
+  const values = palace.shen_sha || {};
+  const items = [
+    ['长生', values.chang_sheng_12],
+    ['博士', values.bo_shi_12],
+    ['岁前', values.sui_qian_12],
+    ['将前', values.jiang_qian_12],
+  ].filter(([, value]) => value);
+  if (!items.length) return '';
+  return `<div class="shen-sha-zone"><small class="zone-label">十二神</small><div class="shen-sha-list">${items.map(([label, value]) => `<span><small>${label}</small><strong>${escapeHtml(value)}</strong></span>`).join('')}</div></div>`;
+}
+
+function transitStarMarkup(star, layer) {
+  const brightness = star.liang_du ? `<small>${escapeHtml(star.liang_du)}</small>` : '';
+  return `<span class="transit-star ${layer}" data-layer="${layer}" title="${escapeHtml(layerNames[layer])} · ${escapeHtml(star.name)}"><b>${escapeHtml(star.display_name)}</b>${brightness}</span>`;
+}
+
 function renderSummary(data) {
   const correction = data.birth_time;
   document.querySelector('#summary-title').textContent = correction.recorded_time.slice(0, 16);
@@ -75,10 +99,14 @@ function renderBoard(data) {
   const board = document.querySelector('#palace-board');
   board.querySelectorAll('.palace').forEach(node => node.remove());
   const flagsByPalace = {};
+  const transitStarsByPalace = {};
   Object.entries(data.fortune).forEach(([key, layer]) => {
     if (layer && Number.isInteger(layer.palace_index)) {
       (flagsByPalace[layer.palace_index] ||= []).push({ key, label: layerNames[key] });
     }
+    (layer?.transit_stars || []).forEach(star => {
+      (transitStarsByPalace[star.palace_index] ||= []).push({ ...star, layer: key });
+    });
   });
   data.palaces.forEach((palace, index) => {
     const node = document.createElement('article');
@@ -93,8 +121,13 @@ function renderBoard(data) {
       ...starDetails(palace, 'sha_xing_detail', 'sha_xing'),
       ...starDetails(palace, 'za_yao_detail', 'za_yao'),
     ].map(star => starMarkup(star)).join('');
+    const transitStars = (transitStarsByPalace[index] || [])
+      .map(star => transitStarMarkup(star, star.layer)).join('');
+    const transitZone = transitStars
+      ? `<div class="transit-zone"><small class="zone-label">运限流曜</small><div class="transit-stars">${transitStars}</div></div>`
+      : '';
     const flags = palaceFlags.map(item => `<span class="flow-flag ${item.key}">${item.label}</span>`).join('');
-    node.innerHTML = `<header><h3>${palace.name}</h3><span class="branch">${palace.gan_zhi}</span></header><div class="star-zone"><small class="zone-label">主星</small><div class="stars">${primary || '<span class="star">空宫</span>'}</div></div><div class="secondary-zone"><small class="zone-label">辅星 · 煞曜 · 杂曜</small><div class="stars">${secondary || '<span class="star">无</span>'}</div></div><div class="flow-flags">${flags}</div>`;
+    node.innerHTML = `<header><h3>${escapeHtml(palace.name)}</h3><span class="branch">${escapeHtml(palace.gan_zhi)}</span></header><div class="star-zone"><small class="zone-label">主星</small><div class="stars">${primary || '<span class="star">空宫</span>'}</div></div><div class="secondary-zone"><small class="zone-label">辅星 · 煞曜 · 杂曜</small><div class="stars">${secondary || '<span class="star">无</span>'}</div></div>${shenShaMarkup(palace)}${transitZone}<div class="flow-flags">${flags}</div>`;
     board.appendChild(node);
   });
 }
@@ -106,6 +139,9 @@ function setActiveLayer(layer) {
   board.querySelectorAll('.palace').forEach(node => {
     const layers = node.dataset.layers.split(' ');
     node.classList.toggle('layer-active', layer === 'all' || layers.includes(layer));
+  });
+  board.querySelectorAll('.transit-star').forEach(node => {
+    node.hidden = layer !== 'all' && node.dataset.layer !== layer;
   });
   document.querySelectorAll('.layer-filter button, .flow-track button').forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.layer === layer));
@@ -138,7 +174,9 @@ function renderFortune(data) {
     item.style.setProperty('--item-color', layerColors[key] || layerColors.all);
     const extra = key === 'liu_yue' ? `<p>斗君：${layer.dou_jun_palace}</p>` : key === 'da_xian' ? `<p>虚岁 ${layer.age_range}</p>` : '';
     const transformations = (layer.si_hua || []).map(value => `<span><b>${value.type}</b>${value.star}</span>`).join('');
-    item.innerHTML = `<h3>${layerNames[key]}</h3><div class="fortune-place"><strong>${layer.gan_zhi || `${layer.age}岁`}</strong><span>${layer.palace}</span></div>${extra}<div class="sihua-list">${transformations}</div>`;
+    const transitStars = (layer.transit_stars || []).map(star => `<span><b>${escapeHtml(star.display_name)}</b><small>${escapeHtml(star.palace)}${star.liang_du ? ` · ${escapeHtml(star.liang_du)}` : ''}</small></span>`).join('');
+    const transitSection = transitStars ? `<div class="fortune-star-section"><h4>运限流曜</h4><div class="fortune-star-list">${transitStars}</div></div>` : '';
+    item.innerHTML = `<h3>${layerNames[key]}</h3><div class="fortune-place"><strong>${layer.gan_zhi || `${layer.age}岁`}</strong><span>${layer.palace}</span></div>${extra}<div class="sihua-list">${transformations}</div>${transitSection}`;
     grid.appendChild(item);
   });
 }
@@ -166,6 +204,157 @@ function renderCorrection(data) {
   document.querySelector('#offset-total').textContent = signedSeconds(value.total_offset_seconds);
   const marker = document.querySelector('#offset-marker');
   marker.style.left = `${Math.max(4, Math.min(96, 50 + value.total_offset_seconds / 240))}%`;
+}
+
+function fragmentHeadline(fragment) {
+  if (fragment.facts.rule_name) return fragment.facts.rule_name;
+  if (fragment.type === 'palace_symbolism') return `${fragment.effect_palace}基础象义`;
+  if (fragment.type === 'shen_sha_in_palace') return `${fragment.facts.shen_sha} · ${fragment.facts.system_label}`;
+  if (fragment.type === 'unconfigured_star') return `${fragment.facts.star} · 待配置`;
+  const relationNames = { self: '本宫', triad: '三合', opposite: '对宫' };
+  const relation = relationNames[fragment.facts.relation] || '本宫';
+  return `${fragment.facts.star || '四化'} · ${relation}`;
+}
+
+const fragmentTypeLabels = {
+  palace_symbolism: '宫位定义',
+  star_in_palace: '本宫星曜',
+  four_directions: '三方四正',
+  transformation: '四化修正',
+  combination: '星曜组合',
+  pattern: '格局',
+  shen_sha_in_palace: '十二神',
+  unconfigured_star: '未配置',
+};
+
+function fragmentDetail(fragment) {
+  if (fragment.summary) return fragment.summary;
+  if (fragment.type === 'transformation') {
+    return `${fragment.facts.star}${fragment.facts.transformation}，实际位于${fragment.facts.physical_palace}`;
+  }
+  if (fragment.type === 'shen_sha_in_palace') return `${fragment.summary} ${fragment.boundary}`;
+  if (fragment.type === 'unconfigured_star') return fragment.summary;
+  const originals = fragment.star_original_meanings || [];
+  return originals.map(item => item.definition).join('；') || '宫位基础定义与场景映射';
+}
+
+function evidenceLabel(evidence) {
+  const identity = evidence.rule_id || evidence.entry_id || evidence.path || '';
+  return [evidence.source, evidence.system, identity].filter(Boolean).join(' · ');
+}
+
+function renderFragmentRows(fragments, signalSummary) {
+  if (!fragments.length) return '<p class="analysis-empty">当前没有匹配内容</p>';
+  const core = new Set(signalSummary.core);
+  const supporting = new Set(signalSummary.supporting);
+  const tensions = new Set(signalSummary.tensions);
+  return `<div class="fragment-list">${fragments.map(fragment => {
+    const facts = fragment.facts || {};
+    const factMeta = [facts.physical_palace, { self: '本宫', triad: '三合', opposite: '对宫' }[facts.relation], facts.brightness, facts.transformation].filter(Boolean);
+    const signals = [];
+    if (core.has(fragment.fragment_id)) signals.push('<span class="signal-tag signal-core">核心</span>');
+    if (supporting.has(fragment.fragment_id)) signals.push('<span class="signal-tag signal-support">辅助</span>');
+    if (tensions.has(fragment.fragment_id)) signals.push('<span class="signal-tag signal-tension">张力</span>');
+    const evidence = (fragment.evidence || []).map(item => `<code>${escapeHtml(evidenceLabel(item))}</code>`).join('');
+    return `
+      <article class="fragment-row">
+        <div class="fragment-kind">${escapeHtml(fragmentTypeLabels[fragment.type] || fragment.type)}</div>
+        <div class="fragment-body"><strong>${escapeHtml(fragmentHeadline(fragment))}</strong><p>${escapeHtml(fragmentDetail(fragment))}</p><small>${factMeta.map(escapeHtml).join(' · ')}</small></div>
+        <div class="fragment-source"><div>${signals.join('') || `<span>${escapeHtml(fragment.confidence?.level || 'fact')}</span>`}</div>${evidence}</div>
+      </article>
+    `;
+  }).join('')}</div>`;
+}
+
+function renderFragmentSection(title, ids, fragmentMap, signalSummary, hint = '') {
+  const fragments = ids.map(id => fragmentMap.get(id)).filter(Boolean);
+  return `
+    <section class="analysis-section">
+      <div class="analysis-section-title"><div><h3>${escapeHtml(title)}</h3>${hint ? `<p>${escapeHtml(hint)}</p>` : ''}</div><span>${fragments.length} 条</span></div>
+      ${renderFragmentRows(fragments, signalSummary)}
+    </section>
+  `;
+}
+
+function renderAnalysisPalace(palaceName) {
+  if (!currentAnalysis) return;
+  const palace = currentAnalysis.palaces.find(item => item.palace === palaceName);
+  if (!palace) return;
+  document.querySelectorAll('#analysis-palace-tabs button').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.palace === palaceName));
+  });
+  const fragmentMap = new Map(palace.fragments.map(fragment => [fragment.fragment_id, fragment]));
+  const sections = palace.sections;
+  const symbolism = fragmentMap.get(sections.palace_symbolism[0]);
+  const directions = palace.four_directions;
+  const originalRows = symbolism.original_meanings.map(item => `
+    <div class="meaning-row"><b>${escapeHtml(item.concept)}</b><p>${escapeHtml(item.definition)}</p><code>${escapeHtml(item.id)}</code></div>
+  `).join('');
+  const derivedRows = symbolism.derived_meanings.map(item => `
+    <div class="derived-row"><span>${escapeHtml(item.scenario)}</span><div><strong>${escapeHtml(item.meaning)}</strong><small>${escapeHtml(item.boundary)}</small></div><code>${escapeHtml(item.derived_from.join(' + '))}</code></div>
+  `).join('');
+  const summary = palace.signal_summary;
+  const summaryBar = `
+    <div class="signal-summary" aria-label="结构化信号摘要">
+      <div><span>核心信号</span><strong>${summary.core.length}</strong></div>
+      <div><span>辅助信号</span><strong>${summary.supporting.length}</strong></div>
+      <div><span>张力信号</span><strong>${summary.tensions.length}</strong></div>
+      <div><span>待配置</span><strong>${summary.coverage.unconfigured_occurrences}</strong></div>
+    </div>`;
+  document.querySelector('#analysis-content').innerHTML = `
+    <header class="analysis-palace-heading">
+      <div><span>${escapeHtml(palace.gan_zhi)}</span><h2>${escapeHtml(palace.palace)}</h2></div>
+      <dl><div><dt>三合</dt><dd>${directions.triads.map(item => escapeHtml(item.palace)).join(' · ')}</dd></div><div><dt>对宫</dt><dd>${escapeHtml(directions.opposite.palace)}</dd></div><div><dt>主星</dt><dd>${palace.facts.primary_stars.map(escapeHtml).join(' · ') || '空宫'}</dd></div></dl>
+    </header>
+    ${summaryBar}
+    <section class="analysis-section"><h3>宫位原始定义</h3><div class="meaning-list">${originalRows}</div></section>
+    <section class="analysis-section"><h3>场景映射</h3><div class="derived-list">${derivedRows || '<p class="analysis-empty">当前筛选下无场景映射</p>'}</div></section>
+    ${renderFragmentSection('本宫星曜', sections.self_stars, fragmentMap, summary, '星曜实际坐入当前焦点宫。')}
+    ${renderFragmentSection('三方星曜', sections.triad_stars, fragmentMap, summary, '保留实际落宫，仅作为三合关系作用于当前宫。')}
+    ${renderFragmentSection('对宫星曜', sections.opposite_stars, fragmentMap, summary, '保留实际落宫，仅作为对宫关系作用于当前宫。')}
+    ${renderFragmentSection('四化修正', sections.transformations, fragmentMap, summary, '四化只在此处计权，星曜碎片仅保留关联。')}
+    ${renderFragmentSection('同宫组合与格局', sections.patterns, fragmentMap, summary, '格局效果归属于当前焦点宫代表的人与领域。')}
+    ${renderFragmentSection('十二神', sections.shen_sha, fragmentMap, summary, '四套系统独立展示，重名条目不会合并。')}
+    ${renderFragmentSection('未配置内容', sections.unconfigured, fragmentMap, summary, '仅保留盘面事实，不进入推理结论。')}
+  `;
+}
+
+function renderAnalysis(analysis) {
+  currentAnalysis = analysis;
+  document.querySelector('#analysis-title').textContent = '本命十二宫结构化解读';
+  document.querySelector('#analysis-palace-count').textContent = analysis.palaces.length;
+  document.querySelector('#analysis-fragment-count').textContent = analysis.fragments.length;
+  document.querySelector('#analysis-config-version').textContent = analysis.config.symbolism_dictionary_version;
+  const navigation = document.querySelector('#analysis-palace-tabs');
+  navigation.innerHTML = analysis.palaces.map((palace, index) => `
+    <button type="button" data-palace="${escapeHtml(palace.palace)}" aria-pressed="${index === 0}"><span>${escapeHtml(palace.gan_zhi)}</span><strong>${escapeHtml(palace.palace)}</strong><small>${palace.fragments.length} 条</small></button>
+  `).join('');
+  document.querySelector('#analysis-loading').hidden = true;
+  document.querySelector('#analysis-workspace').hidden = false;
+  renderAnalysisPalace(analysis.palaces[0].palace);
+}
+
+async function loadAnalysis(chart) {
+  currentAnalysis = null;
+  document.querySelector('#analysis-error').hidden = true;
+  document.querySelector('#analysis-loading').hidden = false;
+  document.querySelector('#analysis-workspace').hidden = true;
+  document.querySelector('#analysis-title').textContent = '正在生成结构化碎片';
+  try {
+    const response = await fetch('/api/v1/ziwei/analysis', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chart, scope: { layers: ['natal'] } }),
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) throw new Error(result.error?.message || '结构化解读失败');
+    renderAnalysis(result.data.analysis);
+  } catch (error) {
+    document.querySelector('#analysis-loading').hidden = true;
+    const analysisError = document.querySelector('#analysis-error');
+    analysisError.textContent = error.message;
+    analysisError.hidden = false;
+  }
 }
 
 function render(data) {
@@ -209,6 +398,7 @@ form.addEventListener('submit', async event => {
     const result = await response.json();
     if (!response.ok || !result.success) throw new Error(result.error?.message || '排盘失败');
     render({ ...result.data.chart, target: result.data.target, fortune: result.data.fortune });
+    await loadAnalysis(result.data.chart);
   } catch (error) {
     errorBox.textContent = error.message;
     errorBox.hidden = false;
@@ -230,6 +420,11 @@ document.querySelector('.layer-filter').addEventListener('click', event => {
 document.querySelector('#flow-track').addEventListener('click', event => {
   const button = event.target.closest('button[data-layer]');
   if (button && currentData) setActiveLayer(button.dataset.layer);
+});
+
+document.querySelector('#analysis-palace-tabs').addEventListener('click', event => {
+  const button = event.target.closest('button[data-palace]');
+  if (button) renderAnalysisPalace(button.dataset.palace);
 });
 
 document.querySelector('.board-view-toggle').addEventListener('click', event => {

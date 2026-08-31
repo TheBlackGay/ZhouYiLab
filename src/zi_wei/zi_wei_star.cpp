@@ -15,7 +15,10 @@ namespace ZhouYi::ZiWei {
     // ============= StarData 实现 =============
 
     string StarData::to_string() const {
-        string result = fmt::format("{} [{}]", name, string(to_zh(liang_du)));
+        string result = name;
+        if (liang_du.has_value()) {
+            result += fmt::format(" [{}]", string(to_zh(*liang_du)));
+        }
         if (si_hua.has_value()) {
             result += fmt::format(" {}", string(to_zh(*si_hua)));
         }

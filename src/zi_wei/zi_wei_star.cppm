@@ -16,7 +16,7 @@ export namespace ZhouYi::ZiWei {
      */
     struct StarData {
         string name;            // 星耀名称
-        LiangDu liang_du;       // 亮度
+        optional<LiangDu> liang_du; // 亮度；无资料时不输出
         int gong_index;         // 所在宫位索引（以寅宫为0）
         optional<SiHua> si_hua; // 四化（可能没有）
         

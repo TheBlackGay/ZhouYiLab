@@ -7,18 +7,30 @@ import uuid
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+from ziwei_analysis import (
+    AnalysisConfigError,
+    AnalysisRequestError,
+    analyze_natal_chart,
+)
+from ziwei_brightness import (
+    BrightnessConfigError,
+    apply_star_brightness,
+    normalize_brightness_response,
+)
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEB_ROOT = PROJECT_ROOT / "web"
 CLI_PATH = PROJECT_ROOT / "build" / "examples" / "zi_wei_web_cli"
 API_VERSION = "v1"
-ALGORITHM_VERSION = "zhouyilab-core/1.1.0"
+ALGORITHM_VERSION = "zhouyilab-core/1.3.0"
 MAX_BODY_BYTES = 64 * 1024
 
 POST_OPERATIONS = {
     "/api/v1/ziwei/time-correction": "time_correction",
     "/api/v1/ziwei/charts": "chart",
     "/api/v1/ziwei/fortune": "fortune",
+    "/api/v1/ziwei/analysis": "analysis",
 }
 
 
@@ -74,13 +86,20 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 "algorithm_version": ALGORITHM_VERSION,
                 "capabilities": [
                     "natal_chart", "true_solar_time", "decade", "minor",
-                    "annual", "monthly", "daily", "hourly",
+                    "annual", "monthly", "daily", "hourly", "fortune_transit_stars",
+                    "natal_shen_sha",
+                    "natal_analysis_fragments",
+                    "natal_structured_sections",
+                    "natal_ai_packet",
+                    "natal_shen_sha_analysis",
                 ],
                 "genders": ["male", "female"],
                 "time_correction_modes": ["standard_time", "true_solar_time"],
                 "fortune_layers": [
                     "decade", "minor", "annual", "monthly", "daily", "hourly"
                 ],
+                "analysis_layers": ["natal"],
+                "analysis_input_modes": ["chart_request", "chart"],
             })
             return
         if self.path.startswith("/api/"):
@@ -108,15 +127,20 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
 
         try:
             payload = self.read_json_body()
-            request = legacy_request(payload) if is_legacy else {
-                **payload,
-                "operation": operation,
-            }
-            result = self.run_cli(request)
+            if operation == "analysis":
+                result = self.run_analysis(payload)
+            else:
+                request = legacy_request(payload) if is_legacy else {
+                    **payload,
+                    "operation": operation,
+                }
+                result = self.run_cli(request)
             if is_legacy:
                 self.send_json(200, legacy_response(result))
             else:
                 self.send_api_success(result)
+        except (AnalysisConfigError, BrightnessConfigError):
+            self.send_api_error(500, "ANALYSIS_CONFIG_ERROR", "分析配置加载或校验失败")
         except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
             if is_legacy:
                 self.send_json(400, {"error": f"输入参数无效：{error}"})
@@ -164,7 +188,24 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 error.get("code", "CALCULATION_FAILED"),
                 error.get("message", "排盘计算失败"),
             )
-        return result
+        return normalize_brightness_response(result)
+
+    def run_analysis(self, payload):
+        chart = payload.get("chart")
+        chart_request = payload.get("chart_request")
+        if chart is not None and chart_request is not None:
+            raise AnalysisRequestError("chart 与 chart_request 只能提供一个")
+        if chart is None:
+            if not isinstance(chart_request, dict):
+                raise AnalysisRequestError("必须提供 chart 或 chart_request")
+            chart = self.run_cli({**chart_request, "operation": "chart"})
+        if not isinstance(chart, dict):
+            raise AnalysisRequestError("chart 必须是 JSON 对象")
+        apply_star_brightness(chart)
+        return {
+            "chart": chart,
+            "analysis": analyze_natal_chart(chart, payload.get("scope")),
+        }
 
     def send_api_success(self, data, status=200):
         self.send_json(status, {

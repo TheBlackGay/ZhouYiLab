@@ -421,7 +421,7 @@ export namespace ZhouYi::ZiWei {
             .da_xian_data = da_xian_arr
         };
 
-        auto make_star_data = [&](string name, LiangDu liang_du, int gong_index) {
+        auto make_star_data = [&](string name, optional<LiangDu> liang_du, int gong_index) {
             return StarData{
                 .name = name,
                 .liang_du = liang_du,
@@ -456,31 +456,31 @@ export namespace ZhouYi::ZiWei {
             // 添加辅星
             if (i == zuo_idx) {
                 palace_info.fu_xing.push_back(make_star_data(
-                    string(to_zh(FuXing::ZuoFu)), LiangDu::Ping, i));
+                    string(to_zh(FuXing::ZuoFu)), nullopt, i));
             }
             if (i == you_idx) {
                 palace_info.fu_xing.push_back(make_star_data(
-                    string(to_zh(FuXing::YouBi)), LiangDu::Ping, i));
+                    string(to_zh(FuXing::YouBi)), nullopt, i));
             }
             if (i == chang_idx) {
                 palace_info.fu_xing.push_back(make_star_data(
-                    string(to_zh(FuXing::WenChang)), LiangDu::Ping, i));
+                    string(to_zh(FuXing::WenChang)), nullopt, i));
             }
             if (i == qu_idx) {
                 palace_info.fu_xing.push_back(make_star_data(
-                    string(to_zh(FuXing::WenQu)), LiangDu::Ping, i));
+                    string(to_zh(FuXing::WenQu)), nullopt, i));
             }
             if (i == kui_idx) {
                 palace_info.fu_xing.push_back(StarData{
                     .name = string(to_zh(FuXing::TianKui)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == yue_idx) {
                 palace_info.fu_xing.push_back(StarData{
                     .name = string(to_zh(FuXing::TianYue)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
@@ -488,7 +488,7 @@ export namespace ZhouYi::ZiWei {
             if (i == lu_cun_idx) {
                 palace_info.fu_xing.push_back(StarData{
                     .name = "禄存",
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
@@ -497,42 +497,42 @@ export namespace ZhouYi::ZiWei {
             if (i == yang_idx) {
                 palace_info.sha_xing.push_back(StarData{
                     .name = string(to_zh(ShaXing::QingYang)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tuo_idx) {
                 palace_info.sha_xing.push_back(StarData{
                     .name = string(to_zh(ShaXing::TuoLuo)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == huo_idx) {
                 palace_info.sha_xing.push_back(StarData{
                     .name = string(to_zh(ShaXing::HuoXing)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == ling_idx) {
                 palace_info.sha_xing.push_back(StarData{
                     .name = string(to_zh(ShaXing::LingXing)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == kong_idx) {
                 palace_info.sha_xing.push_back(StarData{
                     .name = string(to_zh(ShaXing::DiKong)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == jie_idx) {
                 palace_info.sha_xing.push_back(StarData{
                     .name = string(to_zh(ShaXing::DiJie)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
@@ -541,28 +541,28 @@ export namespace ZhouYi::ZiWei {
             if (i == hong_luan_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::HongLuan)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_xi_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianXi)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_yao_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianYao)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == xian_chi_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::XianChi)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
@@ -571,42 +571,42 @@ export namespace ZhouYi::ZiWei {
             if (i == jie_shen_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::JieShen)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_wu_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianWu)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_guan_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianGuan)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_fu2_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianFu2)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_chu_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianChu)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_ma_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianMa)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
@@ -615,98 +615,98 @@ export namespace ZhouYi::ZiWei {
             if (i == san_tai_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::SanTai)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == ba_zuo_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::BaZuo)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == en_guang_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::EnGuang)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_gui_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianGui)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == long_chi_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::LongChi)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == feng_ge_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::FengGe)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_cai_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianCai)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_shou_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianShou)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tai_fu_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TaiFu)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == feng_gao_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::FengGao)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == hua_gai_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::HuaGai)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_yue2_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianYue2)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_de_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianDe)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == yue_de_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::YueDe)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
@@ -715,119 +715,119 @@ export namespace ZhouYi::ZiWei {
             if (i == gu_chen_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::GuChen)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == gua_su_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::GuaSu)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == fei_lian_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::FeiLian)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == po_sui_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::PoSui)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_xing_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianXing)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == yin_sha_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::YinSha)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_kong2_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianKong2)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_ku_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianKu)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_xu_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianXu)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_shi_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianShi)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == tian_shang_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianShang)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == nian_jie_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::NianJie)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == xun_kong1_idx || i == xun_kong2_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::XunKong)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == jie_lu_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::JieLu)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == kong_wang_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::KongWang)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == da_hao_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::DaHao)),
-                    .liang_du = LiangDu::Xian,  // 大耗一般为陷
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }
             if (i == long_de2_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::LongDe2)),
-                    .liang_du = LiangDu::Ping,
+                    .liang_du = nullopt,
                     .gong_index = i
                 });
             }

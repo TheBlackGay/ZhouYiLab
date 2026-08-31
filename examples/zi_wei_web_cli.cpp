@@ -111,11 +111,46 @@ namespace {
         return result;
     }
 
+    std::string transit_star_base_name(std::string_view display_name) {
+        if (display_name == "年解") return "年解";
+        static constexpr std::array<std::pair<std::string_view, std::string_view>, 10> NAMES{{
+            {"魁", "天魁"}, {"钺", "天钺"}, {"昌", "文昌"}, {"曲", "文曲"},
+            {"禄", "禄存"}, {"羊", "擎羊"}, {"陀", "陀罗"}, {"马", "天马"},
+            {"鸾", "红鸾"}, {"喜", "天喜"},
+        }};
+        for (const auto& [suffix, name] : NAMES) {
+            if (display_name.ends_with(suffix)) return std::string(name);
+        }
+        return std::string(display_name);
+    }
+
+    json transit_stars(
+        TianGan gan,
+        DiZhi zhi,
+        Scope scope,
+        const ZiWeiResult& chart
+    ) {
+        json result = json::array();
+        for (const auto& palace_stars : get_horoscope_stars(gan, zhi, scope)) {
+            for (const auto& display_name : palace_stars.stars) {
+                result.push_back({
+                    {"name", transit_star_base_name(display_name)},
+                    {"display_name", display_name},
+                    {"palace_index", palace_stars.gong_index},
+                    {"palace", std::string(to_zh(
+                        chart.palaces[palace_stars.gong_index].gong_data.gong_wei))}
+                });
+            }
+        }
+        return result;
+    }
+
     json flow_layer(
         TianGan gan,
         DiZhi zhi,
         int palace_index,
         const std::array<std::string, 4>& transformations,
+        Scope scope,
         const ZiWeiResult& chart
     ) {
         return {
@@ -123,7 +158,8 @@ namespace {
                 + std::string(ZhouYi::GanZhi::Mapper::to_zh(zhi))},
             {"palace_index", palace_index},
             {"palace", std::string(to_zh(chart.palaces[palace_index].gong_data.gong_wei))},
-            {"si_hua", four_transformations(transformations)}
+            {"si_hua", four_transformations(transformations)},
+            {"transit_stars", transit_stars(gan, zhi, scope, chart)}
         };
     }
 
@@ -200,6 +236,7 @@ namespace {
                 current_da_xian->di_zhi,
                 current_da_xian->gong_index,
                 current_da_xian->si_hua,
+                Scope::Decadal,
                 chart
             );
             fortune["da_xian"]["age_range"] =
@@ -209,12 +246,12 @@ namespace {
         if (layers.contains("annual")) {
             fortune["liu_nian"] = flow_layer(
                 liu_nian.tian_gan, liu_nian.di_zhi, liu_nian.gong_index,
-                liu_nian.si_hua, chart);
+                liu_nian.si_hua, Scope::Yearly, chart);
         }
         if (layers.contains("monthly")) {
             fortune["liu_yue"] = flow_layer(
                 liu_yue.tian_gan, liu_yue.di_zhi, liu_yue.gong_index,
-                liu_yue.si_hua, chart);
+                liu_yue.si_hua, Scope::Monthly, chart);
             fortune["liu_yue"]["dou_jun_index"] = liu_yue.dou_jun_index;
             fortune["liu_yue"]["dou_jun_palace"] = std::string(to_zh(
                 chart.palaces[liu_yue.dou_jun_index].gong_data.gong_wei));
@@ -222,12 +259,12 @@ namespace {
         if (layers.contains("daily")) {
             fortune["liu_ri"] = flow_layer(
                 liu_ri.tian_gan, liu_ri.di_zhi, liu_ri.gong_index,
-                liu_ri.si_hua, chart);
+                liu_ri.si_hua, Scope::Daily, chart);
         }
         if (layers.contains("hourly")) {
             fortune["liu_shi"] = flow_layer(
                 liu_shi.tian_gan, liu_shi.di_zhi, liu_shi.gong_index,
-                liu_shi.si_hua, chart);
+                liu_shi.si_hua, Scope::Hourly, chart);
         }
 
         return {

@@ -2,6 +2,11 @@
   "schema_version": "1.0.0",
   "ruleset": "zhouyilab-ziwei-analysis",
   "description": "紫微斗数分析引擎第一批静态案例。字段和规则需配合 docs/ziwei/紫微斗数命盘与运限分析准则.md 使用。",
+  "symbolism_dictionary": {
+    "path": "config/ziwei/symbolism_dictionary.json",
+    "minimum_schema_version": "1.0.0",
+    "purpose": "先解析焦点宫的作用对象，再解析星曜的作用机制，最后应用本文件中的组合与格局规则。"
+  },
   "defaults": {
     "school": "中州三合",
     "strictness": "baseline",
@@ -34,7 +39,7 @@
     "contains": "集合包含指定值",
     "contains_all": "集合包含所有指定值",
     "count_equals": "集合元素数量相等",
-    "greater_or_equal": "数值大于或等于目标值"
+    "greater_or_equal": "数值或集合元素数量大于或等于目标值"
   },
   "cases": [
     {
@@ -53,6 +58,11 @@
             "path": "$focus.primary_stars",
             "operator": "count_equals",
             "value": 0
+          },
+          {
+            "path": "$opposite.primary_stars",
+            "operator": "greater_or_equal",
+            "value": 1
           }
         ]
       },

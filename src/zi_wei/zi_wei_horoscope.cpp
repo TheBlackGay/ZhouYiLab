@@ -344,10 +344,10 @@ namespace ZhouYi::ZiWei {
                 prefix = "";
                 break;
             case Scope::Decadal:
-                prefix = "运";
+                prefix = "大";
                 break;
             case Scope::Yearly:
-                prefix = "流";
+                prefix = "年";
                 // 流年还有年解
                 result[get_nian_jie_index(zhi)].stars.push_back("年解");
                 break;

@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "dictionary_version": "1.0.0",
+  "updated_at": "2026-08-31",
+  "description": "四套十二神的独立象义词典。重名条目必须以 system 区分，不与普通星曜合并。",
+  "systems": {
+    "chang_sheng_12": {
+      "label": "长生十二神",
+      "nature": "natal_fixed",
+      "boundary": "用于长期气质修饰，不单独推断具体事件。",
+      "entries": {
+        "长生": {"id": "chang_sheng", "key_effect": "增加好奇心、活力与探索新事物的倾向。", "boundary": "不等同于现实中的年龄或寿命。"},
+        "沐浴": {"id": "mu_yu", "key_effect": "重视洁净、感受与环境更新，也可能较易浮动。", "boundary": "不单独解释为桃花或放纵。"},
+        "冠带": {"id": "guan_dai", "key_effect": "增强表现、竞争、占有与建立外在形象的倾向。", "boundary": "需结合宫位判断表现领域。"},
+        "临官": {"id": "lin_guan", "key_effect": "增强独立承担、执行与建立位置的倾向。", "boundary": "不等同于必然获得职位。"},
+        "帝旺": {"id": "di_wang", "key_effect": "增强自信、充沛感与主动扩张的倾向。", "boundary": "旺盛不等同于没有过度扩张风险。"},
+        "衰": {"id": "shuai", "key_effect": "降低外放欲望，增加克制、审慎与老成感。", "boundary": "不等同于现实结果必然衰败。"},
+        "病": {"id": "bing", "key_effect": "增加敏感、思考与内在消耗，执行节奏可能放慢。", "boundary": "不能据此诊断疾病。"},
+        "死": {"id": "si", "key_effect": "降低冒进与争胜倾向，面对困难时更易保守。", "boundary": "不代表死亡事件。"},
+        "墓": {"id": "mu", "key_effect": "增加收敛、保存、节制和低调处理资源的倾向。", "boundary": "不等同于停滞或贫乏。"},
+        "绝": {"id": "jue", "key_effect": "降低外在热情与社交欲望，倾向切断旧有状态。", "boundary": "不代表关系或事业必然终结。"},
+        "胎": {"id": "tai", "key_effect": "增加表达、尝试与孕育新方向的倾向。", "boundary": "不单独指向怀孕事件。"},
+        "养": {"id": "yang", "key_effect": "增加好奇、希望以及逐步培育事物的倾向。", "boundary": "需结合其他星曜判断成长速度。"}
+      }
+    },
+    "bo_shi_12": {
+      "label": "博士十二神",
+      "nature": "natal_fixed",
+      "boundary": "用于长期气质修饰，不单独决定吉凶或事件。",
+      "entries": {
+        "博士": {"id": "bo_shi", "key_effect": "增强学习、理解、思考和知识整理能力。", "boundary": "不等同于学历或专业资格。"},
+        "力士": {"id": "li_shi", "key_effect": "增强执着、勇猛、坚韧与直接行动的气质。", "boundary": "需留意固执，但不能直接推断冲突。"},
+        "青龙": {"id": "qing_long", "key_effect": "增强执行、反应与把握机会的倾向。", "boundary": "机会仍需现实条件承接。"},
+        "小耗": {"id": "xiao_hao", "key_effect": "增加不拘小节和资源小幅散出的倾向。", "boundary": "不等同于必然破财。"},
+        "将军": {"id": "jiang_jun", "key_effect": "增强掌控、组织与争取主导权的倾向。", "boundary": "不等同于现实领导职位。"},
+        "奏书": {"id": "zou_shu", "key_effect": "增强文案、理解与书面表达能力。", "boundary": "实际成果仍取决于训练。"},
+        "飞廉": {"id": "fei_lian", "key_effect": "增加好奇和表达欲，也可能带来表达摩擦。", "boundary": "不能据此断定口舌是非。"},
+        "喜神": {"id": "xi_shen", "key_effect": "增加轻松、喜庆和亲和感，也可能放慢决断。", "boundary": "不等同于必有喜事。"},
+        "病符": {"id": "bing_fu", "key_effect": "增强对身体状态与脆弱感的关注。", "boundary": "不能据此诊断疾病。"},
+        "大耗": {"id": "da_hao", "key_effect": "增强冒险、投机或大幅动用资源的倾向。", "boundary": "不等同于必然发生重大损失。"},
+        "伏兵": {"id": "fu_bing", "key_effect": "增加警惕、多虑和对隐藏风险的关注。", "boundary": "不应解释为必有他人暗害。"},
+        "官府": {"id": "guan_fu", "key_effect": "增强对规则、责任、争议与正式程序的敏感。", "boundary": "不等同于必然发生官非。"}
+      }
+    },
+    "sui_qian_12": {
+      "label": "岁前十二神",
+      "nature": "annual_dynamic",
+      "boundary": "属于随流年移动的辅助信号；本命展示仅保留盘面事实，不提升为原局核心结论。",
+      "entries": {
+        "岁建": {"id": "sui_jian", "key_effect": "标记流年主题的起点与当年关注中心。", "boundary": "本命层不据此判断具体年份事件。"},
+        "晦气": {"id": "hui_qi", "key_effect": "增加短期情绪波动与沟通不顺的可能。", "boundary": "不等同于必然倒霉。"},
+        "丧门": {"id": "sang_men", "key_effect": "增加短期低落、悲观或对失去的关注。", "boundary": "不应直接推断丧事。"},
+        "贯索": {"id": "guan_suo", "key_effect": "增加受约束、被流程牵制或进展受限的感受。", "boundary": "不等同于必然被拘束。"},
+        "官符": {"id": "guan_fu", "key_effect": "增加与规则、公家事务或正式手续打交道的主题。", "boundary": "不等同于必然发生诉讼。"},
+        "小耗": {"id": "xiao_hao", "key_effect": "增加短期额外消费与小幅资源流失的倾向。", "boundary": "不等同于必然破财。"},
+        "大耗": {"id": "da_hao", "key_effect": "增加较大消费或共同支出的主题。", "boundary": "不等同于必然重大损失。"},
+        "龙德": {"id": "long_de", "key_effect": "增加物质层面的缓冲、顺遂与化解条件。", "boundary": "不能抵消所有不利组合。"},
+        "白虎": {"id": "bai_hu", "key_effect": "增加冲动、急迫与煞曜被触发的可能。", "boundary": "不应直接推断伤灾。"},
+        "天德": {"id": "tian_de", "key_effect": "增加名誉、善意与缓和冲突的条件。", "boundary": "仍需结合现实行为与其他星曜。"},
+        "吊客": {"id": "diao_ke", "key_effect": "增加短期低落与对负面消息的敏感。", "boundary": "不应直接推断丧事。"},
+        "病符": {"id": "bing_fu", "key_effect": "增加对健康、疲惫与脆弱状态的关注。", "boundary": "不能据此诊断疾病。"}
+      }
+    },
+    "jiang_qian_12": {
+      "label": "将前十二神",
+      "nature": "annual_dynamic",
+      "boundary": "属于随流年移动的辅助信号；本命展示仅保留盘面事实，不提升为原局核心结论。",
+      "entries": {
+        "将星": {"id": "jiang_xing", "key_effect": "短期增强精神、行动状态与能量表现。", "boundary": "不等同于必然获得权力。"},
+        "攀鞍": {"id": "pan_an", "key_effect": "短期增加曝光、被看见和建立名望的机会。", "boundary": "知名度仍依赖现实成果。"},
+        "岁驿": {"id": "sui_yi", "key_effect": "增加改变、迁动、奔忙与转换环境的主题。", "boundary": "不等同于一定搬迁。"},
+        "息神": {"id": "xi_shen", "key_effect": "降低短期意志与持续投入，容易产生放弃念头。", "boundary": "不代表事情必然失败。"},
+        "华盖": {"id": "hua_gai", "key_effect": "短期增加艺术、独立思考与孤高感。", "boundary": "不等同于必然孤独。"},
+        "劫煞": {"id": "jie_sha", "key_effect": "增加突然压力与资源被打断的感受。", "boundary": "不应直接推断灾祸。"},
+        "灾煞": {"id": "zai_sha", "key_effect": "增加意外困扰与临时问题的可能。", "boundary": "不应直接推断灾难。"},
+        "天煞": {"id": "tian_sha", "key_effect": "增加来自上位者、长辈或规则的压力。", "boundary": "需结合对应宫位辨认对象。"},
+        "指背": {"id": "zhi_bei", "key_effect": "增加被议论、误解或沟通留痕的风险。", "boundary": "不等同于必有小人。"},
+        "咸池": {"id": "xian_chi", "key_effect": "短期增强桃花、感官吸引与社交互动。", "boundary": "不等同于必然建立关系。"},
+        "月煞": {"id": "yue_sha", "key_effect": "增加来自女性关系或阴性环境的短期压力。", "boundary": "不能泛化为对所有女性的不利判断。"},
+        "亡神": {"id": "wang_shen", "key_effect": "增加疏忽、遗失与无效消费的可能。", "boundary": "不等同于必然丢失财物。"}
+      }
+    }
+  }
+}

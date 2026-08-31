@@ -86,6 +86,7 @@
 
         <div class="tabs" role="tablist" aria-label="排盘结果视图">
           <button type="button" role="tab" aria-selected="true" data-tab="chart">十二宫</button>
+          <button type="button" role="tab" aria-selected="false" data-tab="analysis">结构解读</button>
           <button type="button" role="tab" aria-selected="false" data-tab="fortune">运限</button>
           <button type="button" role="tab" aria-selected="false" data-tab="correction">时间校正</button>
         </div>
@@ -118,6 +119,19 @@
             </div>
           </div>
           <div id="flow-track" class="flow-track" aria-label="当前运限层级"></div>
+        </div>
+
+        <div id="tab-analysis" class="tab-panel" role="tabpanel" hidden>
+          <div class="analysis-header">
+            <div><span>本命分析</span><strong id="analysis-title">正在生成结构化碎片</strong></div>
+            <dl><div><dt>宫位</dt><dd id="analysis-palace-count">--</dd></div><div><dt>碎片</dt><dd id="analysis-fragment-count">--</dd></div><div><dt>配置</dt><dd id="analysis-config-version">--</dd></div></dl>
+          </div>
+          <p id="analysis-error" class="error-message" role="alert" hidden></p>
+          <div id="analysis-loading" class="analysis-loading" aria-live="polite"><span class="spinner"></span>正在匹配宫位、星曜与格局规则</div>
+          <div id="analysis-workspace" class="analysis-workspace" hidden>
+            <nav id="analysis-palace-tabs" class="analysis-palace-tabs" aria-label="选择解读宫位"></nav>
+            <section id="analysis-content" class="analysis-content" aria-live="polite"></section>
+          </div>
         </div>
 
         <div id="tab-fortune" class="tab-panel" role="tabpanel" hidden>
