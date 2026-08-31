@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 project(ZhouYiLab 
-    VERSION 1.4.0
+    VERSION 1.4.1
     DESCRIPTION "周易实验室 - 传统文化算法库"
     LANGUAGES CXX
 )

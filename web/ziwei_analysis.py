@@ -30,7 +30,8 @@ SUPPORTED_FRAGMENT_TYPES = (
 
 SECTION_KEYS = (
     "palace_symbolism", "self_stars", "triad_stars", "opposite_stars",
-    "transformations", "combinations", "patterns", "shen_sha", "unconfigured",
+    "transformations", "palace_rules", "combinations", "patterns", "shen_sha",
+    "unconfigured",
 )
 SHEN_SHA_SYSTEMS = (
     "chang_sheng_12", "bo_shi_12", "sui_qian_12", "jiang_qian_12",
@@ -186,7 +187,7 @@ def analyze_natal_chart(
     scope = scope or {}
     layers = scope.get("layers", ["natal"])
     if layers != ["natal"] and set(layers) != {"natal"}:
-        raise AnalysisRequestError("analysis 1.4.0 仅支持 natal 本命层")
+        raise AnalysisRequestError("analysis 1.4.1 仅支持 natal 本命层")
 
     palaces = chart.get("palaces")
     if not isinstance(palaces, list) or len(palaces) != 12:
@@ -246,7 +247,7 @@ def analyze_natal_chart(
         for fragment_id in palace[key]
     )
     return {
-        "analysis_version": "1.4.0",
+        "analysis_version": "1.4.1",
         "layer": "natal",
         "scope": {
             "layers": ["natal"],
@@ -566,9 +567,11 @@ def _group_sections(fragments):
             section = {"self": "self_stars", "triad": "triad_stars", "opposite": "opposite_stars"}[relation]
         elif fragment_type == "transformation":
             section = "transformations"
+        elif fragment_type == "four_directions":
+            section = "palace_rules"
         elif fragment_type == "combination":
             section = "combinations"
-        elif fragment_type in ("pattern", "four_directions"):
+        elif fragment_type == "pattern":
             section = "patterns"
         elif fragment_type == "shen_sha_in_palace":
             section = "shen_sha"

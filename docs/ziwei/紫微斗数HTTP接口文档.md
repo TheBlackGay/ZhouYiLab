@@ -1,7 +1,7 @@
 # ZhouYiLab 紫微斗数 HTTP API
 
 > API 版本：`v1`
-> 文档版本：`1.4.0`
+> 文档版本：`1.4.1`
 > 更新日期：`2026-08-31`
 > 字符编码：UTF-8
 > 当前服务：本地 Python HTTP 适配层 + C++ 紫微斗数计算核心
@@ -19,7 +19,7 @@
 | 运限计算 | `POST` | `/api/v1/ziwei/fortune` | 已实现 |
 | 本命十二宫结构化解读 | `POST` | `/api/v1/ziwei/analysis` | 已实现 |
 
-本命盘、真太阳时、运限和本命结构化解读已经通过接口提供。命盘解读必须遵守[紫微斗数命盘与运限分析准则](./紫微斗数命盘与运限分析准则.md)。`1.4.0` 新增配置驱动的格局匹配引擎；解读接口仍只开放本命层，大限和流年结构化解读完成前不得返回占位性结果。
+本命盘、真太阳时、运限和本命结构化解读已经通过接口提供。命盘解读必须遵守[紫微斗数命盘与运限分析准则](./紫微斗数命盘与运限分析准则.md)。`1.4.1` 完善格局结果的页面展示；解读接口仍只开放本命层，大限和流年结构化解读完成前不得返回占位性结果。
 
 ## 2. 基本约定
 
@@ -59,7 +59,7 @@ Content-Type: application/json
   "data": {},
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.4.0",
+    "algorithm_version": "zhouyilab-core/1.4.1",
     "request_id": "b416827b90274e5c837d1ef12f39e776"
   }
 }
@@ -76,7 +76,7 @@ Content-Type: application/json
   },
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.4.0",
+    "algorithm_version": "zhouyilab-core/1.4.1",
     "request_id": "e2481168ad76405995b163e0a758fe2d"
   }
 }
@@ -158,7 +158,7 @@ Content-Type: application/json
   },
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.4.0",
+    "algorithm_version": "zhouyilab-core/1.4.1",
     "request_id": "..."
   }
 }
@@ -175,7 +175,7 @@ Content-Type: application/json
 ```json
 {
   "api_version": "v1",
-  "algorithm_version": "zhouyilab-core/1.4.0",
+  "algorithm_version": "zhouyilab-core/1.4.1",
   "capabilities": [
     "natal_chart",
     "true_solar_time",
@@ -529,7 +529,7 @@ POST /api/calculate
 
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `layers` | string[] | 否 | `1.4.0` 只支持 `["natal"]` |
+| `layers` | string[] | 否 | `1.4.1` 只支持 `["natal"]` |
 | `focus_palaces` | string[] | 否 | 指定需要分析的宫位；默认分析十二宫 |
 | `scenarios` | string[] | 否 | 按配置中的中文场景精确筛选衍生定义；省略时返回全部候选场景 |
 
@@ -539,7 +539,7 @@ POST /api/calculate
 {
   "chart": {},
   "analysis": {
-    "analysis_version": "1.4.0",
+    "analysis_version": "1.4.1",
     "layer": "natal",
     "scope": {},
     "config": {},
@@ -639,7 +639,8 @@ POST /api/calculate
 | `sections.triad_stars` | 两个三合宫星曜碎片 ID |
 | `sections.opposite_stars` | 对宫星曜碎片 ID |
 | `sections.transformations` | 独立四化修正碎片 ID；星曜碎片只通过 `related_fragment_ids` 引用，不重复计权 |
-| `sections.combinations` | 星曜组合与基础宫位规则碎片 ID |
+| `sections.palace_rules` | 空宫借对宫等基础宫位规则碎片 ID，不计入格局数量 |
+| `sections.combinations` | 星曜组合碎片 ID |
 | `sections.patterns` | 声明式格局引擎命中的格局碎片 ID |
 | `sections.shen_sha` | 四套十二神碎片 ID |
 | `sections.unconfigured` | 未配置星曜事实碎片 ID |

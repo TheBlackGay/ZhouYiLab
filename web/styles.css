@@ -196,6 +196,21 @@ fieldset { padding: 0; margin: 0; border: 0; }
 .analysis-header dd { margin: 4px 0 0; font-weight: 700; }
 .analysis-loading { min-height: 320px; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 13px; }
 .analysis-loading .spinner { display: block; border-color: #b9c0bc; border-top-color: var(--accent); }
+.analysis-pattern-overview { border-bottom: 1px solid var(--line-strong); background: var(--surface-alt); }
+.analysis-pattern-overview > header { min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 9px 14px; border-bottom: 1px solid var(--line); }
+.analysis-pattern-overview > header div { display: grid; gap: 2px; }
+.analysis-pattern-overview > header span, .analysis-pattern-overview > header small { color: var(--muted); font-size: 10px; }
+.analysis-pattern-overview > header strong { font-size: 14px; }
+.analysis-pattern-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.analysis-pattern-list button { min-width: 0; min-height: 68px; display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: center; align-items: center; gap: 3px 8px; padding: 10px 14px; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--ink); background: transparent; text-align: left; }
+.analysis-pattern-list button:nth-child(3n) { border-right: 0; }
+.analysis-pattern-list button:hover { background: #eef1ed; }
+.analysis-pattern-list strong { min-width: 0; font-size: 13px; }
+.analysis-pattern-list small { grid-column: 2; min-width: 0; overflow: hidden; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.analysis-pattern-list .pattern-status { grid-row: 1 / 3; padding: 2px 5px; color: #215940; background: #e4f0e9; font-size: 9px; font-weight: 700; }
+.analysis-pattern-list .pattern-status-weakened, .analysis-pattern-list .pattern-status-broken { color: #8a332b; background: #f8e9e6; }
+.analysis-pattern-list .pattern-status-tendency { color: #6d5520; background: #f7f0dc; }
+.analysis-pattern-list > .analysis-empty { grid-column: 1 / -1; margin: 0; padding: 14px; }
 .analysis-workspace { display: grid; grid-template-columns: 168px minmax(0, 1fr); min-height: 620px; border-bottom: 1px solid var(--line); }
 .analysis-palace-tabs { padding: 10px 12px 10px 0; border-right: 1px solid var(--line); }
 .analysis-palace-tabs button { width: 100%; min-height: 52px; display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 7px; border: 0; border-left: 3px solid transparent; padding: 6px 9px; color: var(--ink); background: transparent; text-align: left; }
@@ -303,6 +318,9 @@ fieldset { padding: 0; margin: 0; border: 0; }
   .fortune-grid { grid-template-columns: 1fr; }
   .correction-layout { grid-template-columns: 1fr; }
   .analysis-workspace { grid-template-columns: 1fr; }
+  .analysis-pattern-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .analysis-pattern-list button:nth-child(3n) { border-right: 1px solid var(--line); }
+  .analysis-pattern-list button:nth-child(2n) { border-right: 0; }
   .analysis-palace-tabs { display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; border-right: 0; border-bottom: 1px solid var(--line); }
   .analysis-palace-tabs button { grid-template-columns: 1fr; justify-items: center; border-left: 0; border-bottom: 3px solid transparent; text-align: center; }
   .analysis-palace-tabs button[aria-pressed="true"] { border-bottom-color: var(--accent); }
@@ -330,6 +348,9 @@ fieldset { padding: 0; margin: 0; border: 0; }
   .analysis-header { align-items: flex-start; flex-direction: column; padding: 12px 0; }
   .analysis-header dl { width: 100%; }
   .analysis-header dl div { flex: 1; }
+  .analysis-pattern-overview > header { align-items: flex-start; flex-direction: column; gap: 3px; }
+  .analysis-pattern-list { grid-template-columns: 1fr; }
+  .analysis-pattern-list button, .analysis-pattern-list button:nth-child(3n) { border-right: 0; }
   .analysis-palace-tabs { grid-template-columns: repeat(3, 1fr); }
   .analysis-palace-heading dl { width: 100%; gap: 12px; }
   .analysis-palace-heading dl div { flex: 1; }

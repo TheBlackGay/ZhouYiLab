@@ -343,6 +343,8 @@ function renderAnalysisPalace(palaceName) {
       <dl><div><dt>三合</dt><dd>${directions.triads.map(item => escapeHtml(item.palace)).join(' · ')}</dd></div><div><dt>对宫</dt><dd>${escapeHtml(directions.opposite.palace)}</dd></div><div><dt>主星</dt><dd>${palace.facts.primary_stars.map(escapeHtml).join(' · ') || '空宫'}</dd></div></dl>
     </header>
     ${summaryBar}
+    ${renderFragmentSection('格局匹配', sections.patterns, fragmentMap, summary, '格局效果归属于当前焦点宫代表的人与领域；未命中表示当前宫不符合已配置规则。')}
+    ${renderFragmentSection('宫位规则', sections.palace_rules || [], fragmentMap, summary, '展示空宫借对宫等基础宫位关系，不计入格局数量。')}
     <section class="analysis-section"><h3>宫位原始定义</h3><div class="meaning-list">${originalRows}</div></section>
     <section class="analysis-section"><h3>场景映射</h3><div class="derived-list">${derivedRows || '<p class="analysis-empty">当前筛选下无场景映射</p>'}</div></section>
     ${renderFragmentSection('本宫星曜', sections.self_stars, fragmentMap, summary, '星曜实际坐入当前焦点宫。')}
@@ -350,10 +352,30 @@ function renderAnalysisPalace(palaceName) {
     ${renderFragmentSection('对宫星曜', sections.opposite_stars, fragmentMap, summary, '保留实际落宫，仅作为对宫关系作用于当前宫。')}
     ${renderFragmentSection('四化修正', sections.transformations, fragmentMap, summary, '四化只在此处计权，星曜碎片仅保留关联。')}
     ${renderFragmentSection('星曜组合', sections.combinations || [], fragmentMap, summary, '组合描述星曜共同作用，保留实际宫位和三方四正关系。')}
-    ${renderFragmentSection('格局匹配', sections.patterns, fragmentMap, summary, '格局由配置规则逐宫匹配，效果归属于当前焦点宫代表的人与领域。')}
     ${renderFragmentSection('十二神', sections.shen_sha, fragmentMap, summary, '四套系统独立展示，重名条目不会合并。')}
     ${renderFragmentSection('未配置内容', sections.unconfigured, fragmentMap, summary, '仅保留盘面事实，不进入推理结论。')}
   `;
+}
+
+function renderPatternOverview(analysis) {
+  const patterns = analysis.fragments.filter(fragment => fragment.type === 'pattern');
+  const overview = document.querySelector('#analysis-pattern-overview');
+  document.querySelector('#analysis-pattern-count').textContent = patterns.length;
+  document.querySelector('#analysis-pattern-overview-summary').textContent = patterns.length
+    ? `${new Set(patterns.map(item => item.facts.rule_id)).size} 种格局 · ${patterns.length} 个宫位效果`
+    : '当前命盘未命中已配置格局';
+  document.querySelector('#analysis-pattern-list').innerHTML = patterns.length
+    ? patterns.map(fragment => {
+      const status = fragment.facts.status || 'formed';
+      return `
+        <button type="button" data-pattern-palace="${escapeHtml(fragment.effect_palace)}">
+          <span class="pattern-status pattern-status-${escapeHtml(status)}">${escapeHtml(patternStatusLabels[status] || status)}</span>
+          <strong>${escapeHtml(fragment.facts.rule_name)}</strong>
+          <small>${escapeHtml(fragment.effect_palace)} · ${escapeHtml((fragment.effect_subject || []).join('、'))}</small>
+        </button>`;
+    }).join('')
+    : '<p class="analysis-empty">规则引擎已执行，本盘暂未匹配到当前配置库中的格局。</p>';
+  overview.hidden = false;
 }
 
 function renderAnalysis(analysis) {
@@ -362,10 +384,15 @@ function renderAnalysis(analysis) {
   document.querySelector('#analysis-palace-count').textContent = analysis.palaces.length;
   document.querySelector('#analysis-fragment-count').textContent = analysis.fragments.length;
   document.querySelector('#analysis-config-version').textContent = analysis.config.symbolism_dictionary_version;
+  renderPatternOverview(analysis);
   const navigation = document.querySelector('#analysis-palace-tabs');
-  navigation.innerHTML = analysis.palaces.map((palace, index) => `
-    <button type="button" data-palace="${escapeHtml(palace.palace)}" aria-pressed="${index === 0}"><span>${escapeHtml(palace.gan_zhi)}</span><strong>${escapeHtml(palace.palace)}</strong><small>${palace.fragments.length} 条</small></button>
-  `).join('');
+  navigation.innerHTML = analysis.palaces.map((palace, index) => {
+    const patternCount = palace.sections.patterns.length;
+    const detail = patternCount ? `格局 ${patternCount} · ${palace.fragments.length} 条` : `${palace.fragments.length} 条`;
+    return `
+      <button type="button" data-palace="${escapeHtml(palace.palace)}" aria-pressed="${index === 0}"><span>${escapeHtml(palace.gan_zhi)}</span><strong>${escapeHtml(palace.palace)}</strong><small>${detail}</small></button>
+    `;
+  }).join('');
   document.querySelector('#analysis-loading').hidden = true;
   document.querySelector('#analysis-workspace').hidden = false;
   renderAnalysisPalace(analysis.palaces[0].palace);
@@ -375,6 +402,7 @@ async function loadAnalysis(chart) {
   currentAnalysis = null;
   document.querySelector('#analysis-error').hidden = true;
   document.querySelector('#analysis-loading').hidden = false;
+  document.querySelector('#analysis-pattern-overview').hidden = true;
   document.querySelector('#analysis-workspace').hidden = true;
   document.querySelector('#analysis-title').textContent = '正在生成结构化碎片';
   try {
@@ -462,6 +490,13 @@ document.querySelector('#flow-track').addEventListener('click', event => {
 document.querySelector('#analysis-palace-tabs').addEventListener('click', event => {
   const button = event.target.closest('button[data-palace]');
   if (button) renderAnalysisPalace(button.dataset.palace);
+});
+
+document.querySelector('#analysis-pattern-list').addEventListener('click', event => {
+  const button = event.target.closest('button[data-pattern-palace]');
+  if (!button) return;
+  renderAnalysisPalace(button.dataset.patternPalace);
+  document.querySelector('#analysis-content').scrollIntoView({ block: 'start', behavior: 'smooth' });
 });
 
 document.querySelector('.board-view-toggle').addEventListener('click', event => {

@@ -23,7 +23,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEB_ROOT = PROJECT_ROOT / "web"
 CLI_PATH = PROJECT_ROOT / "build" / "examples" / "zi_wei_web_cli"
 API_VERSION = "v1"
-ALGORITHM_VERSION = "zhouyilab-core/1.4.0"
+ALGORITHM_VERSION = "zhouyilab-core/1.4.1"
 MAX_BODY_BYTES = 64 * 1024
 
 POST_OPERATIONS = {

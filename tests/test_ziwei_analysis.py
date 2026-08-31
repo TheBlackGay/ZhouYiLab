@@ -116,6 +116,13 @@ class ZiWeiAnalysisTests(unittest.TestCase):
             fragment.get("facts", {}).get("rule_id") for fragment in result["fragments"]
         }
         self.assertIn("palace.empty.borrow_opposite", rule_ids)
+        palace = result["palaces"][0]
+        borrow_fragment = next(
+            fragment for fragment in result["fragments"]
+            if fragment.get("facts", {}).get("rule_id") == "palace.empty.borrow_opposite"
+        )
+        self.assertIn(borrow_fragment["fragment_id"], palace["sections"]["palace_rules"])
+        self.assertNotIn(borrow_fragment["fragment_id"], palace["sections"]["patterns"])
 
         chart["palaces"][0]["zhu_xing"] = []
         result = self.analyze(chart, {"focus_palaces": ["父母宫"]})
