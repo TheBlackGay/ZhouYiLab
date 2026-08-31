@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "id": "pattern.yangtuo.flank_life_palace",
+  "revision": 2,
+  "enabled": true,
+  "name": "羊陀夹命",
+  "category": "flanking_pattern",
+  "school": "三合常用格局",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade", "annual"],
+  "applicable_focus_palaces": ["命宫"],
+  "required": {
+    "all": [
+      {
+        "id": "qingyang_tuoluo_flank",
+        "name": "擎羊陀罗分居命宫相邻两宫",
+        "predicate": "star.flanks",
+        "values": ["擎羊", "陀罗"]
+      }
+    ]
+  },
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "status_policy": {
+    "required_matched": "formed"
+  },
+  "result": {
+    "nature": "challenging",
+    "summary": "擎羊、陀罗分居该盘层命宫相邻两宫形成夹持，命宫主题承受持续牵制。",
+    "interpretation_template": "{layer_name}{focus_palace}被擎羊、陀罗夹持，检出羊陀夹命；具体表现必须结合命宫主星、亮度、四化和三方四正。"
+  },
+  "examples": [
+    {
+      "name": "羊陀分居左右夹命",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "focus": {"name": "命宫", "effect_subject": "盘主自身、人格与总体能力"},
+        "scopes": {
+          "adjacent_left": {"stars": [{"name": "擎羊", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "陀罗", "source_layer": "natal"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "羊陀同在一侧不构成夹命",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "focus": {"name": "命宫", "effect_subject": "盘主自身、人格与总体能力"},
+        "scopes": {
+          "adjacent_left": {"stars": [{"name": "擎羊"}, {"name": "陀罗"}]},
+          "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": false}
+    }
+  ],
+  "updated_at": "2026-08-31"
+}

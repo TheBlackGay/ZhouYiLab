@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0.0",
+  "id": "pattern.zifu.same_palace",
+  "revision": 2,
+  "enabled": true,
+  "name": "紫府同宫",
+  "category": "same_palace_pattern",
+  "school": "三合常用格局",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade", "annual"],
+  "applicable_focus_palaces": ["命宫"],
+  "required": {
+    "all": [
+      {
+        "id": "ziwei_tianfu_same_palace",
+        "name": "紫微天府同坐命宫",
+        "predicate": "star.same_palace",
+        "values": ["紫微", "天府"],
+        "category": "major"
+      }
+    ]
+  },
+  "enhancers": [
+    {
+      "id": "benefics_join",
+      "name": "辅弼昌曲魁钺会照",
+      "predicate": "star.contains",
+      "scope": "four_directions",
+      "values": ["左辅", "右弼", "文昌", "文曲", "天魁", "天钺"]
+    }
+  ],
+  "weakeners": [
+    {
+      "id": "malefics_join",
+      "name": "煞曜会照",
+      "predicate": "star.contains",
+      "scope": "four_directions",
+      "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"]
+    }
+  ],
+  "breakers": [],
+  "status_policy": {
+    "required_matched": "formed",
+    "enhancer_matched": "strengthened",
+    "weakener_matched": "weakened",
+    "breaker_matched": "broken"
+  },
+  "result": {
+    "nature": "auspicious",
+    "summary": "紫微与天府同坐该盘层命宫，形成紫府同宫格；层次仍由亮度、吉辅和煞忌决定。",
+    "interpretation_template": "{layer_name}{focus_palace}紫微、天府同宫，检出紫府同宫格；实际状态以增强、减弱和破格证据为准。"
+  },
+  "examples": [
+    {
+      "name": "命宫紫府同宫并会吉曜",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "focus": {"name": "命宫", "effect_subject": "盘主自身、人格与总体能力"},
+        "scopes": {
+          "self": {"stars": [{"name": "紫微", "category": "major"}, {"name": "天府", "category": "major"}]},
+          "four_directions": {"stars": [{"name": "紫微", "category": "major"}, {"name": "天府", "category": "major"}, {"name": "左辅", "category": "benefic"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}
+    },
+    {
+      "name": "仅紫微不成格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "focus": {"name": "命宫", "effect_subject": "盘主自身、人格与总体能力"},
+        "scopes": {
+          "self": {"stars": [{"name": "紫微", "category": "major"}]},
+          "four_directions": {"stars": [{"name": "紫微", "category": "major"}]}
+        }
+      },
+      "expected": {"matched": false}
+    }
+  ],
+  "updated_at": "2026-08-31"
+}

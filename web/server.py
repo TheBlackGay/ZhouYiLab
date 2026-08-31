@@ -23,7 +23,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEB_ROOT = PROJECT_ROOT / "web"
 CLI_PATH = PROJECT_ROOT / "build" / "examples" / "zi_wei_web_cli"
 API_VERSION = "v1"
-ALGORITHM_VERSION = "zhouyilab-core/1.3.0"
+ALGORITHM_VERSION = "zhouyilab-core/1.4.0"
 MAX_BODY_BYTES = 64 * 1024
 
 POST_OPERATIONS = {
@@ -92,6 +92,9 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                     "natal_structured_sections",
                     "natal_ai_packet",
                     "natal_shen_sha_analysis",
+                    "declarative_pattern_engine",
+                    "pattern_condition_trace",
+                    "focus_palace_pattern_attribution",
                 ],
                 "genders": ["male", "female"],
                 "time_correction_modes": ["standard_time", "true_solar_time"],

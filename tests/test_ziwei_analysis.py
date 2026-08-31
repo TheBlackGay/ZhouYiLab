@@ -52,7 +52,7 @@ def make_chart():
 class ZiWeiAnalysisTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.symbolism, cls.cases, cls.shen_sha = load_analysis_resources()
+        cls.symbolism, cls.cases, cls.shen_sha, cls.patterns = load_analysis_resources()
 
     def analyze(self, chart=None, scope=None):
         return analyze_natal_chart(
@@ -61,6 +61,7 @@ class ZiWeiAnalysisTests(unittest.TestCase):
             symbolism=self.symbolism,
             cases=self.cases,
             shen_sha=self.shen_sha,
+            patterns=self.patterns,
         )
 
     def test_all_twelve_palaces_are_analyzed_by_default(self):
@@ -132,6 +133,56 @@ class ZiWeiAnalysisTests(unittest.TestCase):
         )
         self.assertEqual("combination", combination["type"])
         self.assertEqual("命宫", combination["effect_palace"])
+        palace = result["palaces"][0]
+        self.assertIn(combination["fragment_id"], palace["sections"]["combinations"])
+        self.assertNotIn(combination["fragment_id"], palace["sections"]["patterns"])
+
+    def test_pattern_comes_from_authoritative_catalog_without_legacy_duplicate(self):
+        chart = make_chart()
+        chart["palaces"][5]["zhu_xing"] = [
+            {"name": "紫微", "liang_du": "庙"},
+            {"name": "天府", "liang_du": "旺"},
+        ]
+        result = self.analyze(chart, {"focus_palaces": ["命宫"]})
+        patterns = [
+            fragment for fragment in result["fragments"]
+            if fragment.get("facts", {}).get("rule_id") == "pattern.zifu.same_palace"
+        ]
+        self.assertEqual(1, len(patterns))
+        self.assertEqual("pattern_catalog", patterns[0]["evidence"][0]["source"])
+        self.assertIn(patterns[0]["fragment_id"], result["palaces"][0]["sections"]["patterns"])
+
+    def test_pattern_engine_marks_legacy_cpp_results_non_authoritative(self):
+        chart = make_chart()
+        chart["ge_ju"] = ["旧格局结果"]
+        result = self.analyze(chart, {"focus_palaces": ["命宫"]})
+        self.assertTrue(result["pattern_engine"]["authoritative_for_structured_analysis"])
+        self.assertTrue(result["pattern_engine"]["legacy_cpp_ge_ju"]["present"])
+        self.assertFalse(
+            result["pattern_engine"]["legacy_cpp_ge_ju"]
+            ["authoritative_for_structured_analysis"]
+        )
+
+    def test_sanqi_pattern_effect_belongs_to_parent_palace(self):
+        chart = make_chart()
+        chart["palaces"][6]["zhu_xing"] = [
+            {"name": "廉贞", "si_hua": "化禄"},
+        ]
+        chart["palaces"][2]["zhu_xing"] = [
+            {"name": "破军", "si_hua": "化权"},
+        ]
+        chart["palaces"][10]["zhu_xing"] = [
+            {"name": "武曲", "si_hua": "化科"},
+        ]
+        result = self.analyze(chart, {"focus_palaces": ["父母宫"]})
+        pattern = next(
+            fragment for fragment in result["fragments"]
+            if fragment.get("facts", {}).get("rule_id")
+            == "pattern.sanqi.four_directions"
+        )
+        self.assertEqual("父母宫", pattern["effect_palace"])
+        self.assertIn("直接权威", pattern["effect_subject"])
+        self.assertTrue(pattern["condition_trace"]["required"]["matched"])
 
     def test_non_natal_layer_is_rejected(self):
         with self.assertRaisesRegex(AnalysisRequestError, "仅支持 natal"):

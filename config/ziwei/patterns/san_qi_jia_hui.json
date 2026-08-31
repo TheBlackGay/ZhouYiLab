@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "id": "pattern.sanqi.four_directions",
+  "revision": 3,
+  "enabled": true,
+  "name": "三奇嘉会",
+  "category": "transformation_pattern",
+  "school": "三合常用格局",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade", "annual"],
+  "applicable_focus_palaces": ["*"],
+  "required": {
+    "all": [
+      {
+        "id": "lu_quan_ke_same_layer",
+        "name": "同一盘层禄权科会入三方四正",
+        "predicate": "transformation.contains_all",
+        "scope": "four_directions",
+        "values": ["化禄", "化权", "化科"],
+        "source_layer": "$current_layer"
+      }
+    ]
+  },
+  "weakeners": [
+    {
+      "id": "hua_ji_join",
+      "name": "化忌同会",
+      "predicate": "transformation.contains",
+      "scope": "four_directions",
+      "values": ["化忌"],
+      "source_layer": "$current_layer"
+    }
+  ],
+  "enhancers": [],
+  "breakers": [],
+  "status_policy": {
+    "required_matched": "formed",
+    "weakener_matched": "weakened",
+    "breaker_matched": "broken"
+  },
+  "result": {
+    "nature": "auspicious",
+    "summary": "同一盘层的禄、权、科在焦点宫三方四正会合，格局效果归属于该焦点宫。",
+    "interpretation_template": "{layer_name}禄、权、科会入{focus_palace}三方四正，{effect_subject}呈现三奇嘉会的组合效果；必须结合承载星曜与化忌位置判断实际发挥。"
+  },
+  "examples": [
+    {
+      "name": "父母宫同层三奇嘉会",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "focus": {"name": "父母宫", "effect_subject": "父母、长辈、文书、教育与制度资源"},
+        "scopes": {
+          "four_directions": {"stars": [
+            {"name": "廉贞", "transformation": "化禄", "source_layer": "natal"},
+            {"name": "破军", "transformation": "化权", "source_layer": "natal"},
+            {"name": "武曲", "transformation": "化科", "source_layer": "natal"}
+          ]}
+        }
+      },
+      "expected": {
+        "matched": true,
+        "status": "formed",
+        "effect_palace": "父母宫",
+        "effect_subject": "父母、长辈、文书、教育与制度资源"
+      }
+    },
+    {
+      "name": "跨层禄权科不得拼成三奇",
+      "context": {
+        "layer": {"id": "annual", "name": "流年"},
+        "focus": {"name": "命宫", "effect_subject": "盘主自身、人格与总体能力"},
+        "scopes": {
+          "four_directions": {"stars": [
+            {"name": "廉贞", "transformation": "化禄", "source_layer": "natal"},
+            {"name": "破军", "transformation": "化权", "source_layer": "decade"},
+            {"name": "武曲", "transformation": "化科", "source_layer": "annual"}
+          ]}
+        }
+      },
+      "expected": {"matched": false}
+    }
+  ],
+  "updated_at": "2026-08-31"
+}

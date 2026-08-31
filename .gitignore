@@ -59,6 +59,8 @@ cmake-build-*
 # Testing
 Testing/
 *.log
+__pycache__/
+*.pyc
 
 # Package managers
 conan/

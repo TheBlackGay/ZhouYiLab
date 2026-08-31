@@ -243,6 +243,42 @@ function evidenceLabel(evidence) {
   return [evidence.source, evidence.system, identity].filter(Boolean).join(' · ');
 }
 
+const patternStatusLabels = {
+  formed: '成格',
+  strengthened: '增强',
+  weakened: '减弱',
+  broken: '破格',
+  tendency: '倾向',
+};
+
+function patternConditionNames(traces) {
+  return (traces || []).map(trace => trace.name || trace.condition_id).filter(Boolean);
+}
+
+function patternMeta(fragment) {
+  if (fragment.type !== 'pattern') return '';
+  const status = fragment.facts?.status || 'formed';
+  const trace = fragment.condition_trace || {};
+  const required = patternConditionNames(trace.matched_conditions);
+  const conditionLabel = status === 'tendency' ? '倾向条件' : '必要条件';
+  const modifiers = fragment.modifiers || {};
+  const groups = [
+    ['增强', patternConditionNames(modifiers.enhancers)],
+    ['减弱', patternConditionNames(modifiers.weakeners)],
+    ['破格', patternConditionNames(modifiers.breakers)],
+  ].filter(([, names]) => names.length);
+  const modifierHtml = groups.map(([label, names]) => (
+    `<span><b>${escapeHtml(label)}</b>${escapeHtml(names.join('、'))}</span>`
+  )).join('');
+  return `
+    <div class="pattern-result">
+      <span class="pattern-status pattern-status-${escapeHtml(status)}">${escapeHtml(patternStatusLabels[status] || status)}</span>
+      <span><b>作用宫位</b>${escapeHtml(fragment.effect_palace || '')}</span>
+      <span><b>${conditionLabel}</b>${escapeHtml(required.join('、') || '未提供条件名称')}</span>
+      ${modifierHtml}
+    </div>`;
+}
+
 function renderFragmentRows(fragments, signalSummary) {
   if (!fragments.length) return '<p class="analysis-empty">当前没有匹配内容</p>';
   const core = new Set(signalSummary.core);
@@ -259,7 +295,7 @@ function renderFragmentRows(fragments, signalSummary) {
     return `
       <article class="fragment-row">
         <div class="fragment-kind">${escapeHtml(fragmentTypeLabels[fragment.type] || fragment.type)}</div>
-        <div class="fragment-body"><strong>${escapeHtml(fragmentHeadline(fragment))}</strong><p>${escapeHtml(fragmentDetail(fragment))}</p><small>${factMeta.map(escapeHtml).join(' · ')}</small></div>
+        <div class="fragment-body"><strong>${escapeHtml(fragmentHeadline(fragment))}</strong><p>${escapeHtml(fragmentDetail(fragment))}</p>${patternMeta(fragment)}<small>${factMeta.map(escapeHtml).join(' · ')}</small></div>
         <div class="fragment-source"><div>${signals.join('') || `<span>${escapeHtml(fragment.confidence?.level || 'fact')}</span>`}</div>${evidence}</div>
       </article>
     `;
@@ -313,7 +349,8 @@ function renderAnalysisPalace(palaceName) {
     ${renderFragmentSection('三方星曜', sections.triad_stars, fragmentMap, summary, '保留实际落宫，仅作为三合关系作用于当前宫。')}
     ${renderFragmentSection('对宫星曜', sections.opposite_stars, fragmentMap, summary, '保留实际落宫，仅作为对宫关系作用于当前宫。')}
     ${renderFragmentSection('四化修正', sections.transformations, fragmentMap, summary, '四化只在此处计权，星曜碎片仅保留关联。')}
-    ${renderFragmentSection('同宫组合与格局', sections.patterns, fragmentMap, summary, '格局效果归属于当前焦点宫代表的人与领域。')}
+    ${renderFragmentSection('星曜组合', sections.combinations || [], fragmentMap, summary, '组合描述星曜共同作用，保留实际宫位和三方四正关系。')}
+    ${renderFragmentSection('格局匹配', sections.patterns, fragmentMap, summary, '格局由配置规则逐宫匹配，效果归属于当前焦点宫代表的人与领域。')}
     ${renderFragmentSection('十二神', sections.shen_sha, fragmentMap, summary, '四套系统独立展示，重名条目不会合并。')}
     ${renderFragmentSection('未配置内容', sections.unconfigured, fragmentMap, summary, '仅保留盘面事实，不进入推理结论。')}
   `;

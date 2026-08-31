@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhouyilab.local/schema/ziwei-pattern-1.0.0.json",
+  "title": "ZhouYiLab 紫微斗数格局规则",
+  "type": "object",
+  "required": [
+    "schema_version", "id", "revision", "enabled", "name", "category",
+    "school", "strictness", "applicable_layers", "applicable_focus_palaces",
+    "required", "status_policy", "result", "examples"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "id": {"type": "string", "pattern": "^pattern\\."},
+    "revision": {"type": "integer", "minimum": 1},
+    "enabled": {"type": "boolean"},
+    "name": {"type": "string", "minLength": 1},
+    "category": {"type": "string", "minLength": 1},
+    "school": {"type": "string", "minLength": 1},
+    "strictness": {"enum": ["baseline", "strict"]},
+    "applicable_layers": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "applicable_focus_palaces": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "required": {"type": "object"},
+    "tendency_conditions": {"type": "object"},
+    "enhancers": {"type": "array", "items": {"type": "object"}},
+    "weakeners": {"type": "array", "items": {"type": "object"}},
+    "breakers": {"type": "array", "items": {"type": "object"}},
+    "status_policy": {"type": "object"},
+    "result": {"type": "object"},
+    "examples": {"type": "array", "minItems": 1}
+  },
+  "additionalProperties": true
+}

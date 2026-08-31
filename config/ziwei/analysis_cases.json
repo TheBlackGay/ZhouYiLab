@@ -135,8 +135,9 @@
     {
       "id": "pattern.zifu.same_palace",
       "revision": 1,
-      "enabled": true,
+      "enabled": false,
       "kind": "pattern",
+      "migrated_to": "config/ziwei/patterns/zi_fu_tong_gong.json",
       "name": "紫府同宫",
       "school": "三合常用格局",
       "strictness": "strict",
@@ -188,8 +189,9 @@
     {
       "id": "pattern.sanqi.four_directions",
       "revision": 2,
-      "enabled": true,
+      "enabled": false,
       "kind": "pattern",
+      "migrated_to": "config/ziwei/patterns/san_qi_jia_hui.json",
       "name": "三奇嘉会",
       "school": "三合常用格局",
       "strictness": "strict",
@@ -276,8 +278,9 @@
     {
       "id": "pattern.yangtuo.flank_life_palace",
       "revision": 1,
-      "enabled": true,
+      "enabled": false,
       "kind": "pattern",
+      "migrated_to": "config/ziwei/patterns/yang_tuo_jia_ming.json",
       "name": "羊陀夹命",
       "school": "三合常用格局",
       "strictness": "strict",
