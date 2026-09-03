@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.fan_shui_tao_hua_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "泛水桃花格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["贪狼", "紫微", "天府", "天相", "文昌", "文曲", "擎羊", "陀罗", "火星", "铃星"],
+  "output_flags": {"has_good": "has_good_condition", "degenerate": "degenerate_condition"},
+  "output_enums": {"trigger_type": {"default": "none", "values": {"ming_palace": "ming_trigger", "body_palace": "body_trigger"}}},
+  "output_values": {"pal_location": "pal_location_condition"},
+  "required": {"id": "fan_shui_tao_hua_variants", "name": "命身亥子贪狼坐守", "any": [
+    {"id": "ming_variant", "name": "命宫亥子贪狼", "all": [{"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "ming_branch", "predicate": "focus.branch_in", "values": ["亥", "子"]}, {"id": "ming_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}]},
+    {"id": "body_variant", "name": "身宫亥子贪狼", "all": [{"id": "body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_branch", "predicate": "focus.branch_in", "values": ["亥", "子"]}, {"id": "body_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}]}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "ming_trigger", "name": "命宫亥子贪狼触发证据", "all": [{"id": "obs_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_ming_branch", "predicate": "focus.branch_in", "values": ["亥", "子"]}, {"id": "obs_ming_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}]},
+    {"id": "body_trigger", "name": "身宫亥子贪狼触发证据", "all": [{"id": "obs_body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "obs_body_branch", "predicate": "focus.branch_in", "values": ["亥", "子"]}, {"id": "obs_body_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}]},
+    {"id": "pal_location_condition", "name": "目标宫所在地支", "predicate": "focus.branch_in", "values": ["亥", "子"]},
+    {"id": "has_good_condition", "name": "目标宫见吉曜或化吉", "any": [{"id": "good_star", "predicate": "star.contains", "scope": "self", "values": ["紫微", "天府", "天相", "文昌", "文曲"], "source_layer": "$current_layer"}, {"id": "good_transform", "predicate": "transformation.contains", "scope": "self", "values": ["化禄", "化权", "化科"], "source_layer": "$current_layer"}]},
+    {"id": "degenerate_condition", "name": "目标宫见刑忌煞，格局恶化", "any": [{"id": "punish_star", "predicate": "star.contains", "scope": "self", "values": ["擎羊", "陀罗", "火星", "铃星"], "source_layer": "$current_layer"}, {"id": "punish_hua_ji", "predicate": "transformation.contains", "scope": "self", "values": ["化忌"], "source_layer": "$current_layer"}]},
+    {"id": "fan_shui_bad_star_note", "name": "刑忌煞仅作恶化备注", "any": [{"id": "note_punish_star", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星"], "source_layer": "$current_layer"}, {"id": "note_punish_hua_ji", "predicate": "transformation.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["化忌"], "source_layer": "$current_layer"}]}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "特殊格局",
+  "result": {"nature": "conditional", "summary": "命宫或身宫亥子贪狼即成泛水桃花；见指定吉曜以吉论，见刑忌煞设置degenerate而不破格。", "interpretation_template": "{effect_palace}命中泛水桃花格。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。", "notes": ["吉曜与刑忌集合仅按当前目标宫本宫扫描，不扩展三方四正；古文男女断语仅作原文备注。"]},
+  "examples": [
+    {"name": "命宫亥贪狼基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "亥", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "命宫子贪狼见吉化", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "transformation": "化禄", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫亥贪狼见刑忌恶化", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "身宫所在宫", "branch": "亥", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "transformation": "化忌", "source_layer": "natal"}, {"name": "擎羊", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "身宫所在宫"}},
+    {"name": "命宫午贪狼不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "泛水桃花格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "贪居亥子名泛水桃花。假如身命坐于亥子遇贪狼逢吉曜以吉论，如遇刑忌男浪荡女淫娼。"}, {"kind": "user_confirmed_rule_decision", "note": "命宫或身宫亥子贪狼成格；吉曜集合仅作has_good；刑忌煞集合仅作degenerate，不broken。"}],
+  "updated_at": "2026-09-02"
+}

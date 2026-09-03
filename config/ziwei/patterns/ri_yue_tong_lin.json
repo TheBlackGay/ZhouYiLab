@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ri_yue_tong_lin",
+  "revision": 1,
+  "enabled": true,
+  "name": "日月同临格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["太阳", "太阴"],
+  "output_flags": {"bing_xin_bonus": "bing_xin_birth_bonus"},
+  "required": {
+    "id": "ri_yue_tong_lin_base",
+    "name": "丑未命宫对宫日月同宫",
+    "all": [
+      {"id": "ri_yue_ming_only", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "ri_yue_ming_branch", "name": "命宫位于丑宫或未宫", "predicate": "focus.branch_in", "values": ["丑", "未"]},
+      {"id": "ri_yue_in_opposite", "name": "对宫太阳太阴同宫", "predicate": "star.same_palace", "scope": "opposite", "values": ["太阳", "太阴"], "source_layer": "$current_layer"}
+    ]
+  },
+  "enhancers": [
+    {"id": "bing_xin_birth_bonus", "name": "丙辛生人，福运兴隆", "predicate": "birth.year_stem_in", "values": ["丙", "辛"]}
+  ],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "ri_yue_malefic_note", "name": "本宫及三方四正煞曜仅作备注", "predicate": "star.count", "scope": "four_directions", "category": "malefic", "operator": "greater_or_equal", "value": 1, "source_layer": "$current_layer"}
+  ],
+  "allow_role_observations": true,
+  "ordinary_palace_observations": [
+    {"id": "body_ri_yue_opposite_note", "name": "身宫丑未对宫日月同宫现象", "all": [
+      {"id": "body_ri_yue_role", "name": "目标是身宫", "predicate": "focus.role_in", "values": ["body"]},
+      {"id": "body_ri_yue_branch", "name": "身宫位于丑宫或未宫", "predicate": "focus.branch_in", "values": ["丑", "未"]},
+      {"id": "body_ri_yue_opposite", "name": "对宫太阳太阴同宫", "predicate": "star.same_palace", "scope": "opposite", "values": ["太阳", "太阴"], "source_layer": "$current_layer"}
+    ], "note_template": "{focus_palace}为身宫且丑未对宫见太阳太阴同宫；原文只论命宫，不触发日月同临格"}
+  ],
+  "status_policy": {"required_matched": "formed", "enhancer_matched": "strengthened"},
+  "result": {
+    "nature": "auspicious",
+    "summary": "严格按古文匹配丑未命宫之对宫太阳太阴同宫；丙辛生人为可选增益，身宫不成格，煞曜不破格。",
+    "interpretation_template": "{effect_palace}命中日月同临格。古诀称日月同临官居侯伯；本结果只确认给定文本的盘面结构，不把古代断语转换为现实结果保证。"
+  },
+  "examples": [
+    {"name": "丑宫命宫对宫未宫日月同宫基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "乙", "palaces": []}, "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": [{"name": "太阳", "physical_palace": "迁移宫", "physical_branch": "未", "source_layer": "natal"}, {"name": "太阴", "physical_palace": "迁移宫", "physical_branch": "未", "source_layer": "natal"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "未宫命宫对宫丑宫日月同宫且丙年增强", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丙", "palaces": []}, "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": [{"name": "太阳", "physical_palace": "迁移宫", "physical_branch": "丑", "source_layer": "natal"}, {"name": "太阴", "physical_palace": "迁移宫", "physical_branch": "丑", "source_layer": "natal"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}},
+    {"name": "日月同坐命宫不是对宫同临", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "辛", "palaces": []}, "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}, {"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "身宫丑位对宫日月同宫只作备注", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丙", "palaces": []}, "focus": {"name": "夫妻宫", "branch": "丑", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": [{"name": "太阳", "physical_branch": "未", "source_layer": "natal"}, {"name": "太阴", "physical_branch": "未", "source_layer": "natal"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "对宫只有太阳不成格", "context": {"layer": {"id": "decade", "name": "大限"}, "chart": {"birth_year_stem": "辛", "palaces": []}, "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["大限命宫主题"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": [{"name": "太阳", "source_layer": "decade"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "日月同临格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "日月同临官居侯伯。假如命安丑宫日月在未，命安未宫日月在丑，谓之，同临是也。诀云日月同临论对宫丙辛人遇福兴隆。"},
+    {"kind": "user_confirmed_rule_decision", "note": "仅命宫丑未且对宫太阳太阴同宫成格；不是日月坐命；丙辛年为增益；身宫不成格；原文无破格条件。"}
+  ],
+  "updated_at": "2026-09-02"
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.wu_tan_bai_gong",
+  "revision": 1,
+  "enabled": true,
+  "name": "武贪百工之人（武贪格）",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["武曲", "贪狼", "左辅", "右弼", "文昌", "文曲"],
+  "output_flags": {"has_auspicious": "auspicious_support"},
+  "grade_by_variant": {"upper_grade": "上格", "lower_grade": "次格"},
+  "required": {
+    "id": "wu_tan_bai_gong_variants",
+    "name": "武贪百工之人分档条件",
+    "any": [
+      {"id": "upper_grade", "name": "上格：辰戌命身武贪同宫", "all": [
+        {"id": "upper_role", "name": "目标是命宫或身宫", "predicate": "focus.role_in", "values": ["ming", "body"]},
+        {"id": "upper_branch", "name": "目标位于辰戌", "predicate": "focus.branch_in", "values": ["辰", "戌"]},
+        {"id": "upper_same_palace", "name": "武曲贪狼同宫", "predicate": "star.same_palace", "values": ["武曲", "贪狼"], "source_layer": "$current_layer"}
+      ]},
+      {"id": "lower_grade", "name": "次格：丑未命宫武贪同宫", "all": [
+        {"id": "lower_ming_only", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+        {"id": "lower_branch", "name": "命宫位于丑未", "predicate": "focus.branch_in", "values": ["丑", "未"]},
+        {"id": "lower_same_palace", "name": "武曲贪狼同宫", "predicate": "star.same_palace", "values": ["武曲", "贪狼"], "source_layer": "$current_layer"}
+      ]}
+    ]
+  },
+  "enhancers": [
+    {"id": "auspicious_support", "name": "见权禄左右昌曲吉星，依高格论断", "any": [
+      {"id": "support_stars", "name": "本宫三方对宫见左右昌曲", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["左辅", "右弼", "文昌", "文曲"], "source_layer": "$current_layer"},
+      {"id": "support_transformations", "name": "本宫三方对宫见化权化禄", "any": [
+        {"id": "support_target_transform", "name": "本宫见化权化禄", "predicate": "transformation.contains", "scope": "self", "values": ["化权", "化禄"], "source_layer": "$current_layer"},
+        {"id": "support_triad_transform", "name": "三方见化权化禄", "predicate": "transformation.contains", "scope": "triads", "values": ["化权", "化禄"], "source_layer": "$current_layer"},
+        {"id": "support_opposite_transform", "name": "对宫见化权化禄", "predicate": "transformation.contains", "scope": "opposite", "values": ["化权", "化禄"], "source_layer": "$current_layer"}
+      ]}
+    ]}
+  ],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "wu_tan_malefic_note", "name": "煞曜仅作备注", "predicate": "star.count", "scope": "four_directions", "category": "malefic", "operator": "greater_or_equal", "value": 1, "source_layer": "$current_layer"}
+  ],
+  "allow_role_observations": true,
+  "ordinary_palace_observations": [
+    {"id": "body_chou_wei_note", "name": "身宫丑未武贪同宫现象", "all": [
+      {"id": "body_chou_wei_role", "name": "目标是身宫", "predicate": "focus.role_in", "values": ["body"]},
+      {"id": "body_chou_wei_branch", "name": "目标位于丑未", "predicate": "focus.branch_in", "values": ["丑", "未"]},
+      {"id": "body_chou_wei_same", "name": "武曲贪狼同宫", "predicate": "star.same_palace", "scope": "self", "values": ["武曲", "贪狼"], "source_layer": "$current_layer"}
+    ], "note_template": "{focus_palace}为身宫且丑未武贪同宫；原文‘丑未安命’只论命宫，不触发次格"},
+    {"id": "ordinary_wu_tan_note", "name": "普通宫位武贪同宫现象", "predicate": "star.same_palace", "scope": "self", "values": ["武曲", "贪狼"], "source_layer": "$current_layer", "exclude_roles": ["ming", "body"], "note_template": "{focus_palace}见武曲贪狼同宫，但非命宫/身宫，不触发武贪百工之人格局"}
+  ],
+  "status_policy": {"required_matched": "formed", "enhancer_matched": "strengthened"},
+  "result": {"nature": "auspicious_with_grades", "summary": "严格按古文分为辰戌命身上格、丑未命宫次格；权禄左右昌曲为可选增益，煞曜不破格。", "interpretation_template": "{effect_palace}命中武贪百工之人（武贪格），档位为{grade}。古文称武曲庙垣威名赫奕；本结果只确认文本结构。"},
+  "examples": [
+    {"name": "辰宫命宫武贪上格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "武曲", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "未宫命宫武贪次格有吉星增强", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "武曲", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "文昌", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}},
+    {"name": "丑宫身宫武贪仅备注不成次格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "丑", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "武曲", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "武贪百工之人给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "武曲庙垣威名赫奕。假如辰戌二宫安身命值定上格，丑未安命次之，宜见权禄左右昌曲吉星则依此断。"},
+    {"kind": "user_confirmed_rule_decision", "note": "辰戌命身为上格；丑未仅命宫为次格；权禄左右昌曲为增益；无破格条件；身宫丑未和普通宫位只备注。"}
+  ],
+  "updated_at": "2026-09-02"
+}

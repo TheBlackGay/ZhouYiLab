@@ -1,0 +1,572 @@
+{
+  "schema_version": "1.0.0",
+  "dictionary_version": "1.0.0",
+  "ruleset": "zhouyilab-ziwei-symbolism",
+  "updated_at": "2026-08-31",
+  "description": "紫微斗数宫位与核心星曜象义词典。先定义原始象义，再通过可追溯的场景映射生成衍生解释。",
+  "interpretation_principles": [
+    {
+      "id": "palace_defines_subject",
+      "statement": "宫位决定格局和星曜作用的对象、关系或生活领域。"
+    },
+    {
+      "id": "star_defines_mechanism",
+      "statement": "星曜描述该对象或领域以什么机制、倾向和方式运作，不单独决定作用对象。"
+    },
+    {
+      "id": "original_before_derived",
+      "statement": "解释时先输出原始定义，再输出场景衍生；衍生定义必须通过 derived_from 引用原始定义 ID。"
+    },
+    {
+      "id": "context_not_identity",
+      "statement": "宫位代表盘主命盘中的关系和领域，不等同于相关人物自己的独立命盘。"
+    },
+    {
+      "id": "modifiers_after_symbolism",
+      "statement": "亮度、四化、同宫组合、三方四正和格局用于修正基础象义，不得跳过基础象义直接下结论。"
+    }
+  ],
+  "entry_contract": {
+    "original_definitions": "稳定的基础象义。修改需提升 entry_revision 并说明理由。",
+    "derived_definitions": "不同环境中的映射，必须包含 scenario、meaning、derived_from 和 boundary。",
+    "interpretation_order": [
+      "original_definitions",
+      "derived_definitions",
+      "palace_star_combination",
+      "brightness",
+      "transformations",
+      "patterns"
+    ]
+  },
+  "palaces": [
+    {
+      "id": "ming",
+      "name": "命宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "ming.self", "concept": "盘主自身", "definition": "代表盘主作为一个独立主体的基本人格、行为习惯、能力结构与自我认同。"},
+        {"id": "ming.center", "concept": "决策中心", "definition": "代表盘主面对环境时的核心立场，以及统合其他生活领域的中心。"},
+        {"id": "ming.life_orientation", "concept": "总体取向", "definition": "代表人生长期反复出现的基本倾向，不等同于某一件具体事件。"}
+      ],
+      "derived_definitions": [
+        {"id": "ming.personality", "scenario": "性格", "meaning": "盘主稳定的人格倾向和外显行为模式。", "derived_from": ["ming.self"], "boundary": "不能仅凭命宫单宫忽略三方四正。"},
+        {"id": "ming.agency", "scenario": "事件", "meaning": "事件中由盘主本人主导、选择和承担的部分。", "derived_from": ["ming.center"], "boundary": "具体事件仍需结合对应事项宫位。"},
+        {"id": "ming.decade_self", "scenario": "大限或流年", "meaning": "该阶段盘主采用的主要身份、姿态与应对方式。", "derived_from": ["ming.self", "ming.life_orientation"], "boundary": "运限命宫只描述阶段状态，不覆盖本命人格。"}
+      ]
+    },
+    {
+      "id": "siblings",
+      "name": "兄弟宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "siblings.same_source", "concept": "同源同辈", "definition": "代表与盘主共享家庭来源或处于相近辈分的人。"},
+        {"id": "siblings.horizontal_relation", "concept": "横向关系", "definition": "代表与盘主地位相近、可以比较、竞争、协商或互助的关系。"},
+        {"id": "siblings.shared_resources", "concept": "同辈资源", "definition": "代表同辈之间对信息、机会、关注与家庭资源的分享或竞争。"}
+      ],
+      "derived_definitions": [
+        {"id": "siblings.family", "scenario": "家庭", "meaning": "兄弟姐妹、堂表手足及长期以手足方式相处的人。", "derived_from": ["siblings.same_source"], "boundary": "是否包含堂表亲需结合实际家庭结构。"},
+        {"id": "siblings.work", "scenario": "职场", "meaning": "同级同事、同批伙伴以及不存在明显上下级关系的合作者或竞争者。", "derived_from": ["siblings.horizontal_relation"], "boundary": "直属下属优先归奴仆宫，直属领导优先归父母宫。"},
+        {"id": "siblings.market", "scenario": "竞争", "meaning": "与盘主在同一赛道争夺相似资源的人。", "derived_from": ["siblings.horizontal_relation", "siblings.shared_resources"], "boundary": "不等同于所有敌对关系。"}
+      ]
+    },
+    {
+      "id": "spouse",
+      "name": "夫妻宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "spouse.pair", "concept": "稳定配对", "definition": "代表与盘主形成持续、排他或高度绑定的一对一关系。"},
+        {"id": "spouse.contract", "concept": "对等契约", "definition": "代表双方通过承诺、责任和交换维持的长期合作结构。"},
+        {"id": "spouse.projection", "concept": "关系投射", "definition": "代表盘主在亲密关系中期待、吸引或需要面对的互补面向。"}
+      ],
+      "derived_definitions": [
+        {"id": "spouse.intimacy", "scenario": "感情", "meaning": "配偶、长期伴侣及稳定亲密关系的互动模式。", "derived_from": ["spouse.pair", "spouse.projection"], "boundary": "不能由此直接断定伴侣本人的完整人格。"},
+        {"id": "spouse.business", "scenario": "商业", "meaning": "高度绑定、权责对等并共同承担结果的合伙关系。", "derived_from": ["spouse.contract"], "boundary": "普通同事或短期客户不优先归此宫。"},
+        {"id": "spouse.negotiation", "scenario": "事件", "meaning": "事件中的对手方、签约方或需要一对一协调的另一方。", "derived_from": ["spouse.pair", "spouse.contract"], "boundary": "需确认双方是否形成明确对应关系。"}
+      ]
+    },
+    {
+      "id": "children",
+      "name": "子女宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "children.offspring", "concept": "所生所育", "definition": "代表由盘主生育、抚养或长期培育的对象。"},
+        {"id": "children.output", "concept": "产出与延续", "definition": "代表由盘主创造并向外延续的成果、作品或影响。"},
+        {"id": "children.guidance", "concept": "向下教养", "definition": "代表盘主对后辈提供教育、规则和成长空间的方式。"}
+      ],
+      "derived_definitions": [
+        {"id": "children.family", "scenario": "家庭", "meaning": "亲生、收养或实际承担长期教养责任的子女。", "derived_from": ["children.offspring", "children.guidance"], "boundary": "子女宫描述盘主与子女关系，不替代子女本人的命盘。"},
+        {"id": "children.creation", "scenario": "创作", "meaning": "作品、产品、项目成果以及盘主希望留下的创造物。", "derived_from": ["children.output"], "boundary": "日常工作任务是否适用需看盘主是否拥有创造和培育责任。"},
+        {"id": "children.education", "scenario": "教育", "meaning": "学生、徒弟、后辈或被盘主长期培养的人。", "derived_from": ["children.offspring", "children.guidance"], "boundary": "普通下属优先参考奴仆宫。"}
+      ]
+    },
+    {
+      "id": "wealth",
+      "name": "财帛宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "wealth.acquisition", "concept": "资源取得", "definition": "代表盘主获得可支配资源的方式、能力与渠道。"},
+        {"id": "wealth.exchange", "concept": "价值交换", "definition": "代表劳动、能力、商品或关系如何转换成金钱及其他可量化资源。"},
+        {"id": "wealth.disposition", "concept": "资源处置", "definition": "代表盘主保存、调度、消费与承担财务风险的倾向。"}
+      ],
+      "derived_definitions": [
+        {"id": "wealth.income", "scenario": "收入", "meaning": "收入结构、变现方式、现金流和获取报酬的习惯。", "derived_from": ["wealth.acquisition", "wealth.exchange"], "boundary": "固定资产和居所需同时参考田宅宫。"},
+        {"id": "wealth.business", "scenario": "经营", "meaning": "定价、交易、成本意识和资源周转方式。", "derived_from": ["wealth.exchange", "wealth.disposition"], "boundary": "事业方向本身优先参考官禄宫。"},
+        {"id": "wealth.values", "scenario": "价值观", "meaning": "盘主认为什么值得投入，以及如何衡量得失。", "derived_from": ["wealth.disposition"], "boundary": "精神满足仍需参考福德宫。"}
+      ]
+    },
+    {
+      "id": "health",
+      "name": "疾厄宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "health.body", "concept": "身体载体", "definition": "代表盘主承载生命活动的身体、体质与生理反应。"},
+        {"id": "health.hidden_weakness", "concept": "内在隐患", "definition": "代表不易从外表直接观察、但会累积并影响运行的弱点。"},
+        {"id": "health.stress_response", "concept": "压力反应", "definition": "代表盘主在负荷、消耗和失衡时的身心反应方式。"}
+      ],
+      "derived_definitions": [
+        {"id": "health.constitution", "scenario": "健康", "meaning": "体质倾向、容易承压的部位和恢复节奏。", "derived_from": ["health.body", "health.hidden_weakness"], "boundary": "命理分析不能替代医学诊断。"},
+        {"id": "health.workload", "scenario": "工作", "meaning": "工作压力如何转化为疲劳、情绪或身体负担。", "derived_from": ["health.stress_response"], "boundary": "工作职责和职业方向仍归官禄宫。"},
+        {"id": "health.system", "scenario": "组织或项目", "meaning": "系统内部不易发现的故障点、维护成本和风险积累。", "derived_from": ["health.hidden_weakness"], "boundary": "这是类象映射，需有明确系统载体才使用。"}
+      ]
+    },
+    {
+      "id": "travel",
+      "name": "迁移宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "travel.external", "concept": "外部环境", "definition": "代表盘主离开熟悉内部环境后面对的空间、人群与规则。"},
+        {"id": "travel.movement", "concept": "移动转换", "definition": "代表位置、环境、身份场域的迁动与转换。"},
+        {"id": "travel.public_image", "concept": "外在呈现", "definition": "代表外界如何接触盘主，以及盘主在陌生环境中的表现。"}
+      ],
+      "derived_definitions": [
+        {"id": "travel.journey", "scenario": "出行", "meaning": "旅行、搬迁、异地生活和跨地域活动。", "derived_from": ["travel.external", "travel.movement"], "boundary": "短途日常移动不一定形成显著迁移主题。"},
+        {"id": "travel.market", "scenario": "事业", "meaning": "外部市场、客户现场、跨组织合作和离开内部团队后的发展。", "derived_from": ["travel.external", "travel.public_image"], "boundary": "内部职位职责仍参考官禄宫。"},
+        {"id": "travel.reputation", "scenario": "社会", "meaning": "公众形象、陌生人评价和对外适应方式。", "derived_from": ["travel.public_image"], "boundary": "亲近关系中的评价不优先归此宫。"}
+      ]
+    },
+    {
+      "id": "friends",
+      "name": "奴仆宫",
+      "aliases": ["交友宫"],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "friends.nonkin_network", "concept": "非血缘网络", "definition": "代表盘主通过社会交往建立、并非由血缘或配偶契约固定的关系。"},
+        {"id": "friends.delegation", "concept": "协作与委托", "definition": "代表接受盘主安排、与盘主共同执行事务或为盘主提供服务的人。"},
+        {"id": "friends.team_response", "concept": "团队响应", "definition": "代表群体是否愿意配合、支持或牵制盘主。"}
+      ],
+      "derived_definitions": [
+        {"id": "friends.social", "scenario": "社交", "meaning": "朋友、社群成员、人脉及非亲属支持网络。", "derived_from": ["friends.nonkin_network"], "boundary": "同级长期竞争关系可同时参考兄弟宫。"},
+        {"id": "friends.management", "scenario": "职场", "meaning": "下属、执行团队、供应商和受盘主委托的人。", "derived_from": ["friends.delegation", "friends.team_response"], "boundary": "直属领导不归此宫。"},
+        {"id": "friends.audience", "scenario": "平台或社群", "meaning": "关注者、用户群、社群反馈和群体支持度。", "derived_from": ["friends.nonkin_network", "friends.team_response"], "boundary": "需存在稳定群体关系，而非一次性陌生接触。"}
+      ]
+    },
+    {
+      "id": "career",
+      "name": "官禄宫",
+      "aliases": ["事业宫"],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "career.duty", "concept": "社会职责", "definition": "代表盘主在社会分工中持续承担的职责与义务。"},
+        {"id": "career.role", "concept": "职业角色", "definition": "代表盘主通过何种身份、专业和工作方式建立社会位置。"},
+        {"id": "career.achievement", "concept": "功业过程", "definition": "代表长期投入、组织评价、职位发展与可被社会识别的成果。"}
+      ],
+      "derived_definitions": [
+        {"id": "career.job", "scenario": "就业", "meaning": "适合承担的工作性质、职责模式和组织角色。", "derived_from": ["career.duty", "career.role"], "boundary": "不能只凭单宫给出唯一职业名称。"},
+        {"id": "career.business", "scenario": "创业", "meaning": "盘主如何组织事业、承担责任并建立长期成果。", "derived_from": ["career.role", "career.achievement"], "boundary": "收入和现金流需同时参考财帛宫。"},
+        {"id": "career.study", "scenario": "学业", "meaning": "以取得资格、进入专业分工为目标的长期训练与成果。", "derived_from": ["career.duty", "career.achievement"], "boundary": "纯兴趣学习优先参考福德宫。"}
+      ]
+    },
+    {
+      "id": "property",
+      "name": "田宅宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "property.fixed_base", "concept": "固定根基", "definition": "代表可长期承载盘主生活与生产的稳定物质基础。"},
+        {"id": "property.internal_space", "concept": "内部空间", "definition": "代表盘主拥有、控制或长期停留的内部环境。"},
+        {"id": "property.inheritance", "concept": "家业积累", "definition": "代表家庭沉淀、固定资产及可跨时间延续的资源。"}
+      ],
+      "derived_definitions": [
+        {"id": "property.home", "scenario": "家庭", "meaning": "住宅、家庭内部环境、居住稳定性与家中氛围。", "derived_from": ["property.fixed_base", "property.internal_space"], "boundary": "家庭成员关系仍需结合父母、夫妻和子女宫。"},
+        {"id": "property.asset", "scenario": "资产", "meaning": "土地、房产、长期设备和不易快速变现的固定资产。", "derived_from": ["property.fixed_base", "property.inheritance"], "boundary": "现金与日常收入优先参考财帛宫。"},
+        {"id": "property.office", "scenario": "经营", "meaning": "办公室、门店、仓库、生产场地及内部运营空间。", "derived_from": ["property.internal_space", "property.fixed_base"], "boundary": "市场和外部环境优先参考迁移宫。"}
+      ]
+    },
+    {
+      "id": "wellbeing",
+      "name": "福德宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "wellbeing.inner_world", "concept": "内在精神", "definition": "代表不必对外表演时，盘主真实的心理活动与精神状态。"},
+        {"id": "wellbeing.satisfaction", "concept": "满足方式", "definition": "代表盘主如何获得休息、快乐、意义感与主观幸福。"},
+        {"id": "wellbeing.desire", "concept": "深层欲望", "definition": "代表推动盘主选择、消耗和追求的内在需求。"}
+      ],
+      "derived_definitions": [
+        {"id": "wellbeing.mental", "scenario": "心理", "meaning": "独处时的思维、情绪底色、精神韧性和内耗方式。", "derived_from": ["wellbeing.inner_world"], "boundary": "严重心理问题应寻求专业帮助。"},
+        {"id": "wellbeing.leisure", "scenario": "生活", "meaning": "兴趣、休闲、审美、享受和恢复精力的方式。", "derived_from": ["wellbeing.satisfaction"], "boundary": "职业化兴趣需要同时参考官禄宫。"},
+        {"id": "wellbeing.motivation", "scenario": "决策", "meaning": "表面理由背后真正希望获得的体验或满足。", "derived_from": ["wellbeing.desire"], "boundary": "需与命宫的主观决策方式区分。"}
+      ]
+    },
+    {
+      "id": "parents",
+      "name": "父母宫",
+      "aliases": [],
+      "entry_revision": 1,
+      "original_definitions": [
+        {"id": "parents.nurturer", "concept": "哺育与保护来源", "definition": "代表在盘主成长或生存过程中提供哺育、保护、教育与基础资源的人或制度。"},
+        {"id": "parents.direct_authority", "concept": "直接权威", "definition": "代表对盘主拥有直接授权、约束、审核、奖惩或裁决权的上位者。"},
+        {"id": "parents.credentials", "concept": "认可与文书", "definition": "代表来自上级、机构或传统体系的证明、许可、契约、文书与资格认可。"},
+        {"id": "parents.inherited_framework", "concept": "上层传递", "definition": "代表盘主从上一代、导师或制度继承的观念、规范与支持。"}
+      ],
+      "derived_definitions": [
+        {"id": "parents.family", "scenario": "家庭", "meaning": "父母、主要照护者，或实际承担长期哺育和保护责任的人。", "derived_from": ["parents.nurturer", "parents.inherited_framework"], "boundary": "描述的是盘主与照护者的关系，不等同于对方自己的命盘。"},
+        {"id": "parents.manager", "scenario": "职场", "meaning": "对盘主工作拥有生杀大权的直属管理者、直接审批人或任免者。", "derived_from": ["parents.direct_authority"], "boundary": "同级同事归兄弟宫，下属归奴仆宫。"},
+        {"id": "parents.teacher", "scenario": "教育", "meaning": "教师、导师、教练及向盘主传授规范并评价成果的人。", "derived_from": ["parents.nurturer", "parents.direct_authority", "parents.inherited_framework"], "boundary": "普通同学不归此宫。"},
+        {"id": "parents.institution", "scenario": "制度", "meaning": "证照、合同、档案、申请材料、审核机构及正式资格认可。", "derived_from": ["parents.credentials", "parents.direct_authority"], "boundary": "具体法律效力仍以现实制度为准。"},
+        {"id": "parents.client_authority", "scenario": "项目", "meaning": "掌握最终验收、付款批准或生杀决策权的甲方负责人。", "derived_from": ["parents.direct_authority", "parents.credentials"], "boundary": "普通客户接触可优先参考迁移宫或奴仆宫。"}
+      ]
+    }
+  ],
+  "stars": [
+    {
+      "id": "ziwei", "name": "紫微", "category": "major", "system": "紫微星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "土", "hua_qi": "尊贵", "traditional_roles": ["帝座", "众星枢纽"]},
+      "original_definitions": [
+        {"id": "ziwei.center", "concept": "统摄中心", "definition": "聚拢资源、确定秩序并从全局协调各部分。"},
+        {"id": "ziwei.authority", "concept": "权威与主导", "definition": "要求拥有决定权、控制权和与身份相称的尊重。"},
+        {"id": "ziwei.resource_dependence", "concept": "依赖辅佐", "definition": "需要能力、资源和辅佐体系承载，其表现层次受配套条件影响明显。"}
+      ],
+      "derived_definitions": [
+        {"id": "ziwei.organization", "scenario": "组织", "meaning": "表现为统筹、定方向、配置资源和建立秩序。", "derived_from": ["ziwei.center", "ziwei.authority"], "boundary": "资源不足时可能只剩控制要求。"},
+        {"id": "ziwei.relationship", "scenario": "关系", "meaning": "倾向掌握关系节奏、维护体面并期待被重视。", "derived_from": ["ziwei.authority"], "boundary": "需结合宫位判断关系对象。"}
+      ]
+    },
+    {
+      "id": "tianji", "name": "天机", "category": "major", "system": "紫微星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "木", "hua_qi": "善", "traditional_roles": ["智慧", "机变"]},
+      "original_definitions": [
+        {"id": "tianji.thought", "concept": "思考与策划", "definition": "快速观察信息、推演变化并设计方法。"},
+        {"id": "tianji.change", "concept": "机动变化", "definition": "根据环境持续调整，不喜欢僵化固定。"},
+        {"id": "tianji.nervous_energy", "concept": "多动多虑", "definition": "信息处理过多时容易反复思考、分散或执行不足。"}
+      ],
+      "derived_definitions": [
+        {"id": "tianji.work", "scenario": "工作", "meaning": "适合策划、咨询、研究、调度和解决变化中的问题。", "derived_from": ["tianji.thought", "tianji.change"], "boundary": "执行结果需结合武曲、七杀等行动结构。"},
+        {"id": "tianji.relationship", "scenario": "关系", "meaning": "通过沟通、观察和调整维持互动，也可能因多虑而摇摆。", "derived_from": ["tianji.thought", "tianji.nervous_energy"], "boundary": "对象由所在宫位决定。"}
+      ]
+    },
+    {
+      "id": "taiyang", "name": "太阳", "category": "major", "system": "紫微星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "火", "hua_qi": "权贵", "traditional_roles": ["光明", "博爱", "付出"]},
+      "original_definitions": [
+        {"id": "taiyang.radiance", "concept": "公开照耀", "definition": "向外释放能量、信息与影响，倾向公开和可见。"},
+        {"id": "taiyang.giving", "concept": "付出与承担", "definition": "主动照顾、提供支持并承担公共责任。"},
+        {"id": "taiyang.recognition", "concept": "名誉与认可", "definition": "重视正当性、社会评价、话语权和被看见。"}
+      ],
+      "derived_definitions": [
+        {"id": "taiyang.public", "scenario": "事业", "meaning": "倾向公开表达、组织推广、承担责任并建立名誉。", "derived_from": ["taiyang.radiance", "taiyang.giving", "taiyang.recognition"], "boundary": "亮度会影响能量是否充分外放。"},
+        {"id": "taiyang.care", "scenario": "关系", "meaning": "以主动付出、指导和保护表达关心。", "derived_from": ["taiyang.giving"], "boundary": "过度时可能变成替对方决定。"}
+      ]
+    },
+    {
+      "id": "wuqu", "name": "武曲", "category": "major", "system": "紫微星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "金", "hua_qi": "财富", "traditional_roles": ["财星", "将星"]},
+      "original_definitions": [
+        {"id": "wuqu.execution", "concept": "执行与决断", "definition": "重视实际结果，倾向直接行动、承担和解决问题。"},
+        {"id": "wuqu.resource", "concept": "实际资源", "definition": "关注可计算、可控制和能够兑现的物质资源。"},
+        {"id": "wuqu.hardness", "concept": "刚直独立", "definition": "不依赖情绪沟通，容易以效率和原则替代柔性表达。"}
+      ],
+      "derived_definitions": [
+        {"id": "wuqu.finance", "scenario": "财务", "meaning": "擅长以纪律、执行和数字管理资源。", "derived_from": ["wuqu.execution", "wuqu.resource"], "boundary": "求财结果仍需结合财帛宫整体。"},
+        {"id": "wuqu.relationship", "scenario": "关系", "meaning": "常以负责、行动和解决实际问题表达重视。", "derived_from": ["wuqu.execution", "wuqu.hardness"], "boundary": "可能显得直接或不善情绪表达。"}
+      ]
+    },
+    {
+      "id": "tiantong", "name": "天同", "category": "major", "system": "紫微星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "水", "hua_qi": "温和", "traditional_roles": ["福星", "享受"]},
+      "original_definitions": [
+        {"id": "tiantong.harmony", "concept": "和谐与亲和", "definition": "倾向减少冲突、配合环境并维持舒适关系。"},
+        {"id": "tiantong.enjoyment", "concept": "福与享受", "definition": "关注生活感受、休息、照顾和容易获得的满足。"},
+        {"id": "tiantong.passivity", "concept": "低竞争性", "definition": "面对压力时容易退让、等待或选择较稳定的路径。"}
+      ],
+      "derived_definitions": [
+        {"id": "tiantong.team", "scenario": "团队", "meaning": "表现为配合、缓和气氛、照顾体验和支持他人。", "derived_from": ["tiantong.harmony", "tiantong.enjoyment"], "boundary": "主导与攻坚能力需看其他星曜。"},
+        {"id": "tiantong.challenge", "scenario": "压力", "meaning": "可能回避正面冲突或推迟艰难选择。", "derived_from": ["tiantong.passivity"], "boundary": "不能直接解释为懒惰。"}
+      ]
+    },
+    {
+      "id": "lianzhen", "name": "廉贞", "category": "major", "system": "紫微星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "火", "hua_qi": "囚", "traditional_roles": ["界限", "纠缠"]},
+      "original_definitions": [
+        {"id": "lianzhen.boundary", "concept": "边界与约束", "definition": "通过规则、自律、防备或限制维持安全和秩序。"},
+        {"id": "lianzhen.intensity", "concept": "认真与强度", "definition": "对人事物投入高度专注，态度鲜明且不易轻放。"},
+        {"id": "lianzhen.entanglement", "concept": "关系纠缠", "definition": "强烈在意规则、情感和得失时，容易形成拉扯或自我束缚。"}
+      ],
+      "derived_definitions": [
+        {"id": "lianzhen.governance", "scenario": "组织", "meaning": "表现为纪律、审查、规则管理和对边界的敏感。", "derived_from": ["lianzhen.boundary", "lianzhen.intensity"], "boundary": "是否公正需结合四化和组合。"},
+        {"id": "lianzhen.relationship", "scenario": "关系", "meaning": "关系投入强、保护意识重，也可能因自尊和边界产生纠缠。", "derived_from": ["lianzhen.boundary", "lianzhen.entanglement"], "boundary": "不能把化气为囚直接解释为违法或牢狱。"}
+      ]
+    },
+    {
+      "id": "tianfu", "name": "天府", "category": "major", "system": "天府星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "土", "hua_qi": "库", "traditional_roles": ["府库", "贤能"]},
+      "original_definitions": [
+        {"id": "tianfu.storage", "concept": "收藏与承载", "definition": "保存、包容并稳定承载已有资源。"},
+        {"id": "tianfu.management", "concept": "稳健管理", "definition": "重视秩序、余量和长期可持续的资源配置。"},
+        {"id": "tianfu.self_sufficiency", "concept": "守成自主", "definition": "倾向经营自己的范围，不轻易卷入无关变化。"}
+      ],
+      "derived_definitions": [
+        {"id": "tianfu.asset", "scenario": "资源", "meaning": "适合保管、积累、调配资产并建立稳定基础。", "derived_from": ["tianfu.storage", "tianfu.management"], "boundary": "守成过度时可能错过变化机会。"},
+        {"id": "tianfu.organization", "scenario": "组织", "meaning": "表现为稳健管理、提供承载空间并控制风险。", "derived_from": ["tianfu.management", "tianfu.self_sufficiency"], "boundary": "开创能力需看同宫和三方星曜。"}
+      ]
+    },
+    {
+      "id": "taiyin", "name": "太阴", "category": "major", "system": "天府星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "水", "hua_qi": "富", "traditional_roles": ["月", "母性", "内财"]},
+      "original_definitions": [
+        {"id": "taiyin.inward", "concept": "内收与含蓄", "definition": "将能量收于内部，重视私密、安全和细腻感受。"},
+        {"id": "taiyin.nurture", "concept": "滋养与照顾", "definition": "通过温和、持续和细节性的方式提供支持。"},
+        {"id": "taiyin.aesthetic", "concept": "审美与内在价值", "definition": "重视品质、环境、美感及不必公开展示的积累。"}
+      ],
+      "derived_definitions": [
+        {"id": "taiyin.resource", "scenario": "财富", "meaning": "倾向通过积累、照料、长期经营和隐性资源形成价值。", "derived_from": ["taiyin.inward", "taiyin.aesthetic"], "boundary": "实际财富仍由宫位和整体结构决定。"},
+        {"id": "taiyin.relationship", "scenario": "关系", "meaning": "以细节照顾、陪伴和情绪感受维持关系。", "derived_from": ["taiyin.nurture", "taiyin.inward"], "boundary": "情绪敏感程度受亮度和煞忌影响。"}
+      ]
+    },
+    {
+      "id": "tanlang", "name": "贪狼", "category": "major", "system": "天府星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "木", "hua_qi": "桃花", "traditional_roles": ["欲望", "交际", "才艺"]},
+      "original_definitions": [
+        {"id": "tanlang.desire", "concept": "欲望驱动", "definition": "因兴趣、需求和渴望而主动探索、争取和投入。"},
+        {"id": "tanlang.social", "concept": "社交吸引", "definition": "通过魅力、兴趣和多样表达与人建立连接。"},
+        {"id": "tanlang.experiment", "concept": "多才多试", "definition": "愿意体验新事物、发展才艺并尝试不同路径。"}
+      ],
+      "derived_definitions": [
+        {"id": "tanlang.market", "scenario": "事业", "meaning": "适合需要社交、营销、才艺、探索和资源整合的环境。", "derived_from": ["tanlang.social", "tanlang.experiment"], "boundary": "专注和持续性需结合其他结构。"},
+        {"id": "tanlang.risk", "scenario": "选择", "meaning": "强烈兴趣能形成动力，也可能因追求刺激而放大风险。", "derived_from": ["tanlang.desire", "tanlang.experiment"], "boundary": "桃花不应直接等同于感情不忠。"}
+      ]
+    },
+    {
+      "id": "jumen", "name": "巨门", "category": "major", "system": "天府星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "水", "hua_qi": "暗", "traditional_roles": ["口舌", "疑惑", "信息"]},
+      "original_definitions": [
+        {"id": "jumen.speech", "concept": "言语与论证", "definition": "通过语言、提问、辩论和解释处理问题。"},
+        {"id": "jumen.hidden", "concept": "隐蔽与未知", "definition": "关注未被说明、被遮蔽或需要进一步调查的信息。"},
+        {"id": "jumen.doubt", "concept": "质疑与辨别", "definition": "倾向发现矛盾、区分真假并指出问题。"}
+      ],
+      "derived_definitions": [
+        {"id": "jumen.profession", "scenario": "事业", "meaning": "适合沟通、研究、咨询、法律、教学和需要辨析信息的工作。", "derived_from": ["jumen.speech", "jumen.hidden", "jumen.doubt"], "boundary": "表达效果受四化影响明显。"},
+        {"id": "jumen.conflict", "scenario": "关系", "meaning": "通过讨论和质疑建立理解，也可能形成争辩、猜疑或语言压力。", "derived_from": ["jumen.speech", "jumen.doubt"], "boundary": "不能见巨门就断口舌灾祸。"}
+      ]
+    },
+    {
+      "id": "tianxiang", "name": "天相", "category": "major", "system": "天府星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "水", "hua_qi": "印", "traditional_roles": ["辅佐", "服务", "印绶"]},
+      "original_definitions": [
+        {"id": "tianxiang.support", "concept": "辅佐与服务", "definition": "理解需要、协调资源并帮助体系稳定运作。"},
+        {"id": "tianxiang.procedure", "concept": "印信与程序", "definition": "重视授权、资格、流程、体面和正式认可。"},
+        {"id": "tianxiang.balance", "concept": "协调平衡", "definition": "在多方之间调节关系，寻找可被接受的方案。"}
+      ],
+      "derived_definitions": [
+        {"id": "tianxiang.organization", "scenario": "组织", "meaning": "适合运营、协调、服务、行政和制度执行角色。", "derived_from": ["tianxiang.support", "tianxiang.procedure", "tianxiang.balance"], "boundary": "是否拥有最终决策权需看紫微等主导结构。"},
+        {"id": "tianxiang.relationship", "scenario": "关系", "meaning": "重视公平、体面、互相照顾和关系协调。", "derived_from": ["tianxiang.support", "tianxiang.balance"], "boundary": "过度平衡可能形成犹豫或回避冲突。"}
+      ]
+    },
+    {
+      "id": "tianliang", "name": "天梁", "category": "major", "system": "天府星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "土", "hua_qi": "荫", "traditional_roles": ["庇荫", "长辈", "原则"]},
+      "original_definitions": [
+        {"id": "tianliang.protection", "concept": "保护与荫蔽", "definition": "为弱者、后辈或体系承担保护和善后责任。"},
+        {"id": "tianliang.principle", "concept": "原则与清议", "definition": "依据经验、道义或专业标准评价是非。"},
+        {"id": "tianliang.seniority", "concept": "长者经验", "definition": "以资历、经验、教导和解决问题的角色发挥作用。"}
+      ],
+      "derived_definitions": [
+        {"id": "tianliang.profession", "scenario": "事业", "meaning": "适合教育、医疗、顾问、监察、公益和需要经验判断的角色。", "derived_from": ["tianliang.protection", "tianliang.principle", "tianliang.seniority"], "boundary": "职业名称不能仅由单星确定。"},
+        {"id": "tianliang.relationship", "scenario": "关系", "meaning": "倾向照顾、指导、主持公道，也可能带有长辈式说教。", "derived_from": ["tianliang.protection", "tianliang.principle"], "boundary": "是否构成压迫需结合对象宫位和组合。"}
+      ]
+    },
+    {
+      "id": "qisha", "name": "七杀", "category": "major", "system": "天府星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "金", "hua_qi": "肃杀", "traditional_roles": ["将星", "决断", "变动"]},
+      "original_definitions": [
+        {"id": "qisha.decision", "concept": "果断处置", "definition": "在压力和不确定中快速取舍并承担结果。"},
+        {"id": "qisha.challenge", "concept": "高压挑战", "definition": "通过竞争、危机、难题和高标准激发能力。"},
+        {"id": "qisha.independence", "concept": "独立担当", "definition": "不依赖细密协商，倾向独自负责关键任务。"}
+      ],
+      "derived_definitions": [
+        {"id": "qisha.command", "scenario": "事业", "meaning": "适合攻坚、决策、危机处理和结果责任明确的环境。", "derived_from": ["qisha.decision", "qisha.challenge", "qisha.independence"], "boundary": "缺少制约时可能过于冒进或孤立。"},
+        {"id": "qisha.change", "scenario": "运限", "meaning": "该领域需要直接面对压力、重做选择或承担阶段性变动。", "derived_from": ["qisha.decision", "qisha.challenge"], "boundary": "变动不必然等同于坏结果。"}
+      ]
+    },
+    {
+      "id": "pojun", "name": "破军", "category": "major", "system": "天府星系", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "水", "hua_qi": "耗", "traditional_roles": ["破旧", "重建", "消耗"]},
+      "original_definitions": [
+        {"id": "pojun.break", "concept": "破除旧有", "definition": "拆解失效结构、打破既有秩序并释放变化空间。"},
+        {"id": "pojun.rebuild", "concept": "改革重建", "definition": "通过试错、更新和重新组合建立新结构。"},
+        {"id": "pojun.cost", "concept": "先破后立的成本", "definition": "变化通常伴随消耗、舍弃、不稳定和重新适应。"}
+      ],
+      "derived_definitions": [
+        {"id": "pojun.innovation", "scenario": "事业", "meaning": "适合改革、转型、开荒、重组和处理旧系统问题。", "derived_from": ["pojun.break", "pojun.rebuild"], "boundary": "维护成熟稳定流程可能缺乏耐心。"},
+        {"id": "pojun.transition", "scenario": "运限", "meaning": "该领域进入清理旧结构、承担成本并寻找新秩序的阶段。", "derived_from": ["pojun.break", "pojun.rebuild", "pojun.cost"], "boundary": "不能直接把破军解释为失败。"}
+      ]
+    },
+    {
+      "id": "zuofu", "name": "左辅", "category": "benefic", "system": "六吉", "entry_revision": 1,
+      "attributes": {"hua_qi": "助力", "traditional_roles": ["辅佐", "同伴"]},
+      "original_definitions": [{"id": "zuofu.assistance", "concept": "显性协助", "definition": "以组织、执行和可见的人力支持帮助主体完成事务。"}],
+      "derived_definitions": [{"id": "zuofu.team", "scenario": "组织", "meaning": "可靠的助手、团队支持或可调动的人力。", "derived_from": ["zuofu.assistance"], "boundary": "支持对象由所在宫位决定。"}]
+    },
+    {
+      "id": "youbi", "name": "右弼", "category": "benefic", "system": "六吉", "entry_revision": 1,
+      "attributes": {"hua_qi": "助力", "traditional_roles": ["辅佐", "协调"]},
+      "original_definitions": [{"id": "youbi.assistance", "concept": "柔性协助", "definition": "以协调、补位、人情和灵活方式帮助主体解决问题。"}],
+      "derived_definitions": [{"id": "youbi.network", "scenario": "关系", "meaning": "获得愿意协调、介绍、补位或暗中支持的人。", "derived_from": ["youbi.assistance"], "boundary": "支持程度需结合亮度、宫位和煞忌。"}]
+    },
+    {
+      "id": "wenchang", "name": "文昌", "category": "benefic", "system": "六吉", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "金", "hua_qi": "文贵", "traditional_roles": ["正途功名", "文书", "科甲"]},
+      "original_definitions": [{"id": "wenchang.formal_knowledge", "concept": "规范知识", "definition": "通过文字、记忆、制度化学习和正式表达建立可认证的知识成果。"}],
+      "derived_definitions": [{"id": "wenchang.study", "scenario": "学习与工作", "meaning": "考试、证书、正式写作、合同文件和规范化表达。", "derived_from": ["wenchang.formal_knowledge"], "boundary": "文昌出现不等同于考试必然成功。"}]
+    },
+    {
+      "id": "wenqu", "name": "文曲", "category": "benefic", "system": "六吉", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "水", "hua_qi": "文华", "traditional_roles": ["异途功名", "才艺", "表达"]},
+      "original_definitions": [{"id": "wenqu.expressive_art", "concept": "艺术表达", "definition": "通过语言、艺术、审美和非标准路径传达感受与才华。"}],
+      "derived_definitions": [{"id": "wenqu.creation", "scenario": "创作与沟通", "meaning": "艺术、内容、口才、创意表达和跨常规学习路径。", "derived_from": ["wenqu.expressive_art"], "boundary": "表达是否产生口舌需结合四化。"}]
+    },
+    {
+      "id": "tiankui", "name": "天魁", "category": "benefic", "system": "六吉", "entry_revision": 1,
+      "attributes": {"hua_qi": "贵人", "traditional_roles": ["阳贵", "机会"]},
+      "original_definitions": [{"id": "tiankui.visible_help", "concept": "公开贵助", "definition": "通过正式渠道、明显机会或具有身份资源的人提供直接帮助。"}],
+      "derived_definitions": [{"id": "tiankui.opportunity", "scenario": "事业与制度", "meaning": "容易接触明确机会、正式推荐或愿意公开提携的上位者。", "derived_from": ["tiankui.visible_help"], "boundary": "机会仍需要主体主动承接。"}]
+    },
+    {
+      "id": "tianyue", "name": "天钺", "category": "benefic", "system": "六吉", "entry_revision": 1,
+      "attributes": {"hua_qi": "贵人", "traditional_roles": ["阴贵", "化解"]},
+      "original_definitions": [{"id": "tianyue.subtle_help", "concept": "隐性贵助", "definition": "通过建议、转圜、幕后关系或解决问题根源的方式提供帮助。"}],
+      "derived_definitions": [{"id": "tianyue.solution", "scenario": "问题处理", "meaning": "获得幕后协调、关键建议或能化解根源问题的支持。", "derived_from": ["tianyue.subtle_help"], "boundary": "通常需要主动求助或识别线索。"}]
+    },
+    {
+      "id": "qingyang", "name": "擎羊", "category": "malefic", "system": "六煞", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "金", "hua_qi": "刑", "traditional_roles": ["切割", "行动冲突"]},
+      "original_definitions": [{"id": "qingyang.direct_action", "concept": "直接切入", "definition": "以快速、强硬、切割和正面行动突破阻碍。"}],
+      "derived_definitions": [{"id": "qingyang.conflict", "scenario": "事件", "meaning": "行动效率提高，同时增加正面冲突、损伤或决定过快的风险。", "derived_from": ["qingyang.direct_action"], "boundary": "不能只因擎羊出现就断定伤灾。"}]
+    },
+    {
+      "id": "tuoluo", "name": "陀罗", "category": "malefic", "system": "六煞", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "金", "hua_qi": "忌", "traditional_roles": ["纠缠", "拖延"]},
+      "original_definitions": [{"id": "tuoluo.entanglement", "concept": "旋绕纠缠", "definition": "问题反复、进展延迟，需要长期研究、磨合或逐层处理。"}],
+      "derived_definitions": [{"id": "tuoluo.long_process", "scenario": "任务", "meaning": "适合深入研究和长期沉淀，也可能出现犹豫、拖延与反复返工。", "derived_from": ["tuoluo.entanglement"], "boundary": "慢不必然等于失败。"}]
+    },
+    {
+      "id": "huoxing", "name": "火星", "category": "malefic", "system": "六煞", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "火", "hua_qi": "暴烈", "traditional_roles": ["爆发", "冲动"]},
+      "original_definitions": [{"id": "huoxing.explosion", "concept": "快速爆发", "definition": "能量、情绪和决定在短时间内迅速升高并直接释放。"}],
+      "derived_definitions": [{"id": "huoxing.urgency", "scenario": "事件", "meaning": "带来速度、勇气和即时行动，也提高情绪化、仓促和突发变化的概率。", "derived_from": ["huoxing.explosion"], "boundary": "具体事件性质由宫位和组合决定。"}]
+    },
+    {
+      "id": "lingxing", "name": "铃星", "category": "malefic", "system": "六煞", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "火", "hua_qi": "刚烈", "traditional_roles": ["积压", "暗发"]},
+      "original_definitions": [{"id": "lingxing.latent_pressure", "concept": "内聚压力", "definition": "能量和情绪先在内部积累，达到条件后集中释放。"}],
+      "derived_definitions": [{"id": "lingxing.delayed_reaction", "scenario": "关系与事件", "meaning": "表面克制、内部持续计算或积压，容易出现延后反应和突然转折。", "derived_from": ["lingxing.latent_pressure"], "boundary": "不应直接解释为阴险。"}]
+    },
+    {
+      "id": "dikong", "name": "地空", "category": "malefic", "system": "六煞", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "火", "hua_qi": "空亡", "traditional_roles": ["空想", "中断", "创意"]},
+      "original_definitions": [{"id": "dikong.nonmaterial", "concept": "由实入虚", "definition": "将注意力从现实成果转向思想、可能性和非物质空间，容易出现落空或中断。"}],
+      "derived_definitions": [{"id": "dikong.ideation", "scenario": "创作与计划", "meaning": "想象力和抽象能力增强，但需要额外机制把想法落地。", "derived_from": ["dikong.nonmaterial"], "boundary": "空不等同于必然一无所有。"}]
+    },
+    {
+      "id": "dijie", "name": "地劫", "category": "malefic", "system": "六煞", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "火", "hua_qi": "劫煞", "traditional_roles": ["损耗", "风险"]},
+      "original_definitions": [{"id": "dijie.material_loss", "concept": "现实耗损", "definition": "现实资源在投入、变化或风险中减少、转移或无法按预期保留。"}],
+      "derived_definitions": [{"id": "dijie.risk_control", "scenario": "资源与项目", "meaning": "提高对损耗和风险的敏感，也可能因规避风险错过长期机会。", "derived_from": ["dijie.material_loss"], "boundary": "必须结合具体资源宫位，不能泛化为破财。"}]
+    },
+    {
+      "id": "tianma", "name": "天马", "category": "assistant", "system": "二助", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "火", "hua_qi": "驿马", "traditional_roles": ["移动", "变迁"]},
+      "original_definitions": [{"id": "tianma.movement", "concept": "移动与转换", "definition": "通过位置、环境、渠道或行动频率的变化创造机会。"}],
+      "derived_definitions": [{"id": "tianma.mobility", "scenario": "事业与生活", "meaning": "出差、迁动、跨地域、跨领域和多渠道活动增加。", "derived_from": ["tianma.movement"], "boundary": "动不等同于一定搬迁。"}]
+    },
+    {
+      "id": "lucun", "name": "禄存", "category": "assistant", "system": "二助", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "土", "hua_qi": "财富", "traditional_roles": ["本钱", "积存"]},
+      "original_definitions": [{"id": "lucun.reserve", "concept": "可保存的本钱", "definition": "将资源沉淀为可持续使用的储备，并以谨慎方式保护已有基础。"}],
+      "derived_definitions": [{"id": "lucun.stability", "scenario": "资源", "meaning": "增加储蓄、稳定、守成和风险缓冲，也可能因过度谨慎降低流动性。", "derived_from": ["lucun.reserve"], "boundary": "禄存不等同于无条件富有。"}]
+    },
+    {
+      "id": "tianyao", "name": "天姚", "category": "miscellaneous", "system": "交际类杂曜", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "水", "hua_qi": "风流", "traditional_roles": ["魅力", "社交"]},
+      "original_definitions": [
+        {"id": "tianyao.social_charm", "concept": "社交吸引", "definition": "通过关注、互动与情绪感受形成轻松而明显的人际吸引力。"},
+        {"id": "tianyao.romantic_expression", "concept": "浪漫表达", "definition": "对浪漫、审美和关系氛围较敏感，倾向享受互动本身。"}
+      ],
+      "derived_definitions": [
+        {"id": "tianyao.relationship", "scenario": "关系", "meaning": "增加社交魅力、被关注度和营造关系氛围的能力。", "derived_from": ["tianyao.social_charm", "tianyao.romantic_expression"], "boundary": "有吸引力不等同于关系稳定，也不能据此评价感情品格。"},
+        {"id": "tianyao.public", "scenario": "事业与社交", "meaning": "在需要互动、表达和照顾他人感受的场景中更容易被注意。", "derived_from": ["tianyao.social_charm"], "boundary": "实际影响力仍需能力与成果承接。"}
+      ]
+    },
+    {
+      "id": "hongluan", "name": "红鸾", "category": "miscellaneous", "system": "交际类杂曜", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "水", "hua_qi": "婚姻", "traditional_roles": ["婚缘", "喜庆"]},
+      "original_definitions": [
+        {"id": "hongluan.committed_bond", "concept": "结果导向的缘分", "definition": "将人际吸引导向确认关系、承诺或稳定结果。"},
+        {"id": "hongluan.presentation", "concept": "形象吸引", "definition": "增加对外表、气质和得体呈现的关注。"}
+      ],
+      "derived_definitions": [
+        {"id": "hongluan.relationship", "scenario": "关系", "meaning": "更重视关系的认真程度、长期性与可确认的结果。", "derived_from": ["hongluan.committed_bond"], "boundary": "不能只凭红鸾断定结婚时间或婚姻质量。"},
+        {"id": "hongluan.social", "scenario": "社交", "meaning": "通过形象与得体表达提升亲和力和被关注度。", "derived_from": ["hongluan.presentation"], "boundary": "吸引力仍受宫位与组合修正。"}
+      ]
+    },
+    {
+      "id": "tianxi", "name": "天喜", "category": "miscellaneous", "system": "交际类杂曜", "entry_revision": 1,
+      "attributes": {"yin_yang": "阳", "element": "水", "hua_qi": "姻缘", "traditional_roles": ["喜庆", "人缘"]},
+      "original_definitions": [
+        {"id": "tianxi.receiving_attention", "concept": "获得关注", "definition": "较容易接收他人的好感、邀请、支持或积极反馈。"},
+        {"id": "tianxi.joyful_exchange", "concept": "喜悦互动", "definition": "通过轻松、愉快的交往扩大人际连接。"}
+      ],
+      "derived_definitions": [
+        {"id": "tianxi.relationship", "scenario": "关系", "meaning": "增加被追求、被喜爱和享受互动过程的体验。", "derived_from": ["tianxi.receiving_attention", "tianxi.joyful_exchange"], "boundary": "被关注不等同于形成承诺或稳定关系。"},
+        {"id": "tianxi.network", "scenario": "事业与社交", "meaning": "增加结识朋友、合作伙伴和获得友好回应的机会。", "derived_from": ["tianxi.joyful_exchange"], "boundary": "合作结果仍需结合契约、能力与其他宫位。"}
+      ]
+    },
+    {
+      "id": "xianchi", "name": "咸池", "category": "miscellaneous", "system": "交际类杂曜", "entry_revision": 1,
+      "attributes": {"yin_yang": "阴", "element": "水", "hua_qi": "桃花", "traditional_roles": ["感官吸引", "艺术"]},
+      "original_definitions": [
+        {"id": "xianchi.sensory_attraction", "concept": "感官吸引", "definition": "增强即时的情绪、审美和感官吸引，关系启动速度可能较快。"},
+        {"id": "xianchi.short_intensity", "concept": "短期浓度", "definition": "重视当下体验与互动强度，持续性需要其他稳定条件支持。"},
+        {"id": "xianchi.performing_sense", "concept": "表演感受", "definition": "对音乐、舞蹈、表演及身体表达较敏感。"}
+      ],
+      "derived_definitions": [
+        {"id": "xianchi.relationship", "scenario": "关系", "meaning": "增加快速吸引、短期浓烈互动和感情消费的可能。", "derived_from": ["xianchi.sensory_attraction", "xianchi.short_intensity"], "boundary": "不能据此断定不忠、放纵或关系失败。"},
+        {"id": "xianchi.art", "scenario": "创作", "meaning": "增强对舞台、节奏、身体和感官审美的感受力。", "derived_from": ["xianchi.performing_sense"], "boundary": "艺术成就仍依赖训练与作品。"}
+      ]
+    }
+  ],
+  "coverage": {
+    "palaces": {"configured": 12, "total": 12, "complete": true},
+    "major_stars": {"configured": 14, "total": 14, "complete": true},
+    "core_auxiliary_stars": {"configured": 14, "total": 14, "complete": true},
+    "miscellaneous_stars": {"configured": 4, "complete": false, "next_step": "已完成桃花类首批四曜；其余杂曜沿用同一结构分批校订，未校订内容仅保留命盘事实。"}
+  },
+  "maintenance": {
+    "required_for_new_original_definition": ["id", "concept", "definition"],
+    "required_for_new_derived_definition": ["id", "scenario", "meaning", "derived_from", "boundary"],
+    "rules": [
+      "原始定义 ID 发布后保持稳定。",
+      "新增衍生定义必须引用同一条目下存在的原始定义 ID。",
+      "修改原始定义需递增 entry_revision。",
+      "带有门派争议的内容必须增加 school 和 status 字段，status 未校订时设为 draft。",
+      "医疗、法律和财务等高风险场景必须保留现实专业边界。"
+    ]
+  }
+}

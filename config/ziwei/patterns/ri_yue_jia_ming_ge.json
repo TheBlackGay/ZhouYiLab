@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ri_yue_jia_ming_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "日月夹命格",
+  "category": "flanking_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal"],
+  "applicable_focus_palaces": ["命宫"],
+  "snapshot_stars": ["太阳", "太阴", "地空", "紫微", "天府", "天相", "文昌", "文曲", "天魁", "天钺"],
+  "output_flags": {"cond_perfect": "cond_perfect_condition"},
+  "required": {"id": "ri_yue_jia_ming_base", "name": "命宫被日月夹且本宫无空亡有吉星", "all": [
+    {"id": "ming_target", "predicate": "focus.role_in", "values": ["ming"]},
+    {"id": "sun_moon_flank", "predicate": "star.flanks", "scope": "four_directions", "values": ["太阳", "太阴"], "source_layer": "$current_layer"}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "cond_perfect_condition", "name": "无空亡且命宫有吉星", "all": [
+      {"id": "no_empty", "not": {"id": "empty_check", "predicate": "star.contains", "scope": "self", "values": ["天空", "地空"], "source_layer": "$current_layer"}},
+      {"id": "lucky_self", "predicate": "star.contains", "scope": "self", "values": ["紫微", "天府", "天相", "文昌", "文曲", "天魁", "天钺"], "source_layer": "$current_layer"}
+    ]},
+    {"id": "ri_yue_jia_ming_bad_note", "name": "空亡煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["天空", "地空", "擎羊", "陀罗", "火星", "铃星", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [{"id": "body_sun_moon_flank_note", "name": "身宫受日月夹拱", "all": [{"id": "body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_flank", "predicate": "star.flanks", "scope": "four_directions", "values": ["太阳", "太阴"], "source_layer": "$current_layer"}], "note_template": "{focus_palace}受太阳、太阴夹拱；本格局仅论命宫，不触发日月夹命格。"}],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "auspicious", "summary": "命宫左右邻宫一边太阳、一边太阴即成日月夹命格；命宫无天空地空且本宫有吉星时cond_perfect为true，但不完备仍保留成格。", "interpretation_template": "{effect_palace}命中日月夹命格。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。", "notes": ["本格局仅命宫参与；天空、地空只影响cond_perfect，不设置broken；盘面使用太阴作为月亮标准星名。"]},
+  "examples": [
+    {"name": "命宫日月夹且本宫有吉星", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}]}, "triads": [], "opposite": [], "four_directions": [], "adjacent_left": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "太阴", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "命宫空亡仍成格但不完备", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "地空", "source_layer": "natal"}, {"name": "紫微", "source_layer": "natal"}]}, "triads": [], "opposite": [], "four_directions": [], "adjacent_left": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "太阴", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "命宫无吉星仍成骨架格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": [], "opposite": [], "four_directions": [], "adjacent_left": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "太阴", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫日月夹不成正式格局", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "身宫所在宫", "branch": "午", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": []}, "triads": [], "opposite": [], "four_directions": [], "adjacent_left": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "太阴", "source_layer": "natal"}]}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "日月夹命格给定古文及规则确认", "received_at": "2026-09-03", "original_text": "日月夹命格。不坐空亡，遇逢本宫有吉星是也。"}, {"kind": "user_confirmed_rule_decision", "note": "从昌曲夹命格拆分；仅命宫日月夹成格；无天空地空且本宫有吉星输出cond_perfect，完备条件不否决成格；身宫仅观察。"}],
+  "updated_at": "2026-09-03"
+}

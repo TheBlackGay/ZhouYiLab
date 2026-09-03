@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhouyilab.local/schemas/ziwei/research/experiments/lianzhen_qisha_v0.1.schema.json",
+  "title": "廉贞七杀首轮定性实验案例",
+  "type": "object",
+  "required": [
+    "schema_version", "experiment_version", "id", "status",
+    "model_versions", "fixture_policy", "cases", "updated_at"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "experiment_version": {"type": "string"},
+    "id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["draft", "frozen_for_pilot", "completed", "deprecated"]},
+    "model_versions": {
+      "type": "object",
+      "required": ["dimension_dictionary", "star_profiles", "star_interactions", "brightness_table"],
+      "additionalProperties": {"type": "string"}
+    },
+    "fixture_policy": {
+      "type": "object",
+      "required": ["completeness", "description", "prohibitions"],
+      "properties": {
+        "completeness": {"const": "minimal_local_context"},
+        "description": {"type": "string", "minLength": 1},
+        "prohibitions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "name", "purpose", "source_layer", "focus",
+          "stars", "transformation_signals", "expected"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^LQ-[A-Z]$"},
+          "name": {"type": "string", "minLength": 1},
+          "purpose": {"type": "string", "minLength": 1},
+          "source_layer": {"const": "natal"},
+          "focus": {
+            "type": "object",
+            "required": ["palace", "earthly_branch"],
+            "properties": {
+              "palace": {"type": "string", "minLength": 1},
+              "earthly_branch": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          },
+          "stars": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "star_id", "name", "physical_palace", "earthly_branch",
+                "relation", "brightness", "transformation", "source_layer",
+                "fact_status"
+              ],
+              "properties": {
+                "star_id": {"type": "string", "minLength": 1},
+                "name": {"type": "string", "minLength": 1},
+                "physical_palace": {"type": "string", "minLength": 1},
+                "earthly_branch": {"type": "string", "minLength": 1},
+                "relation": {"enum": ["self", "triad", "opposite"]},
+                "brightness": {"type": "string", "minLength": 1},
+                "transformation": {
+                  "type": ["string", "null"],
+                  "enum": ["化禄", "化权", "化科", "化忌", null]
+                },
+                "source_layer": {"const": "natal"},
+                "fact_status": {"enum": ["chart_fact", "controlled_stimulus"]}
+              },
+              "additionalProperties": false
+            }
+          },
+          "transformation_signals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "transformation", "relation", "physical_palace",
+                "source_layer", "fact_status", "boundary"
+              ],
+              "properties": {
+                "transformation": {"enum": ["化禄", "化权", "化科", "化忌"]},
+                "relation": {"enum": ["self", "triad", "opposite"]},
+                "physical_palace": {"type": "string", "minLength": 1},
+                "source_layer": {"const": "natal"},
+                "fact_status": {"const": "controlled_stimulus"},
+                "boundary": {"type": "string", "minLength": 1}
+              },
+              "additionalProperties": false
+            }
+          },
+          "expected": {
+            "type": "object",
+            "required": ["profile_star_ids", "interaction_ids", "modifier_ids"],
+            "properties": {
+              "profile_star_ids": {"type": "array", "items": {"type": "string"}},
+              "interaction_ids": {"type": "array", "items": {"type": "string"}},
+              "modifier_ids": {"type": "array", "items": {"type": "string"}}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "updated_at": {"type": "string", "format": "date"}
+  },
+  "additionalProperties": false
+}

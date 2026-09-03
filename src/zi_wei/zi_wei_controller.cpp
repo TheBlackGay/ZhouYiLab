@@ -21,9 +21,31 @@ namespace ZhouYi::ZiWei {
     using namespace ZhouYi::GanZhi;
     using namespace ZhouYi::Mapper;
 
+    static int get_effective_liu_yue_month(const tyme::LunarDay& lunar_day) {
+        const auto lunar_month = lunar_day.get_lunar_month();
+        int month = lunar_month.get_month();
+        if (lunar_month.is_leap() && lunar_day.get_day() > 15) {
+            month = month % 12 + 1;
+        }
+        return month;
+    }
+
     void pai_pan_and_print_solar(int year, int month, int day, int hour, bool is_male) {
         try {
             auto result = pai_pan_solar(year, month, day, hour, is_male);
+            fmt::print("{}\n", result.to_string());
+        } catch (const exception& e) {
+            fmt::print("[错误] 排盘错误: {}\n", e.what());
+        }
+    }
+
+    void pai_pan_and_print_solar(
+        const BirthDateTime& birth,
+        bool is_male,
+        const BirthTimeOptions& time_options
+    ) {
+        try {
+            auto result = pai_pan_solar(birth, is_male, time_options);
             fmt::print("{}\n", result.to_string());
         } catch (const exception& e) {
             fmt::print("[错误] 排盘错误: {}\n", e.what());
@@ -79,6 +101,25 @@ namespace ZhouYi::ZiWei {
         j["lunar_date"] = result.lunar_day.to_string();
         j["lunar_hour"] = result.lunar_hour.to_string();
         j["gender"] = result.is_male ? "男" : "女";
+
+        const auto format_date_time = [](const BirthDateTime& value) {
+            return fmt::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
+                value.year, value.month, value.day,
+                value.hour, value.minute, value.second);
+        };
+        const auto& correction = result.time_correction;
+        j["birth_time"]["mode"] = correction.mode == BirthTimeMode::TrueSolarTime
+            ? "true_solar_time" : "standard_time";
+        j["birth_time"]["recorded_time"] = format_date_time(correction.recorded_time);
+        j["birth_time"]["standard_time"] = format_date_time(correction.standard_time);
+        j["birth_time"]["chart_time"] = format_date_time(correction.chart_time);
+        j["birth_time"]["longitude"] = correction.longitude;
+        j["birth_time"]["standard_meridian"] = correction.standard_meridian;
+        j["birth_time"]["daylight_saving_minutes"] = correction.daylight_saving_minutes;
+        j["birth_time"]["longitude_offset_seconds"] = correction.longitude_offset_seconds;
+        j["birth_time"]["equation_of_time_seconds"] = correction.equation_of_time_seconds;
+        j["birth_time"]["total_offset_seconds"] = correction.total_offset_seconds;
+        j["birth_time"]["crossed_date_boundary"] = correction.crossed_date_boundary;
         
         // 四柱
         j["si_zhu"]["year"] = result.year_pillar.to_string();
@@ -107,7 +148,7 @@ namespace ZhouYi::ZiWei {
             for (const auto& star : palace.zhu_xing) {
                 json s;
                 s["name"] = star.name;
-                s["liang_du"] = string(to_zh(star.liang_du));
+                if (star.liang_du.has_value()) s["liang_du"] = string(to_zh(*star.liang_du));
                 if (star.si_hua.has_value()) {
                     s["si_hua"] = string(to_zh(*star.si_hua));
                 }
@@ -116,14 +157,59 @@ namespace ZhouYi::ZiWei {
             
             // 辅星
             p["fu_xing"] = json::array();
+            p["fu_xing_detail"] = json::array();
             for (const auto& star : palace.fu_xing) {
                 p["fu_xing"].push_back(star.name);
+                json s;
+                s["name"] = star.name;
+                if (star.liang_du.has_value()) s["liang_du"] = string(to_zh(*star.liang_du));
+                if (star.si_hua.has_value()) {
+                    s["si_hua"] = string(to_zh(*star.si_hua));
+                }
+                p["fu_xing_detail"].push_back(s);
             }
             
             // 煞星
             p["sha_xing"] = json::array();
+            p["sha_xing_detail"] = json::array();
             for (const auto& star : palace.sha_xing) {
                 p["sha_xing"].push_back(star.name);
+                json s;
+                s["name"] = star.name;
+                if (star.liang_du.has_value()) s["liang_du"] = string(to_zh(*star.liang_du));
+                if (star.si_hua.has_value()) {
+                    s["si_hua"] = string(to_zh(*star.si_hua));
+                }
+                p["sha_xing_detail"].push_back(s);
+            }
+
+            // 杂曜
+            p["za_yao"] = json::array();
+            p["za_yao_detail"] = json::array();
+            for (const auto& star : palace.za_yao) {
+                p["za_yao"].push_back(star.name);
+                json s;
+                s["name"] = star.name;
+                if (star.liang_du.has_value()) s["liang_du"] = string(to_zh(*star.liang_du));
+                if (star.si_hua.has_value()) {
+                    s["si_hua"] = string(to_zh(*star.si_hua));
+                }
+                p["za_yao_detail"].push_back(s);
+            }
+
+            // 四套十二神分别保留分类，避免同名神煞与星曜混淆。
+            p["shen_sha"] = json::object();
+            if (palace.chang_sheng.has_value()) {
+                p["shen_sha"]["chang_sheng_12"] = string(to_zh(*palace.chang_sheng));
+            }
+            if (palace.bo_shi.has_value()) {
+                p["shen_sha"]["bo_shi_12"] = string(to_zh(*palace.bo_shi));
+            }
+            if (palace.sui_qian.has_value()) {
+                p["shen_sha"]["sui_qian_12"] = string(to_zh(*palace.sui_qian));
+            }
+            if (palace.jiang_qian.has_value()) {
+                p["shen_sha"]["jiang_qian_12"] = string(to_zh(*palace.jiang_qian));
             }
             
             j["palaces"].push_back(p);
@@ -368,8 +454,14 @@ namespace ZhouYi::ZiWei {
         fmt::print("       大限分析\n");
         fmt::print("\n\n");
         
+        array<const DaXianData*, 12> ordered{};
         for (int i = 0; i < 12; ++i) {
-            const auto& da_xian = result.da_xian_data[i];
+            ordered[i] = &result.da_xian_data[i];
+        }
+        ranges::sort(ordered, {}, &DaXianData::start_age);
+
+        for (int i = 0; i < 12; ++i) {
+            const auto& da_xian = *ordered[i];
             fmt::print("第{}限：{}岁-{}岁 - 大限宫位：第{}宫 {}\n",
                 i + 1,
                 da_xian.start_age,
@@ -394,12 +486,17 @@ namespace ZhouYi::ZiWei {
     }
     
     void display_liu_nian_analysis(const ZiWeiResult& result, int target_year, int current_age) {
+        // 仅给出年份时取年中日期，确保不会落入上一干支年的年初区间。
+        display_liu_nian_analysis(result, target_year, 7, 1, current_age);
+    }
+
+    void display_liu_nian_analysis(const ZiWeiResult& result, int target_year, int target_month, int target_day, int current_age) {
         fmt::print("\n\n");
         fmt::print("       {}年流年分析（{}岁）\n", target_year, current_age);
         fmt::print("\n\n");
         
         // 使用tyme库获取流年天干地支
-        auto solar_day = tyme::SolarDay::from_ymd(target_year, 1, 1);
+        auto solar_day = tyme::SolarDay::from_ymd(target_year, target_month, target_day);
         auto sixty_cycle_day = solar_day.get_sixty_cycle_day();
         auto year_cycle = sixty_cycle_day.get_year();
         
@@ -436,32 +533,53 @@ namespace ZhouYi::ZiWei {
     }
     
     void display_liu_yue_analysis(const ZiWeiResult& result, int target_year, int target_month, int current_age) {
+        // 保留原接口语义：未给出日期时以月中为参考日。
+        display_liu_yue_analysis(result, target_year, target_month, 15, current_age);
+    }
+
+    void display_liu_yue_analysis(const ZiWeiResult& result, int target_year, int target_month, int target_day, int current_age) {
         fmt::print("\n\n");
         fmt::print("       {}年{}月流月分析（{}岁）\n", target_year, target_month, current_age);
         fmt::print("\n\n");
         
-        // 使用tyme库获取流月天干地支
-        auto solar_day = tyme::SolarDay::from_ymd(target_year, target_month, 15); // 使用月中作为参考日
+        // 获取目标农历月及流年干支，流月干支由五虎遁计算。
+        auto solar_day = tyme::SolarDay::from_ymd(target_year, target_month, target_day);
         auto lunar_day = solar_day.get_lunar_day();
-        int lunar_month = lunar_day.get_lunar_month().get_month();
-        int birth_month = result.month_pillar.zhi == DiZhi::Zi ? 11 : static_cast<int>(result.month_pillar.zhi) - 1;
-        
+        const auto calendar_lunar_month = lunar_day.get_lunar_month();
+        int lunar_month = get_effective_liu_yue_month(lunar_day);
+        int birth_lunar_month = result.lunar_day.get_lunar_month().get_month();
+
         auto sixty_cycle_day = solar_day.get_sixty_cycle_day();
-        auto month_cycle = sixty_cycle_day.get_month();
         auto year_cycle = sixty_cycle_day.get_year();
         
-        TianGan month_gan = static_cast<TianGan>(month_cycle.get_heaven_stem().get_index());
-        DiZhi month_zhi = static_cast<DiZhi>(month_cycle.get_earth_branch().get_index());
+        TianGan year_gan = static_cast<TianGan>(year_cycle.get_heaven_stem().get_index());
         DiZhi year_zhi = static_cast<DiZhi>(year_cycle.get_earth_branch().get_index());
         
         // 调用horoscope模块获取流月数据
-        auto liu_yue_data = get_liu_yue(lunar_month, birth_month, month_gan, month_zhi, year_zhi, result.ming_gong_index);
-        
-        fmt::print("流月干支：{}{} (农历{}月)\n", 
-            string(GanZhi::Mapper::to_zh(liu_yue_data.tian_gan)),
-            string(GanZhi::Mapper::to_zh(liu_yue_data.di_zhi)),
-            liu_yue_data.month);
-        fmt::print("流月宫位：第{}宫 {}\n",
+        auto liu_yue_data = get_liu_yue(
+            lunar_month,
+            birth_lunar_month,
+            result.hour_pillar.zhi,
+            year_gan,
+            year_zhi
+        );
+
+        if (calendar_lunar_month.is_leap()) {
+            fmt::print("流月干支：{}{} (农历闰{}月，按{}月起盘)\n",
+                string(GanZhi::Mapper::to_zh(liu_yue_data.tian_gan)),
+                string(GanZhi::Mapper::to_zh(liu_yue_data.di_zhi)),
+                calendar_lunar_month.get_month(),
+                liu_yue_data.month);
+        } else {
+            fmt::print("流月干支：{}{} (农历{}月)\n",
+                string(GanZhi::Mapper::to_zh(liu_yue_data.tian_gan)),
+                string(GanZhi::Mapper::to_zh(liu_yue_data.di_zhi)),
+                liu_yue_data.month);
+        }
+        fmt::print("流年斗君：第{}宫 {}（正月流月命宫）\n",
+            liu_yue_data.dou_jun_index,
+            string(to_zh(result.palaces[liu_yue_data.dou_jun_index].gong_data.gong_wei)));
+        fmt::print("流月命宫：第{}宫 {}\n",
             liu_yue_data.gong_index,
             string(to_zh(result.palaces[liu_yue_data.gong_index].gong_data.gong_wei)));
         
@@ -496,20 +614,24 @@ namespace ZhouYi::ZiWei {
         DiZhi day_zhi = static_cast<DiZhi>(day_cycle.get_earth_branch().get_index());
         
         // 先获取流月宫位索引（简化实现，假设从结果中获取）
-        auto solar_day_month = tyme::SolarDay::from_ymd(target_year, target_month, 15);
+        auto solar_day_month = solar_day;
         auto lunar_day_month = solar_day_month.get_lunar_day();
-        int lunar_month = lunar_day_month.get_lunar_month().get_month();
-        int birth_month = result.month_pillar.zhi == DiZhi::Zi ? 11 : static_cast<int>(result.month_pillar.zhi) - 1;
+        int lunar_month = get_effective_liu_yue_month(lunar_day_month);
+        int birth_lunar_month = result.lunar_day.get_lunar_month().get_month();
         
         auto sixty_cycle_day_month = solar_day_month.get_sixty_cycle_day();
-        auto month_cycle = sixty_cycle_day_month.get_month();
         auto year_cycle = sixty_cycle_day_month.get_year();
         
-        TianGan month_gan = static_cast<TianGan>(month_cycle.get_heaven_stem().get_index());
-        DiZhi month_zhi = static_cast<DiZhi>(month_cycle.get_earth_branch().get_index());
+        TianGan year_gan = static_cast<TianGan>(year_cycle.get_heaven_stem().get_index());
         DiZhi year_zhi = static_cast<DiZhi>(year_cycle.get_earth_branch().get_index());
         
-        auto liu_yue_data = get_liu_yue(lunar_month, birth_month, month_gan, month_zhi, year_zhi, result.ming_gong_index);
+        auto liu_yue_data = get_liu_yue(
+            lunar_month,
+            birth_lunar_month,
+            result.hour_pillar.zhi,
+            year_gan,
+            year_zhi
+        );
         
         // 调用horoscope模块获取流日数据
         auto liu_ri_data = get_liu_ri(lunar_day_num, day_gan, day_zhi, liu_yue_data.gong_index);
@@ -518,7 +640,7 @@ namespace ZhouYi::ZiWei {
             string(GanZhi::Mapper::to_zh(liu_ri_data.tian_gan)),
             string(GanZhi::Mapper::to_zh(liu_ri_data.di_zhi)),
             liu_ri_data.day);
-        fmt::print("流日宫位：第{}宫 {}\n",
+        fmt::print("流日命宫：第{}宫 {}\n",
             liu_ri_data.gong_index,
             string(to_zh(result.palaces[liu_ri_data.gong_index].gong_data.gong_wei)));
         
@@ -540,7 +662,7 @@ namespace ZhouYi::ZiWei {
         fmt::print("\n\n");
         fmt::print("       {}年{}月{}日 {} 流时分析（{}岁）\n", 
             target_year, target_month, target_day, 
-            string(to_zh(target_hour)), 
+            string(GanZhi::Mapper::to_zh(target_hour)),
             current_age);
         fmt::print("\n\n");
         
@@ -563,20 +685,24 @@ namespace ZhouYi::ZiWei {
         DiZhi day_zhi = static_cast<DiZhi>(day_cycle.get_earth_branch().get_index());
         
         // 获取流月数据
-        auto solar_day_month = tyme::SolarDay::from_ymd(target_year, target_month, 15);
+        auto solar_day_month = solar_day;
         auto lunar_day_month = solar_day_month.get_lunar_day();
-        int lunar_month = lunar_day_month.get_lunar_month().get_month();
-        int birth_month = result.month_pillar.zhi == DiZhi::Zi ? 11 : static_cast<int>(result.month_pillar.zhi) - 1;
+        int lunar_month = get_effective_liu_yue_month(lunar_day_month);
+        int birth_lunar_month = result.lunar_day.get_lunar_month().get_month();
         
         auto sixty_cycle_day_month = solar_day_month.get_sixty_cycle_day();
-        auto month_cycle = sixty_cycle_day_month.get_month();
         auto year_cycle = sixty_cycle_day_month.get_year();
         
-        TianGan month_gan = static_cast<TianGan>(month_cycle.get_heaven_stem().get_index());
-        DiZhi month_zhi = static_cast<DiZhi>(month_cycle.get_earth_branch().get_index());
+        TianGan year_gan = static_cast<TianGan>(year_cycle.get_heaven_stem().get_index());
         DiZhi year_zhi = static_cast<DiZhi>(year_cycle.get_earth_branch().get_index());
         
-        auto liu_yue_data = get_liu_yue(lunar_month, birth_month, month_gan, month_zhi, year_zhi, result.ming_gong_index);
+        auto liu_yue_data = get_liu_yue(
+            lunar_month,
+            birth_lunar_month,
+            result.hour_pillar.zhi,
+            year_gan,
+            year_zhi
+        );
         auto liu_ri_data = get_liu_ri(lunar_day_num, day_gan, day_zhi, liu_yue_data.gong_index);
         
         // 调用horoscope模块获取流时数据
@@ -585,7 +711,7 @@ namespace ZhouYi::ZiWei {
         fmt::print("流时干支：{}{}\n", 
             string(GanZhi::Mapper::to_zh(liu_shi_data.tian_gan)),
             string(GanZhi::Mapper::to_zh(liu_shi_data.di_zhi)));
-        fmt::print("流时宫位：第{}宫 {}\n",
+        fmt::print("流时命宫：第{}宫 {}\n",
             liu_shi_data.gong_index,
             string(to_zh(result.palaces[liu_shi_data.gong_index].gong_data.gong_wei)));
         
@@ -620,10 +746,10 @@ namespace ZhouYi::ZiWei {
         display_xiao_xian_analysis(result, current_age);
         
         // 流年
-        display_liu_nian_analysis(result, target_year, current_age);
+        display_liu_nian_analysis(result, target_year, target_month, target_day, current_age);
         
         // 流月
-        display_liu_yue_analysis(result, target_year, target_month, current_age);
+        display_liu_yue_analysis(result, target_year, target_month, target_day, current_age);
         
         // 流日
         display_liu_ri_analysis(result, target_year, target_month, target_day, current_age);

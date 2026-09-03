@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0.0",
+  "dictionary_version": "0.1.0",
+  "status": "frozen_for_pilot",
+  "decision_record": "docs/ziwei/research/decisions/ADR-001-首轮实验输出维度.md",
+  "scale": {
+    "minimum": -1.0,
+    "maximum": 1.0,
+    "precision": 0.1,
+    "meaning": "同一模型版本和同一维度内的相对作用方向与强度，不是现实事件概率。",
+    "prohibitions": [
+      "不得跨维度直接比较绝对值",
+      "不得将全部维度无权重相加为吉凶总分",
+      "不得解释为财富、职位、健康或事件发生概率",
+      "参数标定前不得输出高于 0.1 的表观精度"
+    ]
+  },
+  "dimensions": [
+    {
+      "id": "resource_mobilization",
+      "name": "资源获取与调度",
+      "definition": "识别、取得、交换和配置金钱、物资、机会及支持性资源的倾向。",
+      "positive_direction": "更容易发现、取得、交换或有效配置可用资源。",
+      "negative_direction": "资源取得、交换或调度受到抑制，或可用资源难以转化。",
+      "includes": ["资源识别", "资源取得", "价值交换", "资源配置"],
+      "excludes": ["长期储备能力", "社会地位", "具体财富金额"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "authority_influence",
+      "name": "权威与影响",
+      "definition": "获得授权、承担统摄责任、建立秩序并影响他人决策的倾向。",
+      "positive_direction": "授权、统摄、秩序建立或公共影响更强。",
+      "negative_direction": "授权基础、统摄能力或对外影响受到抑制。",
+      "includes": ["授权", "领导", "秩序建立", "公共影响"],
+      "excludes": ["具体行动速度", "单纯表达能力", "既定职位高低"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "execution_action",
+      "name": "执行与行动",
+      "definition": "形成决定、投入行动、克服阻力并将计划推进为结果的倾向。",
+      "positive_direction": "决断、行动启动和推进能力更强。",
+      "negative_direction": "行动启动、持续推进或结果落实受到抑制。",
+      "includes": ["决断", "行动启动", "推进", "落实"],
+      "excludes": ["权威地位", "长期储备", "变化本身"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "cognition_planning",
+      "name": "认知与规划",
+      "definition": "吸收信息、辨析关系、形成判断并规划行动路径的倾向。",
+      "positive_direction": "信息吸收、分析、判断和规划能力更强。",
+      "negative_direction": "信息处理、判断或规划的稳定性受到抑制。",
+      "includes": ["学习", "分析", "判断", "规划"],
+      "excludes": ["对外表达效果", "文书传播", "行动落实"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "communication_expression",
+      "name": "沟通与表达",
+      "definition": "将思想、信息和立场转化为语言、文字、作品或公共表达的倾向。",
+      "positive_direction": "表达更清晰、完整、可传播并容易被理解。",
+      "negative_direction": "表达、传递或被理解的过程受到抑制。",
+      "includes": ["语言表达", "文字表达", "文书", "传播"],
+      "excludes": ["信息吸收", "独立思考", "社会权位"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "stability_accumulation",
+      "name": "稳定与积累",
+      "definition": "维持结构、形成储备、持续建设并保存长期成果的倾向。",
+      "positive_direction": "结构更稳定，资源、经验或成果更容易长期沉淀。",
+      "negative_direction": "结构延续、储备或成果保存能力受到抑制。",
+      "includes": ["稳定", "储备", "持续建设", "成果保存"],
+      "excludes": ["资源取得", "短期行动速度", "具体资产规模"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "change_initiative",
+      "name": "变化与开创",
+      "definition": "主动打破既有状态、适应不确定环境并开启新路径的倾向。",
+      "positive_direction": "变化适应、主动重构和开创新路径的倾向更强。",
+      "negative_direction": "面对变化时更倾向维持原状，或开创能力受到抑制。",
+      "includes": ["适应变化", "主动重构", "创新", "开创"],
+      "excludes": ["一般行动力", "冲突风险", "无目的的不稳定"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "relationship_cooperation",
+      "name": "关系与协作",
+      "definition": "建立、维持和协调关系，并在角色网络中交换支持的倾向。",
+      "positive_direction": "关系建立、角色协调和互助合作更顺畅。",
+      "negative_direction": "关系建立、协调或持续合作受到抑制。",
+      "includes": ["关系建立", "角色协调", "互助", "合作持续"],
+      "excludes": ["个人情绪强度", "公共权威", "单次资源交换"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "emotional_intensity",
+      "name": "情绪感受强度",
+      "definition": "对内外刺激产生情绪感受、反应和波动的相对强度。",
+      "positive_direction": "感受敏锐度、情绪反应或波动强度增加。",
+      "negative_direction": "情绪感受和反应强度降低，表达更为收敛。",
+      "includes": ["感受敏锐度", "情绪反应", "情绪波动"],
+      "excludes": ["情绪好坏", "心理健康诊断", "欲望目标强度"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "desire_drive",
+      "name": "欲望与驱动力",
+      "definition": "追求目标、满足需求、获得体验或占有资源的内在驱动力强度。",
+      "positive_direction": "目标追求、需求满足或体验扩张的驱动力增加。",
+      "negative_direction": "欲望表达、目标追求或内在驱动力降低。",
+      "includes": ["目标欲望", "占有动机", "体验追求", "内在驱动"],
+      "excludes": ["道德评价", "情绪波动", "实际行动结果"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    },
+    {
+      "id": "conflict_risk",
+      "name": "冲突与风险",
+      "definition": "结构受到压力、对抗、损耗、失衡和不确定性暴露的程度。",
+      "positive_direction": "压力、对抗、损耗或不确定性暴露增加。",
+      "negative_direction": "冲突、损耗和不确定性暴露降低。",
+      "includes": ["压力", "对抗", "损耗", "失衡", "不确定性"],
+      "excludes": ["医学风险概率", "具体灾害预测", "变化本身"],
+      "evidence_level": "E5",
+      "parameter_status": "reviewed"
+    }
+  ],
+  "updated_at": "2026-08-31"
+}

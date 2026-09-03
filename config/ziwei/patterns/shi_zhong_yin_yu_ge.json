@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.shi_zhong_yin_yu_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "石中隐玉格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["巨门"],
+  "output_flags": {"has_ke_lu_shine": "ke_lu_shine", "ming_trigger": "ming_trigger", "shen_trigger": "shen_trigger"},
+  "output_enums": {"trigger_from": {"default": "none", "values": {"ming_palace": "ming_trigger", "shen_palace": "shen_trigger"}}},
+  "required": {"id": "shi_zhong_yin_yu_variants", "name": "命宫或身宫子午巨门坐守", "any": [
+    {"id": "ming_palace", "name": "命宫子午巨门", "all": [{"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "ming_branch", "predicate": "focus.branch_in", "values": ["子", "午"]}, {"id": "ming_gumen", "predicate": "star.contains", "scope": "self", "values": ["巨门"], "source_layer": "$current_layer"}]},
+    {"id": "shen_palace", "name": "身宫子午巨门", "all": [{"id": "shen_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "shen_branch", "predicate": "focus.branch_in", "values": ["子", "午"]}, {"id": "shen_gumen", "predicate": "star.contains", "scope": "self", "values": ["巨门"], "source_layer": "$current_layer"}]}
+  ]},
+  "enhancers": [], "weakeners": [], "breakers": [],
+  "observations": [
+    {"id": "ming_trigger", "name": "命宫触发", "all": [{"id": "obs_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_ming_branch", "predicate": "focus.branch_in", "values": ["子", "午"]}, {"id": "obs_ming_gumen", "predicate": "star.contains", "scope": "self", "values": ["巨门"], "source_layer": "$current_layer"}]},
+    {"id": "shen_trigger", "name": "身宫触发", "all": [{"id": "obs_shen_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "obs_shen_branch", "predicate": "focus.branch_in", "values": ["子", "午"]}, {"id": "obs_shen_gumen", "predicate": "star.contains", "scope": "self", "values": ["巨门"], "source_layer": "$current_layer"}]},
+    {"id": "ke_lu_shine", "name": "寅戌申辰科禄合照", "predicate": "transformation.contains_in_palaces", "scopes": ["chart"], "palaces": ["寅宫", "戌宫", "申宫", "辰宫"], "values": ["化科", "化禄"], "source_layer": "$current_layer"},
+    {"id": "shi_zhong_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "auspicious", "summary": "严格按命宫或身宫子午巨门坐守；寅戌申辰化科化禄合照为增益标签，煞星只作备注。", "interpretation_template": "{effect_palace}命中石中隐玉格，触发来源为{trigger_from}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "子命巨门基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "巨门", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "午身巨门基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "午", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "巨门", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "夫妻宫"}},
+    {"name": "子命巨门三方科禄增益", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "寅宫", "branch": "寅", "stars": [{"name": "廉贞", "transformation": "化禄", "physical_palace": "寅宫", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "巨门", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "卯命巨门不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "巨门", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "石中隐玉格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "子午巨门石中隐玉。子午二宫安身命，借巨门坐守，更得寅戌申辰科禄合照，富贵必矣。"}, {"kind": "user_confirmed_rule_decision", "note": "命身子午巨门均可成格；寅戌申辰科禄为增益；煞星只备注，不破格不降级。"}],
+  "updated_at": "2026-09-02"
+}

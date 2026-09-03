@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0.0",
+  "catalog_version": "0.1.0",
+  "status": "qualitative_only",
+  "dimension_dictionary_version": "0.1.0",
+  "star_profile_catalog_version": "0.1.0",
+  "combination_policy": {
+    "mode": "preserve_all_signals",
+    "description": "基础交互和全部命中修正项并列输出，不互相覆盖，也不在定性阶段合并为单一吉凶结果。"
+  },
+  "interactions": [
+    {
+      "id": "interaction.lianzhen_controls_qisha.same_palace",
+      "name": "廉贞火制七杀金",
+      "revision": 1,
+      "participants": [
+        {"star_id": "lianzhen", "role": "controller", "expected_element": "火"},
+        {"star_id": "qisha", "role": "controlled", "expected_element": "金"}
+      ],
+      "required_context": {
+        "relation": "same_palace",
+        "same_source_layer": true
+      },
+      "elemental_mechanism": {
+        "relation": "controls",
+        "direction": "lianzhen -> qisha",
+        "description": "廉贞的边界、规则与投入强度约束七杀的果断、高压和独立行动，使原本直接的行动能量更可能进入纪律、责任和可管理的路径。",
+        "boundary": "五行相克只描述可能的约束方向，不自动代表有效控制、权力、财富或成格；亮度、四化及其他组合可能使约束稳定，也可能使双方形成压制和冲突。"
+      },
+      "base_hypotheses": [
+        {
+          "dimension_id": "authority_influence",
+          "direction": "context_dependent",
+          "rationale": "规则约束果断行动可能转化为纪律和责任，也可能只有控制而缺乏合法授权。",
+          "evidence_level": "E5",
+          "parameter_status": "proposed"
+        },
+        {
+          "dimension_id": "execution_action",
+          "direction": "increase",
+          "rationale": "廉贞的持续投入与七杀的快速决断共同指向更强的行动推进。",
+          "evidence_level": "E5",
+          "parameter_status": "proposed"
+        },
+        {
+          "dimension_id": "stability_accumulation",
+          "direction": "context_dependent",
+          "rationale": "规则可能使高压行动形成可积累成果，但若控制失衡也可能损害结构延续。",
+          "evidence_level": "E5",
+          "parameter_status": "proposed"
+        },
+        {
+          "dimension_id": "conflict_risk",
+          "direction": "context_dependent",
+          "rationale": "有效约束可能降低冒进风险，压制失衡则可能提高对抗和损耗。",
+          "evidence_level": "E5",
+          "parameter_status": "proposed"
+        }
+      ],
+      "modifiers": [
+        {
+          "id": "core_brightness_supported",
+          "name": "廉贞七杀处于较高亮度",
+          "trigger": {
+            "type": "brightness.in",
+            "scope": "participants",
+            "target_star_ids": ["lianzhen", "qisha"],
+            "match_mode": "all",
+            "values": ["庙", "旺", "得", "利"],
+            "source_layer": "$current_layer"
+          },
+          "hypotheses": [
+            {
+              "dimension_id": "execution_action",
+              "direction": "increase",
+              "rationale": "两颗核心星均能较充分表达时，纪律约束与果断行动更容易同时发挥。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "conflict_risk",
+              "direction": "decrease",
+              "rationale": "较充分且稳定的表达被假设能够减少约束与行动之间的失配；仍需盲评验证。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ],
+          "source_refs": ["profiles.lianzhen_qisha"]
+        },
+        {
+          "id": "same_layer_hualu_support",
+          "name": "三方四正见同层化禄",
+          "trigger": {
+            "type": "transformation.present_in_scope",
+            "scope": "four_directions",
+            "match_mode": "any",
+            "values": ["化禄"],
+            "source_layer": "$current_layer"
+          },
+          "hypotheses": [
+            {
+              "dimension_id": "resource_mobilization",
+              "direction": "increase",
+              "rationale": "化禄支持被假设为资源取得、交换或配置路径增强。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "stability_accumulation",
+              "direction": "increase",
+              "rationale": "本轮资料把得禄与积累财富联系起来，但是否属于稳定积累仍需与资源获取维度分别验证。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ],
+          "source_refs": ["user_material.xiong_su_qian_yuan"]
+        },
+        {
+          "id": "same_layer_huaquan_support",
+          "name": "三方四正见同层化权",
+          "trigger": {
+            "type": "transformation.present_in_scope",
+            "scope": "four_directions",
+            "match_mode": "any",
+            "values": ["化权"],
+            "source_layer": "$current_layer"
+          },
+          "hypotheses": [
+            {
+              "dimension_id": "authority_influence",
+              "direction": "increase",
+              "rationale": "化权支持被假设为授权、统摄和责任影响增强。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "execution_action",
+              "direction": "increase",
+              "rationale": "化权与廉杀的纪律及决断机制共同指向更强的任务推进。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ],
+          "source_refs": ["user_material.xiong_su_qian_yuan"]
+        },
+        {
+          "id": "lianzhen_huaji",
+          "name": "廉贞见同层化忌",
+          "trigger": {
+            "type": "transformation.in",
+            "scope": "participants",
+            "target_star_ids": ["lianzhen"],
+            "match_mode": "all",
+            "values": ["化忌"],
+            "source_layer": "$current_layer"
+          },
+          "hypotheses": [
+            {
+              "dimension_id": "relationship_cooperation",
+              "direction": "decrease",
+              "rationale": "廉贞的边界与纠缠机制受化忌触发时，关系协调可能更容易形成拉扯。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "emotional_intensity",
+              "direction": "increase",
+              "rationale": "对规则、情感和得失的在意可能在化忌条件下形成更强反应。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "conflict_risk",
+              "direction": "increase",
+              "rationale": "本轮资料明确把化忌列为下格条件，先记录为冲突、阻滞和失衡风险增加。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ],
+          "source_refs": ["profiles.lianzhen_qisha", "user_material.xiong_su_qian_yuan"]
+        }
+      ],
+      "source_refs": ["profiles.lianzhen_qisha", "user_material.xiong_su_qian_yuan"],
+      "unresolved_questions": [
+        "廉贞七杀同宫只见于丑、未，当前亮度表两处均为廉贞利、七杀庙；亮度差异应如何通过非同宫或单星实验研究。",
+        "较高亮度是否必然降低冲突风险，还是只提高核心机制的表达强度。",
+        "化禄与化权必须同时出现才形成传统所称的充分支持，还是可以分别产生独立增量。",
+        "廉贞化忌应改变基础交互方向，还是仅叠加负向修正。",
+        "丑宫与未宫的廉贞七杀同宫是否需要不同的交互参数。"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "profiles.lianzhen_qisha",
+      "kind": "project_research_profile",
+      "title": "ZhouYiLab 廉贞、七杀定性基础档案",
+      "evidence_level": "E5",
+      "locator": "config/ziwei/research/star_energy_profiles.json",
+      "note": "提供两颗星的阴阳五行、原始机制及维度方向假设。"
+    },
+    {
+      "id": "user_material.xiong_su_qian_yuan",
+      "kind": "user_research",
+      "title": "雄宿乾元格古诀与现代解释材料",
+      "evidence_level": "E4",
+      "locator": "Codex task conversation, 2026-08-31",
+      "note": "提供火能制金为权、禄权支持以及陷地化忌下格等解释；缺少可定位书目，暂不作为 E1。"
+    }
+  ],
+  "updated_at": "2026-08-31"
+}

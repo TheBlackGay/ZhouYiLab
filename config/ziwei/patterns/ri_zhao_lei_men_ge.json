@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ri_zhao_lei_men_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "日照雷门格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["太阳", "左辅", "右弼", "文昌", "文曲", "天魁", "天钺", "擎羊", "陀罗", "火星", "铃星"],
+  "output_flags": {"level_down": "ri_zhao_level_down"},
+  "output_enums": {"lucky_star_status": {"default": "none", "values": {"full": "ri_zhao_lucky_full", "partial": "ri_zhao_lucky_partial"}}},
+  "required": {
+    "id": "ri_zhao_lei_men_base",
+    "name": "卯宫命宫太阳坐守",
+    "all": [
+      {"id": "ri_zhao_ming_only", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "ri_zhao_mao_branch", "name": "命宫位于卯宫", "predicate": "focus.branch_in", "values": ["卯"]},
+      {"id": "ri_zhao_sun_self", "name": "太阳坐守命宫", "predicate": "star.contains", "scope": "self", "values": ["太阳"], "source_layer": "$current_layer"}
+    ]
+  },
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "ri_zhao_lucky_full", "name": "三方左右昌曲魁钺全会", "all": [{"id": "ri_zhao_lucky_all_stars", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["左辅", "右弼", "文昌", "文曲", "天魁", "天钺"], "match_mode": "all", "source_layer": "$current_layer"}]},
+    {"id": "ri_zhao_lucky_partial", "name": "三方见部分左右昌曲魁钺", "all": [{"id": "ri_zhao_lucky_some", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["左辅", "右弼", "文昌", "文曲", "天魁", "天钺"], "source_layer": "$current_layer"}, {"id": "ri_zhao_lucky_not_full", "not": {"id": "ri_zhao_lucky_not_full_check", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["左辅", "右弼", "文昌", "文曲", "天魁", "天钺"], "match_mode": "all", "source_layer": "$current_layer"}}]},
+    {"id": "ri_zhao_level_down", "name": "命宫或三方见刑忌四杀，降为温饱", "any": [{"id": "ri_zhao_level_malefic", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["擎羊", "陀罗", "火星", "铃星"], "source_layer": "$current_layer"}, {"id": "ri_zhao_level_empty_jie", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["地空", "地劫"], "source_layer": "$current_layer"}, {"id": "ri_zhao_level_huaji", "predicate": "transformation.contains_in_scopes", "scopes": ["self", "triads"], "values": ["化忌"], "source_layer": "$current_layer"}]}
+  ],
+  "ordinary_palace_observations": [{"id": "body_ri_zhao_note", "name": "身宫卯宫太阳相似结构", "all": [{"id": "body_ri_zhao_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_ri_zhao_branch", "predicate": "focus.branch_in", "values": ["卯"]}, {"id": "body_ri_zhao_sun", "predicate": "star.contains", "scope": "self", "values": ["太阳"], "source_layer": "$current_layer"}], "note_template": "{focus_palace}为身宫且卯宫太阳坐守；原文只论安命，不触发日照雷门格"}],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "result": {"nature": "auspicious_with_level_downgrade", "summary": "严格按卯宫命宫太阳坐守；三方左右昌曲魁钺为增益，刑忌四杀只使层次降为温饱，不破格。", "interpretation_template": "{effect_palace}命中日照雷门格，原始档位为{grade}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。", "status_messages": {"normal": "格局保持有效；若见刑忌四杀，按原文层次降为温饱"}},
+  "default_grade": "高级吉格",
+  "examples": [
+    {"name": "卯命太阳坐守基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "甲", "palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "卯命太阳且六曜全会", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}, {"name": "左辅", "source_layer": "natal"}, {"name": "右弼", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "文昌", "source_layer": "natal"}, {"name": "文曲", "source_layer": "natal"}, {"name": "天魁", "source_layer": "natal"}, {"name": "天钺", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "卯命太阳三方火星只降级不破格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "火星", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫卯太阳只作备注", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "卯", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "日照雷门格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "日照雷门富贵荣华。卯宫安命，太阳坐守，更三方左右昌曲魁钺守照，富贵不小，甲乙庚辛生人合格，加刑忌四杀，亦主温饱。"}, {"kind": "user_confirmed_rule_decision", "note": "仅卯宫命宫太阳坐守成格；吉曜分为全会、部分、无三档；甲乙庚辛为增益；刑忌四杀降级但不破格；身宫不成格。"}],
+  "updated_at": "2026-09-02"
+}

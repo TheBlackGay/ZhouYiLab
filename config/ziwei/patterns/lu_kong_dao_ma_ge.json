@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.lu_kong_dao_ma_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "禄空倒马格",
+  "category": "annual_dynamic_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["annual"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["禄存", "天马", "地劫"],
+  "required": {"id": "lu_kong_dao_ma_annual_base", "name": "流年禄马落败绝空亡且太岁会劫空", "predicate": "annual.lu_kong_dao_ma"},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "result": {"nature": "inauspicious", "summary": "严格按流年盘判断禄存天马落败绝空亡，流年太岁宫再会地劫天空；命中即为动态凶格。", "interpretation_template": "流年命中禄空倒马格，禄马宫为{lu_ma_palace_code}，会照类型为{meet_type}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。", "status_messages": {"formed": "流年禄马落败绝空亡，太岁再会地劫天空，主财来财去、多灾悔"}},
+  "default_grade": "凶格",
+  "examples": [
+    {"name": "禄马同宫沐浴且太岁同宫有地劫", "context": {"layer": {"id": "annual", "name": "流年"}, "annual": {"year_stem": "甲", "year_branch": "寅", "tai_sui_palace_code": "寅", "palaces": [{"name": "寅宫", "branch": "寅", "chang_sheng": "沐浴", "is_kong_wang": false, "stars": [{"name": "禄存", "source_layer": "annual"}, {"name": "天马", "source_layer": "annual"}, {"name": "地劫", "source_layer": "annual"}]}]}, "chart": {"palaces": []}, "focus": {"name": "流年盘", "roles": [], "effect_subject": ["流年财运"]}, "scopes": {}}, "expected": {"matched": true, "status": "formed"}},
+    {"name": "禄马对宫绝地且太岁同宫有天空", "context": {"layer": {"id": "annual", "name": "流年"}, "annual": {"year_stem": "甲", "year_branch": "申", "tai_sui_palace_code": "申", "palaces": [{"name": "寅宫", "branch": "寅", "chang_sheng": "绝", "is_kong_wang": false, "stars": [{"name": "禄存", "source_layer": "annual"}]}, {"name": "申宫", "branch": "申", "chang_sheng": null, "is_kong_wang": false, "stars": [{"name": "天马", "source_layer": "annual"}, {"name": "天空", "source_layer": "annual"}]}]}, "chart": {"palaces": []}, "focus": {"name": "流年盘", "roles": [], "effect_subject": ["流年财运"]}, "scopes": {}}, "expected": {"matched": true, "status": "formed"}},
+    {"name": "本命层即使有禄马也跳过", "context": {"layer": {"id": "natal", "name": "本命"}, "annual": {"year_branch": "寅", "tai_sui_palace_code": "寅", "palaces": []}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "禄空倒马格给定古文及字段约定", "received_at": "2026-09-02", "original_text": "禄倒马例忌太岁之合劫空。如禄马临败绝空亡之地，而太岁流年复会地劫天空，主驳杂灾悔，发不住财之论。"}, {"kind": "user_confirmed_rule_decision", "note": "仅annual层；禄存天马同宫或对宫且落沐浴/绝/空亡；流年太岁同宫、三合或对宫并有地劫天空；命中为凶格，无broken或level_down。"}],
+  "updated_at": "2026-09-02"
+}

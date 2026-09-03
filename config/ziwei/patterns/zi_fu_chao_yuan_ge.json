@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.zi_fu_chao_yuan_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "紫府朝垣格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["紫微", "天府", "七杀", "擎羊", "陀罗", "火星", "铃星"],
+  "output_star_positions": {"zi_palace": "紫微", "fu_palace": "天府"},
+  "output_flags": {"has_liu_lu": "externally_confirmed_liu_lu"},
+  "required": {
+    "id": "zi_fu_chao_yuan_variants",
+    "name": "紫府朝垣格寅申两种骨架",
+    "any": [
+      {
+        "id": "yin_ming_wu_xu_zi_fu",
+        "name": "寅宫安命，午戌两宫紫府分占来朝",
+        "all": [
+          {"id": "zi_fu_chao_yuan_yin_ming", "name": "目标是寅宫命宫", "all": [
+            {"id": "zi_fu_chao_yuan_yin_role", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+            {"id": "zi_fu_chao_yuan_yin_branch", "name": "命宫位于寅宫", "predicate": "focus.branch_in", "values": ["寅"]}
+          ]},
+          {"id": "zi_fu_one_each_wu_xu", "name": "紫微天府分别落午戌，每宫恰好一颗", "predicate": "star.one_each_across_branches", "branches": ["午", "戌"], "values": ["紫微", "天府"], "source_layer": "$current_layer"}
+        ]
+      },
+      {
+        "id": "shen_ming_zi_chen_zi_fu",
+        "name": "申宫安命，子辰两宫紫府分占来朝",
+        "all": [
+          {"id": "zi_fu_chao_yuan_shen_ming", "name": "目标是申宫命宫", "all": [
+            {"id": "zi_fu_chao_yuan_shen_role", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+            {"id": "zi_fu_chao_yuan_shen_branch", "name": "命宫位于申宫", "predicate": "focus.branch_in", "values": ["申"]}
+          ]},
+          {"id": "zi_fu_one_each_zi_chen", "name": "紫微天府分别落子辰，每宫恰好一颗", "predicate": "star.one_each_across_branches", "branches": ["子", "辰"], "values": ["紫微", "天府"], "source_layer": "$current_layer"}
+        ]
+      }
+    ]
+  },
+  "enhancers": [
+    {
+      "id": "externally_confirmed_liu_lu",
+      "name": "外部配置确认流禄巡逢",
+      "predicate": "input.pattern_flag",
+      "pattern_id": "pattern.zi_fu_chao_yuan_ge",
+      "key": "has_liu_lu",
+      "value": true
+    }
+  ],
+  "weakeners": [],
+  "breakers": [
+    {
+      "id": "zi_fu_chao_yuan_four_malefics",
+      "name": "命宫或三方见四煞则破格",
+      "predicate": "star.contains_in_scopes",
+      "scopes": ["self", "triads"],
+      "values": ["擎羊", "陀罗", "火星", "铃星"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "zi_fu_chao_yuan_huaji",
+      "name": "命宫或三方见化忌则破格",
+      "any": [
+        {"id": "zi_fu_chao_yuan_self_huaji", "name": "命宫见化忌", "predicate": "transformation.contains", "scope": "self", "values": ["化忌"], "source_layer": "$current_layer"},
+        {"id": "zi_fu_chao_yuan_triad_huaji", "name": "三方见化忌", "predicate": "transformation.contains", "scope": "triads", "values": ["化忌"], "source_layer": "$current_layer"}
+      ]
+    }
+  ],
+  "break_check": {
+    "break_star": ["擎羊", "陀罗", "火星", "铃星", "化忌"],
+    "scan_scope": "命宫、三方宫",
+    "note": "命宫或三方见四煞任一颗或任意星曜化忌，则格局破格；格局骨架和原始档位仍保留用于诊断展示"
+  },
+  "default_grade": "普通吉格",
+  "grade_rules": [
+    {
+      "grade": "上格",
+      "when": {"id": "zi_fu_chao_yuan_qisha_upper", "name": "命宫坐七杀为上格", "predicate": "star.same_palace", "scope": "self", "values": ["七杀"], "source_layer": "$current_layer"}
+    }
+  ],
+  "observations": [],
+  "allow_role_observations": true,
+  "ordinary_palace_observations": [
+    {
+      "id": "body_zi_fu_chao_yuan_note",
+      "name": "身宫紫府朝垣相似结构",
+      "all": [
+        {"id": "body_zi_fu_chao_yuan_role", "name": "目标是身宫", "predicate": "focus.role_in", "values": ["body"]},
+        {"id": "body_zi_fu_chao_yuan_variants", "name": "身宫寅申见对应紫府分占", "any": [
+          {"id": "body_yin_wu_xu_zi_fu", "name": "身宫寅、午戌紫府分占", "all": [
+            {"id": "body_yin_branch", "name": "身宫位于寅", "predicate": "focus.branch_in", "values": ["寅"]},
+            {"id": "body_zi_fu_one_each_wu_xu", "name": "紫府分别落午戌", "predicate": "star.one_each_across_branches", "branches": ["午", "戌"], "values": ["紫微", "天府"], "source_layer": "$current_layer"}
+          ]},
+          {"id": "body_shen_zi_chen_zi_fu", "name": "身宫申、子辰紫府分占", "all": [
+            {"id": "body_shen_branch", "name": "身宫位于申", "predicate": "focus.branch_in", "values": ["申"]},
+            {"id": "body_zi_fu_one_each_zi_chen", "name": "紫府分别落子辰", "predicate": "star.one_each_across_branches", "branches": ["子", "辰"], "values": ["紫微", "天府"], "source_layer": "$current_layer"}
+          ]}
+        ]}
+      ],
+      "note_template": "{focus_palace}为身宫且见对应两宫紫府分占来朝；原文只写安命，不触发紫府朝垣格"
+    }
+  ],
+  "status_policy": {
+    "required_matched": "formed",
+    "enhancer_matched": "strengthened",
+    "breaker_matched": "broken"
+  },
+  "result": {
+    "nature": "auspicious_with_breaker",
+    "summary": "严格按古文匹配寅命午戌或申命子辰的紫微天府两宫分占来朝；七杀坐命为上格，四煞或化忌在命宫三方时保留命中并标记破格，流禄只接受外部确认。",
+    "interpretation_template": "{effect_palace}命中紫府朝垣格，原始档位为{grade}。古诀称紫府朝垣、食禄万钟；本结果只确认给定文本结构，不把古代断语转换为现实结果保证。",
+    "status_messages": {"broken": "本可成紫府朝垣格，但被命宫或三方的四煞或化忌破格，按原文降为平常"},
+    "notes": [
+      "原文提及「流禄巡逢」，本条目未定义禄星和扫描范围；候选参考为禄存、化禄，参考范围为命宫、三方。本版本不自动计算，由外部输入 has_liu_lu 明确确认。"
+    ]
+  },
+  "examples": [
+    {
+      "name": "寅命紫微午天府戌分占来朝",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"palaces": [{"name": "官禄宫", "branch": "午", "stars": [{"name": "紫微", "physical_palace": "官禄宫", "physical_branch": "午", "source_layer": "natal"}]}, {"name": "财帛宫", "branch": "戌", "stars": [{"name": "天府", "physical_palace": "财帛宫", "physical_branch": "戌", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": [{"name": "紫微", "physical_branch": "午", "source_layer": "natal"}, {"name": "天府", "physical_branch": "戌", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "寅命紫府交换午戌且七杀坐命流禄增强",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {"pattern.zi_fu_chao_yuan_ge": {"has_liu_lu": true}}, "chart": {"palaces": [{"name": "官禄宫", "branch": "午", "stars": [{"name": "天府", "physical_palace": "官禄宫", "physical_branch": "午", "source_layer": "natal"}]}, {"name": "财帛宫", "branch": "戌", "stars": [{"name": "紫微", "physical_palace": "财帛宫", "physical_branch": "戌", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "七杀", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "天府", "physical_branch": "午", "source_layer": "natal"}, {"name": "紫微", "physical_branch": "戌", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}
+    },
+    {
+      "name": "午宫紫府同宫戌宫为空不成格",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"palaces": [{"name": "官禄宫", "branch": "午", "stars": [{"name": "紫微", "physical_branch": "午", "source_layer": "natal"}, {"name": "天府", "physical_branch": "午", "source_layer": "natal"}]}, {"name": "财帛宫", "branch": "戌", "stars": []}]}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    },
+    {
+      "name": "申命子辰紫府分占见三方化忌保留格局并破格",
+      "context": {"layer": {"id": "decade", "name": "大限"}, "pattern_inputs": {}, "chart": {"palaces": [{"name": "官禄宫", "branch": "子", "stars": [{"name": "天府", "physical_palace": "官禄宫", "physical_branch": "子", "source_layer": "decade"}]}, {"name": "财帛宫", "branch": "辰", "stars": [{"name": "紫微", "physical_palace": "财帛宫", "physical_branch": "辰", "source_layer": "decade", "transformation": "化忌"}]}]}, "focus": {"name": "命宫", "branch": "申", "roles": ["ming"], "effect_subject": ["大限命宫主题"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": [{"name": "天府", "physical_palace": "官禄宫", "physical_branch": "子", "source_layer": "decade"}, {"name": "紫微", "transformation": "化忌", "physical_palace": "财帛宫", "physical_branch": "辰", "source_layer": "decade"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}
+    },
+    {
+      "name": "寅命紫府分占仅对宫化忌不破格",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"palaces": [{"name": "官禄宫", "branch": "午", "stars": [{"name": "紫微", "physical_branch": "午", "source_layer": "natal"}]}, {"name": "财帛宫", "branch": "戌", "stars": [{"name": "天府", "physical_branch": "戌", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": [{"name": "廉贞", "transformation": "化忌", "physical_palace": "迁移宫", "source_layer": "natal"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "身宫寅见午戌紫府分占只作备注",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"palaces": [{"name": "官禄宫", "branch": "午", "stars": [{"name": "紫微", "physical_branch": "午", "source_layer": "natal"}]}, {"name": "财帛宫", "branch": "戌", "stars": [{"name": "天府", "physical_branch": "戌", "source_layer": "natal"}]}]}, "focus": {"name": "夫妻宫", "branch": "寅", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    }
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "紫府朝垣格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "紫府朝垣食禄万钟。如寅宫安命午戌宫紫府来朝，申宫安命子辰二宫有紫府来朝，是为人君访臣之象吉格也，更遇流禄巡逢必然位至公卿。如七杀在寅申坐者亦为上格，加四煞加化忌为平常人也。"},
+    {"kind": "user_confirmed_rule_decision", "note": "寅命午戌、申命子辰两宫必须由紫微天府一宫一颗分占，允许交换、不允许同宫；七杀坐命为上格；命宫三方见四煞任一或任意星曜化忌时保留命中并标记 broken；流禄仅外部确认；身宫不成格。"}
+  ],
+  "updated_at": "2026-09-02"
+}

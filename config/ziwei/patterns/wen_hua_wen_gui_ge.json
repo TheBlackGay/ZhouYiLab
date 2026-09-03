@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.wen_hua_wen_gui_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "文华文桂格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["文昌", "文曲", "禄存", "左辅", "右弼", "天魁", "天钺"],
+  "output_enums": {"reason_tag": {"default": "none", "values": {"hua_condition": "reason_hua", "lucky_arch_clamp": "reason_lucky"}}},
+  "required": {"id": "wen_hua_wen_gui_variants", "name": "丑未命昌曲且吉化或禄吉拱夹", "all": [
+    {"id": "wen_hua_ming_only", "predicate": "focus.role_in", "values": ["ming"]},
+    {"id": "wen_hua_chou_wei", "predicate": "focus.branch_in", "values": ["丑", "未"]},
+    {"id": "wen_hua_chang_qu_self", "predicate": "star.same_palace", "scope": "self", "values": ["文昌", "文曲"], "source_layer": "$current_layer"},
+    {"id": "wen_hua_reason", "any": [
+      {"id": "hua_condition", "name": "昌曲见化禄或化科", "predicate": "transformation.contains", "scope": "self", "values": ["化禄", "化科"], "source_layer": "$current_layer"},
+      {"id": "lucky_arch_clamp", "name": "禄星与六吉曜拱夹", "all": [
+        {"id": "lucky_arch_lu", "predicate": "star.contains_in_scopes", "scopes": ["adjacent_left", "adjacent_right", "triads"], "values": ["禄存"], "source_layer": "$current_layer"},
+        {"id": "lucky_arch_ji", "predicate": "star.contains_in_scopes", "scopes": ["adjacent_left", "adjacent_right", "triads"], "values": ["左辅", "右弼", "天魁", "天钺", "文昌", "文曲"], "source_layer": "$current_layer"}
+      ]}
+    ]}
+  ]},
+  "enhancers": [], "weakeners": [], "breakers": [],
+  "observations": [
+    {"id": "reason_hua", "name": "命中原因：吉化达标", "all": [{"id": "reason_hua_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "reason_hua_branch", "predicate": "focus.branch_in", "values": ["丑", "未"]}, {"id": "reason_hua_chang_qu", "predicate": "star.same_palace", "scope": "self", "values": ["文昌", "文曲"], "source_layer": "$current_layer"}, {"id": "reason_hua_transform", "predicate": "transformation.contains", "scope": "self", "values": ["化禄", "化科"], "source_layer": "$current_layer"}]},
+    {"id": "reason_lucky", "name": "命中原因：禄吉拱夹", "all": [{"id": "reason_lucky_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "reason_lucky_branch", "predicate": "focus.branch_in", "values": ["丑", "未"]}, {"id": "reason_lucky_chang_qu", "predicate": "star.same_palace", "scope": "self", "values": ["文昌", "文曲"], "source_layer": "$current_layer"}, {"id": "reason_lucky_lu", "predicate": "star.contains_in_scopes", "scopes": ["adjacent_left", "adjacent_right", "triads"], "values": ["禄存"], "source_layer": "$current_layer"}, {"id": "reason_lucky_ji", "predicate": "star.contains_in_scopes", "scopes": ["adjacent_left", "adjacent_right", "triads"], "values": ["左辅", "右弼", "天魁", "天钺", "文昌", "文曲"], "source_layer": "$current_layer"}]},
+    {"id": "wen_hua_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [{"id": "body_wen_hua_note", "name": "身宫丑未昌曲相似结构", "all": [{"id": "body_wen_hua_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_wen_hua_branch", "predicate": "focus.branch_in", "values": ["丑", "未"]}, {"id": "body_wen_hua_chang_qu", "predicate": "star.same_palace", "scope": "self", "values": ["文昌", "文曲"], "source_layer": "$current_layer"}], "note_template": "{focus_palace}为身宫且丑未文昌文曲同守；原文只论安命，不触发文华文桂格"}],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "auspicious", "summary": "严格按丑未命宫文昌文曲同守，并满足吉化或禄星六吉曜拱夹其中一条必要条件；煞星只作备注。", "interpretation_template": "{effect_palace}命中文华文桂格，命中原因是{reason_tag}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "丑命昌曲同宫且化科", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "文昌", "source_layer": "natal", "transformation": "化科"}, {"name": "文曲", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}, "four_directions": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "未命昌曲且禄星吉曜拱夹", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "文昌", "source_layer": "natal"}, {"name": "文曲", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "禄存", "source_layer": "natal"}, {"name": "左辅", "source_layer": "natal"}]}, "opposite": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}, "four_directions": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "丑命昌曲无吉化禄吉不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "文昌", "source_layer": "natal"}, {"name": "文曲", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}, "four_directions": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "身宫未昌曲只作备注", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "未", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "文昌", "source_layer": "natal"}, {"name": "文曲", "source_layer": "natal"}]}, "triads": [], "opposite": [], "adjacent_left": [], "adjacent_right": [], "four_directions": []}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "文华文桂格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "文桂文华九重贵显。文昌为文桂，文曲为文华，如丑未安命值之，更化吉及禄合吉星拱夹是也，或无吉化虽昌曲无用耳。"}, {"kind": "user_confirmed_rule_decision", "note": "仅丑未命宫昌曲同守，且吉化或禄星六吉曜拱夹至少一条成立；煞星只备注；身宫不成格。"}],
+  "updated_at": "2026-09-02"
+}

@@ -1,5 +1,6 @@
 ﻿// 紫微斗数系统示例
 import ZhouYi.ZiWei.Controller;
+import ZhouYi.ZiWei;
 import ZhouYi.ZiWei.Constants;
 import ZhouYi.GanZhi;
 import fmt;
@@ -49,7 +50,12 @@ int main() {
         // 示例6：运限分析
         fmt::print("【示例6】运限分析示例\n");
         fmt::print("\n");
-        fmt::print("（大限、流年等分析已包含在 pai_pan_and_print_solar 输出中）\n\n");
+        fmt::print("命主：1990年5月20日14时（男）\n");
+        fmt::print("目标：2026年8月24日午时（虚岁37）\n\n");
+        auto yun_xian_result = pai_pan_solar(1990, 5, 20, 14, true);
+        display_yun_xian_full_analysis(
+            yun_xian_result, 2026, 8, 24, DiZhi::Wu, 37
+        );
 
         fmt::print("提示：pai_pan_and_print_solar() 函数已经包含了完整的排盘结果，\n");
         fmt::print("包括十二宫、星耀、四化、格局、大限、流年等所有信息。\n\n");

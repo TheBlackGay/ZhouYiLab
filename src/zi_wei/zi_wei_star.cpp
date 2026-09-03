@@ -15,7 +15,10 @@ namespace ZhouYi::ZiWei {
     // ============= StarData 实现 =============
 
     string StarData::to_string() const {
-        string result = fmt::format("{} [{}]", name, string(to_zh(liang_du)));
+        string result = name;
+        if (liang_du.has_value()) {
+            result += fmt::format(" [{}]", string(to_zh(*liang_du)));
+        }
         if (si_hua.has_value()) {
             result += fmt::format(" {}", string(to_zh(*si_hua)));
         }
@@ -384,66 +387,41 @@ namespace ZhouYi::ZiWei {
         };
     }
 
+    array<string_view, 4> get_si_hua_star_names(TianGan year_gan) {
+        constexpr array<array<string_view, 4>, 10> tables = {{
+            {{"廉贞", "破军", "武曲", "太阳"}},
+            {{"天机", "天梁", "紫微", "太阴"}},
+            {{"天同", "天机", "文昌", "廉贞"}},
+            {{"太阴", "天同", "天机", "巨门"}},
+            {{"贪狼", "太阴", "右弼", "天机"}},
+            {{"武曲", "贪狼", "天梁", "文曲"}},
+            {{"太阳", "武曲", "天同", "天相"}},
+            {{"巨门", "太阳", "文曲", "文昌"}},
+            {{"天梁", "紫微", "左辅", "武曲"}},
+            {{"破军", "巨门", "太阴", "贪狼"}},
+        }};
+
+        return tables.at(static_cast<size_t>(year_gan));
+    }
+
+    optional<SiHua> get_si_hua_type(TianGan year_gan, string_view star_name) {
+        const auto stars = get_si_hua_star_names(year_gan);
+        for (size_t i = 0; i < stars.size(); ++i) {
+            if (stars[i] == star_name) {
+                return static_cast<SiHua>(i);
+            }
+        }
+        return nullopt;
+    }
+
     map<ZhuXing, SiHua> get_si_hua_table(TianGan year_gan) {
         map<ZhuXing, SiHua> table;
-        
-        switch (year_gan) {
-            case TianGan::Jia:
-                table[ZhuXing::LianZhen] = SiHua::Lu;
-                table[ZhuXing::PoJun] = SiHua::Quan;
-                table[ZhuXing::WuQu] = SiHua::Ke;
-                table[ZhuXing::TaiYang] = SiHua::Ji;
-                break;
-            case TianGan::Yi:
-                table[ZhuXing::TianJi] = SiHua::Lu;
-                table[ZhuXing::TianLiang] = SiHua::Quan;
-                table[ZhuXing::ZiWei] = SiHua::Ke;
-                table[ZhuXing::TaiYin] = SiHua::Ji;
-                break;
-            case TianGan::Bing:
-                table[ZhuXing::TianTong] = SiHua::Lu;
-                table[ZhuXing::TianJi] = SiHua::Quan;
-                table[ZhuXing::LianZhen] = SiHua::Ji;
-                break;
-            case TianGan::Ding:
-                table[ZhuXing::TaiYin] = SiHua::Lu;
-                table[ZhuXing::TianTong] = SiHua::Quan;
-                table[ZhuXing::TianJi] = SiHua::Ke;
-                table[ZhuXing::JuMen] = SiHua::Ji;
-                break;
-            case TianGan::Wu:
-                table[ZhuXing::TanLang] = SiHua::Lu;
-                table[ZhuXing::TaiYin] = SiHua::Quan;
-                table[ZhuXing::TianJi] = SiHua::Ji;
-                break;
-            case TianGan::Ji:
-                table[ZhuXing::WuQu] = SiHua::Lu;
-                table[ZhuXing::TanLang] = SiHua::Quan;
-                table[ZhuXing::TianLiang] = SiHua::Ke;
-                break;
-            case TianGan::Geng:
-                table[ZhuXing::TaiYang] = SiHua::Lu;
-                table[ZhuXing::WuQu] = SiHua::Quan;
-                table[ZhuXing::TaiYin] = SiHua::Ke;
-                table[ZhuXing::TianTong] = SiHua::Ji;
-                break;
-            case TianGan::Xin:
-                table[ZhuXing::JuMen] = SiHua::Lu;
-                table[ZhuXing::TaiYang] = SiHua::Quan;
-                break;
-            case TianGan::Ren:
-                table[ZhuXing::TianLiang] = SiHua::Lu;
-                table[ZhuXing::ZiWei] = SiHua::Quan;
-                table[ZhuXing::WuQu] = SiHua::Ji;
-                break;
-            case TianGan::Gui:
-                table[ZhuXing::PoJun] = SiHua::Lu;
-                table[ZhuXing::JuMen] = SiHua::Quan;
-                table[ZhuXing::TaiYin] = SiHua::Ke;
-                table[ZhuXing::TanLang] = SiHua::Ji;
-                break;
+        for (int i = 0; i < static_cast<int>(ZhuXing::COUNT); ++i) {
+            const auto star = static_cast<ZhuXing>(i);
+            if (const auto type = get_si_hua_type(year_gan, to_zh(star)); type.has_value()) {
+                table[star] = *type;
+            }
         }
-        
         return table;
     }
 

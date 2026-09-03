@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.zi_fu_tong_lin",
+  "revision": 1,
+  "enabled": true,
+  "name": "紫府同临格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["命宫"],
+  "snapshot_stars": ["紫微", "天府", "左辅", "右弼", "天魁", "天钺"],
+  "output_flags": {"has_auspicious": "auspicious_stars_in_triad" , "jia_bonus": "jia_birth_bonus"},
+  "required": {
+    "id": "zi_fu_tong_lin_base",
+    "name": "命宫寅申紫府同宫",
+    "all": [
+      {"id": "zi_fu_ming_role", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "zi_fu_target_branch", "name": "命宫位于寅宫或申宫", "predicate": "focus.branch_in", "values": ["寅", "申"]},
+      {"id": "zi_fu_same_palace", "name": "紫微天府同坐命宫", "predicate": "star.same_palace", "values": ["紫微", "天府"], "source_layer": "$current_layer"}
+    ]
+  },
+  "enhancers": [
+    {"id": "auspicious_stars_in_triad", "name": "三方左右魁钺拱照，主富贵终身福厚", "predicate": "star.contains_in_scopes", "scopes": ["triads", "opposite"], "values": ["左辅", "右弼", "天魁", "天钺"], "source_layer": "$current_layer"},
+    {"id": "jia_birth_bonus", "name": "甲生人化吉极美", "predicate": "birth.year_stem_in", "values": ["甲"]}
+  ],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "zi_fu_malefic_note", "name": "本宫及三方四正煞曜仅作备注", "predicate": "star.count", "scope": "four_directions", "category": "malefic", "operator": "greater_or_equal", "value": 1, "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [
+    {"id": "ordinary_zi_fu_same_palace_note", "name": "非命宫紫府同宫现象", "predicate": "star.same_palace", "scope": "self", "values": ["紫微", "天府"], "source_layer": "$current_layer", "note_template": "{focus_palace}见紫微天府同宫，但原文只论命宫，不触发紫府同临格"}
+  ],
+  "status_policy": {"required_matched": "formed", "enhancer_matched": "strengthened"},
+  "result": {
+    "nature": "auspicious",
+    "summary": "严格按给定古文匹配命宫寅申紫微天府同宫；三方左右魁钺及甲年生人为可选增益，煞星不破格。",
+    "interpretation_template": "{effect_palace}命中紫府同临格。古诀称终身福厚；本结果只确认文本结构，不把断语转换为现实事件保证。"
+  },
+  "examples": [
+    {"name": "寅宫命宫紫微天府同宫基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "乙", "palaces": []}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "天府", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "申宫命宫紫府有三方吉星及甲年双重增强", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "甲", "palaces": []}, "focus": {"name": "命宫", "branch": "申", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "天府", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "左辅", "source_layer": "natal"}]}, "opposite": {"stars": [{"name": "天钺", "source_layer": "natal"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}},
+    {"name": "身宫紫府同宫不触发原文命宫格局", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "甲", "palaces": []}, "focus": {"name": "夫妻宫", "branch": "寅", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "天府", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "命宫紫府同宫见煞仍只作备注", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "乙", "palaces": []}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "天府", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "火星", "category": "malefic", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}}
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "紫府同临格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "紫府同宫终身福厚。如寅申二宫安命值紫微天府同宫，三方有左右魁钺拱照，必主富贵终身福厚，甲生人化吉极美。"},
+    {"kind": "user_confirmed_rule_decision", "note": "仅命宫寅申紫府同宫成格，不包含身宫；三方左右魁钺、甲年生人为增益；原文无破格条件，煞曜仅备注。"}
+  ],
+  "updated_at": "2026-09-02"
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.shui_cheng_gui_e_yue_sheng_cang_hai_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "水澄桂萼、月生沧海格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["太阴", "擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+  "output_flags": {"is_best": "is_best_condition"},
+  "output_enums": {"trigger_type": {"default": "none", "values": {"ming_palace": "ming_trigger", "body_palace": "body_trigger"}}},
+  "required": {"id": "shui_cheng_gui_e_variants", "name": "命身子宫太阴坐守", "any": [
+    {"id": "ming_variant", "name": "命宫子太阴", "all": [{"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "ming_branch", "predicate": "focus.branch_in", "values": ["子"]}, {"id": "ming_moon", "predicate": "star.contains", "scope": "self", "values": ["太阴"], "source_layer": "$current_layer"}]},
+    {"id": "body_variant", "name": "身宫子太阴", "all": [{"id": "body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_branch", "predicate": "focus.branch_in", "values": ["子"]}, {"id": "body_moon", "predicate": "star.contains", "scope": "self", "values": ["太阴"], "source_layer": "$current_layer"}]}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "ming_trigger", "name": "命宫子太阴触发证据", "all": [{"id": "obs_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_ming_branch", "predicate": "focus.branch_in", "values": ["子"]}, {"id": "obs_ming_moon", "predicate": "star.contains", "scope": "self", "values": ["太阴"], "source_layer": "$current_layer"}]},
+    {"id": "body_trigger", "name": "身宫子太阴触发证据", "all": [{"id": "obs_body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "obs_body_branch", "predicate": "focus.branch_in", "values": ["子"]}, {"id": "obs_body_moon", "predicate": "star.contains", "scope": "self", "values": ["太阴"], "source_layer": "$current_layer"}]},
+    {"id": "is_best_condition", "name": "丙丁生人且外部标记夜生时", "all": [{"id": "best_stem", "predicate": "birth.year_stem_in", "values": ["丙", "丁"]}, {"id": "best_nighttime", "predicate": "birth.is_daytime", "value": false}]},
+    {"id": "shui_cheng_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "auspicious", "summary": "命宫或身宫子宫有太阴即成水澄桂萼（月生沧海）格；丙丁生人且调用方标记夜生时附加最优标签。", "interpretation_template": "{effect_palace}命中水澄桂萼（月生沧海）格。古诀中的富贵断语仅作文本说明，不作为现实结果保证。", "notes": ["is_best最优条件依赖外部传入is_daytime昼夜标记；引擎内部不做时间自动换算，夜生时为增益条件，非成格必备。"]},
+  "examples": [
+    {"name": "命宫子太阴基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "甲", "palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫子太阴基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丙", "is_daytime": false, "palaces": []}, "focus": {"name": "身宫所在宫", "branch": "子", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "身宫所在宫"}},
+    {"name": "丁年夜生最优", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丁", "is_daytime": false, "palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "丙年日生仍成格但非最优", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丙", "is_daytime": true, "palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "子宫无太阴不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丙", "is_daytime": false, "palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "水澄桂萼月生沧海格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "太阴居子号曰水澄桂萼，得清要之职，忠谏之材。假如身命坐于子宫遇有太阴，丙丁生人夜生时者富贵全美，心无私曲，有忠谏之材。"}, {"kind": "user_confirmed_rule_decision", "note": "命宫或身宫子宫太阴成格；丙丁年且外部birth.is_daytime为false时is_best；不自动解析时间。"}],
+  "updated_at": "2026-09-02"
+}

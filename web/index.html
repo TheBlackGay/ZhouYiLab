@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f4f5f2">
+  <title>ZhouYiLab 紫微斗数排盘</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-mark" aria-hidden="true">周</div>
+    <div>
+      <h1>ZhouYiLab</h1>
+      <p>紫微斗数 · 中州三合排盘</p>
+    </div>
+    <a class="research-link" href="/qimen.html">奇门遁甲</a>
+    <a class="research-link" href="/blind-review.html">人工盲评</a>
+    <a class="research-link" href="/ai-review.html">AI 预评审</a>
+    <div class="engine-status"><span></span>C++ 本地算法</div>
+  </header>
+
+  <main class="workspace">
+    <aside class="input-panel" aria-label="排盘参数">
+      <form id="chart-form">
+        <section class="form-section">
+          <div class="section-heading"><span>01</span><h2>出生资料</h2></div>
+          <label for="birth-date">出生日期</label>
+          <input id="birth-date" type="date" value="1994-12-08" required>
+          <label for="birth-time">出生时间</label>
+          <input id="birth-time" type="time" value="09:05" step="60" required>
+          <fieldset>
+            <legend>性别</legend>
+            <div class="segmented">
+              <label><input type="radio" name="gender" value="male" checked><span>男</span></label>
+              <label><input type="radio" name="gender" value="female"><span>女</span></label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading"><span>02</span><h2>时间校正</h2></div>
+          <label class="toggle-row" for="true-solar">
+            <span><strong>启用真太阳时</strong><small>校正出生时刻</small></span>
+            <input id="true-solar" type="checkbox" checked>
+          </label>
+          <div id="solar-options">
+            <label for="longitude">出生地经度（东经）</label>
+            <div class="unit-input"><input id="longitude" type="number" min="-180" max="180" step="0.000001" value="120.300000" required><span>°</span></div>
+            <div class="two-fields">
+              <div><label for="meridian">标准经线</label><div class="unit-input"><input id="meridian" type="number" step="0.1" value="120"><span>°</span></div></div>
+              <div><label for="dst">夏令时</label><select id="dst"><option value="0">无</option><option value="60">+60 分钟</option><option value="30">+30 分钟</option></select></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading"><span>03</span><h2>运限时刻</h2></div>
+          <label for="target-date">目标日期</label>
+          <input id="target-date" type="date" value="2026-08-24" required>
+          <div class="two-fields">
+            <div><label for="target-time">目标时间</label><input id="target-time" type="time" value="15:05" step="60" required></div>
+            <div><label for="age">虚岁</label><input id="age" type="number" min="1" max="150" value="33" required></div>
+          </div>
+        </section>
+
+        <button class="primary-action" type="submit"><span class="button-label">开始排盘</span><span class="spinner" aria-hidden="true"></span></button>
+        <p id="form-error" class="error-message" role="alert" hidden></p>
+      </form>
+    </aside>
+
+    <section class="results" aria-live="polite">
+      <div id="empty-state" class="empty-state">
+        <div class="empty-symbol" aria-hidden="true">命</div>
+        <h2>等待排盘</h2>
+        <p>填写出生资料与目标时刻后开始计算。</p>
+      </div>
+
+      <div id="result-content" hidden>
+        <div class="result-summary">
+          <div><span>命盘</span><strong id="summary-title">--</strong><small id="summary-subtitle">--</small></div>
+          <dl>
+            <div><dt>四柱</dt><dd id="metric-pillars">--</dd></div>
+            <div><dt>五行局</dt><dd id="metric-wuxing">--</dd></div>
+            <div><dt>命宫</dt><dd id="metric-ming">--</dd></div>
+            <div><dt>真太阳时</dt><dd id="metric-solar">--</dd></div>
+          </dl>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="排盘结果视图">
+          <button type="button" role="tab" aria-selected="true" data-tab="chart">十二宫</button>
+          <button type="button" role="tab" aria-selected="false" data-tab="analysis">结构解读</button>
+          <button type="button" role="tab" aria-selected="false" data-tab="fortune">运限</button>
+          <button type="button" role="tab" aria-selected="false" data-tab="correction">时间校正</button>
+        </div>
+
+        <div id="tab-chart" class="tab-panel" role="tabpanel">
+          <div class="chart-toolbar">
+            <div class="layer-filter" role="toolbar" aria-label="盘层显示">
+              <button type="button" data-layer="all" aria-pressed="true">全盘</button>
+              <button type="button" data-layer="da_xian" aria-pressed="false">大限</button>
+              <button type="button" data-layer="liu_nian" aria-pressed="false">流年</button>
+              <button type="button" data-layer="liu_yue" aria-pressed="false">流月</button>
+              <button type="button" data-layer="liu_ri" aria-pressed="false">流日</button>
+              <button type="button" data-layer="liu_shi" aria-pressed="false">流时</button>
+            </div>
+            <div class="board-view-toggle" role="group" aria-label="宫位显示方式">
+              <button type="button" data-view="full" aria-pressed="true">全盘</button>
+              <button type="button" data-view="list" aria-pressed="false">列表</button>
+            </div>
+          </div>
+          <div class="layer-legend" aria-label="盘层颜色说明">
+            <span class="limit">大限</span><span class="year">流年</span><span class="month">流月</span><span class="day">流日</span><span class="hour">流时</span>
+          </div>
+          <div id="palace-board" class="palace-board" data-view="full" data-active-layer="all">
+            <div class="board-center">
+              <small>中州三合 · 斗君法</small>
+              <span id="center-lunar">--</span>
+              <strong id="center-four-pillars">--</strong>
+              <dl><div><dt>钟表时间</dt><dd id="center-recorded">--</dd></div><div><dt>真太阳时</dt><dd id="center-solar">--</dd></div></dl>
+              <p id="center-target">--</p>
+            </div>
+          </div>
+          <div id="flow-track" class="flow-track" aria-label="当前运限层级"></div>
+        </div>
+
+        <div id="tab-analysis" class="tab-panel" role="tabpanel" hidden>
+          <div class="analysis-header">
+            <div><span>本命分析</span><strong id="analysis-title">正在生成结构化碎片</strong></div>
+            <dl><div><dt>宫位</dt><dd id="analysis-palace-count">--</dd></div><div><dt>碎片</dt><dd id="analysis-fragment-count">--</dd></div><div><dt>命中格局</dt><dd id="analysis-pattern-count">--</dd></div><div><dt>规则库</dt><dd id="analysis-config-version">--</dd></div></dl>
+          </div>
+          <p id="analysis-error" class="error-message" role="alert" hidden></p>
+          <div id="analysis-loading" class="analysis-loading" aria-live="polite"><span class="spinner"></span>正在匹配宫位、星曜与格局规则</div>
+          <section id="analysis-pattern-overview" class="analysis-pattern-overview" aria-labelledby="analysis-pattern-overview-title" hidden>
+            <header><div><span>全盘匹配</span><strong id="analysis-pattern-overview-title">本命格局总览</strong></div><small id="analysis-pattern-overview-summary"></small></header>
+            <div id="analysis-pattern-list" class="analysis-pattern-list"></div>
+          </section>
+          <section id="analysis-pattern-library" class="analysis-pattern-library" aria-labelledby="analysis-pattern-library-title" hidden>
+            <header><div><span>规则库核对</span><strong id="analysis-pattern-library-title">已加载格局规则</strong></div><small id="analysis-pattern-library-summary"></small></header>
+            <div id="analysis-pattern-library-list" class="analysis-pattern-library-list"></div>
+          </section>
+          <div id="analysis-workspace" class="analysis-workspace" hidden>
+            <nav id="analysis-palace-tabs" class="analysis-palace-tabs" aria-label="选择解读宫位"></nav>
+            <section id="analysis-content" class="analysis-content" aria-live="polite"></section>
+          </div>
+        </div>
+
+        <div id="tab-fortune" class="tab-panel" role="tabpanel" hidden>
+          <div class="fortune-header"><div><span>目标时刻</span><strong id="fortune-target">--</strong></div><div><span>农历</span><strong id="fortune-lunar">--</strong></div></div>
+          <div id="fortune-grid" class="fortune-grid"></div>
+        </div>
+
+        <div id="tab-correction" class="tab-panel" role="tabpanel" hidden>
+          <div class="correction-layout">
+            <dl id="correction-list" class="detail-list"></dl>
+            <div class="offset-visual"><div class="offset-track"><span id="offset-marker"></span></div><strong id="offset-total">--</strong><small>相对出生证明时间</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

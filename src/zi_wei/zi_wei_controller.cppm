@@ -22,6 +22,15 @@ export namespace ZhouYi::ZiWei {
     void pai_pan_and_print_solar(int year, int month, int day, int hour, bool is_male);
 
     /**
+     * @brief 按完整出生时间排盘，可选择真太阳时校正
+     */
+    void pai_pan_and_print_solar(
+        const BirthDateTime& birth,
+        bool is_male,
+        const BirthTimeOptions& time_options = {}
+    );
+
+    /**
      * @brief 农历排盘并输出
      */
     void pai_pan_and_print_lunar(int year, int month, int day, int hour, 
@@ -121,11 +130,21 @@ export namespace ZhouYi::ZiWei {
      * @brief 显示流年分析
      */
     void display_liu_nian_analysis(const ZiWeiResult& result, int target_year, int current_age);
+
+    /**
+     * @brief 按实际目标日期显示流年分析
+     */
+    void display_liu_nian_analysis(const ZiWeiResult& result, int target_year, int target_month, int target_day, int current_age);
     
     /**
      * @brief 显示流月分析
      */
     void display_liu_yue_analysis(const ZiWeiResult& result, int target_year, int target_month, int current_age);
+
+    /**
+     * @brief 按实际目标日期显示流月分析
+     */
+    void display_liu_yue_analysis(const ZiWeiResult& result, int target_year, int target_month, int target_day, int current_age);
     
     /**
      * @brief 显示流日分析

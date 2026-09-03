@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "protocol_version": "0.1.0",
+  "id": "protocol.lianzhen_qisha.blind_review",
+  "status": "frozen_before_collection",
+  "experiment_version": "0.1.0",
+  "dimension_dictionary_version": "0.1.0",
+  "rating_scale": {
+    "allowed_values": [-1.0, -0.5, 0.0, 0.5, 1.0],
+    "anchors": {
+      "-1.0": "该维度受到明显抑制",
+      "-0.5": "该维度受到轻度抑制",
+      "0.0": "当前事实不足以判断方向，或正负作用大致并存",
+      "0.5": "该维度受到轻度增强",
+      "1.0": "该维度受到明显增强"
+    },
+    "missing_value": null,
+    "rationale_required": true
+  },
+  "rater_plan": {
+    "minimum_raters": 3,
+    "target_raters": 5,
+    "requirements": [
+      "评分者能够理解紫微斗数本宫、三方、对宫、亮度和四化的基本含义",
+      "评分前阅读统一的维度定义和评分锚点",
+      "评分者不参与本轮案例预期触发项的编写",
+      "评分过程独立完成，不查看其他评分者答案"
+    ],
+    "independence_rule": "评分提交前不得讨论具体案例；同一人不得使用多个评分者 ID 重复提交。"
+  },
+  "blinding": {
+    "visible_fields": [
+      "匿名案例代码",
+      "焦点宫地支",
+      "星曜名称、实际位置、关系、亮度和四化",
+      "受控四化刺激及其边界",
+      "十一维操作性定义与评分锚点"
+    ],
+    "hidden_fields": [
+      "LQ-A 至 LQ-H 原始案例 ID",
+      "案例名称和研究目的",
+      "雄宿乾元格及其他格局名称",
+      "模型机制、作用方向和预期命中修正项",
+      "其他评分者答案"
+    ],
+    "randomization": "使用调用方提供的随机种子打乱案例顺序，并以不可逆摘要生成匿名案例代码；答案映射仅由研究负责人单独保存。"
+  },
+  "agreement": {
+    "primary_metric": "krippendorff_alpha_interval",
+    "distance": "squared_difference",
+    "minimum_usable_raters": 3,
+    "thresholds": {
+      "provisional_acceptance": 0.67,
+      "strong_agreement": 0.8
+    }
+  },
+  "decision_rules": [
+    "每个维度独立计算一致性，不使用跨维度总分掩盖分歧",
+    "alpha 大于等于 0.80 记为强一致，可进入下一阶段候选参数讨论",
+    "alpha 大于等于 0.67 且小于 0.80 只记为暂时可接受，必须复核定义和分歧案例",
+    "alpha 小于 0.67 时不得为该维度标定数值，应先修订构念、材料或评分说明",
+    "任何阈值变更必须在新增评分数据前通过新的决策记录完成",
+    "阈值是首轮项目预注册标准，正式论文使用前必须补充方法学来源并重新评审"
+  ],
+  "updated_at": "2026-08-31"
+}

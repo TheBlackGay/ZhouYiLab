@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ling_tan_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "铃贪格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["贪狼", "铃星"],
+  "output_flags": {
+    "has_auspicious": "externally_confirmed_auspicious",
+    "wu_ji_bonus": "wu_ji_birth_bonus"
+  },
+  "required": {
+    "id": "ling_tan_base",
+    "name": "辰戌丑未子命宫贪狼铃星同宫",
+    "all": [
+      {"id": "ling_tan_ming_only", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "ling_tan_branch", "name": "命宫位于辰戌丑未子", "predicate": "focus.branch_in", "values": ["辰", "戌", "丑", "未", "子"]},
+      {"id": "ling_tan_same_palace", "name": "贪狼铃星同坐命宫", "predicate": "star.same_palace", "values": ["贪狼", "铃星"], "source_layer": "$current_layer"}
+    ]
+  },
+  "enhancers": [
+    {
+      "id": "externally_confirmed_auspicious",
+      "name": "外部配置确认加吉",
+      "predicate": "input.pattern_flag",
+      "pattern_id": "pattern.ling_tan_ge",
+      "key": "has_auspicious",
+      "value": true
+    },
+    {
+      "id": "wu_ji_birth_bonus",
+      "name": "戊己生人合格",
+      "predicate": "birth.year_stem_in",
+      "values": ["戊", "己"]
+    }
+  ],
+  "weakeners": [],
+  "breakers": [],
+  "default_grade": "普通",
+  "grade_rules": [
+    {
+      "grade": "佳",
+      "when": {
+        "id": "ling_tan_favorable_grade",
+        "name": "子辰命宫并经外部确认加吉",
+        "all": [
+          {"id": "ling_tan_favorable_branch", "name": "命宫位于子辰", "predicate": "focus.branch_in", "values": ["子", "辰"]},
+          {"id": "ling_tan_favorable_external_flag", "name": "外部配置确认加吉", "predicate": "input.pattern_flag", "pattern_id": "pattern.ling_tan_ge", "key": "has_auspicious", "value": true}
+        ]
+      }
+    }
+  ],
+  "observations": [
+    {"id": "ling_tan_malefic_note", "name": "本宫及三方四正煞曜仅作备注", "predicate": "star.count", "scope": "four_directions", "category": "malefic", "operator": "greater_or_equal", "value": 1, "source_layer": "$current_layer"}
+  ],
+  "allow_role_observations": true,
+  "ordinary_palace_observations": [
+    {
+      "id": "body_ling_tan_note",
+      "name": "身宫贪狼铃星同宫现象",
+      "all": [
+        {"id": "body_ling_tan_role", "name": "目标是身宫", "predicate": "focus.role_in", "values": ["body"]},
+        {"id": "body_ling_tan_branch", "name": "身宫位于辰戌丑未子", "predicate": "focus.branch_in", "values": ["辰", "戌", "丑", "未", "子"]},
+        {"id": "body_ling_tan_same_palace", "name": "贪狼铃星同坐身宫", "predicate": "star.same_palace", "scope": "self", "values": ["贪狼", "铃星"], "source_layer": "$current_layer"}
+      ],
+      "note_template": "{focus_palace}为身宫且见贪狼铃星同宫；原文只写安命，不触发铃贪格"
+    }
+  ],
+  "status_policy": {
+    "required_matched": "formed",
+    "enhancer_matched": "strengthened"
+  },
+  "result": {
+    "nature": "auspicious_with_grades",
+    "summary": "严格按古文匹配辰戌丑未子命宫贪狼铃星同宫；子辰且外部确认加吉时为佳档，戊己生人为出生年干增益，无破格条件。",
+    "interpretation_template": "{effect_palace}命中铃贪格，档位为{grade}。古诀称贪铃并守、将相之名；本结果只确认给定文本结构，不把古代断语转换为现实结果保证。",
+    "notes": [
+      "原文提及「加吉」，本条目未定义吉星清单、落宫范围、所需数量，需外部补充配置；候选参考常见吉星集合：左辅、右弼、天魁、天钺、文昌、文曲、禄存、化禄、化权、化科；扫描范围常见为本宫-三方-对宫；惯例任意一颗即视为加吉。本版本不自动计算，由外部输入 has_auspicious 明确确认。"
+    ]
+  },
+  "examples": [
+    {
+      "name": "辰宫命宫铃贪无外部加吉为普通档",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"birth_year_stem": "乙", "palaces": []}, "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "铃星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "子宫命宫铃贪经外部确认加吉为佳档",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {"pattern.ling_tan_ge": {"has_auspicious": true}}, "chart": {"birth_year_stem": "乙", "palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "铃星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}
+    },
+    {
+      "name": "戌宫即使外部确认加吉仍为普通档",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {"pattern.ling_tan_ge": {"has_auspicious": true}}, "chart": {"birth_year_stem": "乙", "palaces": []}, "focus": {"name": "命宫", "branch": "戌", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "铃星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}
+    },
+    {
+      "name": "大限层继续使用盘主戊年出生干增益",
+      "context": {"layer": {"id": "decade", "name": "大限"}, "pattern_inputs": {}, "chart": {"birth_year_stem": "戊", "palaces": []}, "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["大限命宫主题"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "decade"}, {"name": "铃星", "source_layer": "decade"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}
+    },
+    {
+      "name": "身宫铃贪同宫只作备注不成格",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {"pattern.ling_tan_ge": {"has_auspicious": true}}, "chart": {"birth_year_stem": "己", "palaces": []}, "focus": {"name": "夫妻宫", "branch": "辰", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "铃星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    },
+    {
+      "name": "寅宫命宫铃贪同宫不在原文范围",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"birth_year_stem": "戊", "palaces": []}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "铃星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    }
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "铃贪格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "贪铃并守，将相之名。假如辰戌丑未子宫安命值之是为入庙依此断，如加吉惟子辰二宫坐守尤佳，戊己生人合格。"},
+    {"kind": "user_confirmed_rule_decision", "note": "仅辰戌丑未子命宫贪狼铃星同宫成格；子辰必须同时由外部输入确认加吉才为佳档；戊己出生年干在本命与大限层均作增益；本页无破格条件。"}
+  ],
+  "updated_at": "2026-09-02"
+}

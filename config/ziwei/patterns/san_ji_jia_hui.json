@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.san_ji_jia_hui",
+  "revision": 1,
+  "enabled": true,
+  "name": "三吉加会格",
+  "category": "transformation_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "output_flags": {},
+  "required": {
+    "id": "san_ji_target_distribution",
+    "name": "目标宫科权禄拱严格分布",
+    "all": [
+      {
+        "id": "san_ji_target_role",
+        "name": "目标是命宫或身宫",
+        "predicate": "focus.role_in",
+        "values": ["ming", "body"]
+      },
+      {
+        "id": "san_ji_lu_quan_ke_distribution",
+        "name": "化禄化权化科齐全并覆盖目标、财官、三合",
+        "predicate": "transformation.san_ji_distribution",
+        "scope": "self",
+        "values": ["化禄", "化权", "化科"],
+        "source_layer": "$current_layer"
+      }
+    ]
+  },
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {
+      "id": "san_ji_opposite_note",
+      "name": "对宫四化仅作备注",
+      "predicate": "transformation.contains",
+      "scope": "opposite",
+      "values": ["化禄", "化权", "化科"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "san_ji_malefic_note",
+      "name": "煞曜仅作备注",
+      "predicate": "star.count",
+      "scope": "four_directions",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    }
+  ],
+  "ordinary_palace_observations": [
+    {
+      "id": "ordinary_san_ji_distribution_note",
+      "name": "普通宫位科权禄分布现象",
+      "predicate": "transformation.san_ji_distribution",
+      "scope": "self",
+      "values": ["化禄", "化权", "化科"],
+      "source_layer": "$current_layer",
+      "note_template": "{focus_palace}出现科权禄分布现象，但非命宫/身宫，不触发三吉加会格"
+    }
+  ],
+  "status_policy": {"required_matched": "formed"},
+  "result": {
+    "nature": "auspicious",
+    "summary": "严格按给定古文检查化禄、化权、化科齐全，并分别覆盖目标命/身宫、财帛/官禄宫及目标三合宫。",
+    "interpretation_template": "{effect_palace}命中三吉加会格。科权禄拱，名誉昭彰，位至三宫；本结果只确认文本结构，不把断语转换为现实事件保证。",
+    "tags": ["科权禄拱，名誉昭彰，位至三宫"]
+  },
+  "examples": [
+    {
+      "name": "命宫目标满足禄权科三类位置覆盖",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}]}, "wealth_career": {"stars": [{"name": "破军", "transformation": "化权", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "武曲", "transformation": "化科", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "身宫落财帛同一物理宫同时满足目标与财帛",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "财帛宫", "branch": "卯", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}]}, "wealth_career": {"stars": [{"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "破军", "transformation": "化权", "source_layer": "natal"}, {"name": "武曲", "transformation": "化科", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "财帛宫"}
+    },
+    {
+      "name": "三化全部堆在命宫缺财官和三合不成立",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}, {"name": "破军", "transformation": "化权", "source_layer": "natal"}, {"name": "武曲", "transformation": "化科", "source_layer": "natal"}]}, "wealth_career": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    },
+    {
+      "name": "对宫有四化不计入三合分布",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "身宫所在宫", "branch": "酉", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}]}, "wealth_career": {"stars": [{"name": "破军", "transformation": "化权", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": [{"name": "武曲", "transformation": "化科", "source_layer": "natal"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    }
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "三吉加会格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "科权禄拱名誉昭彰。此为三化吉星如身命坐守，一化财帛官禄宫，二化来合是，三合守照谓之科权禄拱是也，如左有位至三宫。"},
+    {"kind": "user_confirmed_rule_decision", "note": "命宫和身宫分别独立判定；禄权科三者齐全；至少覆盖当前目标、财帛/官禄、当前目标三合；同一物理宫可承担多个类别；对宫只备注；无破格条件。"}
+  ],
+  "updated_at": "2026-09-02"
+}

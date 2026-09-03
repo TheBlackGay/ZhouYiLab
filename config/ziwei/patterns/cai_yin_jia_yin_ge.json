@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.cai_yin_jia_yin_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "财荫夹印格",
+  "category": "flanking_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["武曲", "天梁", "擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+  "output_enums": {"target_type": {"default": "none", "values": {"ming_palace": "ming_target_observation", "tian_zhai_palace": "tian_zhai_target_observation"}}},
+  "required": {"id": "cai_yin_jia_yin_targets", "name": "命宫或田宅宫被武曲天梁夹持", "any": [
+    {"id": "ming_target", "name": "命宫武梁夹", "all": [{"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "ming_flank", "predicate": "star.flanks", "scope": "four_directions", "values": ["武曲", "天梁"], "source_layer": "$current_layer"}]},
+    {"id": "tian_zhai_target", "name": "田宅宫武梁夹", "all": [{"id": "tian_zhai_name", "predicate": "focus.name_in", "values": ["田宅宫"]}, {"id": "tian_zhai_flank", "predicate": "star.flanks", "scope": "four_directions", "values": ["武曲", "天梁"], "source_layer": "$current_layer"}]}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "ming_target_observation", "name": "命宫被武梁夹持证据", "all": [{"id": "obs_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_ming_flank", "predicate": "star.flanks", "scope": "four_directions", "values": ["武曲", "天梁"], "source_layer": "$current_layer"}]},
+    {"id": "tian_zhai_target_observation", "name": "田宅宫被武梁夹持证据", "all": [{"id": "obs_tian_zhai_name", "predicate": "focus.name_in", "values": ["田宅宫"]}, {"id": "obs_tian_zhai_flank", "predicate": "star.flanks", "scope": "four_directions", "values": ["武曲", "天梁"], "source_layer": "$current_layer"}]},
+    {"id": "cai_yin_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "auspicious", "summary": "命宫或田宅宫左右邻宫一宫武曲、一宫天梁夹持即成财荫夹印格；武梁不入目标本宫，三方四正不参与。", "interpretation_template": "{effect_palace}命中财荫夹印格。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "命宫武曲天梁左右夹", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": [], "opposite": [], "adjacent_left": {"stars": [{"name": "武曲", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "天梁", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "田宅宫天梁武曲左右夹", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "田宅宫", "branch": "午", "roles": [], "effect_subject": ["田宅家业"]}, "scopes": {"self": {"stars": []}, "triads": [], "opposite": [], "adjacent_left": {"stars": [{"name": "天梁", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "武曲", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "田宅宫"}},
+    {"name": "仅一侧武梁不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": [], "opposite": [], "adjacent_left": {"stars": [{"name": "武曲", "source_layer": "natal"}]}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "夫妻宫武梁夹不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "卯", "roles": [], "effect_subject": ["夫妻关系"]}, "scopes": {"self": {"stars": []}, "triads": [], "opposite": [], "adjacent_left": {"stars": [{"name": "武曲", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "天梁", "source_layer": "natal"}]}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "财荫夹印格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "相守命武梁来夹是也，田宅宫亦然。"}, {"kind": "user_confirmed_rule_decision", "note": "目标仅命宫或田宅宫；左右邻宫武曲、天梁一宫一颗，顺序不限；无破格条件。"}],
+  "updated_at": "2026-09-02"
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.tao_hua_fan_zhu_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "桃花犯主格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["紫微", "贪狼", "左辅", "右弼"],
+  "output_flags": {"is_exempt": "tao_hua_aux_clamp"},
+  "required": {"id": "tao_hua_fan_zhu_variants", "name": "命身紫微贪狼同宫且非辅弼夹帝", "any": [
+    {"id": "ming_zi_tan_no_clamp", "all": [
+      {"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "ming_zi_tan", "predicate": "star.same_palace", "scope": "self", "values": ["紫微", "贪狼"], "source_layer": "$current_layer"},
+      {"id": "ming_no_aux_clamp", "not": {"id": "ming_aux_clamp_check", "predicate": "star.flanks", "scope": "four_directions", "values": ["左辅", "右弼"], "source_layer": "$current_layer"}}
+    ]},
+    {"id": "body_zi_tan_no_clamp", "all": [
+      {"id": "body_role", "predicate": "focus.role_in", "values": ["body"]},
+      {"id": "body_zi_tan", "predicate": "star.same_palace", "scope": "self", "values": ["紫微", "贪狼"], "source_layer": "$current_layer"},
+      {"id": "body_no_aux_clamp", "not": {"id": "body_aux_clamp_check", "predicate": "star.flanks", "scope": "four_directions", "values": ["左辅", "右弼"], "source_layer": "$current_layer"}}
+    ]}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "tao_hua_aux_clamp", "name": "辅弼夹帝豁免证据", "predicate": "star.flanks", "scope": "four_directions", "values": ["左辅", "右弼"], "source_layer": "$current_layer"},
+    {"id": "tao_hua_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "特殊格局",
+  "result": {"nature": "inauspicious_with_exemption", "summary": "命宫或身宫紫微贪狼同宫，若无左辅右弼分居左右夹帝则命中；辅弼夹帝时不拘桃花犯主之论。", "interpretation_template": "{effect_palace}命中桃花犯主格。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "命宫紫贪同宫无辅弼夹", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫紫贪同宫无辅弼夹", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "身宫所在宫", "branch": "午", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "身宫所在宫"}},
+    {"name": "命宫紫贪被辅弼夹帝豁免", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": [{"name": "左辅", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "右弼", "source_layer": "natal"}]}}}, "expected": {"matched": false}},
+    {"name": "仅三方紫贪不成同宫", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "贪狼", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "桃花犯主格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "辅弼夹帝为上品，桃花犯主为至淫。假如身命紫微与贪狼同垣，男女邪淫奸诈巧。谢得后悟，得辅弼夹帝贪狼受制则不拘此论。"}, {"kind": "user_confirmed_rule_decision", "note": "命宫或身宫紫微贪狼同宫成格；左辅右弼分居目标宫左右时豁免，不命中；不使用亮度四化，煞星仅备注。"}],
+  "updated_at": "2026-09-02"
+}

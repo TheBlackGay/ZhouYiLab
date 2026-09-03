@@ -1,0 +1,368 @@
+{
+  "schema_version": "1.0.0",
+  "ruleset": "zhouyilab-ziwei-analysis",
+  "description": "紫微斗数分析引擎第一批静态案例。字段和规则需配合 docs/ziwei/紫微斗数命盘与运限分析准则.md 使用。",
+  "symbolism_dictionary": {
+    "path": "config/ziwei/symbolism_dictionary.json",
+    "minimum_schema_version": "1.0.0",
+    "purpose": "先解析焦点宫的作用对象，再解析星曜的作用机制，最后应用本文件中的组合与格局规则。"
+  },
+  "defaults": {
+    "school": "中州三合",
+    "strictness": "baseline",
+    "applicable_layers": ["natal", "decade", "annual"],
+    "evidence_required": true
+  },
+  "attribution_policy": {
+    "pattern_anchor": "$focus.name",
+    "effect_palace": "$focus.name",
+    "principle": "格局作用归属于触发该规则的焦点宫，不得默认全部归于盘主自身。",
+    "subject_by_palace": {
+      "命宫": "盘主自身、人格与总体能力",
+      "兄弟宫": "兄弟姐妹、同辈与合作关系",
+      "夫妻宫": "配偶、伴侣与亲密关系",
+      "子女宫": "子女、创造、作品与传承",
+      "财帛宫": "财富、收入方式与资源运用",
+      "疾厄宫": "身体、体质、压力与健康管理",
+      "迁移宫": "外部环境、出行、异地与社会表现",
+      "奴仆宫": "朋友、部属、团队与合作网络",
+      "官禄宫": "事业、职位、职责与工作方式",
+      "田宅宫": "家庭、居所、不动产与内部环境",
+      "福德宫": "精神状态、兴趣、享受与内在满足",
+      "父母宫": "父母、长辈、文书、教育与制度资源"
+    },
+    "interpretation_boundary": "宫位归属表示盘主命盘中该宫所代表的对象与领域，不等同于相关人物自己的独立命盘也形成同一格局。"
+  },
+  "operators": {
+    "equals": "字段值相等",
+    "all_equal": "集合中的所有值都与目标值相等",
+    "contains": "集合包含指定值",
+    "contains_all": "集合包含所有指定值",
+    "count_equals": "集合元素数量相等",
+    "greater_or_equal": "数值或集合元素数量大于或等于目标值"
+  },
+  "cases": [
+    {
+      "id": "palace.empty.borrow_opposite",
+      "revision": 1,
+      "enabled": true,
+      "kind": "palace_rule",
+      "name": "空宫借对宫主星",
+      "school": "三合基础",
+      "strictness": "baseline",
+      "applicable_layers": ["natal", "decade", "annual", "monthly", "daily", "hourly"],
+      "applicable_focus_palaces": ["*"],
+      "match": {
+        "all": [
+          {
+            "path": "$focus.primary_stars",
+            "operator": "count_equals",
+            "value": 0
+          },
+          {
+            "path": "$opposite.primary_stars",
+            "operator": "greater_or_equal",
+            "value": 1
+          }
+        ]
+      },
+      "result": {
+        "status": "formed",
+        "nature": "neutral",
+        "summary": "本宫无主星，解读时借对宫主星，但必须保留借星关系。",
+        "interpretation_template": "{focus_palace}为空宫，借{opposite_palace}的{opposite_primary_stars}作为主要参考；借星不等同于主星实际坐入本宫。"
+      },
+      "evidence": [
+        "$focus.name",
+        "$focus.primary_stars",
+        "$opposite.name",
+        "$opposite.primary_stars"
+      ],
+      "updated_at": "2026-08-30"
+    },
+    {
+      "id": "combination.ziwei.pojun.same_palace",
+      "revision": 1,
+      "enabled": true,
+      "kind": "star_combination",
+      "name": "紫微破军同宫",
+      "school": "三合基础",
+      "strictness": "baseline",
+      "applicable_layers": ["natal", "decade", "annual"],
+      "applicable_focus_palaces": ["*"],
+      "match": {
+        "all": [
+          {
+            "path": "$focus.primary_stars.names",
+            "operator": "contains_all",
+            "value": ["紫微", "破军"]
+          }
+        ]
+      },
+      "enhancers": [
+        {
+          "name": "禄权科会照",
+          "path": "$four_directions.transformations.types",
+          "operator": "contains",
+          "value": ["化禄", "化权", "化科"],
+          "match_mode": "any"
+        }
+      ],
+      "breakers": [
+        {
+          "name": "煞忌集中",
+          "path": "$four_directions.all_stars.names",
+          "operator": "contains",
+          "value": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+          "match_mode": "any",
+          "effect": "weakened"
+        }
+      ],
+      "result": {
+        "status": "formed",
+        "nature": "mixed",
+        "summary": "紫微的统筹性与破军的开创、变动性同宫，组合效果优先于单星文案相加。",
+        "interpretation_template": "{focus_palace}见紫微、破军同宫，表现为在秩序与突破之间寻求新的控制方式；实际强弱需结合亮度、四化及三方四正。"
+      },
+      "evidence": [
+        "$focus.name",
+        "$focus.primary_stars",
+        "$four_directions.transformations",
+        "$four_directions.malefic_stars"
+      ],
+      "updated_at": "2026-08-30"
+    },
+    {
+      "id": "pattern.zifu.same_palace",
+      "revision": 1,
+      "enabled": false,
+      "kind": "pattern",
+      "migrated_to": "config/ziwei/patterns/zi_fu_tong_gong.json",
+      "name": "紫府同宫",
+      "school": "三合常用格局",
+      "strictness": "strict",
+      "applicable_layers": ["natal", "decade", "annual"],
+      "applicable_focus_palaces": ["命宫"],
+      "match": {
+        "all": [
+          {
+            "path": "$focus.primary_stars.names",
+            "operator": "contains_all",
+            "value": ["紫微", "天府"]
+          }
+        ]
+      },
+      "enhancers": [
+        {
+          "name": "辅弼昌曲魁钺会照",
+          "path": "$four_directions.all_stars.names",
+          "operator": "contains",
+          "value": ["左辅", "右弼", "文昌", "文曲", "天魁", "天钺"],
+          "match_mode": "any"
+        }
+      ],
+      "breakers": [
+        {
+          "name": "煞曜冲破",
+          "path": "$four_directions.all_stars.names",
+          "operator": "contains",
+          "value": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+          "match_mode": "any",
+          "effect": "weakened"
+        }
+      ],
+      "result": {
+        "status": "formed",
+        "nature": "auspicious",
+        "summary": "紫微与天府同坐命宫，形成紫府同宫格；层次仍由亮度、吉辅和煞忌决定。",
+        "interpretation_template": "{layer_name}{focus_palace}紫微、天府同宫，检出紫府同宫格。{modifier_summary}"
+      },
+      "evidence": [
+        "$layer.id",
+        "$focus.name",
+        "$focus.primary_stars",
+        "$four_directions.all_stars",
+        "$four_directions.transformations"
+      ],
+      "updated_at": "2026-08-30"
+    },
+    {
+      "id": "pattern.san_ji_jia_hui",
+      "revision": 2,
+      "enabled": false,
+      "kind": "pattern",
+      "migrated_to": "config/ziwei/patterns/san_ji_jia_hui.json",
+      "name": "三奇嘉会",
+      "school": "三合常用格局",
+      "strictness": "strict",
+      "applicable_layers": ["natal", "decade", "annual"],
+      "applicable_focus_palaces": ["*"],
+      "match": {
+        "all": [
+          {
+            "path": "$four_directions.transformations.types",
+            "operator": "contains_all",
+            "value": ["化禄", "化权", "化科"]
+          },
+          {
+            "path": "$four_directions.transformations.source_layer",
+            "operator": "all_equal",
+            "value_from": "$layer.id"
+          }
+        ]
+      },
+      "breakers": [
+        {
+          "name": "化忌同会",
+          "path": "$four_directions.transformations.types",
+          "operator": "contains",
+          "value": ["化忌"],
+          "match_mode": "any",
+          "effect": "weakened"
+        }
+      ],
+      "result": {
+        "status": "formed",
+        "nature": "auspicious",
+        "effect_palace": "$focus.name",
+        "effect_subject": "$attribution_policy.subject_by_palace[$focus.name]",
+        "summary": "同一盘层的禄、权、科在焦点宫三方四正会合，格局效果归属于该焦点宫。",
+        "interpretation_template": "{layer_name}禄、权、科会入{focus_palace}三方四正，{effect_subject}呈现三奇嘉会的组合效果；必须结合承载星曜与化忌位置判断实际发挥。"
+      },
+      "evidence": [
+        "$layer.id",
+        "$focus.name",
+        "$four_directions.transformations"
+      ],
+      "examples": [
+        {
+          "name": "命宫三奇嘉会归属于盘主自身",
+          "input": {
+            "layer": {"id": "natal", "name": "本命"},
+            "focus": {"name": "命宫"},
+            "four_directions": {
+              "transformations": {
+                "types": ["化禄", "化权", "化科"],
+                "source_layer": ["natal", "natal", "natal"]
+              }
+            }
+          },
+          "expected": {
+            "matched": true,
+            "effect_palace": "命宫",
+            "effect_subject": "盘主自身、人格与总体能力"
+          }
+        },
+        {
+          "name": "父母宫三奇嘉会归属于父母宫主题",
+          "input": {
+            "layer": {"id": "natal", "name": "本命"},
+            "focus": {"name": "父母宫"},
+            "four_directions": {
+              "transformations": {
+                "types": ["化禄", "化权", "化科"],
+                "source_layer": ["natal", "natal", "natal"]
+              }
+            }
+          },
+          "expected": {
+            "matched": true,
+            "effect_palace": "父母宫",
+            "effect_subject": "父母、长辈、文书、教育与制度资源",
+            "must_not_claim": "父亲或母亲自己的独立命盘必然形成三奇嘉会"
+          }
+        }
+      ],
+      "updated_at": "2026-08-30"
+    },
+    {
+      "id": "pattern.yangtuo.flank_life_palace",
+      "revision": 1,
+      "enabled": false,
+      "kind": "pattern",
+      "migrated_to": "config/ziwei/patterns/yang_tuo_jia_ming.json",
+      "name": "羊陀夹命",
+      "school": "三合常用格局",
+      "strictness": "strict",
+      "applicable_layers": ["natal", "decade", "annual"],
+      "applicable_focus_palaces": ["命宫"],
+      "match": {
+        "any": [
+          {
+            "all": [
+              {
+                "path": "$adjacent.left.all_stars.names",
+                "operator": "contains",
+                "value": "擎羊"
+              },
+              {
+                "path": "$adjacent.right.all_stars.names",
+                "operator": "contains",
+                "value": "陀罗"
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "path": "$adjacent.left.all_stars.names",
+                "operator": "contains",
+                "value": "陀罗"
+              },
+              {
+                "path": "$adjacent.right.all_stars.names",
+                "operator": "contains",
+                "value": "擎羊"
+              }
+            ]
+          }
+        ]
+      },
+      "result": {
+        "status": "formed",
+        "nature": "challenging",
+        "summary": "擎羊、陀罗分居命宫相邻两宫形成夹持，表示该盘层的命宫主题承受持续牵制。",
+        "interpretation_template": "{layer_name}{focus_palace}被擎羊、陀罗夹持，检出羊陀夹命；具体表现必须结合命宫主星、亮度、四化和三方四正。"
+      },
+      "evidence": [
+        "$layer.id",
+        "$focus.name",
+        "$adjacent.left",
+        "$adjacent.right"
+      ],
+      "updated_at": "2026-08-30"
+    },
+    {
+      "id": "overlay.same_topic.repeated_signal",
+      "revision": 1,
+      "enabled": true,
+      "kind": "overlay_rule",
+      "name": "同主题跨层重复",
+      "school": "项目分析准则",
+      "strictness": "baseline",
+      "applicable_layers": ["natal", "decade", "annual", "monthly", "daily", "hourly"],
+      "applicable_focus_palaces": ["*"],
+      "match": {
+        "all": [
+          {
+            "path": "$overlay.same_topic_signal_count",
+            "operator": "greater_or_equal",
+            "value": 3
+          }
+        ]
+      },
+      "result": {
+        "status": "activated",
+        "nature": "neutral",
+        "summary": "同一主题至少在三个连续层级重复出现时，提高该主题的判断强度。",
+        "interpretation_template": "{topic}主题在{matched_layers}重复出现，可视为当前阶段的重要触发；仍需保留各层独立证据。"
+      },
+      "evidence": [
+        "$overlay.topic",
+        "$overlay.matched_layers",
+        "$overlay.matched_facts"
+      ],
+      "updated_at": "2026-08-30"
+    }
+  ]
+}

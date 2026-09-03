@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0.0",
+  "catalog_version": "0.1.0",
+  "status": "qualitative_only",
+  "dimension_dictionary_version": "0.1.0",
+  "stars": [
+    {
+      "id": "lianzhen",
+      "name": "廉贞",
+      "category": "major",
+      "system": "紫微星系",
+      "attributes": {
+        "yin_yang": "阴",
+        "element": "火",
+        "hua_qi": "囚",
+        "review_status": "reviewed",
+        "source_refs": ["symbolism_dictionary.lianzhen", "user_material.xiong_su_qian_yuan"],
+        "boundary": "阴火、化气为囚沿用当前项目词典及本轮资料，仅冻结用于首轮试验；正式论文引用前仍需补充可定位版本的外部文献。"
+      },
+      "mechanisms": [
+        {
+          "id": "lianzhen.boundary",
+          "name": "边界与约束",
+          "definition": "通过规则、自律、防备或限制维持安全和秩序。",
+          "source_refs": ["symbolism_dictionary.lianzhen"],
+          "dimension_hypotheses": [
+            {
+              "dimension_id": "authority_influence",
+              "direction": "increase",
+              "rationale": "规则、约束和秩序维护可能增强建立边界及承担管理责任的作用。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "stability_accumulation",
+              "direction": "context_dependent",
+              "rationale": "边界可以保护和保存既有结构，但过度限制也可能降低结构适应性，方向需由亮度、四化和组合共同决定。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ]
+        },
+        {
+          "id": "lianzhen.intensity",
+          "name": "认真与强度",
+          "definition": "对人事物投入高度专注，态度鲜明且不易轻放。",
+          "source_refs": ["symbolism_dictionary.lianzhen"],
+          "dimension_hypotheses": [
+            {
+              "dimension_id": "execution_action",
+              "direction": "increase",
+              "rationale": "持续专注和鲜明态度可能提高行动投入与任务推进强度。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "desire_drive",
+              "direction": "increase",
+              "rationale": "对得失和目标的高度投入可能增强持续追求的内在驱动力。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ]
+        },
+        {
+          "id": "lianzhen.entanglement",
+          "name": "关系纠缠",
+          "definition": "强烈在意规则、情感和得失时，容易形成拉扯或自我束缚。",
+          "source_refs": ["symbolism_dictionary.lianzhen"],
+          "dimension_hypotheses": [
+            {
+              "dimension_id": "emotional_intensity",
+              "direction": "increase",
+              "rationale": "对规则、情感和得失的持续在意可能提高感受与反应强度。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "relationship_cooperation",
+              "direction": "context_dependent",
+              "rationale": "高度投入可以增强关系维持，也可能因边界和得失拉扯损害协调，不能预设单一方向。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "conflict_risk",
+              "direction": "increase",
+              "rationale": "拉扯和自我束缚增加关系或规则失衡时的压力暴露。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "廉贞对资源积累的作用是否属于单星基础机制，还是仅在化禄、禄存或特定组合下出现。",
+        "廉贞落陷及化忌是否改变既有机制方向，还是只增加冲突与风险维度。"
+      ]
+    },
+    {
+      "id": "qisha",
+      "name": "七杀",
+      "category": "major",
+      "system": "天府星系",
+      "attributes": {
+        "yin_yang": "阴",
+        "element": "金",
+        "hua_qi": "肃杀",
+        "review_status": "reviewed",
+        "source_refs": ["symbolism_dictionary.qisha", "user_material.xiong_su_qian_yuan"],
+        "boundary": "阴金、化气为肃杀沿用当前项目词典及本轮资料，仅冻结用于首轮试验；正式论文引用前仍需补充可定位版本的外部文献。"
+      },
+      "mechanisms": [
+        {
+          "id": "qisha.decision",
+          "name": "果断处置",
+          "definition": "在压力和不确定中快速取舍并承担结果。",
+          "source_refs": ["symbolism_dictionary.qisha"],
+          "dimension_hypotheses": [
+            {
+              "dimension_id": "execution_action",
+              "direction": "increase",
+              "rationale": "快速取舍并承担结果直接对应决断和行动推进。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "authority_influence",
+              "direction": "context_dependent",
+              "rationale": "承担关键结果可能形成指挥影响，但是否获得正式授权仍取决于宫位、亮度和组合。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ]
+        },
+        {
+          "id": "qisha.challenge",
+          "name": "高压挑战",
+          "definition": "通过竞争、危机、难题和高标准激发能力。",
+          "source_refs": ["symbolism_dictionary.qisha"],
+          "dimension_hypotheses": [
+            {
+              "dimension_id": "change_initiative",
+              "direction": "increase",
+              "rationale": "危机和高难度环境要求打破常态并形成新的应对路径。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "conflict_risk",
+              "direction": "increase",
+              "rationale": "竞争、危机和高标准本身提高压力、对抗及不确定性暴露。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ]
+        },
+        {
+          "id": "qisha.independence",
+          "name": "独立担当",
+          "definition": "不依赖细密协商，倾向独自负责关键任务。",
+          "source_refs": ["symbolism_dictionary.qisha"],
+          "dimension_hypotheses": [
+            {
+              "dimension_id": "execution_action",
+              "direction": "increase",
+              "rationale": "减少对协商和外部支持的依赖，可能提高独立启动和承担任务的能力。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            },
+            {
+              "dimension_id": "relationship_cooperation",
+              "direction": "decrease",
+              "rationale": "较少依赖细密协商可能降低关系协调和共同决策的参与程度。",
+              "evidence_level": "E5",
+              "parameter_status": "proposed"
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "七杀的高行动强度在何种亮度和制化条件下由有效执行转为冒进风险。",
+        "七杀对权威与影响的作用是否必须依赖明确授权星曜或特定宫位。"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "symbolism_dictionary.lianzhen",
+      "kind": "project_dictionary",
+      "title": "ZhouYiLab 紫微斗数象义词典：廉贞",
+      "evidence_level": "E5",
+      "locator": "config/ziwei/symbolism_dictionary.json#entry-id=lianzhen",
+      "note": "提供阴阳五行、化气及三个已校订原始机制；其外部文献来源仍需另行补录。"
+    },
+    {
+      "id": "symbolism_dictionary.qisha",
+      "kind": "project_dictionary",
+      "title": "ZhouYiLab 紫微斗数象义词典：七杀",
+      "evidence_level": "E5",
+      "locator": "config/ziwei/symbolism_dictionary.json#entry-id=qisha",
+      "note": "提供阴阳五行、化气及三个已校订原始机制；其外部文献来源仍需另行补录。"
+    },
+    {
+      "id": "user_material.xiong_su_qian_yuan",
+      "kind": "user_research",
+      "title": "雄宿乾元格古诀与现代解释材料",
+      "evidence_level": "E4",
+      "locator": "Codex task conversation, 2026-08-31",
+      "note": "材料明确提出廉贞属火、七杀属金及火制金为权的组合解释；因尚缺书名、版本和页码，暂不能列为 E1 原始文献。"
+    }
+  ],
+  "updated_at": "2026-08-31"
+}

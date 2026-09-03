@@ -10,6 +10,8 @@
 
 # Build directories
 build/
+.zhouyilab/
+config/ziwei/research/ai_model_providers.local.json
 cmake-build-*/
 out/
 bin/
@@ -59,6 +61,8 @@ cmake-build-*
 # Testing
 Testing/
 *.log
+__pycache__/
+*.pyc
 
 # Package managers
 conan/

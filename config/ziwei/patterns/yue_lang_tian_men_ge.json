@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.yue_lang_tian_men_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "月朗天门格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["太阴", "左辅", "右弼", "天魁", "天钺", "文昌", "文曲", "擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+  "output_flags": {"three_side_arch": "yue_lang_three_side_arch", "gui_year_gan": "yue_lang_gui_year", "fu_year_gan": "yue_lang_fu_year", "has_bad_star_note": "yue_lang_bad_star_note"},
+  "required": {"id": "yue_lang_tian_men_base", "name": "亥宫命太阴坐守", "all": [
+    {"id": "yue_lang_ming_only", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+    {"id": "yue_lang_hai_branch", "name": "命宫位于亥宫", "predicate": "focus.branch_in", "values": ["亥"]},
+    {"id": "yue_lang_moon_self", "name": "太阴坐守命宫", "predicate": "star.contains", "scope": "self", "values": ["太阴"], "source_layer": "$current_layer"}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "yue_lang_three_side_arch", "name": "命宫三方见六吉曜拱照", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["左辅", "右弼", "天魁", "天钺", "文昌", "文曲"], "source_layer": "$current_layer"},
+    {"id": "yue_lang_gui_year", "name": "丙丁生人主贵", "predicate": "birth.year_stem_in", "values": ["丙", "丁"]},
+    {"id": "yue_lang_fu_year", "name": "壬癸生人主富", "predicate": "birth.year_stem_in", "values": ["壬", "癸"]},
+    {"id": "yue_lang_bad_star_note", "name": "命宫及三方煞忌仅作备注", "any": [{"id": "yue_lang_bad_malefic", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}, {"id": "yue_lang_bad_huaji", "predicate": "transformation.contains_in_scopes", "scopes": ["self", "triads"], "values": ["化忌"], "source_layer": "$current_layer"}]}
+  ],
+  "ordinary_palace_observations": [{"id": "body_yue_lang_note", "name": "身宫亥宫太阴相似结构", "all": [{"id": "body_yue_lang_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_yue_lang_branch", "predicate": "focus.branch_in", "values": ["亥"]}, {"id": "body_yue_lang_moon", "predicate": "star.contains", "scope": "self", "values": ["太阴"], "source_layer": "$current_layer"}], "note_template": "{focus_palace}为身宫且亥宫太阴坐守；原文只论安命，不触发月朗天门格"}],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "result": {"nature": "auspicious", "summary": "严格按亥宫命宫太阴坐守；三方六吉曜拱照、丙丁主贵、壬癸主富均为展示标签。原文未规定煞忌破格，煞忌仅作备注。", "interpretation_template": "{effect_palace}命中月朗天门格，档位为{grade}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。", "status_messages": {"formed": "格局成立；无吉时按原文仍主杂职功名"}, "notes": ["三方拱照的吉星清单原文未列，第一版采用系统既有六吉曜：左辅、右弼、天魁、天钺、文昌、文曲。"]},
+  "default_grade": "高级吉格",
+  "examples": [
+    {"name": "亥命太阴坐守基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "甲", "palaces": []}, "focus": {"name": "命宫", "branch": "亥", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "亥命太阴三方六吉且丙年主贵", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丙", "palaces": []}, "focus": {"name": "命宫", "branch": "亥", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "左辅", "source_layer": "natal"}, {"name": "右弼", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "亥命太阴见煞仍保持正常", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "壬", "palaces": []}, "focus": {"name": "命宫", "branch": "亥", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "擎羊", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫亥太阴只作备注", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丁", "palaces": []}, "focus": {"name": "夫妻宫", "branch": "亥", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "太阴", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "月朗天门格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "月朗天门进爵封侯。亥宫安命，太阴坐守，更三方拱主大富贵，无吉亦主杂职功名，丙丁生人主贵，壬癸生人主富。"}, {"kind": "user_confirmed_rule_decision", "note": "仅亥宫命宫太阴坐守成格；三方六吉曜拱照为展示标签；丙丁主贵、壬癸主富；煞忌只记录，不破格不降级；身宫不成格。"}],
+  "updated_at": "2026-09-02"
+}

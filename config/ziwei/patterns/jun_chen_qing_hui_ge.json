@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.jun_chen_qing_hui_ge",
+  "revision": 3,
+  "enabled": true,
+  "name": "君臣庆会格",
+  "category": "major_star_pattern",
+  "school": "用户确认的六臣星成对口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal"],
+  "applicable_focus_palaces": ["命宫"],
+  "snapshot_stars": ["紫微", "左辅", "右弼", "文昌", "文曲", "天魁", "天钺", "天府", "天相", "擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+  "output_flags": {"is_broken": "jun_chen_bad_four_directions"},
+  "output_values": {
+    "found_list": {"condition_id": "minister_pairs", "path": "found_list"},
+    "minister_count": {"condition_id": "minister_pairs", "path": "minister_count"},
+    "pair_total": {"condition_id": "minister_pairs", "path": "pair_total"},
+    "grade_level": {"condition_id": "minister_pairs", "path": "pair_total"}
+  },
+  "required": {
+    "id": "jun_chen_qing_hui_base",
+    "name": "紫微守命且六臣星至少一对会照",
+    "all": [
+      {"id": "jun_chen_ming_role", "name": "目标为命宫", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "jun_chen_ziwei", "name": "紫微守命", "predicate": "star.contains", "scope": "self", "values": ["紫微"], "source_layer": "$current_layer"},
+      {"id": "minister_pairs", "name": "六臣星至少一组完整成对", "predicate": "star.complete_pair_count", "scope": "four_directions", "pairs": [["左辅", "右弼"], ["文昌", "文曲"], ["天魁", "天钺"]], "operator": "greater_or_equal", "value": 1, "source_layer": "$current_layer"}
+    ]
+  },
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [
+    {"id": "jun_chen_bad_four_directions", "name": "三方四正见煞忌，奴欺主", "any": [
+      {"id": "jun_chen_six_sha", "name": "三方四正见六煞", "predicate": "star.contains", "scope": "four_directions", "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"},
+      {"id": "jun_chen_hua_ji", "name": "三方四正见化忌", "predicate": "transformation.contains", "scope": "four_directions", "values": ["化忌"], "source_layer": "$current_layer"}
+    ]}
+  ],
+  "observations": [
+    {"id": "tianfu_tianxiang_bonus", "name": "天府天相增益", "predicate": "star.contains", "scope": "four_directions", "values": ["天府", "天相"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [
+    {"id": "ziwei_lone_ruler", "name": "紫微孤君", "all": [
+      {"id": "lone_ming_role", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "lone_ziwei", "predicate": "star.contains", "scope": "self", "values": ["紫微"], "source_layer": "$current_layer"},
+      {"id": "lone_has_minister", "predicate": "star.count", "scope": "four_directions", "stars": ["左辅", "右弼", "文昌", "文曲", "天魁", "天钺"], "operator": "greater_or_equal", "value": 1, "source_layer": "$current_layer"},
+      {"id": "lone_no_pair", "predicate": "star.complete_pair_count", "scope": "four_directions", "pairs": [["左辅", "右弼"], ["文昌", "文曲"], ["天魁", "天钺"]], "operator": "equals", "value": 0, "source_layer": "$current_layer"}
+    ], "note_template": "{focus_palace}紫微守命且会见臣星，但左辅右弼、文昌文曲、天魁天钺均未成对，标记为紫微孤君，不触发君臣庆会格。"}
+  ],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed", "breaker_matched": "broken"},
+  "default_grade": "初成（低档）",
+  "grade_rules": [
+    {"grade": "百官朝拱（高档）", "when": {"id": "grade_three_pairs", "predicate": "star.complete_pair_count", "scope": "four_directions", "pairs": [["左辅", "右弼"], ["文昌", "文曲"], ["天魁", "天钺"]], "operator": "greater_or_equal", "value": 3, "source_layer": "$current_layer"}},
+    {"grade": "中档", "when": {"id": "grade_two_pairs", "predicate": "star.complete_pair_count", "scope": "four_directions", "pairs": [["左辅", "右弼"], ["文昌", "文曲"], ["天魁", "天钺"]], "operator": "greater_or_equal", "value": 2, "source_layer": "$current_layer"}}
+  ],
+  "break_check": {"break_star": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫", "化忌"], "scan_scope": "命宫三方四正", "note": "六臣星成对骨架满足后，三方四正任见六煞或化忌即保留命中并标记broken。"},
+  "result": {
+    "nature": "auspicious_with_breaker",
+    "summary": "紫微守命，三方四正六臣星至少凑齐一组完整对星，方成君臣庆会；按完整对数分初成、中档、百官朝拱。",
+    "interpretation_template": "{effect_palace}命中君臣庆会格，档位为{grade}；六臣星完整对数及煞忌状态以结构化字段为准。",
+    "status_messages": {"broken": "六臣星成对骨架成立，但命宫三方四正见六煞或化忌，按确认口径标记奴欺主破格。"},
+    "notes": ["六臣星仅取左辅右弼、文昌文曲、天魁天钺；天府天相只作增益备注；天同天梁不参与本版计数。"]
+  },
+  "examples": [
+    {"name": "紫微守命魁钺成对初成", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "天钺", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": [{"name": "天魁", "source_layer": "natal"}]}, "four_directions": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "天钺", "source_layer": "natal"}, {"name": "天魁", "source_layer": "natal"}]} }}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "三对齐全百官朝拱", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}]}, "four_directions": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "左辅", "source_layer": "natal"}, {"name": "右弼", "source_layer": "natal"}, {"name": "文昌", "source_layer": "natal"}, {"name": "文曲", "source_layer": "natal"}, {"name": "天魁", "source_layer": "natal"}, {"name": "天钺", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "三颗孤星不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}]}, "four_directions": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "左辅", "source_layer": "natal"}, {"name": "文昌", "source_layer": "natal"}, {"name": "天魁", "source_layer": "natal"}]}}}, "expected": {"matched": false}},
+    {"name": "成对但三方见地劫破格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}]}, "four_directions": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "文昌", "source_layer": "natal"}, {"name": "文曲", "source_layer": "natal"}, {"name": "地劫", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}}
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "君臣庆会格六臣星数量阈值确认", "received_at": "2026-09-03", "original_text": "君臣庆会，才善经邦。"},
+    {"kind": "user_confirmed_rule_decision", "note": "紫微必须守命；六臣星为左右、昌曲、魁钺，至少一组完整成对才formed；按完整对数分三级；天府天相只增强；三方四正六煞化忌任见即broken；无成对则紫微孤君。"}
+  ],
+  "updated_at": "2026-09-03"
+}

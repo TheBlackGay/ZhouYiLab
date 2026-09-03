@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.qi_sha_chao_dou",
+  "revision": 1,
+  "enabled": true,
+  "name": "七杀朝斗格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["七杀", "廉贞", "左辅", "右弼", "天魁", "天钺", "文昌", "文曲", "擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+  "output_flags": {"has_auspicious": "auspicious_stars_in_scope", "is_auspicious_limit": "auspicious_limit"},
+  "required": {
+    "id": "qi_sha_chao_dou_base",
+    "name": "七杀朝斗格身命基础条件",
+    "all": [
+      {
+        "id": "qi_sha_target_role",
+        "name": "目标是命宫或身宫",
+        "predicate": "focus.role_in",
+        "values": ["ming", "body"]
+      },
+      {
+        "id": "qi_sha_target_branch",
+        "name": "目标命宫或身宫位于寅申子午",
+        "predicate": "focus.branch_in",
+        "values": ["寅", "申", "子", "午"]
+      },
+      {
+        "id": "qi_sha_in_target",
+        "name": "七杀坐守目标宫",
+        "predicate": "star.same_palace",
+        "values": ["七杀"],
+        "source_layer": "$current_layer"
+      }
+    ]
+  },
+  "enhancers": [
+    {
+      "id": "auspicious_stars_in_scope",
+      "name": "左右魁钺昌曲坐照",
+      "predicate": "star.contains_in_scopes",
+      "scopes": ["self", "triads", "opposite"],
+      "values": ["左辅", "右弼", "天魁", "天钺", "文昌", "文曲"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "auspicious_limit",
+      "name": "遇吉限尤美",
+      "all": [
+        {
+          "id": "auspicious_limit_decade_layer",
+          "name": "当前为大限层",
+          "predicate": "layer.equals",
+          "value": "decade"
+        },
+        {
+          "id": "auspicious_limit_flag",
+          "name": "大限上下文标记为吉限",
+          "predicate": "limit.is_auspicious"
+        }
+      ]
+    }
+  ],
+  "weakeners": [],
+  "breakers": [
+    {
+      "id": "qi_sha_target_malefic",
+      "name": "目标宫加煞则破格",
+      "predicate": "star.contains",
+      "scope": "self",
+      "category": "malefic",
+      "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+      "source_layer": "$current_layer"
+    }
+  ],
+  "observations": [
+    {
+      "id": "qi_sha_three_direction_malefic_note",
+      "name": "三方四正煞曜仅作备注",
+      "predicate": "star.count",
+      "scope": "four_directions",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "qi_sha_chen_wu_shape_note",
+      "name": "子午廉贞七杀同宫形态",
+      "all": [
+        {"id": "qi_sha_chen_wu_branch", "name": "目标位于子午", "predicate": "focus.branch_in", "values": ["子", "午"]},
+        {"id": "qi_sha_chen_wu_lianzhen", "name": "目标同宫有廉贞", "predicate": "star.same_palace", "values": ["廉贞"], "source_layer": "$current_layer"}
+      ]
+    },
+    {
+      "id": "qi_sha_yin_shen_shape_note",
+      "name": "寅申七杀独坐形态",
+      "all": [
+        {"id": "qi_sha_yin_shen_branch", "name": "目标位于寅申", "predicate": "focus.branch_in", "values": ["寅", "申"]},
+        {"id": "qi_sha_yin_shen_no_lianzhen", "name": "目标不见廉贞", "predicate": "star.count", "scope": "self", "stars": ["廉贞"], "operator": "equals", "value": 0, "source_layer": "$current_layer"}
+      ]
+    }
+  ],
+  "ordinary_palace_observations": [
+    {
+      "id": "ordinary_qi_sha_target_note",
+      "name": "普通宫位七杀朝斗现象",
+      "predicate": "star.same_palace",
+      "scope": "self",
+      "values": ["七杀"],
+      "source_layer": "$current_layer",
+      "note_template": "{focus_palace}见七杀坐守，但非命宫/身宫，不触发七杀朝斗格"
+    }
+  ],
+  "status_policy": {
+    "required_matched": "formed",
+    "enhancer_matched": "strengthened",
+    "breaker_matched": "broken"
+  },
+  "result": {
+    "nature": "auspicious_with_strict_breaker",
+    "summary": "严格按给定古文匹配寅申子午命身坐七杀；左右魁钺昌曲坐照为可选增益，本宫加擎羊、陀罗、火星、铃星、地空、地劫则破格。",
+    "interpretation_template": "{effect_palace}命中七杀朝斗格。古诀称爵禄荣昌；本结果只确认文本结构，不把古文断语转换为现实事件保证。"
+  },
+  "examples": [
+    {
+      "name": "寅宫命宫七杀无吉星仍基础命中",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "七杀", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "子宫身宫廉贞七杀同宫且有吉星坐照",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "子", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "source_layer": "natal"}, {"name": "七杀", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "文昌", "source_layer": "natal"}]}, "opposite": {"stars": [{"name": "天魁", "source_layer": "natal"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "夫妻宫"}
+    },
+    {
+      "name": "目标宫见火星破格但保留命中",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "申", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "七杀", "source_layer": "natal"}, {"name": "火星", "category": "malefic", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}
+    },
+    {
+      "name": "七杀在财帛宫不触发身命格",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "财帛宫", "branch": "寅", "roles": [], "effect_subject": ["财帛主题"]}, "scopes": {"self": {"stars": [{"name": "七杀", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    }
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "七杀朝斗格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "七杀朝斗爵禄荣昌。假如寅申子午四宫安身命，七杀值之是也，亦要左右魁钺昌曲坐照，相合一生富贵荣华，或遇吉限尤美，若加煞不是。"},
+    {"kind": "user_confirmed_rule_decision", "note": "基础条件为寅申子午命身坐七杀；六吉星任意一颗本宫、三方或对宫即has_auspicious；本宫六煞任意一颗破格，三方四正煞曜只备注；本命和大限独立匹配，吉限仅大限层。"}
+  ],
+  "updated_at": "2026-09-02"
+}

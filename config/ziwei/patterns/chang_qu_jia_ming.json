@@ -1,0 +1,225 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.changqu.flanking",
+  "revision": 3,
+  "enabled": true,
+  "name": "昌曲夹命格",
+  "category": "flanking_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal"],
+  "applicable_focus_palaces": ["*"],
+  "required": {
+    "id": "chang_qu_flank_variants",
+    "name": "昌曲夹命夹身严格子型",
+    "any": [
+      {
+        "id": "chang_qu_flank_ming_shen",
+        "name": "昌曲夹命夹身",
+        "all": [
+          {
+            "id": "chang_qu_target_role",
+            "name": "目标是命宫或身宫",
+            "predicate": "focus.role_in",
+            "values": ["ming", "body"]
+          },
+          {
+            "id": "chang_qu_strict_flank",
+            "name": "文昌文曲分居目标左右邻宫",
+            "predicate": "star.flanks",
+            "values": ["文昌", "文曲"],
+            "source_layer": "$current_layer"
+          }
+        ]
+      }
+    ]
+  },
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [
+    {
+      "id": "target_kong_jie_yang_ling",
+      "name": "目标命宫或身宫见空劫羊铃",
+      "predicate": "star.contains",
+      "scope": "self",
+      "values": ["地空", "地劫", "擎羊", "铃星"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "left_flank_kong_jie_yang_ling",
+      "name": "左夹宫见空劫羊铃",
+      "predicate": "star.contains",
+      "scope": "adjacent_left",
+      "values": ["地空", "地劫", "擎羊", "铃星"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "right_flank_kong_jie_yang_ling",
+      "name": "右夹宫见空劫羊铃",
+      "predicate": "star.contains",
+      "scope": "adjacent_right",
+      "values": ["地空", "地劫", "擎羊", "铃星"],
+      "source_layer": "$current_layer"
+    }
+  ],
+  "observations": [
+    {
+      "id": "four_directions_malefics_note",
+      "name": "三方四正煞星备注",
+      "predicate": "star.count",
+      "scope": "four_directions",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    }
+  ],
+  "ordinary_palace_observations": [
+    {
+      "id": "ordinary_chang_qu_flank_note",
+      "name": "普通宫位被昌曲夹辅",
+      "predicate": "star.flanks",
+      "values": ["文昌", "文曲"],
+      "source_layer": "$current_layer",
+      "note_template": "{focus_palace}被昌曲夹辅（仅作现象描述，不构成昌曲夹命格）"
+    }
+  ],
+  "status_policy": {
+    "required_matched": "formed",
+    "breaker_matched": "broken"
+  },
+  "result": {
+    "nature": "auspicious",
+    "summary": "严格按文昌文曲夹命夹身；目标本宫或两个夹宫见地空、地劫、擎羊、铃星时标记破格，三方四正煞曜只作备注。",
+    "interpretation_template": "{effect_palace}命中昌曲夹命格。古文断为贵；本结果只确认原文结构与破格条件，不把断语转换为现实事件保证。"
+  },
+  "examples": [
+    {
+      "name": "文昌文曲分居命宫两侧成格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "甲", "palaces": []},
+        "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+            "adjacent_left": {"palace": {"name": "兄弟宫", "branch": "巳"}, "stars": [{"name": "文昌", "source_layer": "natal", "physical_palace": "兄弟宫"}]},
+          "adjacent_right": {"palace": {"name": "父母宫", "branch": "未"}, "stars": [{"name": "文曲", "source_layer": "natal", "physical_palace": "父母宫"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "文昌文曲分居身宫两侧且无空劫羊铃则昌曲夹身成格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "戊", "palaces": []},
+        "focus": {"name": "夫妻宫", "branch": "酉", "roles": ["body"], "effect_subject": ["身宫所落主题"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"palace": {"name": "子女宫", "branch": "申"}, "stars": [{"name": "文昌", "source_layer": "natal", "physical_palace": "子女宫"}]},
+          "adjacent_right": {"palace": {"name": "兄弟宫", "branch": "戌"}, "stars": [{"name": "文曲", "source_layer": "natal", "physical_palace": "兄弟宫"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "夫妻宫"}
+    },
+    {
+      "name": "日月夹不再属于昌曲夹命格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "庚", "palaces": []},
+        "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [{"name": "太阳", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "太阴", "source_layer": "natal"}]}
+        }
+      },
+      "expected": {"matched": false}
+    },
+    {
+      "name": "目标命宫见地空则结构命中但状态破格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "辛", "palaces": []},
+        "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": [{"name": "地空", "category": "malefic", "source_layer": "natal", "physical_palace": "命宫"}]},
+          "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [{"name": "文昌", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "文曲", "source_layer": "natal"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}
+    },
+    {
+      "name": "右夹宫见铃星则结构命中但状态破格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "乙", "palaces": []},
+        "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [{"name": "文昌", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "文曲", "source_layer": "natal"}, {"name": "铃星", "category": "malefic", "source_layer": "natal", "physical_palace": "父母宫"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}
+    },
+    {
+      "name": "三方见擎羊只作备注不破格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "壬", "palaces": []},
+        "focus": {"name": "命宫", "branch": "亥", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": []},
+          "four_directions": {"stars": [{"name": "擎羊", "category": "malefic", "source_layer": "natal", "physical_palace": "财帛宫"}]},
+          "adjacent_left": {"stars": [{"name": "文昌", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "文曲", "source_layer": "natal"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "普通财帛宫出现日月夹只输出现象不成格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "癸", "palaces": []},
+        "focus": {"name": "财帛宫", "branch": "申", "roles": [], "effect_subject": ["财帛主题"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [{"name": "太阳", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "太阴", "source_layer": "natal"}]}
+        }
+      },
+      "expected": {"matched": false}
+    },
+    {
+      "name": "文昌文曲同在一侧不构成昌曲夹命",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "丙", "palaces": []},
+        "focus": {"name": "命宫", "branch": "巳", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [{"name": "文昌", "source_layer": "natal"}, {"name": "文曲", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": false}
+    }
+  ],
+  "sources": [
+    {
+      "kind": "user_supplied_primary_text",
+      "title": "昌曲夹命格给定原文及结构化规则确认",
+      "received_at": "2026-09-01",
+      "original_text": "假如太阳太阴在身命前后二宫，夹命不逢空劫羊铃，其贵必矣，如昌曲夹命亦如之。"
+    },
+    {
+      "kind": "user_confirmed_rule_decision",
+      "note": "仅命宫、身宫成格；本配置仅保留文昌文曲夹命夹身；目标本宫和夹宫的地空地劫擎羊铃星破格，三方四正只备注；日月夹命已拆分为独立格局。"
+    }
+  ],
+  "updated_at": "2026-09-01"
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhouyilab.local/schema/ziwei/ai-model-providers-v0.1.json",
+  "title": "ZhouYiLab AI Model Providers",
+  "type": "object",
+  "required": ["config_version", "providers"],
+  "properties": {
+    "config_version": {"const": "0.1.0"},
+    "providers": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["provider_id", "label", "protocol", "base_url", "model", "model_family", "enabled"],
+        "properties": {
+          "provider_id": {"type": "string", "minLength": 1, "maxLength": 80},
+          "label": {"type": "string", "minLength": 1, "maxLength": 80},
+          "protocol": {"enum": ["openai_compatible", "ollama"]},
+          "base_url": {"type": "string", "format": "uri", "maxLength": 500},
+          "model": {"type": "string", "minLength": 1, "maxLength": 160},
+          "model_family": {"type": "string", "minLength": 1, "maxLength": 80},
+          "api_key_env": {"type": "string"},
+          "api_key": {"type": "string"},
+          "enabled": {"type": "boolean"},
+          "temperature": {"type": "number", "minimum": 0, "maximum": 2},
+          "repetitions": {"type": "integer", "minimum": 1, "maximum": 5},
+          "model_seed": {"type": ["integer", "null"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -57,8 +57,8 @@ public:
         // 1. 确定阴阳遁
         pan.dun = get_dun_from_solar_term(solar_term);
         
-        // 2. 根据日地支确定三元
-        pan.yuan = get_yuan_from_di_zhi(di_zhi_day);
+        // 2. 拆补法按日干支回推符头并确定三元
+        pan.yuan = get_yuan_from_gan_zhi(tian_gan_day, di_zhi_day);
         
         // 3. 确定局数
         pan.ju = get_ju_from_solar_term_and_yuan(solar_term, pan.yuan);
@@ -70,7 +70,7 @@ public:
         arrange_di_pan(pan, pan.ju);
         
         // 6. 确定直符和直使
-        determine_zhi_fu_and_zhi_shi(pan, tian_gan_day, di_zhi_day, tian_gan_hour, di_zhi_hour);
+        determine_zhi_fu_and_zhi_shi(pan, tian_gan_hour, di_zhi_hour);
         
         // 7. 排布天盘（天盘天干）
         arrange_tian_pan(pan, tian_gan_hour, di_zhi_hour);
@@ -79,7 +79,7 @@ public:
         arrange_jiu_xing(pan, tian_gan_hour);
         
         // 8. 排布人盘（人盘八门）
-        arrange_ren_pan(pan, tian_gan_hour);
+        arrange_ren_pan(pan, tian_gan_hour, di_zhi_hour);
         
         // 9. 排布神盘（八神）
         arrange_shen_pan(pan);
@@ -92,8 +92,7 @@ private:
      * @brief 排布地盘天干
      * 
      * 地盘天干按照戊己庚辛壬癸丁丙乙的顺序排列
-     * 阳遁：戊从局数宫开始，按洛书顺序顺飞
-     * 阴遁：戊从局数宫开始，按九宫数字逆飞
+     * 阳遁从局数宫按九宫数字顺飞，阴遁按九宫数字逆飞
      */
     static void arrange_di_pan(QiMenPan& pan, std::uint8_t ju) {
         // 地盘干固定顺序：戊己庚辛壬癸丁丙乙
@@ -109,70 +108,43 @@ private:
             palace_info.di_gan = 0;  // 先初始化
             palace_info.tian_gan = 0;
             palace_info.ren_gan = 0;
+            palace_info.lodged_tian_gan.reset();
+            palace_info.tian_qin_lodged = false;
         }
         
-        if (pan.dun == Dun::Yang) {
-            // 阳遁：戊从局数宫开始，按洛书顺序顺飞
-            // 洛书顺序：1→8→3→4→9→2→7→6
-            auto luo_shu = get_luo_shu_order();
-            
-            // 处理局数为5的情况，中宫寄坤2宫
-            std::uint8_t start_gong = (ju == 5) ? 2 : ju;
-            
-            // 找到起始宫在洛书顺序中的位置
-            std::size_t start_idx = 0;
-            for (std::size_t i = 0; i < luo_shu.size(); ++i) {
-                if (luo_shu[i] == start_gong) {
-                    start_idx = i;
-                    break;
-                }
-            }
-            
-            // 按洛书顺序顺飞排布地盘干
-            for (std::size_t i = 0; i < 8; ++i) {
-                std::size_t gong_idx = (start_idx + i) % 8;
-                std::uint8_t gong_num = luo_shu[gong_idx];
-                pan.palaces[gong_num - 1].di_gan = gan_seq[i];
-            }
-            
-            // 中宫寄坤2宫
-            pan.palaces[4].di_gan = pan.palaces[1].di_gan;  // 中宫(5) = 坤2宫(2)
-            
-        } else {
-            // 阴遁：戊从局数寫开始，按九宫数字递减
-            // 阴遁顺序（以阴遁2局为例）：2→1→9→8→7→6→5→4→3
-            std::uint8_t current_gong = ju;
-            
-            for (std::size_t i = 0; i < 9; ++i) {
-                pan.palaces[current_gong - 1].di_gan = gan_seq[i];
-                
-                // 递减，遇到0后跳到9
-                current_gong--;
-                if (current_gong == 0) {
-                    current_gong = 9;
-                }
-            }
+        int current_gong = ju;
+        for (std::size_t i = 0; i < 9; ++i) {
+            pan.palaces[static_cast<std::size_t>(current_gong - 1)].di_gan = gan_seq[i];
+            current_gong += pan.dun == Dun::Yang ? 1 : -1;
+            if (current_gong == 10) current_gong = 1;
+            if (current_gong == 0) current_gong = 9;
         }
     }
     
-    /**
-     * @brief 获取局数对应的起始宫位
-     */
-    static constexpr Palace get_palace_for_ju(std::uint8_t ju) noexcept {
-        // 局数与起始宫位的对应关系
-        // 这里简化处理，实际应根据具体的排盘规则
-        switch (ju) {
-            case 1: return Palace::North;
-            case 2: return Palace::SouthWest;
-            case 3: return Palace::East;
-            case 4: return Palace::SouthEast;
-            case 5: return Palace::Center;
-            case 6: return Palace::NorthWest;
-            case 7: return Palace::West;
-            case 8: return Palace::NorthEast;
-            case 9: return Palace::South;
-            default: return Palace::Center;
+    static constexpr std::uint8_t effective_rotating_palace(
+        std::uint8_t palace
+    ) noexcept {
+        return palace == 5 ? 2 : palace;
+    }
+
+    static std::uint8_t find_di_gan_palace(
+        const QiMenPan& pan,
+        std::uint8_t stem
+    ) noexcept {
+        for (const auto& palace : pan.palaces) {
+            if (palace.di_gan == stem) {
+                return effective_rotating_palace(get_number_from_palace(palace.palace));
+            }
         }
+        return 2;
+    }
+
+    static std::size_t ring_index(std::uint8_t palace) noexcept {
+        const auto order = get_luo_shu_order();
+        for (std::size_t i = 0; i < order.size(); ++i) {
+            if (order[i] == palace) return i;
+        }
+        return 0;
     }
     
     /**
@@ -180,13 +152,11 @@ private:
      */
     static void determine_zhi_fu_and_zhi_shi(
         QiMenPan& pan,
-        std::uint8_t tian_gan_day,
-        std::uint8_t di_zhi_day,
         std::uint8_t tian_gan_hour,
         std::uint8_t di_zhi_hour
     ) {
-        // 根据日干支确定旬首（时家奇门用日干支）
-        JiaXun jia_xun = get_jia_xun_from_gan_zhi(tian_gan_day, di_zhi_day);
+        // 时家奇门以时柱所在六甲旬确定旬首六仪
+        JiaXun jia_xun = get_jia_xun_from_gan_zhi(tian_gan_hour, di_zhi_hour);
         
         // 获取旬首对应的六仪
         std::uint8_t liu_yi = get_liu_yi_from_jia_xun(jia_xun);
@@ -196,15 +166,20 @@ private:
         for (std::size_t i = 0; i < 9; ++i) {
             if (pan.palaces[i].di_gan == liu_yi) {
                 // 找到了旬首六仪在地盘上的位置
-                zhi_fu_gong = get_number_from_palace(pan.palaces[i].palace);
+                zhi_fu_gong = effective_rotating_palace(
+                    get_number_from_palace(pan.palaces[i].palace)
+                );
+                const auto effective_palace = get_palace_from_number(zhi_fu_gong);
                 
                 // 值符星 = 该宫位原位的九星
-                pan.zhi_fu_star = get_star_at_palace(pan.palaces[i].palace);
+                pan.zhi_fu_star = get_star_at_palace(effective_palace);
                 
                 // 值使门 = 该宫位原位的八门
-                pan.zhi_shi_gate = get_gate_at_palace(pan.palaces[i].palace);
+                pan.zhi_shi_gate = get_gate_at_palace(effective_palace);
                 
-                pan.zhi_fu_palace = pan.palaces[i].palace;
+                pan.zhi_fu_palace = effective_palace;
+                pan.zhi_fu_origin_palace = effective_palace;
+                pan.zhi_shi_palace = effective_palace;
                 break;
             }
         }
@@ -213,8 +188,10 @@ private:
         if (zhi_fu_gong == 0) {
             zhi_fu_gong = 2;
             pan.zhi_fu_palace = Palace::SouthWest;
+            pan.zhi_fu_origin_palace = Palace::SouthWest;
             pan.zhi_fu_star = get_star_at_palace(Palace::SouthWest);
             pan.zhi_shi_gate = get_gate_at_palace(Palace::SouthWest);
+            pan.zhi_shi_palace = Palace::SouthWest;
         }
     }
     
@@ -233,178 +210,84 @@ private:
         std::uint8_t tian_gan,
         std::uint8_t di_zhi
     ) noexcept {
-        // 计算天干地支组合在六十甲子中的位置
-        // 六十甲子索引 = (tian_gan * 6 + di_zhi * 5) % 60
-        // 但更简单的方法是直接用 (tian_gan + di_zhi * 10) % 60
-        // 或者根据地支判断旬首
-        
-        // 简化算法：根据地支除以 2 的余数分组
-        // 甲子旬：地支为子(酉、子，地支 0-9
-        // 甲戌旬：地支为戌亥，地支 10-11
-        // 但这种方法不准确
-        
-        // 正确的方法：根据地支判断旬首
-        // 每个旬首包含 10 个干支，地支每 2 个为一组
-        switch (di_zhi) {
-            case 0:  // 子
-            case 1:  // 丑
-                return JiaXun::JiaZi;
-            case 2:  // 寅
-            case 3:  // 卯
-                return JiaXun::JiaYin;
-            case 4:  // 辰
-            case 5:  // 己
-                return JiaXun::JiaChen;
-            case 6:  // 午
-            case 7:  // 未
-                return JiaXun::JiaWu;
-            case 8:  // 申
-            case 9:  // 酉
-                return JiaXun::JiaShen;
-            case 10: // 戌
-            case 11: // 亥
-                return JiaXun::JiaXu;
+        const auto xun_head_branch = static_cast<std::uint8_t>(
+            (di_zhi + 12 - tian_gan) % 12
+        );
+        switch (xun_head_branch) {
+            case 0: return JiaXun::JiaZi;
+            case 10: return JiaXun::JiaXu;
+            case 8: return JiaXun::JiaShen;
+            case 6: return JiaXun::JiaWu;
+            case 4: return JiaXun::JiaChen;
+            case 2: return JiaXun::JiaYin;
             default:
                 return JiaXun::JiaZi;
         }
+    }
+
+    static constexpr std::uint8_t get_xun_head_branch(JiaXun xun) noexcept {
+        switch (xun) {
+            case JiaXun::JiaZi: return 0;
+            case JiaXun::JiaXu: return 10;
+            case JiaXun::JiaShen: return 8;
+            case JiaXun::JiaWu: return 6;
+            case JiaXun::JiaChen: return 4;
+            case JiaXun::JiaYin: return 2;
+        }
+        return 0;
     }
     
     /**
      * @brief 排布天盘天干（转盘法）
      * 
-     * 天盘地盘整体从值符宫转动到时干落宫
-     * 阳遁顺转，阴遁逆转
+     * 天盘整体转动，使值符星落到时干所在宫
      */
     static void arrange_tian_pan(QiMenPan& pan, std::uint8_t tian_gan_hour, std::uint8_t di_zhi_hour) {
-        // 1. 值符宫 = 旬首六仪在地盘上的位置（已在 determine_zhi_fu_and_zhi_shi 中确定）
-        std::uint8_t zhi_fu_gong = get_number_from_palace(pan.zhi_fu_palace);
-        
-        // 2. 时干落宫 = 时干在地盘上的位置
-        std::uint8_t shi_gan_gong = 0;
-        
-        // 如果时干为甲，甲隐于旬首六仪之下，落宫就是值符宫
-        if (tian_gan_hour == 0) {  // 甲 = 0
-            shi_gan_gong = zhi_fu_gong;
-        } else {
-            // 在地盘上查找时干的位置
-            for (std::size_t i = 0; i < 9; ++i) {
-                if (pan.palaces[i].di_gan == tian_gan_hour) {
-                    shi_gan_gong = get_number_from_palace(pan.palaces[i].palace);
-                    break;
-                }
-            }
-            
-            // 如果没找到（中宫的情况），寄坤2宫
-            if (shi_gan_gong == 0) {
-                shi_gan_gong = 2;
-            }
-        }
-        
-        // 3. 计算转动步数
-        auto luo_shu = get_luo_shu_order();
-        
-        // 找到值符宫和时干落宫在洛书顺序中的位置
-        std::size_t zhi_fu_idx = 0;
-        std::size_t shi_gan_idx = 0;
-        
-        for (std::size_t i = 0; i < luo_shu.size(); ++i) {
-            if (luo_shu[i] == zhi_fu_gong) {
-                zhi_fu_idx = i;
-            }
-            if (luo_shu[i] == shi_gan_gong) {
-                shi_gan_idx = i;
-            }
-        }
-        
-        // 计算步数
-        std::size_t steps;
-        if (pan.dun == Dun::Yang) {
-            // 阳遁顺转
-            steps = (shi_gan_idx - zhi_fu_idx + 8) % 8;
-        } else {
-            // 阴遁逆转
-            steps = (zhi_fu_idx - shi_gan_idx + 8) % 8;
-        }
+        const auto jia_xun = get_jia_xun_from_gan_zhi(tian_gan_hour, di_zhi_hour);
+        const auto effective_hour_stem = tian_gan_hour == 0
+            ? get_liu_yi_from_jia_xun(jia_xun)
+            : tian_gan_hour;
+        const auto source_gong = get_number_from_palace(pan.zhi_fu_origin_palace);
+        const auto target_gong = find_di_gan_palace(pan, effective_hour_stem);
+        const auto steps = (ring_index(target_gong) - ring_index(source_gong) + 8) % 8;
+        const auto luo_shu = get_luo_shu_order();
         
         // 4. 天盘整体转动
         // 天盘干就是地盘干整体移动
-        std::array<std::uint8_t, 9> temp_tian_gan;
+        std::array<std::uint8_t, 9> temp_tian_gan{};
         
         for (std::size_t i = 0; i < 8; ++i) {
             std::uint8_t di_pan_gong = luo_shu[i];
             std::uint8_t di_pan_gan = pan.palaces[di_pan_gong - 1].di_gan;
             
-            std::size_t tian_pan_idx;
-            if (pan.dun == Dun::Yang) {
-                // 阳遁顺转
-                tian_pan_idx = (i + steps) % 8;
-            } else {
-                // 阴遁逆转
-                tian_pan_idx = (i - steps + 8) % 8;
-            }
+            const std::size_t tian_pan_idx = (i + steps) % 8;
             
             std::uint8_t tian_pan_gong = luo_shu[tian_pan_idx];
             temp_tian_gan[tian_pan_gong - 1] = di_pan_gan;
         }
         
-        // 中宫天盘干与2宫相同（寄坤宫）
-        temp_tian_gan[4] = temp_tian_gan[1];  // 中宫(5) = 坤2宫(2)
+        // 中宫天盘干单独保留；转盘判宫时寄坤二宫
+        temp_tian_gan[4] = pan.palaces[4].di_gan;
         
         // 应用到宫位
         for (std::size_t i = 0; i < 9; ++i) {
             pan.palaces[i].tian_gan = temp_tian_gan[i];
         }
+        pan.zhi_fu_palace = get_palace_from_number(target_gong);
     }
     
     /**
      * @brief 排布九星（转盘法）
      * 
      * 九星按洛书顺序从值符宫整体转动到时干落宫
-     * 天禽寄坤2宫，中宫不显示九星或与坤宫同
+     * 天禽留中，参与转盘判宫时寄坤二宫
      */
     static void arrange_jiu_xing(QiMenPan& pan, std::uint8_t tian_gan_hour) {
-        // 1. 值符宫 = 旬首六仪在地盘上的位置
-        std::uint8_t zhi_fu_gong = get_number_from_palace(pan.zhi_fu_palace);
-        
-        // 2. 时干落宫 = 时干在地盘上的位置
-        std::uint8_t shi_gan_gong = 0;
-        
-        // 如果时干为甲，甲隐于旬首六仪之下，落宫就是值符宫
-        if (tian_gan_hour == 0) {  // 甲 = 0
-            shi_gan_gong = zhi_fu_gong;
-        } else {
-            // 在地盘上查找时干的位置
-            for (std::size_t i = 0; i < 9; ++i) {
-                if (pan.palaces[i].di_gan == tian_gan_hour) {
-                    shi_gan_gong = get_number_from_palace(pan.palaces[i].palace);
-                    break;
-                }
-            }
-            
-            // 如果没找到（中宫的情况），寄坤2宫
-            if (shi_gan_gong == 0) {
-                shi_gan_gong = 2;
-            }
-        }
-        
-        // 3. 计算转动步数
-        auto luo_shu = get_luo_shu_order();
-        
-        // 找到值符宫和时干落宫在洛书顺序中的位置
-        std::size_t zhi_fu_idx = 0;
-        std::size_t shi_gan_idx = 0;
-        
-        for (std::size_t i = 0; i < luo_shu.size(); ++i) {
-            if (luo_shu[i] == zhi_fu_gong) {
-                zhi_fu_idx = i;
-            }
-            if (luo_shu[i] == shi_gan_gong) {
-                shi_gan_idx = i;
-            }
-        }
-        
-        // 计算步数（九星总是顺转）
-        std::size_t steps = (shi_gan_idx - zhi_fu_idx + 8) % 8;
+        static_cast<void>(tian_gan_hour);
+        const auto source_gong = get_number_from_palace(pan.zhi_fu_origin_palace);
+        const auto target_gong = get_number_from_palace(pan.zhi_fu_palace);
+        const auto steps = (ring_index(target_gong) - ring_index(source_gong) + 8) % 8;
+        const auto luo_shu = get_luo_shu_order();
         
         // 4. 九星整体转动
         std::array<Star, 9> temp_stars;
@@ -421,68 +304,50 @@ private:
             temp_stars[new_gong - 1] = original_star;
         }
         
-        // 天禽在中寫，中宫不显示九星（或与坤2宫同）
-        temp_stars[4] = temp_stars[1];  // 中宫(5) = 坤2宫(2)
+        // 天禽在中宫，转盘判宫时寄坤二宫
+        temp_stars[4] = Star::TianQin;
         
         // 应用到宫位
         for (std::size_t i = 0; i < 9; ++i) {
             pan.palaces[i].star = temp_stars[i];
+            if (temp_stars[i] == Star::TianRui) {
+                pan.palaces[i].tian_qin_lodged = true;
+                pan.palaces[i].lodged_tian_gan = pan.palaces[4].di_gan;
+            }
         }
     }
     
     /**
      * @brief 排布人盘八门（转盘法）
      * 
-     * 八门按洛书顺序从值符宫整体转动到时干落宫
-     * 转动步数是九星的2倍
-     * 阳遁顺转，阴遁逆转
+     * 值使从旬首宫起，从旬首地支数到当前时支：阳顺阴逆走九宫数字，
+     * 路径包含中五；落中五时寄坤二，再带动八门在外围八宫整体转盘
      */
-    static void arrange_ren_pan(QiMenPan& pan, std::uint8_t tian_gan_hour) {
-        // 1. 值符宫 = 旬首六仪在地盘上的位置
-        std::uint8_t zhi_fu_gong = get_number_from_palace(pan.zhi_fu_palace);
-        
-        // 2. 时干落宫 = 时干在地盘上的位置
-        std::uint8_t shi_gan_gong = 0;
-        
-        // 如果时干为甲，甲隐于旬首六仪之下，落宫就是值符宫
-        if (tian_gan_hour == 0) {  // 甲 = 0
-            shi_gan_gong = zhi_fu_gong;
-        } else {
-            // 在地盘上查找时干的位置
-            for (std::size_t i = 0; i < 9; ++i) {
-                if (pan.palaces[i].di_gan == tian_gan_hour) {
-                    shi_gan_gong = get_number_from_palace(pan.palaces[i].palace);
-                    break;
-                }
-            }
-            
-            // 如果没找到（中宫的情况），寄坤2宫
-            if (shi_gan_gong == 0) {
-                shi_gan_gong = 2;
-            }
-        }
-        
-        // 3. 计算转动步数
-        auto luo_shu = get_luo_shu_order();
-        
-        // 找到值符宫和时干落宫在洛书顺序中的位置
-        std::size_t zhi_fu_idx = 0;
-        std::size_t shi_gan_idx = 0;
-        
-        for (std::size_t i = 0; i < luo_shu.size(); ++i) {
-            if (luo_shu[i] == zhi_fu_gong) {
-                zhi_fu_idx = i;
-            }
-            if (luo_shu[i] == shi_gan_gong) {
-                shi_gan_idx = i;
-            }
-        }
-        
-        // 计算基础步数（与九星相同）
-        std::size_t base_steps = (shi_gan_idx - zhi_fu_idx + 8) % 8;
-        
-        // 八门转动步数是九星的2倍
-        std::size_t steps = (base_steps * 2) % 8;
+    static void arrange_ren_pan(
+        QiMenPan& pan,
+        std::uint8_t tian_gan_hour,
+        std::uint8_t di_zhi_hour
+    ) {
+        const auto jia_xun = get_jia_xun_from_gan_zhi(tian_gan_hour, di_zhi_hour);
+        const auto branch_steps = static_cast<int>(
+            (di_zhi_hour + 12 - get_xun_head_branch(jia_xun)) % 12
+        );
+        const auto source_gong = get_number_from_palace(pan.zhi_fu_origin_palace);
+        int target_gong = static_cast<int>(source_gong)
+            + (pan.dun == Dun::Yang ? branch_steps : -branch_steps);
+        target_gong = (target_gong - 1) % 9;
+        if (target_gong < 0) target_gong += 9;
+        target_gong = effective_rotating_palace(
+            static_cast<std::uint8_t>(target_gong + 1)
+        );
+        const auto steps = (
+            ring_index(static_cast<std::uint8_t>(target_gong))
+            - ring_index(source_gong) + 8
+        ) % 8;
+        const auto luo_shu = get_luo_shu_order();
+        pan.zhi_shi_palace = get_palace_from_number(
+            static_cast<std::uint8_t>(target_gong)
+        );
         
         // 4. 八门整体转动
         std::array<Gate, 9> temp_gates;
@@ -492,15 +357,7 @@ private:
             Palace original_palace = get_palace_from_number(original_gong);
             Gate original_gate = get_gate_at_palace(original_palace);
             
-            // 转动后的宫位
-            std::size_t new_idx;
-            if (pan.dun == Dun::Yang) {
-                // 阳遁顺转
-                new_idx = (i + steps) % 8;
-            } else {
-                // 阴遁逆转
-                new_idx = (i - steps + 8) % 8;
-            }
+            const std::size_t new_idx = (i + steps) % 8;
             
             std::uint8_t new_gong = luo_shu[new_idx];
             temp_gates[new_gong - 1] = original_gate;
@@ -561,7 +418,7 @@ private:
         }
         
         // 中宫无神
-        temp_spirits[4] = Spirit::ZhiFu;  // 中宫使用默认值
+        temp_spirits[4] = Spirit::None;
         
         // 应用到宫位
         for (std::size_t i = 0; i < 9; ++i) {

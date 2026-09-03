@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.lian_zhen_qing_bai_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "廉贞清白格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["廉贞"],
+  "output_enums": {"match_case": {"default": "none", "values": {"wei_jia": "case_wei_jia", "shen_gui": "case_shen_gui", "yin_ji": "case_yin_ji"}}},
+  "required": {"id": "lian_zhen_qing_bai_variants", "name": "廉贞坐命且宫干配对", "any": [
+    {"id": "wei_jia", "name": "未宫甲生人廉贞坐命", "all": [{"id": "wei_jia_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "wei_jia_branch", "predicate": "focus.branch_in", "values": ["未"]}, {"id": "wei_jia_stem", "predicate": "birth.year_stem_in", "values": ["甲"]}, {"id": "wei_jia_lianzhen", "predicate": "star.contains", "scope": "self", "values": ["廉贞"], "source_layer": "$current_layer"}]},
+    {"id": "shen_gui", "name": "申宫癸生人廉贞坐命", "all": [{"id": "shen_gui_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "shen_gui_branch", "predicate": "focus.branch_in", "values": ["申"]}, {"id": "shen_gui_stem", "predicate": "birth.year_stem_in", "values": ["癸"]}, {"id": "shen_gui_lianzhen", "predicate": "star.contains", "scope": "self", "values": ["廉贞"], "source_layer": "$current_layer"}]},
+    {"id": "yin_ji", "name": "寅宫己生人廉贞坐命", "all": [{"id": "yin_ji_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "yin_ji_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "yin_ji_stem", "predicate": "birth.year_stem_in", "values": ["己"]}, {"id": "yin_ji_lianzhen", "predicate": "star.contains", "scope": "self", "values": ["廉贞"], "source_layer": "$current_layer"}]}
+  ]},
+  "enhancers": [], "weakeners": [], "breakers": [],
+  "observations": [
+    {"id": "case_wei_jia", "name": "命中未甲模板", "all": [{"id": "obs_wei_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_wei_branch", "predicate": "focus.branch_in", "values": ["未"]}, {"id": "obs_wei_stem", "predicate": "birth.year_stem_in", "values": ["甲"]}, {"id": "obs_wei_star", "predicate": "star.contains", "scope": "self", "values": ["廉贞"], "source_layer": "$current_layer"}]},
+    {"id": "case_shen_gui", "name": "命中申癸模板", "all": [{"id": "obs_shen_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_shen_branch", "predicate": "focus.branch_in", "values": ["申"]}, {"id": "obs_shen_stem", "predicate": "birth.year_stem_in", "values": ["癸"]}, {"id": "obs_shen_star", "predicate": "star.contains", "scope": "self", "values": ["廉贞"], "source_layer": "$current_layer"}]},
+    {"id": "case_yin_ji", "name": "命中寅己模板", "all": [{"id": "obs_yin_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_yin_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "obs_yin_stem", "predicate": "birth.year_stem_in", "values": ["己"]}, {"id": "obs_yin_star", "predicate": "star.contains", "scope": "self", "values": ["廉贞"], "source_layer": "$current_layer"}]},
+    {"id": "lian_zhen_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [{"id": "body_lian_zhen_note", "name": "身宫廉贞清白相似结构", "all": [{"id": "body_lian_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_lian_branch", "predicate": "focus.branch_in", "values": ["未", "申", "寅"]}, {"id": "body_lian_star", "predicate": "star.contains", "scope": "self", "values": ["廉贞"], "source_layer": "$current_layer"}], "note_template": "{focus_palace}为身宫且廉贞坐守；原文只论安命，不触发廉贞清白格"}],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "上等格局",
+  "result": {"nature": "auspicious", "summary": "严格按未甲、申癸、寅己三组命宫与生年干配对，且廉贞坐命；煞星只作备注。", "interpretation_template": "{effect_palace}命中廉贞清白格，匹配模板为{match_case}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "未宫甲生人廉贞命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "甲", "palaces": []}, "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "申宫癸生人廉贞命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "癸", "palaces": []}, "focus": {"name": "命宫", "branch": "申", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "寅宫己生人廉贞命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "己", "palaces": []}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "未宫乙生人不匹配", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "乙", "palaces": []}, "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "廉贞", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "廉贞清白格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "廉贞清白能相守。此星未宫安命甲生人合格，申宫坐命癸生人合格，寅宫坐命己生人合格，俱为上格看。"}, {"kind": "user_confirmed_rule_decision", "note": "未甲、申癸、寅己三组命宫生年干配对，廉贞坐命即成上格；身宫不成格；煞星只备注。"}],
+  "updated_at": "2026-09-02"
+}

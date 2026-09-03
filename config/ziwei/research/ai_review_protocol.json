@@ -1,0 +1,35 @@
+{
+  "id": "ziwei-ai-review-protocol",
+  "protocol_version": "0.1.0",
+  "status": "frozen_before_collection",
+  "blind_review_protocol_id": "protocol.lianzhen_qisha.blind_review",
+  "prompt_version": "ziwei-ai-review-prompt/0.1.0",
+  "supported_provider_protocols": [
+    "openai_compatible",
+    "ollama"
+  ],
+  "run_policy": {
+    "minimum_models": 1,
+    "recommended_distinct_model_families": 3,
+    "minimum_repetitions": 1,
+    "maximum_repetitions": 5,
+    "recommended_repetitions": 3,
+    "default_temperature": 0.0,
+    "maximum_retry_attempts": 2,
+    "request_timeout_seconds": 120
+  },
+  "interpretation_boundary": {
+    "unit_name": "model_run",
+    "model_runs_are_not_human_raters": true,
+    "repeated_runs_are_not_independent_experts": true,
+    "agreement_is_descriptive_only": true,
+    "may_create_numeric_star_weights": false,
+    "required_report_label": "AI 多模型定性预评审"
+  },
+  "data_policy": {
+    "persist_raw_response": true,
+    "persist_request_without_secrets": true,
+    "persist_api_keys": false,
+    "separate_human_and_ai_results": true
+  }
+}

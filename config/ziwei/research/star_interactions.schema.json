@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhouyilab.local/schemas/ziwei/research/star_interactions.schema.json",
+  "title": "ZhouYiLab 紫微斗数星曜定性交互规则",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "catalog_version",
+    "status",
+    "dimension_dictionary_version",
+    "star_profile_catalog_version",
+    "combination_policy",
+    "interactions",
+    "sources",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "catalog_version": {"type": "string"},
+    "status": {"enum": ["qualitative_only", "pilot_calibrated", "validated", "deprecated"]},
+    "dimension_dictionary_version": {"type": "string"},
+    "star_profile_catalog_version": {"type": "string"},
+    "combination_policy": {
+      "type": "object",
+      "required": ["mode", "description"],
+      "properties": {
+        "mode": {"const": "preserve_all_signals"},
+        "description": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "interactions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "name", "revision", "participants", "required_context",
+          "elemental_mechanism", "base_hypotheses", "modifiers",
+          "source_refs", "unresolved_questions"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^interaction\\.[a-z0-9_.]+$"},
+          "name": {"type": "string", "minLength": 1},
+          "revision": {"type": "integer", "minimum": 1},
+          "participants": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["star_id", "role", "expected_element"],
+              "properties": {
+                "star_id": {"type": "string", "minLength": 1},
+                "role": {"enum": ["controller", "controlled", "peer", "supporter"]},
+                "expected_element": {"enum": ["木", "火", "土", "金", "水"]}
+              },
+              "additionalProperties": false
+            }
+          },
+          "required_context": {
+            "type": "object",
+            "required": ["relation", "same_source_layer"],
+            "properties": {
+              "relation": {"enum": ["same_palace", "triad", "opposite", "flanking"]},
+              "same_source_layer": {"type": "boolean"}
+            },
+            "additionalProperties": false
+          },
+          "elemental_mechanism": {
+            "type": "object",
+            "required": ["relation", "direction", "description", "boundary"],
+            "properties": {
+              "relation": {"enum": ["generates", "controls", "drains", "consumes", "same_element"]},
+              "direction": {"type": "string", "minLength": 1},
+              "description": {"type": "string", "minLength": 1},
+              "boundary": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          },
+          "base_hypotheses": {"$ref": "#/$defs/hypotheses"},
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "name", "trigger", "hypotheses", "source_refs"],
+              "properties": {
+                "id": {"type": "string", "pattern": "^[a-z][a-z0-9_.]+$"},
+                "name": {"type": "string", "minLength": 1},
+                "trigger": {
+                  "type": "object",
+                  "required": ["type", "scope", "match_mode", "values", "source_layer"],
+                  "properties": {
+                    "type": {
+                      "enum": ["brightness.in", "transformation.in", "transformation.present_in_scope"]
+                    },
+                    "scope": {"enum": ["participants", "four_directions"]},
+                    "target_star_ids": {
+                      "type": "array",
+                      "items": {"type": "string", "minLength": 1}
+                    },
+                    "match_mode": {"enum": ["any", "all"]},
+                    "values": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {"type": "string", "minLength": 1}
+                    },
+                    "source_layer": {"const": "$current_layer"}
+                  },
+                  "additionalProperties": false
+                },
+                "hypotheses": {"$ref": "#/$defs/hypotheses"},
+                "source_refs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"type": "string", "minLength": 1}
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "unresolved_questions": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1}
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "title", "evidence_level", "locator", "note"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+          "kind": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "evidence_level": {"enum": ["E1", "E2", "E3", "E4", "E5", "E6"]},
+          "locator": {"type": "string", "minLength": 1},
+          "note": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "updated_at": {"type": "string", "format": "date"}
+  },
+  "$defs": {
+    "hypotheses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "dimension_id", "direction", "rationale",
+          "evidence_level", "parameter_status"
+        ],
+        "properties": {
+          "dimension_id": {"type": "string", "minLength": 1},
+          "direction": {"enum": ["increase", "decrease", "context_dependent"]},
+          "rationale": {"type": "string", "minLength": 1},
+          "evidence_level": {"enum": ["E1", "E2", "E3", "E4", "E5", "E6"]},
+          "parameter_status": {
+            "enum": ["proposed", "reviewed", "pilot_calibrated", "validated", "deprecated"]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
