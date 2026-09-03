@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhouyilab.local/schema/ziwei/ai-review-protocol-v0.1.json",
+  "title": "ZhouYiLab AI Review Protocol",
+  "type": "object",
+  "required": [
+    "id",
+    "protocol_version",
+    "status",
+    "blind_review_protocol_id",
+    "prompt_version",
+    "supported_provider_protocols",
+    "run_policy",
+    "interpretation_boundary",
+    "data_policy"
+  ],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "protocol_version": {"type": "string", "minLength": 1},
+    "status": {"const": "frozen_before_collection"},
+    "blind_review_protocol_id": {"type": "string", "minLength": 1},
+    "prompt_version": {"type": "string", "minLength": 1},
+    "supported_provider_protocols": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["openai_compatible", "ollama"]}
+    },
+    "run_policy": {
+      "type": "object",
+      "required": ["minimum_models", "minimum_repetitions", "maximum_repetitions", "maximum_retry_attempts", "request_timeout_seconds"]
+    },
+    "interpretation_boundary": {
+      "type": "object",
+      "required": ["model_runs_are_not_human_raters", "repeated_runs_are_not_independent_experts", "agreement_is_descriptive_only", "may_create_numeric_star_weights"]
+    },
+    "data_policy": {
+      "type": "object",
+      "required": ["persist_raw_response", "persist_request_without_secrets", "persist_api_keys", "separate_human_and_ai_results"]
+    }
+  },
+  "additionalProperties": false
+}

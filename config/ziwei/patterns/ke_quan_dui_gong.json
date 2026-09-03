@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ke_quan_dui_gong",
+  "revision": 1,
+  "enabled": true,
+  "name": "科权对拱",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["廉贞", "破军", "武曲", "擎羊", "陀罗", "火星", "铃星", "地劫", "地空"],
+  "grade_by_variant": {"branch_a_ke_quan_three_palaces": "普通吉格", "branch_b_ming_ke_quan_triad_lu": "普通吉格"},
+  "required": {
+    "id": "ke_quan_dui_gong_variants",
+    "name": "科权对拱两种骨架",
+    "any": [
+      {
+        "id": "branch_a_ke_quan_three_palaces",
+        "name": "分支A：化科化权落迁移财帛官禄",
+        "all": [
+          {"id": "branch_a_ming_role", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+          {"id": "branch_a_ke_in_three_palaces", "name": "化科在迁移财帛官禄之一", "predicate": "transformation.contains_in_palaces", "scopes": ["triads", "opposite"], "palaces": ["迁移宫", "财帛宫", "官禄宫"], "values": ["化科"], "source_layer": "$current_layer"},
+          {"id": "branch_a_quan_in_three_palaces", "name": "化权在迁移财帛官禄之一", "predicate": "transformation.contains_in_palaces", "scopes": ["triads", "opposite"], "palaces": ["迁移宫", "财帛宫", "官禄宫"], "values": ["化权"], "source_layer": "$current_layer"}
+        ]
+      },
+      {
+        "id": "branch_b_ming_ke_quan_triad_lu",
+        "name": "分支B：命宫科权、三方化禄",
+        "all": [
+          {"id": "branch_b_ming_role", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+          {"id": "branch_b_ming_ke_quan", "name": "命宫同时有化科化权", "predicate": "transformation.contains_all", "scope": "self", "values": ["化科", "化权"], "source_layer": "$current_layer"},
+          {"id": "branch_b_lu_in_three_palaces", "name": "迁移财帛官禄三方有化禄", "predicate": "transformation.contains_in_palaces", "scopes": ["triads", "opposite"], "palaces": ["迁移宫", "财帛宫", "官禄宫"], "values": ["化禄"], "source_layer": "$current_layer"}
+        ]
+      }
+    ]
+  },
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [
+    {"id": "ke_quan_four_directions_malefics", "name": "命宫三方见六煞则破格", "predicate": "star.contains_in_scopes", "scopes": ["four_directions"], "values": ["擎羊", "陀罗", "火星", "铃星", "地劫", "地空"], "source_layer": "$current_layer"},
+    {"id": "ke_quan_four_directions_huaji", "name": "命宫三方见化忌则破格", "predicate": "transformation.contains", "scope": "four_directions", "values": ["化忌"], "source_layer": "$current_layer"}
+  ],
+  "break_check": {
+    "break_star": ["擎羊", "陀罗", "火星", "铃星", "地劫", "地空", "化忌"],
+    "scan_scope": "命宫、迁移宫、财帛宫、官禄宫",
+    "note": "科权对拱骨架成立后，命宫或迁移、财帛、官禄三方见六煞或任意星曜化忌，则格局破格并保留诊断证据"
+  },
+  "observations": [],
+  "allow_role_observations": true,
+  "ordinary_palace_observations": [
+    {
+      "id": "body_ke_quan_dui_gong_note",
+      "name": "身宫科权对拱相似结构",
+      "all": [
+        {"id": "body_ke_quan_role", "name": "目标是身宫", "predicate": "focus.role_in", "values": ["body"]},
+        {"id": "body_ke_quan_ke", "name": "三方见化科", "predicate": "transformation.contains_in_palaces", "scopes": ["triads", "opposite"], "palaces": ["迁移宫", "财帛宫", "官禄宫"], "values": ["化科"], "source_layer": "$current_layer"},
+        {"id": "body_ke_quan_quan", "name": "三方见化权", "predicate": "transformation.contains_in_palaces", "scopes": ["triads", "opposite"], "palaces": ["迁移宫", "财帛宫", "官禄宫"], "values": ["化权"], "source_layer": "$current_layer"}
+      ],
+      "note_template": "{focus_palace}为身宫且见科权对拱相似结构；原文只论命宫，不触发科权对拱格"
+    }
+  ],
+  "status_policy": {"required_matched": "formed", "enhancer_matched": "strengthened", "breaker_matched": "broken"},
+  "result": {
+    "nature": "auspicious_with_breaker",
+    "summary": "严格按古文匹配化科化权落迁移财帛官禄，或命宫科权且三方化禄；命宫三方见六煞或化忌时保留骨架并标记破格。",
+    "interpretation_template": "{effect_palace}命中科权对拱格，档位为{grade}。古诀称科权对拱跃三汲于禹门；本结果只确认给定文本结构，不把古代断语转换为现实结果保证。",
+    "status_messages": {"broken": "本可成科权对拱格，但命宫或迁移、财帛、官禄三方见煞或化忌而破格"}
+  },
+  "examples": [
+    {
+      "name": "分支A化科财帛化权官禄",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": [{"name": "武曲", "transformation": "化权", "physical_palace": "官禄宫", "source_layer": "natal"}]}, "opposite": {"stars": [{"name": "廉贞", "transformation": "化科", "physical_palace": "财帛宫", "source_layer": "natal"}]}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "分支A科权同落财帛亦可成立",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": [{"name": "武曲", "transformation": "化科", "physical_palace": "财帛宫", "source_layer": "natal"}, {"name": "破军", "transformation": "化权", "physical_palace": "财帛宫", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "分支B命宫科权三方化禄",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "武曲", "transformation": "化科", "source_layer": "natal"}, {"name": "破军", "transformation": "化权", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "廉贞", "transformation": "化禄", "physical_palace": "官禄宫", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "分支B命宫科权三方化禄但地空破格",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "武曲", "transformation": "化科", "source_layer": "natal"}, {"name": "破军", "transformation": "化权", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "廉贞", "transformation": "化禄", "physical_palace": "官禄宫", "source_layer": "natal"}, {"name": "地空", "physical_palace": "官禄宫", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": [{"name": "地空", "physical_palace": "官禄宫", "source_layer": "natal"}]}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}
+    },
+    {
+      "name": "仅一颗科或权不成格",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": [{"name": "武曲", "transformation": "化科", "physical_palace": "官禄宫", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    },
+    {
+      "name": "身宫满足相似科权结构只作备注",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": [{"name": "武曲", "transformation": "化科", "physical_palace": "官禄宫", "source_layer": "natal"}, {"name": "破军", "transformation": "化权", "physical_palace": "财帛宫", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    }
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "科权对拱给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "科权对拱跃三汲于禹门。科权二星在迁移、财帛、官禄三方对拱是也，或命宫有科权禄三方守照无煞亦然。"},
+    {"kind": "user_confirmed_rule_decision", "note": "目标仅命宫；分支A科权在迁移财帛官禄，分支B命宫科权且三方化禄；两颗可同宫；命宫及三方六煞或化忌破格但保留记录；身宫只观察。"}
+  ],
+  "updated_at": "2026-09-02"
+}

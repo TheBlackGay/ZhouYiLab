@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f2ee">
+  <title>ZhouYiLab 奇门遁甲排盘</title>
+  <link rel="stylesheet" href="/qimen.css">
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="/" aria-label="返回紫微斗数排盘">
+      <span class="brand-mark" aria-hidden="true">周</span>
+      <span><strong>ZhouYiLab</strong><small>奇门遁甲 · 时家转盘</small></span>
+    </a>
+    <nav aria-label="术数工具">
+      <a href="/">紫微斗数</a>
+      <a href="/qimen.html" aria-current="page">奇门遁甲</a>
+    </nav>
+    <button id="open-help" class="header-help" type="button">帮助</button>
+    <div class="engine-status"><span></span>C++ 本地算法</div>
+  </header>
+
+  <main class="workspace">
+    <aside class="input-panel" aria-label="奇门排盘参数">
+      <form id="qimen-form">
+        <section>
+          <div class="section-heading"><span>01</span><h1>起局时间</h1></div>
+          <fieldset>
+            <legend>历法</legend>
+            <div class="segmented">
+              <label><input type="radio" name="calendar" value="solar" checked><span>公历</span></label>
+              <label><input type="radio" name="calendar" value="lunar"><span>农历</span></label>
+            </div>
+          </fieldset>
+          <div id="solar-fields">
+            <label for="solar-date">日期</label>
+            <input id="solar-date" type="date" required>
+          </div>
+          <div id="lunar-fields" hidden>
+            <div class="lunar-date-fields">
+              <div><label for="lunar-year">农历年</label><input id="lunar-year" type="number" min="1" max="9999" value="2026"></div>
+              <div><label for="lunar-month">月</label><input id="lunar-month" type="number" min="1" max="12" value="7"></div>
+              <div><label for="lunar-day">日</label><input id="lunar-day" type="number" min="1" max="30" value="21"></div>
+            </div>
+            <label class="toggle-row" for="leap-month"><span><strong>闰月</strong><small>按农历闰月起局</small></span><input id="leap-month" type="checkbox"></label>
+          </div>
+          <label for="qimen-time">时间</label>
+          <input id="qimen-time" type="time" step="60" required>
+        </section>
+
+        <section class="question-fields">
+          <div class="section-heading"><span>02</span><h2>所问事项</h2></div>
+          <label for="question-type">问题类型</label>
+          <select id="question-type">
+            <option value="general">综合观察</option>
+            <option value="career">事业与求职</option>
+            <option value="relationship">感情与关系</option>
+            <option value="wealth">财运与经营</option>
+            <option value="travel">出行与方位</option>
+          </select>
+          <label for="question-detail">具体问题（可选）</label>
+          <textarea id="question-detail" rows="3" maxlength="300" placeholder="例如：未来三个月是否适合更换工作"></textarea>
+          <div class="stem-fields">
+            <div>
+              <label for="subject-birth-date">求测者出生日期（可选）</label>
+              <input id="subject-birth-date" type="date" min="1900-01-01" max="2100-12-31">
+              <small id="subject-life-status" class="life-status">不填写则使用日干</small>
+            </div>
+            <div>
+              <label for="counterpart-birth-date">相关人物出生日期（可选）</label>
+              <input id="counterpart-birth-date" type="date" min="1900-01-01" max="2100-12-31">
+              <small id="counterpart-life-status" class="life-status">不填写则不加入相关人物年命</small>
+            </div>
+          </div>
+          <small class="field-help">系统按出生日期换算年柱；若出生在立春交节当日，请按实际出生时刻复核。</small>
+        </section>
+
+        <section class="method-note">
+          <div class="section-heading"><span>03</span><h2>排盘方式</h2></div>
+          <dl>
+            <div><dt>体系</dt><dd>时家奇门</dd></div>
+            <div><dt>盘式</dt><dd>转盘</dd></div>
+            <div><dt>定局</dt><dd>节气三元</dd></div>
+          </dl>
+        </section>
+
+        <button class="primary-action" type="submit"><span class="button-label">起奇门局</span><span class="spinner" aria-hidden="true"></span></button>
+        <p id="form-error" class="error-message" role="alert" hidden></p>
+      </form>
+    </aside>
+
+    <section class="results" aria-live="polite">
+      <div id="empty-state" class="empty-state">
+        <div class="empty-symbol" aria-hidden="true">局</div>
+        <h2>等待起局</h2>
+        <p>选择起局时刻，生成九宫、九星、八门与八神。</p>
+      </div>
+
+      <div id="result-content" hidden>
+        <header class="result-summary">
+          <div><span>奇门局</span><strong id="summary-title">--</strong><small id="summary-date">--</small></div>
+          <dl>
+            <div><dt>节气</dt><dd id="metric-term">--</dd></div>
+            <div><dt>直符</dt><dd id="metric-chief">--</dd></div>
+            <div><dt>直使</dt><dd id="metric-gate">--</dd></div>
+            <div><dt>日旬空</dt><dd id="metric-void">--</dd></div>
+          </dl>
+        </header>
+
+        <div class="result-tabs" role="tablist" aria-label="排盘结果视图">
+          <button id="board-tab" type="button" role="tab" aria-selected="true" aria-controls="board-panel">九宫盘</button>
+          <button id="clues-tab" type="button" role="tab" aria-selected="false" aria-controls="clues-panel" tabindex="-1">断盘线索</button>
+          <button id="reading-tab" type="button" role="tab" aria-selected="false" aria-controls="reading-panel" tabindex="-1">解读素材</button>
+        </div>
+
+        <div id="board-panel" role="tabpanel" aria-labelledby="board-tab">
+          <div class="board-heading">
+            <div><span>九宫盘</span><strong id="board-pillars">--</strong></div>
+            <div class="legend"><span><i class="heaven"></i>天盘干</span><span><i class="earth"></i>地盘干</span></div>
+          </div>
+          <div id="qimen-board" class="qimen-board"></div>
+          <p class="result-note">宫位按洛书排列，上南下北；直符所在宫与直使门已标记。</p>
+        </div>
+
+        <div id="clues-panel" role="tabpanel" aria-labelledby="clues-tab" hidden>
+          <div class="clues-heading">
+            <span>可解释关系</span>
+            <strong id="clues-title">综合观察</strong>
+            <p>先列盘面事实，再给出传统象意；这些线索需要结合具体问题判断。</p>
+          </div>
+          <div id="pattern-list" class="pattern-list"></div>
+          <div id="clue-list" class="clue-list"></div>
+        </div>
+
+        <div id="reading-panel" role="tabpanel" aria-labelledby="reading-tab" hidden>
+          <div class="reading-focus">
+            <span>本次取用</span>
+            <strong id="focus-title">综合观察</strong>
+            <p id="focus-description"></p>
+            <div id="focus-symbols" class="focus-symbols"></div>
+          </div>
+          <div class="reading-toolbar">
+            <div><span>AI 解读素材</span><strong>完整盘面与通用分析提纲</strong></div>
+            <button id="copy-reading" type="button">复制内容</button>
+          </div>
+          <pre id="reading-text" tabindex="0"></pre>
+          <p id="copy-status" class="copy-status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="help-header">
+      <div><span>基础知识</span><h2 id="help-title">奇门断盘与用神</h2></div>
+      <button id="close-help" type="button" aria-label="关闭帮助" title="关闭">×</button>
+    </div>
+    <div class="help-content">
+      <section>
+        <h3>同一盘，不同问题</h3>
+        <p>奇门盘的四柱、九宫、九星、八门、八神和天地盘干是固定的；所问事项不同，选取的主要用神、辅助用神及宫位关系会不同，因此事业、感情、财运等问题的解读重点也不同。</p>
+      </section>
+
+      <section>
+        <h3>宫位与方向</h3>
+        <p>用神本身没有永远固定的现实方向，应先找到它在当前盘中的实际落宫，再读取该宫方向。</p>
+        <div class="direction-table-wrap">
+          <table>
+            <thead><tr><th>坎1</th><th>坤2</th><th>震3</th><th>巽4</th><th>乾6</th><th>兑7</th><th>艮8</th><th>离9</th></tr></thead>
+            <tbody><tr><td>北</td><td>西南</td><td>东</td><td>东南</td><td>西北</td><td>西</td><td>东北</td><td>南</td></tr></tbody>
+          </table>
+        </div>
+        <p class="help-note">中5宫没有独立方向；本页采用中五寄坤二、天禽随天芮的转盘口径。</p>
+      </section>
+
+      <section>
+        <h3>常见问题的观察重点</h3>
+        <dl class="usage-list">
+          <div><dt>事业与求职</dt><dd>常看日干或年命代表求测者，开门代表工作、职位或单位，生门辅助观察收入与发展，值符观察核心人物或主要环境，景门可辅助观察文书、考试与成果呈现。</dd></div>
+          <div><dt>感情与关系</dt><dd>常看日干或年命代表本人，乙、庚辅助代表关系双方，六合观察关系与撮合状态，休门辅助观察相处与交流，再比较双方所在宫的生克、旺衰与空亡。</dd></div>
+          <div><dt>财运与经营</dt><dd>常以生门观察收益、资源和增长，以开门观察经营、业务与机会，同时比较生门宫、日干宫及所问事项宫之间的关系。</dd></div>
+          <div><dt>出行与方位</dt><dd>先确定出行目的对应的用神，再以用神落宫判断方向，并结合该宫的门、星、神及宫位状态观察便利与阻力。</dd></div>
+        </dl>
+      </section>
+
+      <section>
+        <h3>年命与甲命定位</h3>
+        <p>年命取出生年干。页面根据出生日期换算完整年柱；乙至癸可直接按天盘同名干定位。甲不直接显于奇门盘，按年柱地支取六甲遁干：甲子遁戊、甲戌遁己、甲申遁庚、甲午遁辛、甲辰遁壬、甲寅遁癸。若出生在立春交节当日，年柱可能随具体时刻切换，应使用实际出生时间复核。</p>
+      </section>
+
+      <section>
+        <h3>通用断盘顺序</h3>
+        <ol class="reading-steps">
+          <li>明确所问事项、人物身份和时间范围。</li>
+          <li>选择主要用神与辅助用神，找到它们的实际落宫。</li>
+          <li>读取用神宫的八门、九星、八神、天盘干和地盘干。</li>
+          <li>比较求测者宫与事项宫的五行生克、旺衰、主客及内外盘关系。</li>
+          <li>再用空亡、入墓、击刑、门迫等条件修正，不脱离全盘单独定吉凶。</li>
+          <li>将盘面事实、象意推断和现实建议分开表达。</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>当前自动识别的状态</h3>
+        <dl class="usage-list">
+          <div><dt>时支驿马</dt><dd>按当前时支所属三合局取马，提示移动、变化、调动或事情加速的线索；是否有利仍需结合驿马宫状态。</dd></div>
+          <div><dt>门迫</dt><dd>本系统采用“八门五行克所落宫五行”的定义。它表示门的作用受到环境牵制，不等同于事情必然失败。</dd></div>
+          <div><dt>六仪击刑</dt><dd>按天盘六仪落宫判断：戊落震、己落坤、庚落艮、辛落离、壬癸落巽。中五天盘干寄坤二参与判定。它提示约束或阻力，需先确认该干是否与本次用神有关。</dd></div>
+          <div><dt>三奇入墓</dt><dd>本系统采用乙、丙落乾六宫，丁落艮八宫为入墓；中五天盘干寄坤二参与判定。常提示信息收敛、受藏或暂难发挥，不直接等于失败。</dd></div>
+          <div><dt>五不遇时</dt><dd>时干克日干且二者同阴阳时成立，例如甲日庚时。它是全局时机线索，不归属于某一个宫，也不宜脱离用神单独判断。</dd></div>
+          <div><dt>十干克应</dt><dd>先看同宫天盘干加地盘干。本批识别八组常用名称：戊加丙青龙返首、丙加戊飞鸟跌穴、乙加辛青龙逃走、辛加乙白虎猖狂、丁加癸朱雀投江、癸加丁腾蛇夭矫、庚加丙太白入荧、丙加庚荧入太白。天禽寄干按随天芮后的实际宫位参与组合。</dd></div>
+          <div><dt>伏吟</dt><dd>八门或九星整体回到本位，常用于提示重复、迟缓、内守或状态稳定，需要结合所问事项区分利弊。</dd></div>
+          <div><dt>反吟</dt><dd>八门或九星整体落到本位对宫，常用于提示变化、反复、对冲或迁移，不宜脱离用神关系单独判断。</dd></div>
+        </dl>
+      </section>
+
+      <section class="help-caution">
+        <h3>口径说明</h3>
+        <p>不同门派对年命、男女双方、主客和部分神煞的取法可能不同。解读时应先声明采用的规则，并结合具体问题判断；传统象意适合作为分析线索，不等同于确定的现实结果。</p>
+      </section>
+    </div>
+  </dialog>
+  <script src="/qimen_learning.js" defer></script>
+  <script src="/qimen.js" defer></script>
+</body>
+</html>

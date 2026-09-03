@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0.0",
+  "experiment_version": "0.1.0",
+  "id": "experiment.lianzhen_qisha.qualitative_pilot",
+  "status": "frozen_for_pilot",
+  "model_versions": {
+    "dimension_dictionary": "0.1.0",
+    "star_profiles": "0.1.0",
+    "star_interactions": "0.1.0",
+    "brightness_table": "1.0.0"
+  },
+  "fixture_policy": {
+    "completeness": "minimal_local_context",
+    "description": "案例只包含验证单星机制和廉贞七杀局部交互所需的最小事实，不代表完整命盘。星曜地支与亮度必须真实一致；独立四化信号属于受控刺激。",
+    "prohibitions": [
+      "不得将案例解释为完整出生盘",
+      "不得从受控刺激推断真实天干或完整四化集合",
+      "不得使用格局名称作为匹配输入",
+      "不得从定性信号生成现实概率或吉凶总分"
+    ]
+  },
+  "cases": [
+    {
+      "id": "LQ-A",
+      "name": "未宫廉杀同宫基线",
+      "purpose": "观察两颗单星机制、同宫火制金基础交互及真实亮度支持。",
+      "source_layer": "natal",
+      "focus": {"palace": "实验焦点宫", "earthly_branch": "未"},
+      "stars": [
+        {"star_id": "lianzhen", "name": "廉贞", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "利", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"},
+        {"star_id": "qisha", "name": "七杀", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "庙", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"}
+      ],
+      "transformation_signals": [],
+      "expected": {
+        "profile_star_ids": ["lianzhen", "qisha"],
+        "interaction_ids": ["interaction.lianzhen_controls_qisha.same_palace"],
+        "modifier_ids": ["core_brightness_supported"]
+      }
+    },
+    {
+      "id": "LQ-B",
+      "name": "未宫廉杀同宫加化禄支持",
+      "purpose": "隔离观察三方四正同层化禄的定性支持信号。",
+      "source_layer": "natal",
+      "focus": {"palace": "实验焦点宫", "earthly_branch": "未"},
+      "stars": [
+        {"star_id": "lianzhen", "name": "廉贞", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "利", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"},
+        {"star_id": "qisha", "name": "七杀", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "庙", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"}
+      ],
+      "transformation_signals": [
+        {"transformation": "化禄", "relation": "triad", "physical_palace": "实验三合宫A", "source_layer": "natal", "fact_status": "controlled_stimulus", "boundary": "只用于隔离化禄作用，不代表完整年干四化盘。"}
+      ],
+      "expected": {
+        "profile_star_ids": ["lianzhen", "qisha"],
+        "interaction_ids": ["interaction.lianzhen_controls_qisha.same_palace"],
+        "modifier_ids": ["core_brightness_supported", "same_layer_hualu_support"]
+      }
+    },
+    {
+      "id": "LQ-C",
+      "name": "未宫廉杀同宫加化权支持",
+      "purpose": "隔离观察三方四正同层化权的定性支持信号。",
+      "source_layer": "natal",
+      "focus": {"palace": "实验焦点宫", "earthly_branch": "未"},
+      "stars": [
+        {"star_id": "lianzhen", "name": "廉贞", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "利", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"},
+        {"star_id": "qisha", "name": "七杀", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "庙", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"}
+      ],
+      "transformation_signals": [
+        {"transformation": "化权", "relation": "triad", "physical_palace": "实验三合宫A", "source_layer": "natal", "fact_status": "controlled_stimulus", "boundary": "只用于隔离化权作用，不代表完整年干四化盘。"}
+      ],
+      "expected": {
+        "profile_star_ids": ["lianzhen", "qisha"],
+        "interaction_ids": ["interaction.lianzhen_controls_qisha.same_palace"],
+        "modifier_ids": ["core_brightness_supported", "same_layer_huaquan_support"]
+      }
+    },
+    {
+      "id": "LQ-D",
+      "name": "未宫廉杀同宫加禄权支持",
+      "purpose": "观察同层化禄和化权两个支持信号并存时是否保持独立证据。",
+      "source_layer": "natal",
+      "focus": {"palace": "实验焦点宫", "earthly_branch": "未"},
+      "stars": [
+        {"star_id": "lianzhen", "name": "廉贞", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "利", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"},
+        {"star_id": "qisha", "name": "七杀", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "庙", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"}
+      ],
+      "transformation_signals": [
+        {"transformation": "化禄", "relation": "triad", "physical_palace": "实验三合宫A", "source_layer": "natal", "fact_status": "controlled_stimulus", "boundary": "只用于隔离化禄作用，不代表完整年干四化盘。"},
+        {"transformation": "化权", "relation": "opposite", "physical_palace": "实验对宫", "source_layer": "natal", "fact_status": "controlled_stimulus", "boundary": "只用于隔离化权作用，不代表完整年干四化盘。"}
+      ],
+      "expected": {
+        "profile_star_ids": ["lianzhen", "qisha"],
+        "interaction_ids": ["interaction.lianzhen_controls_qisha.same_palace"],
+        "modifier_ids": ["core_brightness_supported", "same_layer_hualu_support", "same_layer_huaquan_support"]
+      }
+    },
+    {
+      "id": "LQ-E",
+      "name": "未宫廉杀同宫加廉贞化忌",
+      "purpose": "隔离观察廉贞化忌带来的关系、情绪和冲突风险信号。",
+      "source_layer": "natal",
+      "focus": {"palace": "实验焦点宫", "earthly_branch": "未"},
+      "stars": [
+        {"star_id": "lianzhen", "name": "廉贞", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "利", "transformation": "化忌", "source_layer": "natal", "fact_status": "controlled_stimulus"},
+        {"star_id": "qisha", "name": "七杀", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "庙", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"}
+      ],
+      "transformation_signals": [],
+      "expected": {
+        "profile_star_ids": ["lianzhen", "qisha"],
+        "interaction_ids": ["interaction.lianzhen_controls_qisha.same_palace"],
+        "modifier_ids": ["core_brightness_supported", "lianzhen_huaji"]
+      }
+    },
+    {
+      "id": "LQ-F",
+      "name": "廉贞本宫七杀三合对照",
+      "purpose": "验证不同宫位关系不能触发同宫火制金交互。",
+      "source_layer": "natal",
+      "focus": {"palace": "实验焦点宫", "earthly_branch": "未"},
+      "stars": [
+        {"star_id": "lianzhen", "name": "廉贞", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "利", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"},
+        {"star_id": "qisha", "name": "七杀", "physical_palace": "实验三合宫A", "earthly_branch": "亥", "relation": "triad", "brightness": "平", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"}
+      ],
+      "transformation_signals": [],
+      "expected": {
+        "profile_star_ids": ["lianzhen", "qisha"],
+        "interaction_ids": [],
+        "modifier_ids": []
+      }
+    },
+    {
+      "id": "LQ-G",
+      "name": "廉贞单星基线",
+      "purpose": "记录廉贞原始机制映射，不加入七杀交互。",
+      "source_layer": "natal",
+      "focus": {"palace": "实验焦点宫", "earthly_branch": "未"},
+      "stars": [
+        {"star_id": "lianzhen", "name": "廉贞", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "利", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"}
+      ],
+      "transformation_signals": [],
+      "expected": {
+        "profile_star_ids": ["lianzhen"],
+        "interaction_ids": [],
+        "modifier_ids": []
+      }
+    },
+    {
+      "id": "LQ-H",
+      "name": "七杀单星基线",
+      "purpose": "记录七杀原始机制映射，不加入廉贞交互。",
+      "source_layer": "natal",
+      "focus": {"palace": "实验焦点宫", "earthly_branch": "未"},
+      "stars": [
+        {"star_id": "qisha", "name": "七杀", "physical_palace": "实验焦点宫", "earthly_branch": "未", "relation": "self", "brightness": "庙", "transformation": null, "source_layer": "natal", "fact_status": "chart_fact"}
+      ],
+      "transformation_signals": [],
+      "expected": {
+        "profile_star_ids": ["qisha"],
+        "interaction_ids": [],
+        "modifier_ids": []
+      }
+    }
+  ],
+  "updated_at": "2026-08-31"
+}

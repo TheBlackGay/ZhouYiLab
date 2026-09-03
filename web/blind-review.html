@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>ZhouYiLab 星曜作用盲评</title>
+  <link rel="stylesheet" href="/blind-review.css">
+</head>
+<body>
+  <header class="review-header">
+    <a class="brand" href="/" aria-label="返回 ZhouYiLab 排盘页"><span aria-hidden="true">周</span><strong>ZhouYiLab</strong></a>
+    <div class="study-title"><span>研究模型 v0.1</span><h1>星曜作用盲评</h1></div>
+    <div class="header-progress" aria-live="polite"><a href="/ai-review.html">AI 预评审</a><span id="header-progress-text">0 / 8</span><div class="progress-track"><i id="header-progress-bar"></i></div></div>
+  </header>
+
+  <main id="review-app" class="review-shell" hidden>
+    <aside class="review-sidebar" aria-label="案例与评分者信息">
+      <section class="identity-section">
+        <div class="sidebar-heading"><span>评分者</span><small id="packet-id">--</small></div>
+        <label for="rater-id">匿名 ID</label>
+        <input id="rater-id" autocomplete="off" placeholder="例如 RATER-01">
+        <label for="rater-group">流派或组别</label>
+        <input id="rater-group" autocomplete="off" placeholder="例如 中州三合">
+      </section>
+
+      <nav class="case-navigation" aria-label="盲评案例">
+        <div class="sidebar-heading"><span>案例</span><small id="case-count">--</small></div>
+        <div id="case-list" class="case-list"></div>
+      </nav>
+
+      <section class="data-actions" aria-label="评分数据">
+        <label class="file-action" for="import-file">导入评分</label>
+        <input id="import-file" type="file" accept="application/json,.json" hidden>
+        <button id="export-button" type="button">导出 JSON</button>
+        <button id="clear-button" class="quiet-button" type="button">清空本地进度</button>
+        <p id="save-status" role="status">本地自动保存</p>
+      </section>
+    </aside>
+
+    <section class="review-main" aria-live="polite">
+      <div class="protocol-strip">
+        <span>独立评分</span><span>五级量尺</span><span>允许无法判断</span><span>不生成总分</span>
+      </div>
+
+      <section class="case-facts" aria-labelledby="case-code">
+        <header>
+          <div><span>匿名案例</span><h2 id="case-code">--</h2></div>
+          <dl><div><dt>盘层</dt><dd id="case-layer">--</dd></div><div><dt>焦点地支</dt><dd id="case-branch">--</dd></div></dl>
+        </header>
+        <div id="fact-table" class="fact-table"></div>
+        <div id="stimulus-list" class="stimulus-list" hidden></div>
+      </section>
+
+      <section class="scale-band" aria-label="评分锚点">
+        <div><b>-1</b><span>明显抑制</span></div>
+        <div><b>-0.5</b><span>轻度抑制</span></div>
+        <div><b>0</b><span>中性或并存</span></div>
+        <div><b>+0.5</b><span>轻度增强</span></div>
+        <div><b>+1</b><span>明显增强</span></div>
+        <div><b>--</b><span>无法判断</span></div>
+      </section>
+
+      <form id="rating-form" class="rating-form">
+        <div class="rating-table-heading"><span>研究维度</span><span>方向判断</span><span>简短依据</span></div>
+        <div id="dimension-list"></div>
+      </form>
+
+      <footer class="review-footer">
+        <button id="previous-case" class="secondary-button" type="button">上一案例</button>
+        <div><span id="case-completion">0 / 11</span><small>本案例已判断</small></div>
+        <button id="next-case" class="primary-button" type="button">下一案例</button>
+      </footer>
+    </section>
+  </main>
+
+  <section id="loading-state" class="state-screen" aria-live="polite">
+    <span class="loader" aria-hidden="true"></span><strong>正在载入盲评包</strong>
+  </section>
+  <section id="error-state" class="state-screen error-state" hidden>
+    <strong>盲评包载入失败</strong><p id="error-message"></p><button type="button" onclick="location.reload()">重新载入</button>
+  </section>
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="/blind-review.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.xing_qiu_jia_yin_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "刑囚夹印格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["天相", "擎羊", "廉贞"],
+  "output_enums": {"trigger_type": {"default": "none", "values": {"ming_palace": "ming_palace", "body_palace": "body_palace"}}},
+  "required": {"id": "xing_qiu_jia_yin_variants", "name": "天相被擎羊廉贞夹持", "any": [
+    {"id": "ming_palace", "name": "命宫天相被羊贞夹", "all": [
+      {"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "ming_tianxiang", "predicate": "star.contains", "scope": "self", "values": ["天相"], "source_layer": "$current_layer"},
+      {"id": "ming_yang_zhen_flank", "predicate": "star.flanks", "scope": "four_directions", "values": ["擎羊", "廉贞"], "source_layer": "$current_layer"}
+    ]},
+    {"id": "body_palace", "name": "身宫天相被羊贞夹", "all": [
+      {"id": "body_role", "predicate": "focus.role_in", "values": ["body"]},
+      {"id": "body_tianxiang", "predicate": "star.contains", "scope": "self", "values": ["天相"], "source_layer": "$current_layer"},
+      {"id": "body_yang_zhen_flank", "predicate": "star.flanks", "scope": "four_directions", "values": ["擎羊", "廉贞"], "source_layer": "$current_layer"}
+    ]}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "xing_qiu_bad_star_note", "name": "其他煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "凶格",
+  "result": {"nature": "inauspicious", "summary": "命宫或身宫天相被左右邻宫擎羊、廉贞夹持即成刑囚夹印；不把行文“劫”解释为地劫。", "interpretation_template": "{effect_palace}命中刑囚夹印格。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "命宫天相羊贞夹持", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天相", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": [{"name": "擎羊", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "廉贞", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫天相贞羊夹持", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "身宫所在宫", "branch": "午", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "天相", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": [{"name": "廉贞", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "擎羊", "source_layer": "natal"}]}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "身宫所在宫"}},
+    {"name": "天相仅一侧夹星不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天相", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "adjacent_left": {"stars": [{"name": "擎羊", "source_layer": "natal"}]}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "天相被地劫廉贞夹不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天相", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "adjacent_left": {"stars": [{"name": "地劫", "source_layer": "natal"}]}, "adjacent_right": {"stars": [{"name": "廉贞", "source_layer": "natal"}]}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "刑囚夹印格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "刑囚夹印杖惟司。假如身命有天相劫被羊贞夹之，主人逢官非受刑杖，终身不能发达，只宜僧道。"}, {"kind": "user_confirmed_rule_decision", "note": "命宫或身宫天相；左右邻宫一宫擎羊、一宫廉贞，顺序不限；行文劫不取地劫；无破格条文。"}],
+  "updated_at": "2026-09-02"
+}

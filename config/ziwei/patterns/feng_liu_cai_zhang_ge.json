@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.feng_liu_cai_zhang_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "风流彩杖格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["贪狼", "擎羊", "陀罗"],
+  "output_flags": {"ref_match": "ref_match_condition"},
+  "output_enums": {"trigger_type": {"default": "none", "values": {"ming_palace": "ming_trigger", "body_palace": "body_trigger"}}},
+  "required": {"id": "feng_liu_cai_zhang_variants", "name": "寅宫命身贪狼擎羊同宫", "any": [
+    {"id": "ming_variant", "name": "命宫寅贪狼擎羊", "all": [{"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "ming_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "ming_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}, {"id": "ming_yang", "predicate": "star.contains", "scope": "self", "values": ["擎羊"], "source_layer": "$current_layer"}]},
+    {"id": "body_variant", "name": "身宫寅贪狼擎羊", "all": [{"id": "body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "body_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}, {"id": "body_yang", "predicate": "star.contains", "scope": "self", "values": ["擎羊"], "source_layer": "$current_layer"}]}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "ming_trigger", "name": "命宫寅贪狼擎羊触发证据", "all": [{"id": "obs_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_ming_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "obs_ming_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}, {"id": "obs_ming_yang", "predicate": "star.contains", "scope": "self", "values": ["擎羊"], "source_layer": "$current_layer"}]},
+    {"id": "body_trigger", "name": "身宫寅贪狼擎羊触发证据", "all": [{"id": "obs_body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "obs_body_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "obs_body_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}, {"id": "obs_body_yang", "predicate": "star.contains", "scope": "self", "values": ["擎羊"], "source_layer": "$current_layer"}]},
+    {"id": "ref_match_condition", "name": "寅宫贪狼陀罗古籍参考情形", "any": [{"id": "ref_ming", "all": [{"id": "ref_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "ref_ming_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "ref_ming_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}, {"id": "ref_ming_tuo", "predicate": "star.contains", "scope": "self", "values": ["陀罗"], "source_layer": "$current_layer"}]}, {"id": "ref_body", "all": [{"id": "ref_body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "ref_body_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "ref_body_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}, {"id": "ref_body_tuo", "predicate": "star.contains", "scope": "self", "values": ["陀罗"], "source_layer": "$current_layer"}]}]},
+    {"id": "feng_liu_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [{"id": "ref_match_note", "name": "寅宫贪狼陀罗参考情形", "any": [{"id": "ming_ref_note", "all": [{"id": "ming_ref_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "ming_ref_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "ming_ref_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}, {"id": "ming_ref_tuo", "predicate": "star.contains", "scope": "self", "values": ["陀罗"], "source_layer": "$current_layer"}]}, {"id": "body_ref_note", "all": [{"id": "body_ref_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_ref_branch", "predicate": "focus.branch_in", "values": ["寅"]}, {"id": "body_ref_tanlang", "predicate": "star.contains", "scope": "self", "values": ["贪狼"], "source_layer": "$current_layer"}, {"id": "body_ref_tuo", "predicate": "star.contains", "scope": "self", "values": ["陀罗"], "source_layer": "$current_layer"}]}], "note_template": "{focus_palace}为寅宫身命，贪狼与陀罗同宫；原文说明寅宫实际多取陀罗，此为参考情形，不作为正式风流彩杖格命中。"}],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "特殊格局",
+  "result": {"nature": "conditional", "summary": "严格按寅宫命身贪狼擎羊同宫成格；寅宫贪狼陀罗为古籍补充参考，不计正式命中。", "interpretation_template": "{effect_palace}命中风流彩杖格。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。", "notes": ["古籍说明寅宫无擎羊到位、常为陀罗所值；该勘误情形通过观察备注保留。"]},
+  "examples": [
+    {"name": "命宫寅贪狼擎羊正式命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "擎羊", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫寅贪狼擎羊正式命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "身宫所在宫", "branch": "寅", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "擎羊", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "身宫所在宫"}},
+    {"name": "寅宫贪狼陀罗不作正式命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "陀罗", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": false}},
+    {"name": "其他宫贪狼擎羊不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "擎羊", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "风流彩杖格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "刑遇贪狼号曰风流彩杖。假如贪狼羊刃同垣，身命于寅宫，为人聪明更主风流，若遇闲宫则平矣，余详之非也，寅宫无擎羊到位，只有陀罗所值，后学要明此论。"}, {"kind": "user_confirmed_rule_decision", "note": "正式格局仅寅宫命身贪狼擎羊同宫；寅宫贪狼陀罗为ref_match参考，不计正式命中。"}],
+  "updated_at": "2026-09-02"
+}

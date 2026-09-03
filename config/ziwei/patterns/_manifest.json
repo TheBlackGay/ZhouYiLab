@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.0.0",
-  "dictionary_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "dictionary_version": "1.1.0",
   "ruleset": "zhouyilab-ziwei-patterns",
-  "pattern_count": 3,
-  "updated_at": "2026-08-31",
+  "pattern_count": 39,
+  "updated_at": "2026-09-02",
   "description": "声明式紫微斗数格局规则。每个格局独立成文件，由规则引擎逐层逐宫匹配。"
 }

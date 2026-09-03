@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ji_ju_mao_you_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "极居卯酉格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["紫微", "贪狼", "擎羊", "陀罗", "火星", "铃星", "地空", "地劫", "左辅", "右弼", "天魁", "天钺"],
+  "output_flags": {"monk_tendency": "monk_tendency_condition", "noble": "noble_condition"},
+  "output_values": {"sha_count": "sha_count_condition"},
+  "required": {"id": "ji_ju_mao_you_base", "name": "卯酉命紫微贪狼同守", "all": [
+    {"id": "ji_ju_ming_only", "predicate": "focus.role_in", "values": ["ming"]},
+    {"id": "ji_ju_mao_you_branch", "predicate": "focus.branch_in", "values": ["卯", "酉"]},
+    {"id": "ji_ju_zi_tan_same", "predicate": "star.same_palace", "scope": "self", "values": ["紫微", "贪狼"], "source_layer": "$current_layer"}
+  ]},
+  "enhancers": [{"id": "noble_condition", "name": "无重煞加吉化左右魁钺主贵", "all": [
+    {"id": "noble_no_kong_jie", "predicate": "star.count", "scope": "four_directions", "stars": ["地空", "地劫"], "operator": "equals", "value": 0, "source_layer": "$current_layer"},
+    {"id": "noble_few_sha", "predicate": "star.count", "scope": "four_directions", "stars": ["擎羊", "陀罗", "火星", "铃星"], "operator": "less_or_equal", "value": 1, "source_layer": "$current_layer"},
+    {"id": "noble_jihua", "predicate": "transformation.contains", "scope": "four_directions", "values": ["化禄", "化权", "化科"], "source_layer": "$current_layer"},
+    {"id": "noble_aux_count", "predicate": "star.count", "scope": "four_directions", "stars": ["左辅", "右弼", "天魁", "天钺"], "operator": "greater_or_equal", "value": 2, "source_layer": "$current_layer"}
+  ]}],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "monk_tendency_condition", "name": "空劫同宫或六煞会聚，僧道倾向", "any": [
+      {"id": "monk_self_kong_jie", "predicate": "star.contains", "scope": "self", "values": ["地空", "地劫"], "source_layer": "$current_layer"},
+      {"id": "monk_sha_threshold", "predicate": "star.count", "scope": "four_directions", "stars": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "operator": "greater_or_equal", "value": 2, "source_layer": "$current_layer"}
+    ]},
+    {"id": "sha_count_condition", "name": "三方四正六煞计数", "predicate": "star.count", "scope": "four_directions", "stars": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "operator": "greater_or_equal", "value": 0, "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [{"id": "body_ji_ju_note", "name": "身宫卯酉紫贪相似结构", "all": [{"id": "body_ji_ju_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_ji_ju_branch", "predicate": "focus.branch_in", "values": ["卯", "酉"]}, {"id": "body_ji_ju_same", "predicate": "star.same_palace", "scope": "self", "values": ["紫微", "贪狼"], "source_layer": "$current_layer"}], "note_template": "{focus_palace}为身宫且卯酉紫微贪狼同守；原文只论命宫，不触发极居卯酉格"}],
+  "allow_role_observations": true,
+  "grade_rules": [{"grade": "贵格", "when": {"id": "grade_noble", "all": [{"id": "grade_no_kong", "predicate": "star.count", "scope": "four_directions", "stars": ["地空", "地劫"], "operator": "equals", "value": 0, "source_layer": "$current_layer"}, {"id": "grade_few_sha", "predicate": "star.count", "scope": "four_directions", "stars": ["擎羊", "陀罗", "火星", "铃星"], "operator": "less_or_equal", "value": 1, "source_layer": "$current_layer"}, {"id": "grade_jihua", "predicate": "transformation.contains", "scope": "four_directions", "values": ["化禄", "化权", "化科"], "source_layer": "$current_layer"}, {"id": "grade_aux", "predicate": "star.count", "scope": "four_directions", "stars": ["左辅", "右弼", "天魁", "天钺"], "operator": "greater_or_equal", "value": 2, "source_layer": "$current_layer"}]}}],
+  "default_grade": "普通格局",
+  "status_policy": {"required_matched": "formed", "enhancer_matched": "strengthened"},
+  "result": {"nature": "auspicious_with_outcome_split", "summary": "严格按卯酉命紫微贪狼同守；空劫同宫或六煞会聚标记僧道倾向，无重煞且吉化、左右魁钺达标升贵格。", "interpretation_template": "{effect_palace}命中极居卯酉格，档位为{grade}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "紫贪坐卯地劫同宫", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}, {"name": "地劫", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}, {"name": "地劫", "source_layer": "natal"}]}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "紫贪坐酉羊火二煞", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "酉", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "擎羊", "source_layer": "natal"}, {"name": "火星", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": [{"name": "擎羊", "source_layer": "natal"}, {"name": "火星", "source_layer": "natal"}]}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "紫贪坐卯无重煞吉化左右魁钺升贵格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "紫微", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "左辅", "source_layer": "natal"}, {"name": "右弼", "source_layer": "natal"}, {"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}]}, "opposite": {"stars": [{"name": "天魁", "source_layer": "natal"}, {"name": "天钺", "source_layer": "natal"}]}, "four_directions": {"stars": [{"name": "左辅", "source_layer": "natal"}, {"name": "右弼", "source_layer": "natal"}, {"name": "天魁", "source_layer": "natal"}, {"name": "天钺", "source_layer": "natal"}, {"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}]}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}},
+    {"name": "紫微不在命宫不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "紫微", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "极居卯酉格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "极居卯酉多为脱俗僧人。紫微为北极，如坐守命宫，加杀定主僧道；无杀加吉化、左右魁钺主贵。"}, {"kind": "user_confirmed_rule_decision", "note": "仅卯酉命紫贪同守；本宫空劫或六煞合计至少2标记僧道倾向；无空劫且羊陀火铃至多1、吉化至少1、左右魁钺至少2升贵格。"}],
+  "updated_at": "2026-09-02"
+}

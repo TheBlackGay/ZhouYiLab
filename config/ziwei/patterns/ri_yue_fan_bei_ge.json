@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ri_yue_fan_bei_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "日月反背格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["命宫"],
+  "snapshot_stars": ["太阳", "太阴"],
+  "output_flags": {"has_good_transform": "good_transform"},
+  "required": {"id": "ri_yue_fan_bei_base", "name": "太阳太阴同时落失辉宫", "predicate": "star.sun_moon_reverse", "source_layer": "$current_layer"},
+  "enhancers": [], "weakeners": [], "breakers": [],
+  "observations": [
+    {"id": "good_transform", "name": "日月本宫及三方见吉化", "predicate": "transformation.sun_moon_good", "source_layer": "$current_layer"},
+    {"id": "ri_yue_fan_bei_bad_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "特殊格局",
+  "result": {"nature": "conditional", "summary": "严格按太阳申酉戌亥子、太阴寅卯辰巳午同时失辉；本宫及各自三方见化禄化权化科只作化解标签，不否决格局。", "interpretation_template": "日月反背格命中。太阳、太阴失辉，但吉化拱照标签为{has_good_transform}；本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "太阳申太阴寅反背", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "申宫", "branch": "申", "stars": [{"name": "太阳", "source_layer": "natal"}]}, {"name": "寅宫", "branch": "寅", "stars": [{"name": "太阴", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "反背且日月三方有化禄", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "子宫", "branch": "子", "stars": [{"name": "太阳", "source_layer": "natal"}]}, {"name": "巳宫", "branch": "巳", "stars": [{"name": "太阴", "source_layer": "natal"}]}, {"name": "辰宫", "branch": "辰", "stars": [{"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "太阳巳太阴申非反背", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "巳宫", "branch": "巳", "stars": [{"name": "太阳", "source_layer": "natal"}]}, {"name": "申宫", "branch": "申", "stars": [{"name": "太阴", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "日月反背格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "日月最嫌反背，乃为失辉。太阳在申酉戌亥子，太阴在寅卯辰巳午，则日月无辉何贵之有，然有日月反背而多富贵者，要看本宫三合有吉化拱照。"}, {"kind": "user_confirmed_rule_decision", "note": "太阳、太阴分别落失辉宫即成格；本宫及各自三方吉化只作has_good_transform标签；煞星只备注，不破格不降级。"}],
+  "updated_at": "2026-09-02"
+}

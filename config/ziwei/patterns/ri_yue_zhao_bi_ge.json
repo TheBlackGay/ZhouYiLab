@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ri_yue_zhao_bi_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "日月照壁格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["田宅宫"],
+  "snapshot_stars": ["太阳", "太阴"],
+  "output_flags": {"is_tomb_house": "is_tomb_house_condition"},
+  "required": {"id": "ri_yue_zhao_bi_base", "name": "田宅宫日月同守", "all": [{"id": "tian_zhai_target", "predicate": "focus.name_in", "values": ["田宅宫"]}, {"id": "tian_zhai_sun_moon", "predicate": "star.same_palace", "scope": "self", "values": ["太阳", "太阴"], "source_layer": "$current_layer"}]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "is_tomb_house_condition", "name": "田宅宫位于墓库", "predicate": "focus.branch_in", "values": ["辰", "戌", "丑", "未"]},
+    {"id": "ri_yue_zhao_bi_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "auspicious", "summary": "田宅宫太阳、太阴同守即成日月照壁格；辰戌丑未墓库为增强标记，其他宫位仍可成格。", "interpretation_template": "{effect_palace}命中日月照壁格。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。", "notes": ["盘面统一使用“太阴”作为古文“月亮”的标准星名；本格局不扫描三方四正。"]},
+  "examples": [
+    {"name": "田宅辰宫日月同守且墓库", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "田宅宫", "branch": "辰", "roles": [], "effect_subject": ["田宅家业"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}, {"name": "太阴", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "田宅宫"}},
+    {"name": "田宅卯宫日月同守仍成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "田宅宫", "branch": "卯", "roles": [], "effect_subject": ["田宅家业"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}, {"name": "太阴", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "田宅宫"}},
+    {"name": "田宅宫仅太阳不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "田宅宫", "branch": "戌", "roles": [], "effect_subject": ["田宅家业"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": false}},
+    {"name": "命宫日月同守不属本格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}, {"name": "太阴", "source_layer": "natal"}]}, "triads": [], "opposite": []}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "日月照壁格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "日月临田宅宫是也，喜居墓库。"}, {"kind": "user_confirmed_rule_decision", "note": "田宅宫太阳太阴同守成格；辰戌丑未墓库输出is_tomb_house增强；仅扫描田宅本宫。"}],
+  "updated_at": "2026-09-02"
+}

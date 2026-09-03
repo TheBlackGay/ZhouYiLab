@@ -6,6 +6,7 @@ import subprocess
 import uuid
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 from ziwei_analysis import (
     AnalysisConfigError,
@@ -17,14 +18,24 @@ from ziwei_brightness import (
     apply_star_brightness,
     normalize_brightness_response,
 )
+from ziwei_blind_review import generate_blind_packet, load_blind_review_resources
+from ziwei_ai_review import (
+    AiReviewError,
+    AiReviewProviderError,
+    AiReviewService,
+)
+from ziwei_research_engine import ResearchConfigError
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEB_ROOT = PROJECT_ROOT / "web"
 CLI_PATH = PROJECT_ROOT / "build" / "examples" / "zi_wei_web_cli"
+QIMEN_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "qi_men_web_cli"
 API_VERSION = "v1"
 ALGORITHM_VERSION = "zhouyilab-core/1.4.1"
-MAX_BODY_BYTES = 64 * 1024
+MAX_BODY_BYTES = 256 * 1024
+_AI_REVIEW_SERVICE = None
+_AI_REVIEW_LOCK = None
 
 POST_OPERATIONS = {
     "/api/v1/ziwei/time-correction": "time_correction",
@@ -32,6 +43,17 @@ POST_OPERATIONS = {
     "/api/v1/ziwei/fortune": "fortune",
     "/api/v1/ziwei/analysis": "analysis",
 }
+
+
+def get_ai_review_service():
+    global _AI_REVIEW_SERVICE, _AI_REVIEW_LOCK
+    if _AI_REVIEW_LOCK is None:
+        import threading
+        _AI_REVIEW_LOCK = threading.Lock()
+    with _AI_REVIEW_LOCK:
+        if _AI_REVIEW_SERVICE is None:
+            _AI_REVIEW_SERVICE = AiReviewService()
+    return _AI_REVIEW_SERVICE
 
 
 def legacy_request(payload):
@@ -73,14 +95,17 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=str(WEB_ROOT), **kwargs)
 
     def do_GET(self):
-        if self.path == "/api/v1/health":
+        parsed = urlparse(self.path)
+        ai_prefix = "/api/v1/ziwei/research/ai-review"
+        if parsed.path == "/api/v1/health":
             self.send_api_success({
                 "status": "ok",
                 "service": "zhouyilab-ziwei-api",
                 "cli_available": CLI_PATH.exists(),
+                "qimen_cli_available": QIMEN_CLI_PATH.exists(),
             })
             return
-        if self.path == "/api/v1/ziwei/meta":
+        if parsed.path == "/api/v1/ziwei/meta":
             self.send_api_success({
                 "api_version": API_VERSION,
                 "algorithm_version": ALGORITHM_VERSION,
@@ -95,6 +120,8 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                     "declarative_pattern_engine",
                     "pattern_condition_trace",
                     "focus_palace_pattern_attribution",
+                    "local_blind_review_packet",
+                    "ai_multi_model_review_lab",
                 ],
                 "genders": ["male", "female"],
                 "time_correction_modes": ["standard_time", "true_solar_time"],
@@ -105,7 +132,64 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 "analysis_input_modes": ["chart_request", "chart"],
             })
             return
-        if self.path.startswith("/api/"):
+        if parsed.path == f"{ai_prefix}/meta":
+            try:
+                service = get_ai_review_service()
+                provider_meta = service.provider_meta()
+                self.send_api_success({
+                    "protocol": service.protocol,
+                    "provider_config_path": provider_meta["config_path"],
+                    "providers": provider_meta["providers"],
+                    "storage": {
+                        "database": str(service.store.path),
+                        "api_keys_persisted": False,
+                    },
+                })
+            except ResearchConfigError as error:
+                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
+            return
+        if parsed.path == f"{ai_prefix}/experiments":
+            try:
+                self.send_api_success(get_ai_review_service().store.list_experiments())
+            except ResearchConfigError as error:
+                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
+            return
+        if parsed.path.startswith(f"{ai_prefix}/experiments/"):
+            parts = parsed.path[len(f"{ai_prefix}/experiments/"):].split("/")
+            experiment_id = parts[0]
+            try:
+                service = get_ai_review_service()
+                if len(parts) == 1:
+                    data = service.store.get_experiment(experiment_id)
+                elif len(parts) == 2 and parts[1] == "results":
+                    data = service.results(experiment_id)
+                else:
+                    self.send_api_error(404, "ENDPOINT_NOT_FOUND", "接口不存在")
+                    return
+                self.send_api_success(data)
+            except AiReviewError as error:
+                self.send_api_error(404, "AI_REVIEW_NOT_FOUND", str(error))
+            except ResearchConfigError as error:
+                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
+            return
+        if parsed.path == "/api/v1/ziwei/research/blind-review/packet":
+            try:
+                seed = parse_qs(
+                    parsed.query, keep_blank_values=True
+                ).get("seed", ["pilot-2026"])[0]
+                if not seed or len(seed) > 128:
+                    raise ValueError("seed 长度必须为 1-128 个字符")
+            except (TypeError, ValueError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", str(error))
+                return
+            try:
+                resources, protocol = load_blind_review_resources()
+                packet, _ = generate_blind_packet(resources, protocol, seed)
+                self.send_api_success(packet)
+            except (ResearchConfigError, KeyError, TypeError, ValueError) as error:
+                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
+            return
+        if parsed.path.startswith("/api/"):
             self.send_api_error(404, "ENDPOINT_NOT_FOUND", "接口不存在")
             return
         super().do_GET()
@@ -122,8 +206,58 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_POST(self):
-        is_legacy = self.path == "/api/calculate"
-        operation = POST_OPERATIONS.get(self.path)
+        parsed = urlparse(self.path)
+        ai_prefix = "/api/v1/ziwei/research/ai-review"
+        if parsed.path == "/api/v1/qimen/charts":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_engine(QIMEN_CLI_PATH, payload))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "奇门排盘计算超时")
+            except CliError as error:
+                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
+                self.send_api_error(status, error.code, error.message)
+            return
+        if parsed.path == f"{ai_prefix}/connections/test":
+            try:
+                payload = self.read_json_body()
+                service = get_ai_review_service()
+                provider_id = payload.get("provider_id")
+                if not isinstance(provider_id, str):
+                    raise AiReviewError("必须提供 provider_id")
+                self.send_api_success(service.test_connection(provider_id))
+            except AiReviewProviderError as error:
+                self.send_api_error(502, "AI_PROVIDER_UNAVAILABLE", str(error))
+            except (AiReviewError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_AI_PROVIDER", str(error))
+            except ResearchConfigError as error:
+                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
+            return
+        if parsed.path == f"{ai_prefix}/experiments":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(get_ai_review_service().create_experiment(payload), 202)
+            except (AiReviewError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_AI_EXPERIMENT", str(error))
+            except ResearchConfigError as error:
+                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
+            return
+        cancel_prefix = f"{ai_prefix}/experiments/"
+        if parsed.path.startswith(cancel_prefix) and parsed.path.endswith("/cancel"):
+            experiment_id = parsed.path[len(cancel_prefix):-len("/cancel")]
+            try:
+                self.read_json_body()
+                service = get_ai_review_service()
+                service.store.request_cancel(experiment_id)
+                self.send_api_success(service.store.get_experiment(experiment_id), 202)
+            except (AiReviewError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_AI_EXPERIMENT", str(error))
+            return
+
+        is_legacy = parsed.path == "/api/calculate"
+        operation = POST_OPERATIONS.get(parsed.path)
         if operation is None and not is_legacy:
             self.send_api_error(404, "ENDPOINT_NOT_FOUND", "接口不存在")
             return
@@ -170,8 +304,13 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         return payload
 
     def run_cli(self, request):
+        return self.run_engine(CLI_PATH, request, normalize=True)
+
+    def run_engine(self, executable, request, normalize=False):
+        if not executable.exists():
+            raise CliError("ENGINE_UNAVAILABLE", "计算引擎尚未构建")
         completed = subprocess.run(
-            [str(CLI_PATH)],
+            [str(executable)],
             input=json.dumps(request, ensure_ascii=False),
             cwd=PROJECT_ROOT,
             capture_output=True,
@@ -191,7 +330,7 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 error.get("code", "CALCULATION_FAILED"),
                 error.get("message", "排盘计算失败"),
             )
-        return normalize_brightness_response(result)
+        return normalize_brightness_response(result) if normalize else result
 
     def run_analysis(self, payload):
         chart = payload.get("chart")
@@ -265,8 +404,10 @@ def main():
     parser = argparse.ArgumentParser(description="ZhouYiLab 紫微斗数 API 与本地页面服务")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
-    if not CLI_PATH.exists():
-        raise SystemExit(f"缺少 {CLI_PATH}，请先构建 zi_wei_web_cli")
+    missing_engines = [path for path in (CLI_PATH, QIMEN_CLI_PATH) if not path.exists()]
+    if missing_engines:
+        missing = "、".join(str(path) for path in missing_engines)
+        raise SystemExit(f"缺少 {missing}，请先构建网页 CLI")
     mimetypes.add_type("text/javascript", ".js")
     server = ThreadingHTTPServer(("127.0.0.1", args.port), ZhouYiHandler)
     print(f"ZhouYiLab API 与页面已启动：http://127.0.0.1:{args.port}")

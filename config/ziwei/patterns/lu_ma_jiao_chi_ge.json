@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.lu_ma_jiao_chi_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "禄马交持格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["禄存", "天马"],
+  "output_values": {
+    "occur_pal": {"condition_id": "lu_ma_same_palace", "path": "occur_pal"},
+    "debug_brightness": {"condition_id": "lu_ma_same_palace", "path": "debug_brightness"}
+  },
+  "required": {"id": "lu_ma_jiao_chi_base", "name": "化禄主星与天马同宫且得地", "predicate": "star.lu_ma_same_palace_good_place"},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "lu_ma_same_palace", "name": "禄马同宫得地证据", "predicate": "star.lu_ma_same_palace_good_place"},
+    {"id": "lu_ma_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "auspicious", "summary": "严格按携带化禄的实体主星与天马同宫，且两者亮度均存在并非陷；三合、对宫不算同宫。", "interpretation_template": "{effect_palace}命中禄马交持格，共同宫位为{occur_pal}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "化禄主星与天马同宫且均得地", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "寅宫", "branch": "寅", "stars": [{"name": "廉贞", "transformation": "化禄", "brightness": "旺", "source_layer": "natal"}, {"name": "天马", "brightness": "庙", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "化禄与天马异宫不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "寅宫", "branch": "寅", "stars": [{"name": "廉贞", "transformation": "化禄", "brightness": "旺", "source_layer": "natal"}]}, {"name": "申宫", "branch": "申", "stars": [{"name": "天马", "brightness": "庙", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {}}, "expected": {"matched": false}},
+    {"name": "同宫但天马亮度缺失不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "寅宫", "branch": "寅", "stars": [{"name": "廉贞", "transformation": "化禄", "liang_du": "旺", "source_layer": "natal"}, {"name": "天马", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {}}, "expected": {"matched": false}},
+    {"name": "化禄主星落陷不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "寅宫", "branch": "寅", "stars": [{"name": "廉贞", "transformation": "化禄", "brightness": "陷", "source_layer": "natal"}, {"name": "天马", "brightness": "庙", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {}}, "expected": {"matched": false}},
+    {"name": "两颗化禄任一有效即可成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": [{"name": "寅宫", "branch": "寅", "stars": [{"name": "廉贞", "transformation": "化禄", "brightness": "陷", "source_layer": "natal"}, {"name": "破军", "transformation": "化禄", "brightness": "旺", "source_layer": "natal"}, {"name": "天马", "brightness": "庙", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {}}, "expected": {"matched": true, "status": "formed"}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "禄马交持格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "禄马最喜欢交驰。假如甲禄在寅而甲子辰马亦在寅，遇此得地谓之禄马交驰。"}, {"kind": "user_confirmed_rule_decision", "note": "化禄实体主星与天马必须同宫；两者亮度字段优先 brightness、回退 liang_du，均存在且均非陷；任一化禄主星候选有效即可。"}],
+  "updated_at": "2026-09-02"
+}

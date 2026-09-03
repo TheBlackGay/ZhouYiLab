@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.shan_yin_chao_gang_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "善荫朝纲格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["天机", "天梁", "擎羊", "陀罗", "火星", "铃星", "地劫", "地空"],
+  "output_flags": {"reduce_rank": "reduce_rank_condition"},
+  "output_enums": {"trigger_type": {"default": "none", "values": {"ming_palace": "ming_trigger", "body_palace": "body_trigger"}}},
+  "output_values": {"pal_location": "pal_location_condition"},
+  "required": {"id": "shan_yin_chao_gang_variants", "name": "辰戌命身机梁同宫且目标宫见化吉", "any": [
+    {"id": "ming_variant", "name": "命宫辰戌机梁化吉", "all": [
+      {"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "ming_branch", "predicate": "focus.branch_in", "values": ["辰", "戌"]},
+      {"id": "ming_ji_liang", "predicate": "star.same_palace", "scope": "self", "values": ["天机", "天梁"], "source_layer": "$current_layer"},
+      {"id": "ming_hua_good", "predicate": "transformation.contains", "scope": "self", "values": ["化禄", "化权", "化科"], "source_layer": "$current_layer"}
+    ]},
+    {"id": "body_variant", "name": "身宫辰戌机梁化吉", "all": [
+      {"id": "body_role", "predicate": "focus.role_in", "values": ["body"]},
+      {"id": "body_branch", "predicate": "focus.branch_in", "values": ["辰", "戌"]},
+      {"id": "body_ji_liang", "predicate": "star.same_palace", "scope": "self", "values": ["天机", "天梁"], "source_layer": "$current_layer"},
+      {"id": "body_hua_good", "predicate": "transformation.contains", "scope": "self", "values": ["化禄", "化权", "化科"], "source_layer": "$current_layer"}
+    ]}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "ming_trigger", "name": "命宫机梁触发证据", "all": [{"id": "obs_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_ming_branch", "predicate": "focus.branch_in", "values": ["辰", "戌"]}, {"id": "obs_ming_ji_liang", "predicate": "star.same_palace", "scope": "self", "values": ["天机", "天梁"], "source_layer": "$current_layer"}, {"id": "obs_ming_hua", "predicate": "transformation.contains", "scope": "self", "values": ["化禄", "化权", "化科"], "source_layer": "$current_layer"}]},
+    {"id": "body_trigger", "name": "身宫机梁触发证据", "all": [{"id": "obs_body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "obs_body_branch", "predicate": "focus.branch_in", "values": ["辰", "戌"]}, {"id": "obs_body_ji_liang", "predicate": "star.same_palace", "scope": "self", "values": ["天机", "天梁"], "source_layer": "$current_layer"}, {"id": "obs_body_hua", "predicate": "transformation.contains", "scope": "self", "values": ["化禄", "化权", "化科"], "source_layer": "$current_layer"}]},
+    {"id": "pal_location_condition", "name": "目标宫所在地支", "predicate": "focus.branch_in", "values": ["辰", "戌"]},
+    {"id": "reduce_rank_condition", "name": "目标宫见刑忌耗煞，格局减等", "any": [
+      {"id": "reduce_rank_sha", "predicate": "star.contains_in_scopes", "scopes": ["self"], "values": ["擎羊", "陀罗", "火星", "铃星", "地劫", "地空"], "source_layer": "$current_layer"},
+      {"id": "reduce_rank_hua_ji", "predicate": "transformation.contains", "scope": "self", "values": ["化忌"], "source_layer": "$current_layer"}
+    ]},
+    {"id": "shan_yin_bad_star_note", "name": "刑忌耗煞仅作减等备注", "any": [
+      {"id": "note_sha", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地劫", "地空"], "source_layer": "$current_layer"},
+      {"id": "note_hua_ji", "predicate": "transformation.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["化忌"], "source_layer": "$current_layer"}
+    ]}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "conditional", "summary": "命宫或身宫辰戌天机天梁同守，且目标宫见化禄、化权或化科才成格；见刑忌耗煞仅减等，适合僧道之论只作古文备注。", "interpretation_template": "{effect_palace}命中善荫朝纲格。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "命宫辰机梁化禄成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天机", "source_layer": "natal"}, {"name": "天梁", "transformation": "化禄", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫戌机梁化权成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "身宫所在宫", "branch": "戌", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "天机", "source_layer": "natal"}, {"name": "天梁", "transformation": "化权", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "身宫所在宫"}},
+    {"name": "命宫机梁无化吉不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天机", "source_layer": "natal"}, {"name": "天梁", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "命宫机梁化科见羊减等", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "戌", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天机", "source_layer": "natal"}, {"name": "天梁", "transformation": "化科", "source_layer": "natal"}, {"name": "擎羊", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "善荫朝纲格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "善荫朝纲仁慈之长。假如机梁二星守身命在辰戌宫，兼化吉相助以为富贵，加刑忌耗杀僧道宜之。"}, {"kind": "user_confirmed_rule_decision", "note": "命宫或身宫辰戌机梁同宫且目标宫化禄化权化科之一才成格；刑忌耗煞仅reduce_rank，不broken。"}],
+  "updated_at": "2026-09-02"
+}

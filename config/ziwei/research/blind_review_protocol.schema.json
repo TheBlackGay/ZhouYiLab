@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhouyilab.local/schemas/ziwei/research/blind_review_protocol.schema.json",
+  "title": "ZhouYiLab 紫微斗数定性实验盲评协议",
+  "type": "object",
+  "required": [
+    "schema_version", "protocol_version", "id", "status",
+    "experiment_version", "dimension_dictionary_version",
+    "rating_scale", "rater_plan", "blinding", "agreement",
+    "decision_rules", "updated_at"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "protocol_version": {"type": "string"},
+    "id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["draft", "frozen_before_collection", "collection_open", "completed", "deprecated"]},
+    "experiment_version": {"type": "string"},
+    "dimension_dictionary_version": {"type": "string"},
+    "rating_scale": {
+      "type": "object",
+      "required": ["allowed_values", "anchors", "missing_value", "rationale_required"],
+      "properties": {
+        "allowed_values": {
+          "type": "array",
+          "minItems": 3,
+          "items": {"type": "number"},
+          "uniqueItems": true
+        },
+        "anchors": {"type": "object", "additionalProperties": {"type": "string"}},
+        "missing_value": {"type": "null"},
+        "rationale_required": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "rater_plan": {
+      "type": "object",
+      "required": ["minimum_raters", "target_raters", "requirements", "independence_rule"],
+      "properties": {
+        "minimum_raters": {"type": "integer", "minimum": 2},
+        "target_raters": {"type": "integer", "minimum": 2},
+        "requirements": {"type": "array", "items": {"type": "string"}},
+        "independence_rule": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "blinding": {
+      "type": "object",
+      "required": ["visible_fields", "hidden_fields", "randomization"],
+      "properties": {
+        "visible_fields": {"type": "array", "items": {"type": "string"}},
+        "hidden_fields": {"type": "array", "items": {"type": "string"}},
+        "randomization": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "agreement": {
+      "type": "object",
+      "required": ["primary_metric", "distance", "minimum_usable_raters", "thresholds"],
+      "properties": {
+        "primary_metric": {"const": "krippendorff_alpha_interval"},
+        "distance": {"const": "squared_difference"},
+        "minimum_usable_raters": {"type": "integer", "minimum": 2},
+        "thresholds": {
+          "type": "object",
+          "required": ["provisional_acceptance", "strong_agreement"],
+          "properties": {
+            "provisional_acceptance": {"type": "number", "minimum": -1, "maximum": 1},
+            "strong_agreement": {"type": "number", "minimum": -1, "maximum": 1}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "decision_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "updated_at": {"type": "string", "format": "date"}
+  },
+  "additionalProperties": false
+}

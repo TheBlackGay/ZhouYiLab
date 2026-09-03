@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ri_yue_bing_ming_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "日月并明格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["太阳", "太阴", "擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+  "output_star_positions": {"solar_palace": "太阳", "lunar_palace": "太阴"},
+  "required": {
+    "id": "ri_yue_bing_ming_base",
+    "name": "丑宫命、太阳巳、太阴酉来朝",
+    "all": [
+      {"id": "ri_yue_bing_ming_ming_only", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+      {"id": "ri_yue_bing_ming_chou", "name": "命宫位于丑宫", "predicate": "focus.branch_in", "values": ["丑"]},
+      {"id": "ri_yue_bing_ming_sun_si", "name": "太阳落巳宫", "predicate": "star.at_physical_branch", "star": "太阳", "branch": "巳", "scope": "chart", "source_layer": "$current_layer"},
+      {"id": "ri_yue_bing_ming_moon_you", "name": "太阴落酉宫", "predicate": "star.at_physical_branch", "star": "太阴", "branch": "酉", "scope": "chart", "source_layer": "$current_layer"}
+    ]
+  },
+  "enhancers": [
+    {"id": "ri_yue_bing_ming_yi_xin", "name": "乙辛生人合格", "predicate": "birth.year_stem_in", "values": ["乙", "辛"]},
+    {"id": "ri_yue_bing_ming_bing", "name": "丙生人生贵", "predicate": "birth.year_stem_in", "values": ["丙"]},
+    {"id": "ri_yue_bing_ming_ding", "name": "丁生人主富", "predicate": "birth.year_stem_in", "values": ["丁"]}
+  ],
+  "weakeners": [],
+  "breakers": [
+    {"id": "ri_yue_bing_ming_malefics", "name": "命宫或三方见四煞空劫", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"},
+    {"id": "ri_yue_bing_ming_huaji", "name": "命宫或三方见化忌", "any": [
+      {"id": "ri_yue_bing_ming_self_huaji", "name": "命宫见化忌", "predicate": "transformation.contains", "scope": "self", "values": ["化忌"], "source_layer": "$current_layer"},
+      {"id": "ri_yue_bing_ming_triad_huaji", "name": "三方见化忌", "predicate": "transformation.contains", "scope": "triads", "values": ["化忌"], "source_layer": "$current_layer"}
+    ]}
+  ],
+  "break_check": {
+    "break_star": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫", "化忌"],
+    "scan_scope": "命宫、三方会照宫位",
+    "note": "日月并明骨架成立后，命宫或三方见四煞、空劫、化忌则保留格局并标记破格，按原文为平常"
+  },
+  "observations": [],
+  "allow_role_observations": true,
+  "ordinary_palace_observations": [
+    {"id": "body_ri_yue_bing_ming_note", "name": "身宫丑宫日巳月酉相似结构", "all": [
+      {"id": "body_ri_yue_bing_ming_role", "name": "目标是身宫", "predicate": "focus.role_in", "values": ["body"]},
+      {"id": "body_ri_yue_bing_ming_chou", "name": "身宫位于丑宫", "predicate": "focus.branch_in", "values": ["丑"]},
+      {"id": "body_ri_yue_bing_ming_sun_si", "name": "太阳落巳宫", "predicate": "star.at_physical_branch", "star": "太阳", "branch": "巳", "scope": "chart", "source_layer": "$current_layer"},
+      {"id": "body_ri_yue_bing_ming_moon_you", "name": "太阴落酉宫", "predicate": "star.at_physical_branch", "star": "太阴", "branch": "酉", "scope": "chart", "source_layer": "$current_layer"}
+    ], "note_template": "{focus_palace}为身宫且见丑宫命、日巳月酉相似结构；原文只论安命，不触发日月并明格"}
+  ],
+  "status_policy": {"required_matched": "formed", "enhancer_matched": "strengthened", "breaker_matched": "broken"},
+  "result": {
+    "nature": "auspicious_with_breaker",
+    "summary": "严格按古文匹配丑宫命、太阳巳宫、太阴酉宫固定来朝；乙辛、丙、丁生年干为层次标签，四煞空劫化忌破格但保留诊断记录。",
+    "interpretation_template": "{effect_palace}命中日月并明格，原始档位为{grade}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。",
+    "status_messages": {"broken": "本可成日月并明格，但命宫或三方见四煞、空劫或化忌，按原文为平常"}
+  },
+  "default_grade": "普通吉格",
+  "examples": [
+    {"name": "丑命太阳巳太阴酉基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "乙", "palaces": [{"name": "巳宫", "branch": "巳", "stars": [{"name": "太阳", "physical_branch": "巳", "source_layer": "natal"}]}, {"name": "酉宫", "branch": "酉", "stars": [{"name": "太阴", "physical_branch": "酉", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}},
+    {"name": "太阳太阴互换不成立", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "辛", "palaces": [{"name": "巳宫", "branch": "巳", "stars": [{"name": "太阴", "physical_branch": "巳", "source_layer": "natal"}]}, {"name": "酉宫", "branch": "酉", "stars": [{"name": "太阳", "physical_branch": "酉", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "三方地空破格保留记录", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丁", "palaces": [{"name": "巳宫", "branch": "巳", "stars": [{"name": "太阳", "physical_branch": "巳", "source_layer": "natal"}]}, {"name": "酉宫", "branch": "酉", "stars": [{"name": "太阴", "physical_branch": "酉", "source_layer": "natal"}]}]}, "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": [{"name": "地空", "physical_palace": "官禄宫", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": [{"name": "地空", "physical_palace": "官禄宫", "source_layer": "natal"}]}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}},
+    {"name": "仅身宫相似结构只作备注", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "丙", "palaces": [{"name": "巳宫", "branch": "巳", "stars": [{"name": "太阳", "physical_branch": "巳", "source_layer": "natal"}]}, {"name": "酉宫", "branch": "酉", "stars": [{"name": "太阴", "physical_branch": "酉", "source_layer": "natal"}]}]}, "focus": {"name": "夫妻宫", "branch": "丑", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "日月并明格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "日月并明佐九重于尧殿。如安命丑宫，日在巳、月在酉来朝照为并明，辛乙生人合格，如丙生人生贵、丁生人主富，如四煞空劫忌平常。"},
+    {"kind": "user_confirmed_rule_decision", "note": "仅命宫丑、太阳巳、太阴酉固定位置成格；乙辛、丙、丁只作增益标签；命宫三方四煞空劫化忌破格并保留记录；身宫不成格。"}
+  ],
+  "updated_at": "2026-09-02"
+}

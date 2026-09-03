@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.huo_tan_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "火贪格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["贪狼", "火星", "擎羊", "陀罗", "地劫", "地空"],
+  "output_flags": {"has_jihua": "externally_confirmed_jihua"},
+  "grade_by_variant": {"upper_grade": "上格", "lower_grade": "次格"},
+  "required": {
+    "id": "huo_tan_grade_variants",
+    "name": "火贪格严格分档条件",
+    "any": [
+      {
+        "id": "upper_grade",
+        "name": "上格：辰戌丑未命宫火贪同宫",
+        "all": [
+          {"id": "huo_tan_upper_ming", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+          {"id": "huo_tan_upper_branch", "name": "命宫位于辰戌丑未", "predicate": "focus.branch_in", "values": ["辰", "戌", "丑", "未"]},
+          {"id": "huo_tan_upper_same_palace", "name": "贪狼火星同坐命宫", "predicate": "star.same_palace", "values": ["贪狼", "火星"], "source_layer": "$current_layer"}
+        ]
+      },
+      {
+        "id": "lower_grade",
+        "name": "次格：卯宫命宫火贪同宫",
+        "all": [
+          {"id": "huo_tan_lower_ming", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+          {"id": "huo_tan_lower_branch", "name": "命宫位于卯宫", "predicate": "focus.branch_in", "values": ["卯"]},
+          {"id": "huo_tan_lower_same_palace", "name": "贪狼火星同坐命宫", "predicate": "star.same_palace", "values": ["贪狼", "火星"], "source_layer": "$current_layer"}
+        ]
+      }
+    ]
+  },
+  "enhancers": [
+    {
+      "id": "externally_confirmed_jihua",
+      "name": "外部配置确认三方吉化拱照",
+      "predicate": "input.pattern_flag",
+      "pattern_id": "pattern.huo_tan_ge",
+      "key": "has_jihua",
+      "value": true
+    }
+  ],
+  "weakeners": [],
+  "breakers": [
+    {
+      "id": "huo_tan_yang_tuo_jie_kong",
+      "name": "命宫或三方见羊陀劫空则破格",
+      "predicate": "star.contains_in_scopes",
+      "scopes": ["self", "triads"],
+      "values": ["擎羊", "陀罗", "地劫", "地空"],
+      "source_layer": "$current_layer"
+    }
+  ],
+  "break_check": {
+    "break_star": ["擎羊", "陀罗", "地劫", "地空"],
+    "scan_scope": "命宫、三方宫",
+    "note": "命宫或三方见擎羊、陀罗、地劫、地空，则格局破格；格局本体骨架仍成立，保留格局记录用于诊断展示"
+  },
+  "observations": [],
+  "allow_role_observations": true,
+  "ordinary_palace_observations": [
+    {
+      "id": "body_huo_tan_note",
+      "name": "身宫贪狼火星同宫现象",
+      "all": [
+        {"id": "body_huo_tan_role", "name": "目标是身宫", "predicate": "focus.role_in", "values": ["body"]},
+        {"id": "body_huo_tan_same_palace", "name": "贪狼火星同坐身宫", "predicate": "star.same_palace", "scope": "self", "values": ["贪狼", "火星"], "source_layer": "$current_layer"}
+      ],
+      "note_template": "{focus_palace}为身宫且见贪狼火星同宫；原文只写安命，不触发火贪格"
+    }
+  ],
+  "status_policy": {
+    "required_matched": "formed",
+    "enhancer_matched": "strengthened",
+    "breaker_matched": "broken"
+  },
+  "result": {
+    "nature": "auspicious_with_breaker",
+    "summary": "严格按古文匹配辰戌丑未命宫火贪上格或卯宫火贪次格；命宫及三方见羊陀劫空时保留命中并标记破格，三方吉化只接受外部确认。",
+    "interpretation_template": "{effect_palace}命中火贪格，原始档位为{grade}。古诀称贪狼火星居庙旺、名镇诸邦；本结果只确认给定文本结构，不把古代断语转换为现实结果保证。",
+    "status_messages": {
+      "broken": "本可成火贪格，但被命宫或三方的羊陀劫空破格"
+    },
+    "notes": [
+      "原文提及「三方吉化拱照尤美」，本条目未定义吉化星曜清单；候选参考：化禄、化权、化科、禄存、左辅、右弼、文昌、文曲、天魁、天钺。扫描范围为本宫三方；本版本不自动计算，由外部输入 has_jihua 明确确认。"
+    ]
+  },
+  "examples": [
+    {
+      "name": "辰宫命宫火贪上格基础命中",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "火星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "卯宫命宫火贪次格且外部确认三方吉化",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {"pattern.huo_tan_ge": {"has_jihua": true}}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "火星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}
+    },
+    {
+      "name": "未宫命宫火贪见三方擎羊保留上格并破格",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {"pattern.huo_tan_ge": {"has_jihua": true}}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "火星", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "擎羊", "physical_palace": "财帛宫", "physical_branch": "亥", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}
+    },
+    {
+      "name": "卯宫命宫火贪本宫地空保留次格并破格",
+      "context": {"layer": {"id": "decade", "name": "大限"}, "pattern_inputs": {}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "卯", "roles": ["ming"], "effect_subject": ["大限命宫主题"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "decade"}, {"name": "火星", "source_layer": "decade"}, {"name": "地空", "physical_palace": "命宫", "physical_branch": "卯", "source_layer": "decade"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}
+    },
+    {
+      "name": "身宫火贪同宫只作备注不成格",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "辰", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "火星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    },
+    {
+      "name": "子宫命宫火贪不在原文成格范围",
+      "context": {"layer": {"id": "natal", "name": "本命"}, "pattern_inputs": {}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "贪狼", "source_layer": "natal"}, {"name": "火星", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}},
+      "expected": {"matched": false}
+    }
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "火贪格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "贪狼火星居庙旺，名镇诸邦。如辰戌丑未四宫安命值此上格，三方吉化拱照尤美，如卯宫安命无杀次之，如羊陀劫空不是。"},
+    {"kind": "user_confirmed_rule_decision", "note": "辰戌丑未命宫火贪为上格，卯宫为次格；命宫及三方见羊陀劫空时保留基础命中、档位和证据并标记 broken；三方吉化仅接受外部 has_jihua；身宫不成格。"}
+  ],
+  "updated_at": "2026-09-02"
+}

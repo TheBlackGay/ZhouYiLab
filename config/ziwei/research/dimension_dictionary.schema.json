@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhouyilab.local/schemas/ziwei/research/dimension_dictionary.schema.json",
+  "title": "ZhouYiLab 紫微斗数研究输出维度词典",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dictionary_version",
+    "status",
+    "decision_record",
+    "scale",
+    "dimensions",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "dictionary_version": {"type": "string"},
+    "status": {"enum": ["draft", "frozen_for_pilot", "validated", "deprecated"]},
+    "decision_record": {"type": "string", "minLength": 1},
+    "scale": {
+      "type": "object",
+      "required": ["minimum", "maximum", "precision", "meaning", "prohibitions"],
+      "properties": {
+        "minimum": {"type": "number"},
+        "maximum": {"type": "number"},
+        "precision": {"type": "number", "exclusiveMinimum": 0},
+        "meaning": {"type": "string", "minLength": 1},
+        "prohibitions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "definition",
+          "positive_direction",
+          "negative_direction",
+          "includes",
+          "excludes",
+          "evidence_level",
+          "parameter_status"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+          "name": {"type": "string", "minLength": 1},
+          "definition": {"type": "string", "minLength": 1},
+          "positive_direction": {"type": "string", "minLength": 1},
+          "negative_direction": {"type": "string", "minLength": 1},
+          "includes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "excludes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "evidence_level": {"enum": ["E1", "E2", "E3", "E4", "E5", "E6"]},
+          "parameter_status": {
+            "enum": ["proposed", "reviewed", "pilot_calibrated", "validated", "deprecated"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "updated_at": {"type": "string", "format": "date"}
+  },
+  "additionalProperties": false
+}

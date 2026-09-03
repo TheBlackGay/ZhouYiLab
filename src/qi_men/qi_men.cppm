@@ -89,7 +89,8 @@ enum class Spirit : std::uint8_t {
     BaiHu = 4,       // 白虎
     XuanWu = 5,      // 玄武
     JiuDi = 6,       // 九地
-    JiuTian = 7      // 九天
+    JiuTian = 7,     // 九天
+    None = 8         // 中宫无神
 };
 
 /**
@@ -168,6 +169,8 @@ struct PalaceInfo {
     std::uint8_t tian_gan;  // 天盘天干（0-9 对应 甲-癸）
     std::uint8_t di_gan;    // 地盘天干（0-9 对应 甲-癸）
     std::uint8_t ren_gan;   // 人盘天干（0-9 对应 甲-癸）
+    std::optional<std::uint8_t> lodged_tian_gan; // 天禽随天芮所带中宫寄干
+    bool tian_qin_lodged = false;
 };
 
 /**
@@ -183,7 +186,9 @@ struct QiMenPan {
     // 直符和直使
     Star zhi_fu_star;        // 直符星
     Gate zhi_shi_gate;       // 直使门
+    Palace zhi_fu_origin_palace; // 值符星原始宫
     Palace zhi_fu_palace;    // 直符所在宫
+    Palace zhi_shi_palace;   // 直使所在宫
     
     // 日期信息
     int solar_year = 0;      // 阳历年
@@ -232,7 +237,8 @@ constexpr std::string_view gate_name(Gate g) noexcept {
         case Gate::Sheng: return "生";
         case Gate::Xiu: return "休";
         case Gate::Kai: return "开";
-        default: return "未知";
+        case Gate::Jing_Center: return "";
+        default: return "";
     }
 }
 
@@ -267,7 +273,8 @@ constexpr std::string_view spirit_name(Spirit sp) noexcept {
         case Spirit::XuanWu: return "玄武";
         case Spirit::JiuDi: return "九地";
         case Spirit::JiuTian: return "九天";
-        default: return "未知";
+        case Spirit::None: return "";
+        default: return "";
     }
 }
 
@@ -467,6 +474,20 @@ constexpr Yuan get_yuan_from_di_zhi(std::uint8_t di_zhi) noexcept {
     }
 }
 
+/**
+ * @brief 拆补法按日干回推符头，再由符头地支确定三元
+ */
+constexpr Yuan get_yuan_from_gan_zhi(
+    std::uint8_t tian_gan,
+    std::uint8_t di_zhi
+) noexcept {
+    const auto days_from_fu_tou = tian_gan % 5;
+    const auto fu_tou_zhi = static_cast<std::uint8_t>(
+        (di_zhi + 12 - days_from_fu_tou) % 12
+    );
+    return get_yuan_from_di_zhi(fu_tou_zhi);
+}
+
 // ==================== 排盘算法 ====================
 
 /**
@@ -607,6 +628,10 @@ inline void to_json(nlohmann::json& j, const QiMenPan& pan) {
     
     // 按照顺序添加字段（JSON 会保持插入顺序）
     
+    j["method"] = "shijia_zhuanpan_chaibu";
+    j["method_zh"] = "拆补法·时家转盘";
+    j["center_lodging"] = "tian_qin_with_tian_rui";
+
     // 1. 日期信息（阳历和农历）
     nlohmann::json solar_date = nlohmann::json::object();
     solar_date["year"] = pan.solar_year;
@@ -650,6 +675,7 @@ inline void to_json(nlohmann::json& j, const QiMenPan& pan) {
     j["zhi_fu_star"] = std::string(star_name(pan.zhi_fu_star));
     j["zhi_shi_gate"] = std::string(gate_name(pan.zhi_shi_gate));
     j["zhi_fu_palace"] = std::string(palace_name(pan.zhi_fu_palace));
+    j["zhi_shi_palace"] = std::string(palace_name(pan.zhi_shi_palace));
     
     // 7. 九宫信息（最后）
     nlohmann::json palaces_json = nlohmann::json::array();
@@ -665,6 +691,12 @@ inline void to_json(nlohmann::json& j, const QiMenPan& pan) {
         palace_json["spirit"] = std::string(spirit_name(p.spirit));
         palace_json["di_gan"] = std::string(Mapper::to_zh(static_cast<TianGan>(p.di_gan)));
         palace_json["tian_gan"] = std::string(Mapper::to_zh(static_cast<TianGan>(p.tian_gan)));
+        if (p.tian_qin_lodged && p.lodged_tian_gan.has_value()) {
+            palace_json["lodged_star"] = "天禽";
+            palace_json["lodged_tian_gan"] = std::string(Mapper::to_zh(
+                static_cast<TianGan>(p.lodged_tian_gan.value())
+            ));
+        }
         
         palaces_json.push_back(palace_json);
     }

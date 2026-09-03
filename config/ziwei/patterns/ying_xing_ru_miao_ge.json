@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ying_xing_ru_miao_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "英星入庙格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["破军", "左辅", "右弼", "天魁", "天钺", "文昌", "文曲"],
+  "output_flags": {"has_auspicious": "ying_xing_auspicious", "has_bad_star_note": "ying_xing_bad_star_note"},
+  "required": {"id": "ying_xing_ru_miao_base", "name": "子午命宫破军坐守", "all": [
+    {"id": "ying_xing_ming_only", "predicate": "focus.role_in", "values": ["ming"]},
+    {"id": "ying_xing_zi_wu", "predicate": "focus.branch_in", "values": ["子", "午"]},
+    {"id": "ying_xing_pojun_self", "predicate": "star.contains", "scope": "self", "values": ["破军"], "source_layer": "$current_layer"}
+  ]},
+  "enhancers": [], "weakeners": [], "breakers": [],
+  "observations": [
+    {"id": "ying_xing_auspicious", "name": "命宫三方见六吉曜", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["左辅", "右弼", "天魁", "天钺", "文昌", "文曲"], "source_layer": "$current_layer"},
+    {"id": "ying_xing_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [{"id": "body_ying_xing_note", "name": "身宫子午破军相似结构", "all": [{"id": "body_ying_xing_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_ying_xing_branch", "predicate": "focus.branch_in", "values": ["子", "午"]}, {"id": "body_ying_xing_pojun", "predicate": "star.contains", "scope": "self", "values": ["破军"], "source_layer": "$current_layer"}], "note_template": "{focus_palace}为身宫且子午破军坐守；原文只论安命，不触发英星入庙格"}],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "上等吉格",
+  "result": {"nature": "auspicious", "summary": "严格按子午命宫破军坐守；命宫及三方任一六吉曜为加吉标签，煞星只作备注。", "interpretation_template": "{effect_palace}命中英星入庙格。古诀称子午破军加官进禄；本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"},
+  "examples": [
+    {"name": "子命破军无吉基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "破军", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "午命破军三方一颗吉星", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "破军", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "文昌", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "子命破军见煞仍不破格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "破军", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "火星", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫午破军不触发", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "午", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "破军", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "英星入庙格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "子午破军加官进禄。子午二宫破军守命，加吉星必然位至三公。"}, {"kind": "user_confirmed_rule_decision", "note": "仅子午命宫破军；命宫三方六吉曜任一为has_auspicious增益；煞忌只备注，不破格不降级；身宫不成格。"}],
+  "updated_at": "2026-09-02"
+}

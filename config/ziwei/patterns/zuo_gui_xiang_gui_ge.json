@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.zuo_gui_xiang_gui_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "坐贵向贵格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["天魁", "天钺"],
+  "output_enums": {
+    "target_type": {
+      "default": "none",
+      "values": {
+        "ming_palace": "ming_ku_yue_opposite",
+        "body_palace": "body_ku_yue_opposite"
+      }
+    }
+  },
+  "output_flags": {"has_good_transform": "good_transform"},
+  "required": {
+    "id": "zuo_gui_xiang_gui_variants",
+    "name": "命宫或身宫坐贵向贵",
+    "any": [
+      {
+        "id": "ming_ku_yue_opposite",
+        "name": "命宫坐魁钺、对宫互见",
+        "all": [
+          {"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]},
+          {"id": "ming_kui", "predicate": "star.contains", "scope": "self", "values": ["天魁"], "source_layer": "$current_layer"},
+          {"id": "ming_yue", "predicate": "star.contains", "scope": "opposite", "values": ["天钺"], "source_layer": "$current_layer"}
+        ]
+      },
+      {
+        "id": "ming_yue_opposite",
+        "name": "命宫坐钺魁、对宫互见",
+        "all": [
+          {"id": "ming_role_reverse", "predicate": "focus.role_in", "values": ["ming"]},
+          {"id": "ming_yue_reverse", "predicate": "star.contains", "scope": "self", "values": ["天钺"], "source_layer": "$current_layer"},
+          {"id": "ming_kui_reverse", "predicate": "star.contains", "scope": "opposite", "values": ["天魁"], "source_layer": "$current_layer"}
+        ]
+      },
+      {
+        "id": "body_ku_yue_opposite",
+        "name": "身宫坐魁钺、对宫互见",
+        "all": [
+          {"id": "body_role", "predicate": "focus.role_in", "values": ["body"]},
+          {"id": "body_kui", "predicate": "star.contains", "scope": "self", "values": ["天魁"], "source_layer": "$current_layer"},
+          {"id": "body_yue", "predicate": "star.contains", "scope": "opposite", "values": ["天钺"], "source_layer": "$current_layer"}
+        ]
+      },
+      {
+        "id": "body_yue_opposite",
+        "name": "身宫坐钺魁、对宫互见",
+        "all": [
+          {"id": "body_role_reverse", "predicate": "focus.role_in", "values": ["body"]},
+          {"id": "body_yue_reverse", "predicate": "star.contains", "scope": "self", "values": ["天钺"], "source_layer": "$current_layer"},
+          {"id": "body_kui_reverse", "predicate": "star.contains", "scope": "opposite", "values": ["天魁"], "source_layer": "$current_layer"}
+        ]
+      }
+    ]
+  },
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "good_transform", "name": "本宫会见吉化", "predicate": "transformation.contains", "scope": "self", "values": ["化禄", "化权", "化科"], "source_layer": "$current_layer"},
+    {"id": "zuo_gui_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {
+    "nature": "auspicious",
+    "summary": "命宫或身宫坐天魁、天钺之一，对宫见另一颗贵星即成坐贵向贵格；化禄化权化科只作贵气增益。",
+    "interpretation_template": "{effect_palace}命中坐贵向贵格；吉化增益标签为{has_good_transform}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。"
+  },
+  "examples": [
+    {"name": "命宫坐魁对宫坐钺", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天魁", "source_layer": "natal"}]}, "opposite": {"stars": [{"name": "天钺", "source_layer": "natal"}]}, "triads": [], "four_directions": [], "adjacent_left": [], "adjacent_right": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫坐钺对宫坐魁并有化科", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "天钺", "transformation": "化科", "source_layer": "natal"}]}, "opposite": {"stars": [{"name": "天魁", "source_layer": "natal"}]}, "triads": [], "four_directions": [], "adjacent_left": [], "adjacent_right": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "夫妻宫"}},
+    {"name": "只有本宫贵星不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天魁", "source_layer": "natal"}]}, "opposite": {"stars": []}, "triads": [], "four_directions": [], "adjacent_left": [], "adjacent_right": []}}, "expected": {"matched": false}}
+  ],
+  "sources": [
+    {"kind": "user_supplied_primary_text", "title": "坐贵向贵格给定古文及结构化规则确认", "received_at": "2026-09-03", "original_text": "天魁天钺，盖世文章。如身命坐天钺，对宫天魁；身命坐天魁，对宫天钺。魁是谓坐贵向贵，更会吉化，其贵必然矣。"},
+    {"kind": "user_confirmed_rule_decision", "note": "命宫或身宫任一参与；本宫天魁/天钺与对宫另一颗互照成格；化禄化权化科为增益，不影响formed。"}
+  ],
+  "updated_at": "2026-09-03"
+}

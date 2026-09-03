@@ -14,6 +14,9 @@
       <h1>ZhouYiLab</h1>
       <p>紫微斗数 · 中州三合排盘</p>
     </div>
+    <a class="research-link" href="/qimen.html">奇门遁甲</a>
+    <a class="research-link" href="/blind-review.html">人工盲评</a>
+    <a class="research-link" href="/ai-review.html">AI 预评审</a>
     <div class="engine-status"><span></span>C++ 本地算法</div>
   </header>
 
@@ -124,13 +127,17 @@
         <div id="tab-analysis" class="tab-panel" role="tabpanel" hidden>
           <div class="analysis-header">
             <div><span>本命分析</span><strong id="analysis-title">正在生成结构化碎片</strong></div>
-            <dl><div><dt>宫位</dt><dd id="analysis-palace-count">--</dd></div><div><dt>碎片</dt><dd id="analysis-fragment-count">--</dd></div><div><dt>格局</dt><dd id="analysis-pattern-count">--</dd></div><div><dt>配置</dt><dd id="analysis-config-version">--</dd></div></dl>
+            <dl><div><dt>宫位</dt><dd id="analysis-palace-count">--</dd></div><div><dt>碎片</dt><dd id="analysis-fragment-count">--</dd></div><div><dt>命中格局</dt><dd id="analysis-pattern-count">--</dd></div><div><dt>规则库</dt><dd id="analysis-config-version">--</dd></div></dl>
           </div>
           <p id="analysis-error" class="error-message" role="alert" hidden></p>
           <div id="analysis-loading" class="analysis-loading" aria-live="polite"><span class="spinner"></span>正在匹配宫位、星曜与格局规则</div>
           <section id="analysis-pattern-overview" class="analysis-pattern-overview" aria-labelledby="analysis-pattern-overview-title" hidden>
             <header><div><span>全盘匹配</span><strong id="analysis-pattern-overview-title">本命格局总览</strong></div><small id="analysis-pattern-overview-summary"></small></header>
             <div id="analysis-pattern-list" class="analysis-pattern-list"></div>
+          </section>
+          <section id="analysis-pattern-library" class="analysis-pattern-library" aria-labelledby="analysis-pattern-library-title" hidden>
+            <header><div><span>规则库核对</span><strong id="analysis-pattern-library-title">已加载格局规则</strong></div><small id="analysis-pattern-library-summary"></small></header>
+            <div id="analysis-pattern-library-list" class="analysis-pattern-library-list"></div>
           </section>
           <div id="analysis-workspace" class="analysis-workspace" hidden>
             <nav id="analysis-palace-tabs" class="analysis-palace-tabs" aria-label="选择解读宫位"></nav>

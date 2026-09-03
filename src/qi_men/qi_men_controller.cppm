@@ -58,10 +58,10 @@ public:
         if (day < 1 || day > 31) {
             return std::unexpected("日期必须在 1-31 之间");
         }
-        if (hour > 23) {
+        if (hour < 0 || hour > 23) {
             return std::unexpected("小时必须在 0-23 之间");
         }
-        if (minute > 59) {
+        if (minute < 0 || minute > 59) {
             return std::unexpected("分钟必须在 0-59 之间");
         }
         
@@ -101,7 +101,7 @@ public:
         }
         
         // 根据小时计算时天干和时地支
-        auto [tian_gan_hour, di_zhi_hour] = calculate_hour_gan_zhi(hour);
+        auto [tian_gan_hour, di_zhi_hour] = calculate_hour_gan_zhi(hour, tian_gan_day);
         
         // 调用排盘生成器
         auto result = QiMenPanGenerator::generate_pan(
@@ -180,10 +180,10 @@ public:
         if (day < 1 || day > 30) {
             return std::unexpected("农历日期必须在 1-30 之间");
         }
-        if (hour > 23) {
+        if (hour < 0 || hour > 23) {
             return std::unexpected("小时必须在 0-23 之间");
         }
-        if (minute > 59) {
+        if (minute < 0 || minute > 59) {
             return std::unexpected("分钟必须在 0-59 之间");
         }
         
@@ -221,7 +221,7 @@ public:
         }
         
         // 根据小时计算时天干和时地支
-        auto [tian_gan_hour, di_zhi_hour] = calculate_hour_gan_zhi(hour);
+        auto [tian_gan_hour, di_zhi_hour] = calculate_hour_gan_zhi(hour, tian_gan_day);
         
         // 调用排盘生成器
         auto result = QiMenPanGenerator::generate_pan(
@@ -358,6 +358,10 @@ private:
         using namespace ZhouYi::GanZhi;
         
         nlohmann::ordered_json j;
+
+        j["method"] = "shijia_zhuanpan_chaibu";
+        j["method_zh"] = "拆补法·时家转盘";
+        j["center_lodging"] = "tian_qin_with_tian_rui";
         
         // 1. 日期信息（阳历和农历）
         nlohmann::ordered_json solar_date;
@@ -429,6 +433,7 @@ private:
         j["zhi_fu_star"] = std::string(star_name(pan.zhi_fu_star));
         j["zhi_shi_gate"] = std::string(gate_name(pan.zhi_shi_gate));
         j["zhi_fu_palace"] = std::string(palace_name(pan.zhi_fu_palace));
+        j["zhi_shi_palace"] = std::string(palace_name(pan.zhi_shi_palace));
         
         // 7. 九宫信息（最后）
         nlohmann::ordered_json palaces_json = nlohmann::ordered_json::array();
@@ -443,6 +448,12 @@ private:
             palace_json["spirit"] = std::string(spirit_name(p.spirit));
             palace_json["di_gan"] = std::string(Mapper::to_zh(static_cast<TianGan>(p.di_gan)));
             palace_json["tian_gan"] = std::string(Mapper::to_zh(static_cast<TianGan>(p.tian_gan)));
+            if (p.tian_qin_lodged && p.lodged_tian_gan.has_value()) {
+                palace_json["lodged_star"] = "天禽";
+                palace_json["lodged_tian_gan"] = std::string(Mapper::to_zh(
+                    static_cast<TianGan>(p.lodged_tian_gan.value())
+                ));
+            }
             
             palaces_json.push_back(palace_json);
         }
@@ -477,20 +488,22 @@ private:
      * 时天干根据日天干推算
      */
     [[nodiscard]] static constexpr auto calculate_hour_gan_zhi(
-        std::uint8_t hour
+        std::uint8_t hour,
+        std::uint8_t tian_gan_day
     ) noexcept -> std::pair<std::uint8_t, std::uint8_t> {
         
         // 计算时地支（每两小时一个地支）
         std::uint8_t di_zhi_hour = (hour + 1) / 2 % 12;
         
-        // 时天干根据日天干推算
-        // 这里简化处理，实际应根据日天干进行推算
+        // 时天干按五鼠遁由日干推算
         // 甲己日：子时为甲
         // 乙庚日：子时为丙
         // 丙辛日：子时为戊
         // 丁壬日：子时为庚
         // 戊癸日：子时为壬
-        std::uint8_t tian_gan_hour = (di_zhi_hour * 2) % 10;
+        std::uint8_t tian_gan_hour = (
+            (tian_gan_day % 5) * 2 + di_zhi_hour
+        ) % 10;
         
         return {tian_gan_hour, di_zhi_hour};
     }

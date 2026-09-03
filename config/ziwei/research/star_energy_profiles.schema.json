@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhouyilab.local/schemas/ziwei/research/star_energy_profiles.schema.json",
+  "title": "ZhouYiLab 紫微斗数星曜作用研究档案",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "catalog_version",
+    "status",
+    "dimension_dictionary_version",
+    "stars",
+    "sources",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "catalog_version": {"type": "string"},
+    "status": {"enum": ["qualitative_only", "pilot_calibrated", "validated", "deprecated"]},
+    "dimension_dictionary_version": {"type": "string"},
+    "stars": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "name", "category", "system", "attributes",
+          "mechanisms", "unresolved_questions"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+          "name": {"type": "string", "minLength": 1},
+          "category": {"type": "string", "minLength": 1},
+          "system": {"type": "string", "minLength": 1},
+          "attributes": {
+            "type": "object",
+            "required": [
+              "yin_yang", "element", "hua_qi", "review_status",
+              "source_refs", "boundary"
+            ],
+            "properties": {
+              "yin_yang": {"enum": ["阴", "阳"]},
+              "element": {"enum": ["木", "火", "土", "金", "水"]},
+              "hua_qi": {"type": "string", "minLength": 1},
+              "review_status": {"enum": ["proposed", "reviewed", "validated"]},
+              "source_refs": {
+                "type": "array",
+                "minItems": 1,
+                "items": {"type": "string", "minLength": 1}
+              },
+              "boundary": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          },
+          "mechanisms": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "id", "name", "definition", "source_refs",
+                "dimension_hypotheses"
+              ],
+              "properties": {
+                "id": {"type": "string", "pattern": "^[a-z][a-z0-9_.]*$"},
+                "name": {"type": "string", "minLength": 1},
+                "definition": {"type": "string", "minLength": 1},
+                "source_refs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"type": "string", "minLength": 1}
+                },
+                "dimension_hypotheses": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "dimension_id", "direction", "rationale",
+                      "evidence_level", "parameter_status"
+                    ],
+                    "properties": {
+                      "dimension_id": {"type": "string", "minLength": 1},
+                      "direction": {
+                        "enum": ["increase", "decrease", "context_dependent"]
+                      },
+                      "rationale": {"type": "string", "minLength": 1},
+                      "evidence_level": {"enum": ["E1", "E2", "E3", "E4", "E5", "E6"]},
+                      "parameter_status": {
+                        "enum": ["proposed", "reviewed", "pilot_calibrated", "validated", "deprecated"]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "unresolved_questions": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1}
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "title", "evidence_level", "locator", "note"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+          "kind": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "evidence_level": {"enum": ["E1", "E2", "E3", "E4", "E5", "E6"]},
+          "locator": {"type": "string", "minLength": 1},
+          "note": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "updated_at": {"type": "string", "format": "date"}
+  },
+  "additionalProperties": false
+}

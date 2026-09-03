@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ri_li_zhong_tian_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "日丽中天格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["太阳", "擎羊", "陀罗", "火星", "铃星", "地空", "地劫"],
+  "output_flags": {"is_best": "is_best_condition"},
+  "output_enums": {"trigger_type": {"default": "none", "values": {"ming_palace": "ming_trigger", "body_palace": "body_trigger"}}},
+  "required": {"id": "ri_li_zhong_tian_variants", "name": "命身午宫太阳坐守", "any": [
+    {"id": "ming_variant", "name": "命宫午太阳", "all": [{"id": "ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "ming_branch", "predicate": "focus.branch_in", "values": ["午"]}, {"id": "ming_sun", "predicate": "star.contains", "scope": "self", "values": ["太阳"], "source_layer": "$current_layer"}]},
+    {"id": "body_variant", "name": "身宫午太阳", "all": [{"id": "body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_branch", "predicate": "focus.branch_in", "values": ["午"]}, {"id": "body_sun", "predicate": "star.contains", "scope": "self", "values": ["太阳"], "source_layer": "$current_layer"}]}
+  ]},
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {"id": "ming_trigger", "name": "命宫午太阳触发证据", "all": [{"id": "obs_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_ming_branch", "predicate": "focus.branch_in", "values": ["午"]}, {"id": "obs_ming_sun", "predicate": "star.contains", "scope": "self", "values": ["太阳"], "source_layer": "$current_layer"}]},
+    {"id": "body_trigger", "name": "身宫午太阳触发证据", "all": [{"id": "obs_body_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "obs_body_branch", "predicate": "focus.branch_in", "values": ["午"]}, {"id": "obs_body_sun", "predicate": "star.contains", "scope": "self", "values": ["太阳"], "source_layer": "$current_layer"}]},
+    {"id": "is_best_condition", "name": "庚辛生人且外部标记日生时", "all": [{"id": "best_stem", "predicate": "birth.year_stem_in", "values": ["庚", "辛"]}, {"id": "best_daytime", "predicate": "birth.is_daytime", "value": true}]},
+    {"id": "ri_li_bad_star_note", "name": "煞星仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "吉格",
+  "result": {"nature": "auspicious", "summary": "命宫或身宫午宫有太阳即成日丽中天格；庚辛生人且调用方标记日生时才附加最优标签。", "interpretation_template": "{effect_palace}命中日丽中天格。古诀中的富贵断语仅作文本说明，不作为现实结果保证。", "notes": ["is_best最优条件依赖外部传入is_daytime昼夜标记；引擎内部不做时间自动换算，日生时为增益条件，非成格必备。"]},
+  "examples": [
+    {"name": "命宫午太阳基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "甲", "palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "身宫午太阳基础命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "辛", "is_daytime": true, "palaces": []}, "focus": {"name": "身宫所在宫", "branch": "午", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "身宫所在宫"}},
+    {"name": "庚年白天出生最优", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "庚", "is_daytime": true, "palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "辛年夜生仍成格但非最优", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "辛", "is_daytime": false, "palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "太阳", "source_layer": "natal"}]}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "午宫无太阳不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"birth_year_stem": "庚", "is_daytime": true, "palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "日丽中天格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "太阳居午谓之日丽中天，有专权之位，敌国之富。假如身命坐于午宫遇有太阳，庚辛生人日生时者富贵全美。"}, {"kind": "user_confirmed_rule_decision", "note": "命宫或身宫午宫太阳成格；庚辛年且外部birth.is_daytime为true时is_best；不自动解析时间。"}],
+  "updated_at": "2026-09-02"
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ji_yue_tong_liang_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "机月同梁格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["天机", "太阴", "天同", "天梁", "文昌", "文曲", "擎羊", "陀罗", "火星", "铃星"],
+  "output_enums": {"chang_qu_status": {"default": "none", "values": {"both": "chang_qu_both", "single_chang": "chang_only", "single_qu": "qu_only"}}},
+  "required": {
+    "id": "ji_yue_tong_liang_focus_variants",
+    "name": "命宫或身宫三方集齐机月同梁",
+    "any": [
+      {"id": "ming_four_stars", "name": "命宫三方集齐天机太阴天同天梁", "all": [
+        {"id": "ming_role", "name": "目标是命宫", "predicate": "focus.role_in", "values": ["ming"]},
+        {"id": "ming_four_stars_in_scope", "name": "命宫本宫及三方集齐四星", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["天机", "太阴", "天同", "天梁"], "match_mode": "all", "source_layer": "$current_layer"}
+      ]},
+      {"id": "body_four_stars", "name": "身宫三方集齐天机太阴天同天梁", "all": [
+        {"id": "body_role", "name": "目标是身宫", "predicate": "focus.role_in", "values": ["body"]},
+        {"id": "body_four_stars_in_scope", "name": "身宫本宫及三方集齐四星", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["天机", "太阴", "天同", "天梁"], "match_mode": "all", "source_layer": "$current_layer"}
+      ]}
+    ]
+  },
+  "enhancers": [
+    {"id": "chang_qu_both", "name": "昌曲全会", "all": [
+      {"id": "chang_present", "name": "三方见文昌", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["文昌"], "source_layer": "$current_layer"},
+      {"id": "qu_present", "name": "三方见文曲", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["文曲"], "source_layer": "$current_layer"}
+    ]},
+    {"id": "chang_only", "name": "单见昌", "all": [
+      {"id": "chang_only_present", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["文昌"], "source_layer": "$current_layer"},
+      {"id": "chang_only_absent", "not": {"id": "chang_only_absent_check", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["文曲"], "source_layer": "$current_layer"}}
+    ]},
+    {"id": "qu_only", "name": "单见曲", "all": [
+      {"id": "qu_only_present", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["文曲"], "source_layer": "$current_layer"},
+      {"id": "qu_only_absent", "not": {"id": "qu_only_absent_check", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["文昌"], "source_layer": "$current_layer"}}
+    ]}
+  ],
+  "weakeners": [],
+  "breakers": [
+    {"id": "ji_yue_malefics", "name": "触发源宫及三方见四煞", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads"], "values": ["擎羊", "陀罗", "火星", "铃星"], "source_layer": "$current_layer"},
+    {"id": "ji_yue_huaji", "name": "触发源宫及三方见化忌", "predicate": "transformation.contains_in_scopes", "scopes": ["self", "triads"], "values": ["化忌"], "source_layer": "$current_layer"}
+  ],
+  "break_check": {"break_star": ["擎羊", "陀罗", "火星", "铃星", "化忌"], "scan_scope": "触发源宫及其三方", "note": "机月同梁四星骨架成立后，目标宫及其三方见四煞或化忌则保留格局并标记破格"},
+  "observations": [],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed", "enhancer_matched": "strengthened", "breaker_matched": "broken"},
+  "result": {"nature": "auspicious_with_breaker", "summary": "严格按命宫或身宫本宫及三方集齐天机、太阴、天同、天梁；文昌文曲为分级增益，四煞化忌破格但保留记录。", "interpretation_template": "{effect_palace}命中机月同梁格，档位为{grade}。本结果只确认给定文本结构，不把古代断语转换为现实结果保证。", "status_messages": {"broken": "本可成机月同梁格，但触发源宫及三方见煞或化忌而破格"}},
+  "default_grade": "普通吉格",
+  "examples": [
+    {"name": "命宫三方集齐四星且昌曲全会", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天机", "source_layer": "natal"}, {"name": "文昌", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "太阴", "source_layer": "natal"}, {"name": "天同", "source_layer": "natal"}, {"name": "天梁", "source_layer": "natal"}, {"name": "文曲", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}},
+    {"name": "身宫三方集齐四星无昌曲", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "身宫", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "天机", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "太阴", "source_layer": "natal"}, {"name": "天同", "source_layer": "natal"}, {"name": "天梁", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "formed", "effect_palace": "身宫"}},
+    {"name": "缺少天梁不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天机", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "太阴", "source_layer": "natal"}, {"name": "天同", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": false}},
+    {"name": "四星齐全且三方火星破格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "天机", "source_layer": "natal"}]}, "triads": {"stars": [{"name": "太阴", "source_layer": "natal"}, {"name": "天同", "source_layer": "natal"}, {"name": "天梁", "source_layer": "natal"}, {"name": "火星", "source_layer": "natal"}]}, "opposite": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}}, "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "机月同梁格给定古文及结构化规则确认", "received_at": "2026-09-02", "original_text": "机月同梁作吏人。此四星必身命三合曲全方，准刀笔功名可就，加煞化忌下格。"}, {"kind": "user_confirmed_rule_decision", "note": "命身三方集齐四星为硬条件；昌曲全会、单见昌、单见曲分级展示；寅申仅备注；目标宫及三方四煞化忌破格并保留记录。"}],
+  "updated_at": "2026-09-02"
+}

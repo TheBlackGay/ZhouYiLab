@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.ma_tou_dai_jian_ge",
+  "revision": 1,
+  "enabled": true,
+  "name": "马头带剑格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["擎羊", "陀罗", "天马"],
+  "output_enums": {"trigger_type": {"default": "none", "values": {"yang_in_wu_you_mao": "trigger_yang", "tuo_in_si_shen_yin_hai": "trigger_tuo"}}},
+  "required": {"id": "ma_tou_dai_jian_variants", "name": "命宫羊刃或陀罗两类骨架", "any": [
+    {"id": "yang_in_wu_you_mao", "name": "午卯酉命宫擎羊守命", "all": [{"id": "yang_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "yang_branch", "predicate": "focus.branch_in", "values": ["午", "卯", "酉"]}, {"id": "yang_self", "predicate": "star.contains", "scope": "self", "values": ["擎羊"], "source_layer": "$current_layer"}]},
+    {"id": "tuo_in_si_shen_yin_hai", "name": "寅申巳亥命宫陀罗守命", "all": [{"id": "tuo_ming_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "tuo_branch", "predicate": "focus.branch_in", "values": ["寅", "申", "巳", "亥"]}, {"id": "tuo_self", "predicate": "star.contains", "scope": "self", "values": ["陀罗"], "source_layer": "$current_layer"}]}
+  ]},
+  "enhancers": [], "weakeners": [], "breakers": [],
+  "observations": [
+    {"id": "trigger_yang", "name": "触发类型：午卯酉擎羊", "all": [{"id": "obs_yang_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_yang_branch", "predicate": "focus.branch_in", "values": ["午", "卯", "酉"]}, {"id": "obs_yang_star", "predicate": "star.contains", "scope": "self", "values": ["擎羊"], "source_layer": "$current_layer"}]},
+    {"id": "trigger_tuo", "name": "触发类型：寅申巳亥陀罗", "all": [{"id": "obs_tuo_role", "predicate": "focus.role_in", "values": ["ming"]}, {"id": "obs_tuo_branch", "predicate": "focus.branch_in", "values": ["寅", "申", "巳", "亥"]}, {"id": "obs_tuo_star", "predicate": "star.contains", "scope": "self", "values": ["陀罗"], "source_layer": "$current_layer"}]},
+    {"id": "bad_star_note", "name": "其他煞曜仅作备注", "predicate": "star.contains_in_scopes", "scopes": ["self", "triads", "opposite"], "values": ["擎羊", "陀罗", "火星", "铃星", "地空", "地劫"], "source_layer": "$current_layer"}
+  ],
+  "ordinary_palace_observations": [{"id": "body_ma_tou_note", "name": "身宫相似结构", "any": [{"id": "body_yang_shape", "all": [{"id": "body_yang_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_yang_branch", "predicate": "focus.branch_in", "values": ["午", "卯", "酉"]}, {"id": "body_yang_star", "predicate": "star.contains", "scope": "self", "values": ["擎羊"], "source_layer": "$current_layer"}]}, {"id": "body_tuo_shape", "all": [{"id": "body_tuo_role", "predicate": "focus.role_in", "values": ["body"]}, {"id": "body_tuo_branch", "predicate": "focus.branch_in", "values": ["寅", "申", "巳", "亥"]}, {"id": "body_tuo_star", "predicate": "star.contains", "scope": "self", "values": ["陀罗"], "source_layer": "$current_layer"}]}], "note_template": "{focus_palace}为身宫且出现马头带剑相似结构；原文只论命宫，不触发马头带剑格"}],
+  "allow_role_observations": true,
+  "status_policy": {"required_matched": "formed"},
+  "default_grade": "凶格",
+  "result": {"nature": "inauspicious", "summary": "严格按命宫本宫午卯酉擎羊或寅申巳亥陀罗匹配；辰戌丑未不以此格论。命中即为凶格，其他煞曜仅作备注。", "interpretation_template": "{effect_palace}命中马头带剑格，触发类型为{trigger_type}。本结果只确认给定文本结构，不把古代断语转换为现实事件保证。"},
+  "examples": [
+    {"name": "午命擎羊命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "午", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "擎羊", "source_layer": "natal"}]}, "triads": [], "opposite": [], "four_directions": [], "adjacent_left": [], "adjacent_right": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "寅命陀罗命中", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "寅", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "陀罗", "source_layer": "natal"}]}, "triads": [], "opposite": [], "four_directions": [], "adjacent_left": [], "adjacent_right": []}}, "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}},
+    {"name": "辰命擎羊不成格", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]}, "scopes": {"self": {"stars": [{"name": "擎羊", "source_layer": "natal"}]}, "triads": [], "opposite": [], "four_directions": [], "adjacent_left": [], "adjacent_right": []}}, "expected": {"matched": false}},
+    {"name": "身宫午擎羊只作备注", "context": {"layer": {"id": "natal", "name": "本命"}, "chart": {"palaces": []}, "focus": {"name": "夫妻宫", "branch": "午", "roles": ["body"], "effect_subject": ["身宫所落主题"]}, "scopes": {"self": {"stars": [{"name": "擎羊", "source_layer": "natal"}]}, "triads": [], "opposite": [], "four_directions": [], "adjacent_left": [], "adjacent_right": []}}, "expected": {"matched": false}}
+  ],
+  "sources": [{"kind": "user_supplied_primary_text", "title": "马头带剑格给定古文及规则确认", "received_at": "2026-09-02", "original_text": "马头带剑，非夭折则主刑伤。擎羊在午守命，卯次之，酉又次之；寅申巳亥四宫陀罗守命亦然，加辰戌丑未不忌。"}, {"kind": "user_confirmed_rule_decision", "note": "仅命宫本宫；午卯酉擎羊或寅申巳亥陀罗成格；辰戌丑未排除；无broken或level_down。"}],
+  "updated_at": "2026-09-02"
+}

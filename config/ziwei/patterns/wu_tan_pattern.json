@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.wu_tan_pattern",
+  "revision": 1,
+  "enabled": true,
+  "name": "武贪格",
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal", "decade"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["武曲", "贪狼"],
+  "required": {
+    "id": "wu_tan_ming_shen_variants",
+    "name": "武贪格身命同宫严格条件",
+    "all": [
+      {
+        "id": "wu_tan_target_role",
+        "name": "目标是命宫或身宫",
+        "predicate": "focus.role_in",
+        "values": ["ming", "body"]
+      },
+      {
+        "id": "wu_tan_target_branch",
+        "name": "目标命宫或身宫位于丑宫或未宫",
+        "predicate": "focus.branch_in",
+        "values": ["丑", "未"]
+      },
+      {
+        "id": "wu_tan_same_palace",
+        "name": "武曲贪狼同在目标宫",
+        "predicate": "star.same_palace",
+        "values": ["武曲", "贪狼"],
+        "source_layer": "$current_layer"
+      }
+    ]
+  },
+  "enhancers": [
+    {
+      "id": "san_fang_chang_qu_zuo_you",
+      "name": "三方昌曲左右拱照，主贵",
+      "predicate": "star.contains",
+      "scope": "triads",
+      "values": ["文昌", "文曲", "左辅", "右弼"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "decade_ke_quan_lu",
+      "name": "大限逢科权禄，主贵显",
+      "all": [
+        {
+          "id": "decade_layer_only",
+          "name": "当前为大限层",
+          "predicate": "layer.equals",
+          "value": "decade"
+        },
+        {
+          "id": "decade_ke_quan_lu_values",
+          "name": "大限三方四正有化科化权化禄",
+          "predicate": "transformation.contains_all",
+          "scope": "four_directions",
+          "values": ["化科", "化权", "化禄"],
+          "source_layer": "$current_layer"
+        }
+      ]
+    }
+  ],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [],
+  "ordinary_palace_observations": [
+    {
+      "id": "ordinary_wu_tan_same_palace_note",
+      "name": "普通宫位武曲贪狼同宫现象",
+      "predicate": "star.same_palace",
+      "scope": "self",
+      "values": ["武曲", "贪狼"],
+      "source_layer": "$current_layer",
+      "note_template": "{focus_palace}见武曲贪狼同宫，但非命宫/身宫，不触发武贪格"
+    }
+  ],
+  "status_policy": {
+    "required_matched": "formed",
+    "enhancer_matched": "strengthened"
+  },
+  "result": {
+    "nature": "auspicious_after_maturity",
+    "summary": "严格按给定古文匹配武曲贪狼同在命宫或身宫的丑、未标准位置；三方昌曲左右和大限科权禄仅作可选增益。",
+    "interpretation_template": "{effect_palace}命中武贪格。古文断为先贫后富，早年多磨砺，中晚年富贵；本结果只确认文本结构，不把断语转换为现实事件保证。"
+  },
+  "examples": [
+    {
+      "name": "丑宫命宫武曲贪狼同宫命中",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"palaces": []},
+        "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": [{"name": "武曲", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]},
+          "triads": {"stars": []}, "four_directions": {"stars": []}, "opposite": {"stars": []},
+          "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "未宫身宫武曲贪狼同宫且三方有昌曲左右增强",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"palaces": []},
+        "focus": {"name": "夫妻宫", "branch": "未", "roles": ["body"], "effect_subject": ["身宫所落主题"]},
+        "scopes": {
+          "self": {"stars": [{"name": "武曲", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]},
+          "triads": {"stars": [{"name": "文昌", "source_layer": "natal", "physical_palace": "官禄宫"}]},
+          "four_directions": {"stars": []}, "opposite": {"stars": []},
+          "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "夫妻宫"}
+    },
+    {
+      "name": "大限三方四正科权禄增强武贪",
+      "context": {
+        "layer": {"id": "decade", "name": "大限"},
+        "chart": {"palaces": []},
+        "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": [{"name": "武曲", "source_layer": "decade"}, {"name": "贪狼", "source_layer": "decade"}]},
+          "triads": {"stars": []},
+          "four_directions": {"stars": [
+            {"name": "廉贞", "transformation": "化禄", "source_layer": "decade"},
+            {"name": "破军", "transformation": "化权", "source_layer": "decade"},
+            {"name": "武曲", "transformation": "化科", "source_layer": "decade"}
+          ]},
+          "opposite": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": true, "status": "strengthened", "effect_palace": "命宫"}
+    },
+    {
+      "name": "武贪同宫在财帛宫不触发身命格",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"palaces": []},
+        "focus": {"name": "财帛宫", "branch": "丑", "roles": [], "effect_subject": ["财帛主题"]},
+        "scopes": {
+          "self": {"stars": [{"name": "武曲", "source_layer": "natal"}, {"name": "贪狼", "source_layer": "natal"}]},
+          "triads": {"stars": []}, "four_directions": {"stars": []}, "opposite": {"stars": []},
+          "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": false}
+    }
+  ],
+  "sources": [
+    {
+      "kind": "user_supplied_primary_text",
+      "title": "武贪格给定古文及结构化规则确认",
+      "received_at": "2026-09-02",
+      "original_text": "武贪格，先贫后富，武贪同身命之宫。假如命立丑未二星同宫，盖武曲之金克贪狼之木，则木逢制化为有用，故虽贫而后方富贵，又或得三方有昌曲左右等星拱照，主贵，限逢科权禄则贵显至矣。"
+    },
+    {
+      "kind": "user_confirmed_rule_decision",
+      "note": "武曲贪狼同宫且目标为命宫或身宫是必要条件；丑未为固定标准位置；三方昌曲左右及大限科权禄是可选增益；原文无破格条件；普通宫位只作现象备注。"
+    }
+  ],
+  "updated_at": "2026-09-02"
+}

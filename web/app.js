@@ -255,6 +255,16 @@ function patternConditionNames(traces) {
   return (traces || []).map(trace => trace.name || trace.condition_id).filter(Boolean);
 }
 
+function patternConditionEvidenceLabels(traces) {
+  return (traces || []).map(trace => {
+    const name = trace.name || trace.condition_id;
+    const evidence = (trace.evidence || []).map(item => (
+      [item.star || item.transformation, item.physical_palace].filter(Boolean).join('@')
+    )).filter(Boolean);
+    return evidence.length ? `${name}（${evidence.join('、')}）` : name;
+  }).filter(Boolean);
+}
+
 function patternMeta(fragment) {
   if (fragment.type !== 'pattern') return '';
   const status = fragment.facts?.status || 'formed';
@@ -262,10 +272,43 @@ function patternMeta(fragment) {
   const required = patternConditionNames(trace.matched_conditions);
   const conditionLabel = status === 'tendency' ? '倾向条件' : '必要条件';
   const modifiers = fragment.modifiers || {};
+  const facts = fragment.facts || {};
+  const variants = (facts.matched_variants || []).map(item => item.name || item.id).filter(Boolean);
+  const roleLabels = { ming: '命宫', body: '身宫' };
+  const target = facts.target || {};
+  const targetRoles = (target.roles || []).map(role => roleLabels[role] || role).join('、');
+  const targetLabel = [targetRoles, target.functional_palace, target.branch ? `${target.branch}宫` : '']
+    .filter(Boolean).join(' · ');
+  const observations = patternConditionNames(trace.matched_observations);
+  const flags = facts.flags || {};
+  const tags = facts.tags || [];
+  const grade = facts.grade;
+  const breakCheck = facts.break_check;
+  const breakStarText = (breakCheck?.break_star_list || []).map(item => {
+    const location = [item.branch ? `${item.branch}宫` : '', item.palace || ''].filter(Boolean).join('·');
+    return `${item.star}${item.transformation || ''}${location ? `@${location}` : ''}`;
+  }).join('、');
+  const transformations = facts.transformation_distribution || {};
+  const transformationText = ['left', 'right'].map(side => {
+    const palace = facts.adjacent_palaces?.[side];
+    const values = (transformations[side] || []).map(item => item.transformation).filter(Boolean);
+    return values.length ? `${palace?.branch || palace?.name || side}:${values.join('、')}` : '';
+  }).filter(Boolean).join('；');
+  const luCunText = (facts.lu_cun_positions || []).map(item => `${item.branch || ''}${item.palace || ''}`).join('、');
+  const starPositionText = (facts.star_positions || []).map(item => {
+    const state = [item.transformation, item.brightness].filter(Boolean).join('·');
+    const location = [item.physical_branch ? `${item.physical_branch}宫` : '', item.physical_palace || ''].filter(Boolean).join('·');
+    return `${item.star}${location ? `@${location}` : ''}${state ? `（${state}）` : ''}`;
+  }).join('、');
+  const malefics = facts.malefic_notes || {};
+  const maleficNames = [...(malefics.target || []), ...(malefics.adjacent || []), ...(malefics.four_directions || [])]
+    .map(item => `${item.star}${item.physical_palace ? `@${item.physical_palace}` : ''}`);
+  const uniqueMalefics = [...new Set(maleficNames)];
+  const textualVariants = (facts.textual_variants || []).map(item => `${item.original}→${item.normalized}`);
   const groups = [
-    ['增强', patternConditionNames(modifiers.enhancers)],
-    ['减弱', patternConditionNames(modifiers.weakeners)],
-    ['破格', patternConditionNames(modifiers.breakers)],
+    ['增强', patternConditionEvidenceLabels(modifiers.enhancers)],
+    ['减弱', patternConditionEvidenceLabels(modifiers.weakeners)],
+    ['破格', patternConditionEvidenceLabels(modifiers.breakers)],
   ].filter(([, names]) => names.length);
   const modifierHtml = groups.map(([label, names]) => (
     `<span><b>${escapeHtml(label)}</b>${escapeHtml(names.join('、'))}</span>`
@@ -273,8 +316,26 @@ function patternMeta(fragment) {
   return `
     <div class="pattern-result">
       <span class="pattern-status pattern-status-${escapeHtml(status)}">${escapeHtml(patternStatusLabels[status] || status)}</span>
-      <span><b>作用宫位</b>${escapeHtml(fragment.effect_palace || '')}</span>
+      <span><b>目标</b>${escapeHtml(targetLabel || fragment.effect_palace || '')}</span>
+      <span><b>命中子型</b>${escapeHtml(variants.join('、') || '未提供子型名称')}</span>
       <span><b>${conditionLabel}</b>${escapeHtml(required.join('、') || '未提供条件名称')}</span>
+      ${observations.length ? `<span><b>附加夹辅</b>${escapeHtml(observations.join('、'))}</span>` : ''}
+      ${Object.prototype.hasOwnProperty.call(flags, 'has_auspicious') ? `<span><b>吉星坐照</b>${flags.has_auspicious ? '是' : '否'}</span>` : ''}
+      ${Object.prototype.hasOwnProperty.call(flags, 'has_jihua') ? `<span><b>三方吉化（外部确认）</b>${flags.has_jihua ? '是' : '否'}</span>` : ''}
+      ${Object.prototype.hasOwnProperty.call(flags, 'has_liu_lu') ? `<span><b>流禄巡逢（外部确认）</b>${flags.has_liu_lu ? '是' : '否'}</span>` : ''}
+      ${Object.prototype.hasOwnProperty.call(flags, 'minister_count') ? `<span><b>六臣星</b>${escapeHtml(String(flags.minister_count))}/6</span>` : ''}
+      ${Object.prototype.hasOwnProperty.call(flags, 'pair_total') ? `<span><b>完整对星</b>${escapeHtml(String(flags.pair_total))}/3</span>` : ''}
+      ${flags.is_auspicious_limit ? '<span><b>大限备注</b>遇吉限尤美</span>' : ''}
+      ${tags.length ? `<span><b>格局标签</b>${escapeHtml(tags.join('、'))}</span>` : ''}
+      ${grade ? `<span><b>档位</b>${escapeHtml(grade)}</span>` : ''}
+      ${breakCheck ? `<span><b>破格检查</b>${breakCheck.status === 'broken' ? `破格：${escapeHtml(breakStarText || '已触发')}` : '正常'} · 范围：${escapeHtml(breakCheck.scan_scope || '')}</span>` : ''}
+      ${transformationText ? `<span><b>四化分布</b>${escapeHtml(transformationText)}</span>` : ''}
+      ${luCunText ? `<span><b>禄存位置</b>${escapeHtml(luCunText)}</span>` : ''}
+      ${starPositionText ? `<span><b>关键星位</b>${escapeHtml(starPositionText)}</span>` : ''}
+      <span><b>煞曜备注</b>${escapeHtml(uniqueMalefics.join('、') || '未见')}</span>
+      ${textualVariants.length ? `<span><b>异文</b>${escapeHtml(textualVariants.join('；'))}</span>` : ''}
+      ${facts.status_message ? `<span><b>状态说明</b>${escapeHtml(facts.status_message)}</span>` : ''}
+      ${(facts.rule_notes || []).map(note => `<span><b>规则提示</b>${escapeHtml(note)}</span>`).join('')}
       ${modifierHtml}
     </div>`;
 }
@@ -378,13 +439,45 @@ function renderPatternOverview(analysis) {
   overview.hidden = false;
 }
 
+function renderPatternLibrary(analysis) {
+  const section = document.querySelector('#analysis-pattern-library');
+  const list = document.querySelector('#analysis-pattern-library-list');
+  const catalog = analysis.config.pattern_catalog || [];
+  const matched = new Map();
+  const statusRank = { formed: 1, strengthened: 2, weakened: 3, broken: 4, tendency: 2 };
+  analysis.fragments.filter(fragment => fragment.type === 'pattern').forEach(fragment => {
+    const id = fragment.facts?.rule_id;
+    if (!id) return;
+    const items = matched.get(id) || [];
+    items.push(fragment);
+    matched.set(id, items);
+  });
+  const matchedCount = catalog.filter(pattern => matched.has(pattern.id)).length;
+  document.querySelector('#analysis-pattern-library-summary').textContent = `${matchedCount}/${catalog.length} 条规则在本盘命中 · 当前分析层：本命`;
+  list.innerHTML = catalog.length ? catalog.map(pattern => {
+    const hits = matched.get(pattern.id) || [];
+    const status = hits.reduce((current, item) => (
+      (statusRank[item.facts.status] || 0) > (statusRank[current] || 0) ? item.facts.status : current
+    ), 'formed');
+    const label = hits.length ? (patternStatusLabels[status] || status) : '未命中';
+    const locations = [...new Set(hits.map(item => item.effect_palace).filter(Boolean))];
+    const detail = hits.length ? `${locations.join('、')} · ${hits.length} 处效果` : `${(pattern.layers || []).join('、')} · 已加载`;
+    const classes = hits.length ? ` pattern-library-hit pattern-library-${escapeHtml(status)}` : ' pattern-library-miss';
+    return hits.length
+      ? `<button type="button" class="pattern-library-row${classes}" data-pattern-palace="${escapeHtml(locations[0] || '')}"><span class="pattern-library-status">${escapeHtml(label)}</span><strong>${escapeHtml(pattern.name)}</strong><small>${escapeHtml(detail)}</small></button>`
+      : `<div class="pattern-library-row${classes}"><span class="pattern-library-status">${escapeHtml(label)}</span><strong>${escapeHtml(pattern.name)}</strong><small>${escapeHtml(detail)}</small></div>`;
+  }).join('') : '<p class="analysis-empty">当前没有加载格局规则。</p>';
+  section.hidden = false;
+}
+
 function renderAnalysis(analysis) {
   currentAnalysis = analysis;
   document.querySelector('#analysis-title').textContent = '本命十二宫结构化解读';
   document.querySelector('#analysis-palace-count').textContent = analysis.palaces.length;
   document.querySelector('#analysis-fragment-count').textContent = analysis.fragments.length;
-  document.querySelector('#analysis-config-version').textContent = analysis.config.symbolism_dictionary_version;
+  document.querySelector('#analysis-config-version').textContent = `${analysis.config.pattern_count} 条`;
   renderPatternOverview(analysis);
+  renderPatternLibrary(analysis);
   const navigation = document.querySelector('#analysis-palace-tabs');
   navigation.innerHTML = analysis.palaces.map((palace, index) => {
     const patternCount = palace.sections.patterns.length;
@@ -403,6 +496,7 @@ async function loadAnalysis(chart) {
   document.querySelector('#analysis-error').hidden = true;
   document.querySelector('#analysis-loading').hidden = false;
   document.querySelector('#analysis-pattern-overview').hidden = true;
+  document.querySelector('#analysis-pattern-library').hidden = true;
   document.querySelector('#analysis-workspace').hidden = true;
   document.querySelector('#analysis-title').textContent = '正在生成结构化碎片';
   try {

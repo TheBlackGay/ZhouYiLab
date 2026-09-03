@@ -1,0 +1,217 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.xiong_su_qian_yuan",
+  "revision": 1,
+  "enabled": true,
+  "name": "雄宿乾元格",
+  "aliases": ["廉贞七杀火制金奇格"],
+  "category": "major_star_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal"],
+  "applicable_focus_palaces": ["*"],
+  "snapshot_stars": ["廉贞", "七杀"],
+  "required": {
+    "id": "xiong_su_qian_yuan_variants",
+    "name": "雄宿乾元格严格分支",
+    "any": [
+      {
+        "id": "lianzhen_qisha_together_in_wei",
+        "name": "分支A：廉贞七杀同坐未宫命身",
+        "all": [
+          {
+            "id": "branch_a_target_role",
+            "name": "目标是命宫或身宫",
+            "predicate": "focus.role_in",
+            "values": ["ming", "body"]
+          },
+          {
+            "id": "branch_a_target_wei",
+            "name": "目标命宫或身宫位于未宫",
+            "predicate": "focus.branch_in",
+            "values": ["未"]
+          },
+          {
+            "id": "branch_a_lianzhen_qisha_same_palace",
+            "name": "廉贞七杀同坐目标未宫",
+            "predicate": "star.same_palace",
+            "values": ["廉贞", "七杀"],
+            "source_layer": "$current_layer"
+          }
+        ]
+      },
+      {
+        "id": "qisha_in_wu_ming_shen",
+        "name": "分支B：七杀独坐午宫命身",
+        "all": [
+          {
+            "id": "branch_b_target_role",
+            "name": "目标是命宫或身宫",
+            "predicate": "focus.role_in",
+            "values": ["ming", "body"]
+          },
+          {
+            "id": "branch_b_target_wu",
+            "name": "目标命宫或身宫位于午宫",
+            "predicate": "focus.branch_in",
+            "values": ["午"]
+          },
+          {
+            "id": "branch_b_qisha_same_palace",
+            "name": "七杀坐目标午宫",
+            "predicate": "star.same_palace",
+            "values": ["七杀"],
+            "source_layer": "$current_layer"
+          }
+        ]
+      }
+    ]
+  },
+  "enhancers": [],
+  "weakeners": [],
+  "breakers": [
+    {
+      "id": "lianzhen_huaji_anywhere",
+      "name": "廉贞化忌：格局触发降级（原文：下格贱命）",
+      "predicate": "transformation.contains",
+      "scope": "chart",
+      "stars": ["廉贞"],
+      "values": ["化忌"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "lianzhen_fallen_anywhere",
+      "name": "廉贞落陷：格局触发降级（原文：下格贱命）",
+      "predicate": "brightness.in",
+      "scope": "chart",
+      "stars": ["廉贞"],
+      "values": ["陷"],
+      "source_layer": "$current_layer"
+    }
+  ],
+  "observations": [
+    {
+      "id": "target_malefics_note",
+      "name": "目标宫其他煞曜备注",
+      "predicate": "star.count",
+      "scope": "self",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "four_directions_malefics_note",
+      "name": "三方四正其他煞曜备注",
+      "predicate": "star.count",
+      "scope": "four_directions",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    }
+  ],
+  "ordinary_palace_observations": [],
+  "status_policy": {
+    "required_matched": "formed",
+    "breaker_matched": "broken"
+  },
+  "result": {
+    "nature": "auspicious_with_explicit_downgrade",
+    "summary": "严格按给定古文的两个真实排盘分支匹配：廉贞七杀同坐未宫命身，或七杀坐午宫命身；廉贞化忌或落陷时降级。",
+    "interpretation_template": "{effect_palace}命中雄宿乾元格的{matched_conditions}。古文称奇格、反为积富；本结果只确认文本结构，不把古文断语转换为现实事件保证。",
+    "status_messages": {
+      "broken": "格局触发降级：下格贱命（古文原句，仅作民俗命理文本标记）"
+    },
+    "notes": [
+      "【提示】当前A/B标准盘面下廉贞不会落陷，陷地条件不可达；规则仍依原文保留检测，当前仅廉贞化忌可实际触发降级。",
+      "羊陀火铃空劫不参与本格局成格或降级判断，仅作为盘面煞曜事实展示。"
+    ]
+  },
+  "examples": [
+    {
+      "name": "廉贞七杀同坐未宫命宫命中分支A",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"palaces": [{"name": "命宫", "branch": "未", "stars": [
+          {"name": "廉贞", "brightness": "利", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"},
+          {"name": "七杀", "brightness": "庙", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"}
+        ]}]},
+        "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": [
+            {"name": "廉贞", "brightness": "利", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"},
+            {"name": "七杀", "brightness": "庙", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"}
+          ]},
+          "four_directions": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []},
+          "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "七杀坐午宫身宫命中分支B且廉贞申宫只作记录",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"palaces": [
+          {"name": "夫妻宫", "branch": "午", "stars": [{"name": "七杀", "brightness": "旺", "source_layer": "natal", "physical_palace": "夫妻宫", "physical_branch": "午"}]},
+          {"name": "财帛宫", "branch": "申", "stars": [{"name": "廉贞", "brightness": "庙", "source_layer": "natal", "physical_palace": "财帛宫", "physical_branch": "申"}]}
+        ]},
+        "focus": {"name": "夫妻宫", "branch": "午", "roles": ["body"], "effect_subject": ["身宫所落主题"]},
+        "scopes": {
+          "self": {"stars": [{"name": "七杀", "brightness": "旺", "source_layer": "natal", "physical_palace": "夫妻宫", "physical_branch": "午"}]},
+          "four_directions": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []},
+          "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "夫妻宫"}
+    },
+    {
+      "name": "廉贞未七杀午的邻宫误读不成立",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"palaces": []},
+        "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": [{"name": "廉贞", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"}]},
+          "adjacent_left": {"stars": [{"name": "七杀", "source_layer": "natal", "physical_branch": "午"}]},
+          "adjacent_right": {"stars": []}, "four_directions": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []}
+        }
+      },
+      "expected": {"matched": false}
+    },
+    {
+      "name": "廉贞化忌使已成立分支A降级",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"palaces": [{"name": "命宫", "branch": "未", "stars": [
+          {"name": "廉贞", "brightness": "利", "transformation": "化忌", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"},
+          {"name": "七杀", "brightness": "庙", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"}
+        ]}]},
+        "focus": {"name": "命宫", "branch": "未", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": [
+            {"name": "廉贞", "brightness": "利", "transformation": "化忌", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"},
+            {"name": "七杀", "brightness": "庙", "source_layer": "natal", "physical_palace": "命宫", "physical_branch": "未"}
+          ]},
+          "four_directions": {"stars": []}, "triads": {"stars": []}, "opposite": {"stars": []},
+          "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": true, "status": "broken", "effect_palace": "命宫"}
+    }
+  ],
+  "sources": [
+    {
+      "kind": "user_supplied_primary_text",
+      "title": "雄宿乾元格给定古文及真实排盘规则确认",
+      "received_at": "2026-09-01",
+      "original_text": "廉贞属火七杀属金，是火能制金为权，如贞居未，杀居午身命遇之，奇格也，反为积富，或陷地化忌下格贱命。"
+    },
+    {
+      "kind": "user_confirmed_rule_decision",
+      "note": "采用廉贞七杀同坐未宫命身、七杀坐午宫命身两个独立分支；廉贞化忌或落陷触发降级，其他煞曜只备注；不采用午杀未廉贞邻宫假设。"
+    }
+  ],
+  "updated_at": "2026-09-01"
+}

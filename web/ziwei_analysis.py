@@ -1,7 +1,12 @@
 import json
 from pathlib import Path
 
-from ziwei_pattern_engine import PatternConfigError, load_pattern_catalog, match_patterns
+from ziwei_pattern_engine import (
+    PatternConfigError,
+    load_pattern_catalog,
+    match_pattern_observations,
+    match_patterns,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -24,6 +29,7 @@ SUPPORTED_FRAGMENT_TYPES = (
     "transformation",
     "combination",
     "pattern",
+    "pattern_observation",
     "shen_sha_in_palace",
     "unconfigured_star",
 )
@@ -216,13 +222,29 @@ def analyze_natal_chart(
         raise AnalysisRequestError("scope.scenarios 必须是非空字符串数组")
     scenario_set = set(scenarios) if scenarios else None
 
+    pattern_inputs = scope.get("pattern_inputs", {})
+    if not isinstance(pattern_inputs, dict):
+        raise AnalysisRequestError("scope.pattern_inputs 必须是对象")
+    known_pattern_ids = {pattern["id"] for pattern in patterns.get("patterns", [])}
+    unknown_pattern_inputs = set(pattern_inputs) - known_pattern_ids
+    if unknown_pattern_inputs:
+        raise AnalysisRequestError(f"scope.pattern_inputs 包含未知格局: {sorted(unknown_pattern_inputs)}")
+    for pattern_id, flags in pattern_inputs.items():
+        if not isinstance(flags, dict) or any(
+            not isinstance(key, str) or not isinstance(value, bool)
+            for key, value in flags.items()
+        ):
+            raise AnalysisRequestError(
+                f"scope.pattern_inputs.{pattern_id} 必须是布尔标记对象"
+            )
+
     palace_results = []
     all_fragments = []
     for focus_name in focus_names:
         focus_index = chart_names.index(focus_name)
         result = _analyze_palace(
-            palaces, focus_index, palace_entries[focus_name], star_entries,
-            cases, patterns, shen_sha, scenario_set
+            chart, palaces, focus_index, palace_entries[focus_name], star_entries,
+            cases, patterns, shen_sha, scenario_set, pattern_inputs
         )
         palace_results.append(result)
         all_fragments.extend(result["fragments"])
@@ -254,6 +276,7 @@ def analyze_natal_chart(
             "focus_palaces": focus_names,
             "scenarios": scenarios or [],
             "scenario_mode": "filtered" if scenario_set else "all_candidates",
+            "pattern_inputs": pattern_inputs,
         },
         "config": {
             "symbolism_schema_version": symbolism["schema_version"],
@@ -264,6 +287,16 @@ def analyze_natal_chart(
             "pattern_dictionary_version": patterns["dictionary_version"],
             "pattern_ruleset": patterns["ruleset"],
             "pattern_count": len(patterns["patterns"]),
+            "pattern_catalog": [
+                {
+                    "id": pattern["id"],
+                    "name": pattern["name"],
+                    "category": pattern["category"],
+                    "layers": pattern["applicable_layers"],
+                }
+                for pattern in patterns["patterns"]
+                if pattern.get("enabled", True)
+            ],
             "shen_sha_schema_version": shen_sha["schema_version"],
             "shen_sha_dictionary_version": shen_sha["dictionary_version"],
         },
@@ -304,7 +337,8 @@ def analyze_natal_chart(
 
 
 def _analyze_palace(
-    palaces, focus_index, palace_entry, star_entries, cases, patterns, shen_sha, scenarios
+    chart, palaces, focus_index, palace_entry, star_entries, cases, patterns, shen_sha,
+    scenarios, pattern_inputs
 ):
     focus = palaces[focus_index]
     directions = []
@@ -353,8 +387,11 @@ def _analyze_palace(
                 shen_sha["systems"][system_id], name,
             ))
 
-    context = _rule_context(palaces, focus_index, palace_entry, directions)
+    context = _rule_context(
+        chart, palaces, focus_index, palace_entry, directions, pattern_inputs
+    )
     fragments.extend(_rule_fragments(cases, context))
+    fragments.extend(_pattern_observation_fragments(patterns, context, palace_entry))
     fragments.extend(_pattern_fragments(patterns, context, palace_entry))
     sections = _group_sections(fragments)
     signal_summary = _build_signal_summary(fragments, sections, unconfigured_stars)
@@ -573,6 +610,8 @@ def _group_sections(fragments):
             section = "combinations"
         elif fragment_type == "pattern":
             section = "patterns"
+        elif fragment_type == "pattern_observation":
+            section = "palace_rules"
         elif fragment_type == "shen_sha_in_palace":
             section = "shen_sha"
         elif fragment_type == "unconfigured_star":
@@ -597,6 +636,8 @@ def _build_signal_summary(fragments, sections, unconfigured_stars):
             core.append(fragment_id)
             if facts.get("status") in ("weakened", "broken"):
                 tensions.append(fragment_id)
+        elif fragment_type == "pattern_observation":
+            supporting.append(fragment_id)
         elif fragment_type in ("star_in_palace", "four_directions"):
             if relation == "self" and category == "major":
                 core.append(fragment_id)
@@ -640,7 +681,7 @@ def _palace_stars(palace):
     return result
 
 
-def _rule_context(palaces, focus_index, palace_entry, directions):
+def _rule_context(chart, palaces, focus_index, palace_entry, directions, pattern_inputs=None):
     def stars_at(index):
         return _palace_stars(palaces[index])
 
@@ -653,8 +694,13 @@ def _rule_context(palaces, focus_index, palace_entry, directions):
             "source_layer": "natal",
             "physical_palace": palaces[index]["name"],
             "physical_palace_index": index,
+            "physical_branch": branch_at(index),
             "relation": relation,
         } for star in stars_at(index)]
+
+    def branch_at(index):
+        gan_zhi = palaces[index].get("gan_zhi")
+        return gan_zhi[-1:] if isinstance(gan_zhi, str) else None
 
     primary = [star for star in stars_at(focus_index) if star["source_field"] == "zhu_xing"]
     direction_stars = []
@@ -671,11 +717,44 @@ def _rule_context(palaces, focus_index, palace_entry, directions):
     opposite_primary = [
         star for star in stars_at(opposite_index) if star["source_field"] == "zhu_xing"
     ]
+    ming_index = chart.get("ming_gong_index")
+    body_index = chart.get("shen_gong_index")
+    year_pillar = chart.get("si_zhu", {}).get("year")
+    birth_year_stem = year_pillar[:1] if isinstance(year_pillar, str) else None
+    if birth_year_stem not in set("甲乙丙丁戊己庚辛壬癸"):
+        birth_year_stem = None
+    focus_roles = []
+    if focus_index == ming_index or palaces[focus_index].get("is_ming_palace"):
+        focus_roles.append("ming")
+    if focus_index == body_index or palaces[focus_index].get("is_body_palace"):
+        focus_roles.append("body")
     return {
         "layer": {"id": "natal", "name": "本命"},
+        "pattern_inputs": pattern_inputs or {},
+        "chart": {
+            "birth_year_stem": birth_year_stem,
+            "ming": {
+                "index": ming_index,
+                "name": palaces[ming_index]["name"] if isinstance(ming_index, int) else None,
+                "branch": branch_at(ming_index) if isinstance(ming_index, int) else None,
+            },
+            "body": {
+                "index": body_index,
+                "name": palaces[body_index]["name"] if isinstance(body_index, int) else None,
+                "branch": branch_at(body_index) if isinstance(body_index, int) else None,
+            },
+            "palaces": [{
+                "index": index,
+                "name": palace["name"],
+                "branch": branch_at(index),
+                "stars": pattern_stars(index, "chart"),
+            } for index, palace in enumerate(palaces)],
+        },
         "focus": {
             "name": palaces[focus_index]["name"],
             "index": focus_index,
+            "branch": branch_at(focus_index),
+            "roles": focus_roles,
             "primary_stars": primary,
             "primary_star_names": [star["name"] for star in primary],
             "entry": palace_entry,
@@ -705,6 +784,11 @@ def _rule_context(palaces, focus_index, palace_entry, directions):
             "triads": {"stars": [
                 star for index in triad_indices for star in pattern_stars(index, "triad")
             ]},
+            "wealth_career": {"stars": [
+                star for index, palace in enumerate(palaces)
+                if palace.get("name") in {"财帛宫", "官禄宫"}
+                for star in pattern_stars(index, "wealth_career")
+            ]},
             "opposite": {"stars": pattern_stars(opposite_index, "opposite")},
             "four_directions": {"stars": [
                 star
@@ -713,8 +797,14 @@ def _rule_context(palaces, focus_index, palace_entry, directions):
                     direction["palace_index"], direction["relation"]
                 )
             ]},
-            "adjacent_left": {"stars": pattern_stars(left_index, "adjacent_left")},
-            "adjacent_right": {"stars": pattern_stars(right_index, "adjacent_right")},
+            "adjacent_left": {
+                "palace": {"index": left_index, "name": palaces[left_index]["name"], "branch": branch_at(left_index)},
+                "stars": pattern_stars(left_index, "adjacent_left"),
+            },
+            "adjacent_right": {
+                "palace": {"index": right_index, "name": palaces[right_index]["name"], "branch": branch_at(right_index)},
+                "stars": pattern_stars(right_index, "adjacent_right"),
+            },
         },
     }
 
@@ -736,8 +826,25 @@ def _pattern_fragments(catalog, context, palace_entry):
                 "pattern_category": matched["category"],
                 "school": matched["school"],
                 "status": matched["status"],
+                "base_status": matched["base_status"],
                 "nature": matched["nature"],
                 "focus_palace": matched["focus_palace"],
+                "matched_variant_count": matched["matched_variant_count"],
+                "matched_variants": matched["matched_variants"],
+                "target": matched["pattern_snapshot"]["target"],
+                "adjacent_palaces": matched["pattern_snapshot"]["adjacent_palaces"],
+                "transformation_distribution": matched["pattern_snapshot"]["transformation_distribution"],
+                "lu_cun_positions": matched["pattern_snapshot"]["lu_cun_positions"],
+                "star_positions": matched["pattern_snapshot"]["star_positions"],
+                "named_star_positions": matched["named_star_positions"],
+                "malefic_notes": matched["pattern_snapshot"]["malefic_notes"],
+                "textual_variants": matched["textual_variants"],
+                "rule_notes": matched["rule_notes"],
+                "status_message": matched["status_message"],
+                "tags": matched["tags"],
+                "grade": matched["grade"],
+                "flags": matched["flags"],
+                "break_check": matched["break_check"],
             },
             "summary": matched["summary"],
             "interpretation_template": matched["interpretation_template"],
@@ -746,6 +853,8 @@ def _pattern_fragments(catalog, context, palace_entry):
                 "tendency": matched["tendency_trace"],
                 "matched_conditions": matched["matched_conditions"],
                 "missing_conditions": matched["missing_conditions"],
+                "observations": matched["observations"],
+                "matched_observations": matched["matched_observations"],
             },
             "modifiers": {
                 "enhancers": matched["enhancers"],
@@ -767,6 +876,43 @@ def _pattern_fragments(catalog, context, palace_entry):
                 ),
             },
         })
+    return fragments
+
+
+def _pattern_observation_fragments(catalog, context, palace_entry):
+    fragments = []
+    for pattern in catalog.get("patterns", []):
+        if not pattern.get("enabled") or context["layer"]["id"] not in pattern["applicable_layers"]:
+            continue
+        for observation in match_pattern_observations(pattern, context):
+            fragments.append({
+                "fragment_id": (
+                    f"natal.{palace_entry['id']}.{pattern['id']}.observation."
+                    f"{observation['condition_id']}"
+                ),
+                "type": "pattern_observation",
+                "source_layer": "natal",
+                "effect_palace": context["focus"]["name"],
+                "effect_subject": context["focus"].get("effect_subject"),
+                "facts": {
+                    "rule_id": pattern["id"],
+                    "rule_name": pattern["name"],
+                    "observation_id": observation["condition_id"],
+                    "is_pattern_match": False,
+                },
+                "summary": observation["note"],
+                "condition_trace": observation["trace"],
+                "evidence": [{
+                    "source": "pattern_catalog",
+                    "path": catalog.get("source_files", {}).get(pattern["id"]),
+                    "rule_id": pattern["id"],
+                    "rule_revision": pattern["revision"],
+                }],
+                "confidence": {
+                    "level": "rule_observation",
+                    "reason": "仅记录普通宫位夹辅现象，不判定格局成立",
+                },
+            })
     return fragments
 
 

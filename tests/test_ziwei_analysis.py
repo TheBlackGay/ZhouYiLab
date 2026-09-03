@@ -70,6 +70,217 @@ class ZiWeiAnalysisTests(unittest.TestCase):
         self.assertEqual(set(PALACE_NAMES), {item["palace"] for item in result["palaces"]})
         self.assertEqual("all_candidates", result["scope"]["scenario_mode"])
 
+    def test_ling_tan_external_auspicious_input_controls_grade(self):
+        chart = make_chart()
+        chart["si_zhu"] = {"year": "戊午"}
+        ming_index = chart["ming_gong_index"]
+        chart["palaces"][ming_index]["gan_zhi"] = "甲辰"
+        chart["palaces"][ming_index]["zhu_xing"] = [{"name": "贪狼", "liang_du": "庙"}]
+        chart["palaces"][ming_index]["sha_xing_detail"] = [{"name": "铃星", "liang_du": "庙"}]
+        result = self.analyze(chart, {
+            "focus_palaces": ["命宫"],
+            "pattern_inputs": {"pattern.ling_tan_ge": {"has_auspicious": True}},
+        })
+        fragment = next(
+            item for item in result["fragments"]
+            if item.get("type") == "pattern"
+            and item.get("facts", {}).get("rule_id") == "pattern.ling_tan_ge"
+        )
+        self.assertEqual("佳", fragment["facts"]["grade"])
+        self.assertEqual(
+            {"has_auspicious": True, "wu_ji_bonus": True},
+            fragment["facts"]["flags"],
+        )
+        self.assertEqual(
+            {"pattern.ling_tan_ge": {"has_auspicious": True}},
+            result["scope"]["pattern_inputs"],
+        )
+
+    def test_pattern_inputs_reject_unknown_patterns_and_non_boolean_values(self):
+        with self.assertRaisesRegex(AnalysisRequestError, "未知格局"):
+            self.analyze(scope={"pattern_inputs": {"pattern.unknown": {"flag": True}}})
+        with self.assertRaisesRegex(AnalysisRequestError, "布尔标记对象"):
+            self.analyze(scope={
+                "pattern_inputs": {
+                    "pattern.ling_tan_ge": {"has_auspicious": "true"}
+                }
+            })
+
+    def test_huo_tan_break_check_reaches_analysis_output(self):
+        chart = make_chart()
+        ming_index = chart["ming_gong_index"]
+        chart["palaces"][ming_index]["gan_zhi"] = "甲未"
+        chart["palaces"][ming_index]["zhu_xing"] = [{"name": "贪狼"}]
+        chart["palaces"][ming_index]["sha_xing_detail"] = [
+            {"name": "火星"}, {"name": "地空"},
+        ]
+        result = self.analyze(chart, {"focus_palaces": ["命宫"]})
+        fragment = next(
+            item for item in result["fragments"]
+            if item.get("type") == "pattern"
+            and item.get("facts", {}).get("rule_id") == "pattern.huo_tan_ge"
+        )
+        self.assertEqual("formed", fragment["facts"]["base_status"])
+        self.assertEqual("broken", fragment["facts"]["status"])
+        self.assertEqual("上格", fragment["facts"]["grade"])
+        self.assertEqual(
+            [{"star": "地空", "palace": "命宫", "branch": "未"}],
+            fragment["facts"]["break_check"]["break_star_list"],
+        )
+
+    def test_zi_fu_chao_yuan_positions_grade_and_huaji_reach_analysis_output(self):
+        chart = make_chart()
+        ming_index = chart["ming_gong_index"]
+        chart["palaces"][ming_index]["gan_zhi"] = "甲寅"
+        chart["palaces"][ming_index]["zhu_xing"] = [{"name": "七杀"}]
+        wu_index = (ming_index + 4) % 12
+        xu_index = (ming_index + 8) % 12
+        chart["palaces"][wu_index]["gan_zhi"] = "丙午"
+        chart["palaces"][wu_index]["zhu_xing"] = [{"name": "天府"}]
+        chart["palaces"][xu_index]["gan_zhi"] = "戊戌"
+        chart["palaces"][xu_index]["zhu_xing"] = [
+            {"name": "紫微", "si_hua": "化忌"}
+        ]
+        result = self.analyze(chart, {
+            "focus_palaces": ["命宫"],
+            "pattern_inputs": {
+                "pattern.zi_fu_chao_yuan_ge": {"has_liu_lu": True}
+            },
+        })
+        fragment = next(
+            item for item in result["fragments"]
+            if item.get("type") == "pattern"
+            and item.get("facts", {}).get("rule_id") == "pattern.zi_fu_chao_yuan_ge"
+        )
+        self.assertEqual("broken", fragment["facts"]["status"])
+        self.assertEqual("上格", fragment["facts"]["grade"])
+        self.assertEqual(
+            {"zi_palace": "戌", "fu_palace": "午"},
+            fragment["facts"]["named_star_positions"],
+        )
+        self.assertEqual("化忌", fragment["facts"]["break_check"]["break_star_list"][0]["transformation"])
+
+    def test_strict_jia_gui_outputs_subtypes_and_pattern_snapshot(self):
+        chart = make_chart()
+        chart["si_zhu"] = {"year": "丙午"}
+        chart["palaces"][5]["gan_zhi"] = "甲辰"
+        chart["palaces"][5]["is_body_palace"] = True
+        chart["palaces"][4]["fu_xing_detail"] = [{"name": "天魁"}]
+        chart["palaces"][4]["zhu_xing"] = [{"name": "廉贞", "si_hua": "化禄"}]
+        chart["palaces"][6]["fu_xing_detail"] = [{"name": "天钺"}]
+        chart["palaces"][6]["zhu_xing"] = [{"name": "破军", "si_hua": "化权"}]
+
+        result = self.analyze(chart, {"focus_palaces": ["命宫"]})
+        patterns = [item for item in result["fragments"] if item["type"] == "pattern"]
+        jia_gui = next(
+            item for item in patterns
+            if item["facts"]["rule_id"] == "pattern.jia_gui_jia_lu.flanking"
+        )
+
+        self.assertEqual(2, jia_gui["facts"]["matched_variant_count"])
+        self.assertEqual(
+            {"bing_ding_ren_gui_chen_xu_kui_yue", "ke_quan_lu_flank"},
+            {item["id"] for item in jia_gui["facts"]["matched_variants"]},
+        )
+        self.assertEqual(["ming", "body"], jia_gui["facts"]["target"]["roles"])
+        self.assertEqual("化禄", jia_gui["facts"]["transformation_distribution"]["left"][0]["transformation"])
+        self.assertEqual([], jia_gui["modifiers"]["breakers"])
+
+    def test_non_ming_body_flanking_is_observation_only(self):
+        chart = make_chart()
+        chart["si_zhu"] = {"year": "丙午"}
+        chart["palaces"][5]["fu_xing_detail"] = [{"name": "天魁"}]
+        chart["palaces"][5]["zhu_xing"] = [{"name": "廉贞", "si_hua": "化禄"}]
+        chart["palaces"][7]["fu_xing_detail"] = [{"name": "天钺"}]
+        chart["palaces"][7]["zhu_xing"] = [{"name": "破军", "si_hua": "化权"}]
+
+        result = self.analyze(chart, {"focus_palaces": ["父母宫"]})
+        jia_gui_patterns = [
+            item for item in result["fragments"]
+            if item["type"] == "pattern"
+            and item["facts"]["rule_id"] == "pattern.jia_gui_jia_lu.flanking"
+        ]
+        observations = [
+            item for item in result["fragments"]
+            if item["type"] == "pattern_observation"
+            and item["facts"]["rule_id"] == "pattern.jia_gui_jia_lu.flanking"
+        ]
+
+        self.assertEqual([], jia_gui_patterns)
+        self.assertEqual(2, len(observations))
+        self.assertTrue(all(not item["facts"]["is_pattern_match"] for item in observations))
+        self.assertTrue(all(item["fragment_id"] in result["palaces"][0]["sections"]["palace_rules"] for item in observations))
+
+    def test_changqu_subtypes_and_breaker_locations_reach_analysis_output(self):
+        chart = make_chart()
+        chart["si_zhu"] = {"year": "己巳"}
+        for index in (4, 5, 6):
+            chart["palaces"][index]["sha_xing_detail"] = []
+        chart["palaces"][4]["zhu_xing"] = [{"name": "太阳"}]
+        chart["palaces"][4]["fu_xing_detail"] = [{"name": "文昌"}]
+        chart["palaces"][6]["zhu_xing"] = [{"name": "太阴"}]
+        chart["palaces"][6]["fu_xing_detail"] = [{"name": "文曲"}]
+        chart["palaces"][1]["sha_xing_detail"] = [{"name": "擎羊"}]
+
+        formed = self.analyze(chart, {"focus_palaces": ["命宫"]})
+        formed_pattern = next(
+            item for item in formed["fragments"]
+            if item["type"] == "pattern"
+            and item["facts"]["rule_id"] == "pattern.changqu.flanking"
+        )
+        self.assertEqual("formed", formed_pattern["facts"]["status"])
+        self.assertEqual(1, formed_pattern["facts"]["matched_variant_count"])
+        self.assertEqual([], formed_pattern["modifiers"]["breakers"])
+        self.assertIn("擎羊", {
+            item["star"]
+            for item in formed_pattern["facts"]["malefic_notes"]["four_directions"]
+        })
+
+        chart["palaces"][6]["sha_xing_detail"] = [{"name": "铃星"}]
+        broken = self.analyze(chart, {"focus_palaces": ["命宫"]})
+        broken_pattern = next(
+            item for item in broken["fragments"]
+            if item["type"] == "pattern"
+            and item["facts"]["rule_id"] == "pattern.changqu.flanking"
+        )
+        self.assertEqual("broken", broken_pattern["facts"]["status"])
+        self.assertEqual(
+            "right_flank_kong_jie_yang_ling",
+            broken_pattern["modifiers"]["breakers"][0]["condition_id"],
+        )
+        self.assertEqual(
+            "父母宫",
+            broken_pattern["modifiers"]["breakers"][0]["evidence"][0]["physical_palace"],
+        )
+
+    def test_xiong_su_qian_yuan_positions_and_downgrade_reach_analysis_output(self):
+        chart = make_chart()
+        chart["palaces"][5]["gan_zhi"] = "乙未"
+        chart["palaces"][5]["zhu_xing"] = [
+            {"name": "廉贞", "liang_du": "利", "si_hua": "化忌"},
+            {"name": "七杀", "liang_du": "庙"},
+        ]
+
+        result = self.analyze(chart, {"focus_palaces": ["命宫"]})
+        pattern = next(
+            item for item in result["fragments"]
+            if item["type"] == "pattern"
+            and item["facts"]["rule_id"] == "pattern.xiong_su_qian_yuan"
+        )
+
+        self.assertEqual("broken", pattern["facts"]["status"])
+        self.assertEqual("formed", pattern["facts"]["base_status"])
+        self.assertEqual(
+            "lianzhen_qisha_together_in_wei",
+            pattern["facts"]["matched_variants"][0]["id"],
+        )
+        self.assertEqual(
+            {("廉贞", "未"), ("七杀", "未")},
+            {(item["star"], item["physical_branch"]) for item in pattern["facts"]["star_positions"]},
+        )
+        self.assertIn("格局触发降级", pattern["facts"]["status_message"])
+        self.assertTrue(any("陷地条件不可达" in note for note in pattern["facts"]["rule_notes"]))
+
     def test_parents_palace_keeps_original_and_career_derivation(self):
         result = self.analyze(scope={
             "layers": ["natal"],
@@ -150,10 +361,11 @@ class ZiWeiAnalysisTests(unittest.TestCase):
             {"name": "紫微", "liang_du": "庙"},
             {"name": "天府", "liang_du": "旺"},
         ]
+        chart["palaces"][5]["gan_zhi"] = "甲寅"
         result = self.analyze(chart, {"focus_palaces": ["命宫"]})
         patterns = [
             fragment for fragment in result["fragments"]
-            if fragment.get("facts", {}).get("rule_id") == "pattern.zifu.same_palace"
+            if fragment.get("facts", {}).get("rule_id") == "pattern.zi_fu_tong_lin"
         ]
         self.assertEqual(1, len(patterns))
         self.assertEqual("pattern_catalog", patterns[0]["evidence"][0]["source"])
@@ -170,7 +382,7 @@ class ZiWeiAnalysisTests(unittest.TestCase):
             ["authoritative_for_structured_analysis"]
         )
 
-    def test_sanqi_pattern_effect_belongs_to_parent_palace(self):
+    def test_legacy_sanqi_pattern_id_is_not_emitted(self):
         chart = make_chart()
         chart["palaces"][6]["zhu_xing"] = [
             {"name": "廉贞", "si_hua": "化禄"},
@@ -182,14 +394,11 @@ class ZiWeiAnalysisTests(unittest.TestCase):
             {"name": "武曲", "si_hua": "化科"},
         ]
         result = self.analyze(chart, {"focus_palaces": ["父母宫"]})
-        pattern = next(
-            fragment for fragment in result["fragments"]
-            if fragment.get("facts", {}).get("rule_id")
-            == "pattern.sanqi.four_directions"
-        )
-        self.assertEqual("父母宫", pattern["effect_palace"])
-        self.assertIn("直接权威", pattern["effect_subject"])
-        self.assertTrue(pattern["condition_trace"]["required"]["matched"])
+        self.assertFalse(any(
+            fragment.get("facts", {}).get("rule_id")
+            in {"pattern.sanqi.four_directions", "pattern.san_ji_jia_hui"}
+            for fragment in result["fragments"]
+        ))
 
     def test_non_natal_layer_is_rejected(self):
         with self.assertRaisesRegex(AnalysisRequestError, "仅支持 natal"):

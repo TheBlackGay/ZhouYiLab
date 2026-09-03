@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>ZhouYiLab AI 多模型预评审</title>
+  <link rel="stylesheet" href="/ai-review.css">
+</head>
+<body>
+  <header class="lab-header">
+    <a class="brand" href="/" aria-label="返回 ZhouYiLab 排盘页"><span aria-hidden="true">周</span><strong>ZhouYiLab</strong></a>
+    <div class="lab-title"><span>研究工具 v0.1</span><h1>AI 多模型预评审</h1></div>
+    <nav aria-label="研究工具"><a href="/blind-review.html">人工盲评</a><a href="/ai-review.html" aria-current="page">AI 预评审</a></nav>
+  </header>
+
+  <main class="lab-shell">
+    <aside class="setup-panel" aria-label="实验设置">
+      <section class="boundary-note">
+        <strong>用途边界</strong>
+        <p>模型运行用于发现定义分歧，不等于真人专家，也不能直接生成星曜权重。</p>
+      </section>
+
+      <form id="experiment-form">
+        <section class="setup-section">
+          <div class="section-heading"><span>01</span><h2>盲评包</h2></div>
+          <label for="experiment-seed">随机种子</label>
+          <input id="experiment-seed" value="pilot-2026" maxlength="128" required>
+          <small id="packet-preview">载入后显示匿名包</small>
+        </section>
+
+        <section class="setup-section providers-section">
+          <div class="section-heading"><span>02</span><h2>模型连接</h2><button id="reload-config" type="button">重载配置</button></div>
+          <div id="provider-list"></div>
+          <p class="secret-note">配置来源：<code id="provider-config-path">--</code>。页面和实验数据库均不会返回 API Key。</p>
+        </section>
+
+        <section class="setup-section run-summary">
+          <div class="section-heading"><span>03</span><h2>运行规模</h2></div>
+          <dl><div><dt>模型连接</dt><dd id="provider-count">1</dd></div><div><dt>预计调用</dt><dd id="task-count">8</dd></div></dl>
+          <p>每个模型每轮处理 8 个匿名案例。重复运行用于检查模型自身稳定性，不增加“专家人数”。</p>
+        </section>
+
+        <button id="start-experiment" class="primary-action" type="submit"><span>开始 AI 预评审</span><i aria-hidden="true"></i></button>
+        <p id="form-error" class="inline-error" role="alert" hidden></p>
+      </form>
+    </aside>
+
+    <section class="lab-main" aria-live="polite">
+      <div class="protocol-strip"><span>匿名案例</span><span>原始回复留痕</span><span>失败自动重试</span><span>AI 与人工分组</span><span>不计算总吉凶</span></div>
+
+      <section class="overview" aria-labelledby="overview-title">
+        <header><div><span>实验控制台</span><h2 id="overview-title">尚未开始实验</h2></div><div class="overview-actions"><button id="cancel-experiment" type="button" hidden>停止实验</button><button id="export-results" type="button" disabled>导出结果</button></div></header>
+        <div class="metrics">
+          <div><span>状态</span><strong id="metric-status">待配置</strong></div>
+          <div><span>已完成</span><strong id="metric-complete">0 / 0</strong></div>
+          <div><span>失败</span><strong id="metric-failed">0</strong></div>
+          <div><span>模型系列</span><strong id="metric-families">0</strong></div>
+        </div>
+        <div class="progress-row"><div class="progress-track"><i id="experiment-progress"></i></div><span id="progress-text">0%</span></div>
+      </section>
+
+      <section class="history-band" aria-labelledby="history-title">
+        <header><div><span>最近实验</span><h2 id="history-title">运行记录</h2></div><button id="refresh-history" type="button">刷新</button></header>
+        <div id="experiment-history" class="experiment-history"><p class="empty-copy">暂无实验记录</p></div>
+      </section>
+
+      <section class="results-section" aria-labelledby="results-title">
+        <header><div><span>描述性汇总</span><h2 id="results-title">十一维方向比较</h2></div><p>同案一致度先合并重复运行，再比较同一案例中的不同模型；不代表理论正确率。</p></header>
+        <div class="legend"><span class="negative">抑制方向</span><span class="neutral">中性/并存</span><span class="positive">增强方向</span></div>
+        <div class="dimension-table-wrap">
+          <div class="dimension-head"><span>研究维度</span><span>方向分布</span><span>均值</span><span>主方向占比</span><span>同案一致度</span></div>
+          <div id="dimension-results"><p class="empty-copy">实验产生有效评分后显示结果</p></div>
+        </div>
+      </section>
+
+      <section class="stability-section" aria-labelledby="stability-title">
+        <header><div><span>重复运行</span><h2 id="stability-title">模型自身稳定性</h2></div><p>同一模型至少运行 2 次后计算；这不是专家人数。</p></header>
+        <div id="stability-results" class="stability-results"><p class="empty-copy">需要重复运行后才可计算</p></div>
+      </section>
+
+      <section class="run-section" aria-labelledby="runs-title">
+        <header><div><span>完整留痕</span><h2 id="runs-title">模型运行记录</h2></div><label for="run-filter">筛选<select id="run-filter"><option value="all">全部</option><option value="completed">已完成</option><option value="failed">失败</option></select></label></header>
+        <div id="run-results" class="run-results"><p class="empty-copy">选择实验后显示每次模型运行</p></div>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="/ai-review.js" defer></script>
+</body>
+</html>

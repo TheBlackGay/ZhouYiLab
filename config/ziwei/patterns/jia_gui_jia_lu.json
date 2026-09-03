@@ -1,0 +1,361 @@
+{
+  "schema_version": "1.1.0",
+  "id": "pattern.jia_gui_jia_lu.flanking",
+  "revision": 2,
+  "enabled": true,
+  "name": "夹贵夹禄格",
+  "category": "flanking_pattern",
+  "school": "给定古文严格文本口径",
+  "strictness": "strict",
+  "applicable_layers": ["natal"],
+  "applicable_focus_palaces": ["*"],
+  "required": {
+    "id": "jia_gui_jia_lu_subtypes",
+    "name": "夹贵夹禄格严格子型",
+    "any": [
+      {
+        "id": "bing_ding_ren_gui_chen_xu_kui_yue",
+        "name": "子型1：丙丁壬癸-辰戌-魁钺夹贵",
+        "all": [
+          {
+            "id": "subtype1_birth_stem",
+            "name": "出生年干为丙丁壬癸",
+            "predicate": "birth.year_stem_in",
+            "values": ["丙", "丁", "壬", "癸"]
+          },
+          {
+            "id": "subtype1_target_role",
+            "name": "目标是命宫或身宫",
+            "predicate": "focus.role_in",
+            "values": ["ming", "body"]
+          },
+          {
+            "id": "subtype1_target_branch",
+            "name": "目标命宫或身宫位于辰戌",
+            "predicate": "focus.branch_in",
+            "values": ["辰", "戌"]
+          },
+          {
+            "id": "subtype1_kui_yue_flank",
+            "name": "天魁天钺分居目标左右邻宫",
+            "predicate": "star.flanks",
+            "values": ["天魁", "天钺"],
+            "source_layer": "$current_layer"
+          }
+        ]
+      },
+      {
+        "id": "ming_shen_flank_lu_cun",
+        "name": "子型2：命身夹禄存",
+        "all": [
+          {
+            "id": "subtype2_report_once_at_ming",
+            "name": "命身夹禄存只在命宫结果汇总一次",
+            "predicate": "focus.role_in",
+            "values": ["ming"]
+          },
+          {
+            "id": "subtype2_strict_template",
+            "name": "命身分居禄存两侧并符合甲乙庚辛模板",
+            "predicate": "chart.ming_shen_lucun_template",
+            "templates": [
+              {"year_stem": "甲", "lu_branch": "寅", "flank_branches": ["丑", "卯"]},
+              {"year_stem": "乙", "lu_branch": "卯", "flank_branches": ["寅", "辰"]},
+              {"year_stem": "庚", "lu_branch": "申", "flank_branches": ["未", "酉"]},
+              {"year_stem": "辛", "lu_branch": "酉", "flank_branches": ["申", "戌"]}
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ke_quan_lu_flank",
+        "name": "子型3：科权禄夹命或身",
+        "all": [
+          {
+            "id": "subtype3_target_role",
+            "name": "目标是命宫或身宫",
+            "predicate": "focus.role_in",
+            "values": ["ming", "body"]
+          },
+          {
+            "id": "subtype3_two_transformations_across_both_sides",
+            "name": "左右邻宫两侧合计至少两类科权禄且两侧均有四化",
+            "predicate": "transformation.flanking_count",
+            "values": ["化禄", "化权", "化科"],
+            "minimum": 2,
+            "require_both_sides": true,
+            "source_layer": "$current_layer"
+          }
+        ]
+      }
+    ]
+  },
+  "enhancers": [
+    {
+      "id": "all_three_transformations_flank",
+      "name": "化禄化权化科三类齐全且分布于两侧",
+      "predicate": "transformation.flanking_count",
+      "values": ["化禄", "化权", "化科"],
+      "minimum": 3,
+      "require_both_sides": true,
+      "source_layer": "$current_layer"
+    }
+  ],
+  "weakeners": [],
+  "breakers": [],
+  "observations": [
+    {
+      "id": "ziwei_tianfu_flank_observation",
+      "name": "叠加紫微天府夹",
+      "predicate": "star.flanks",
+      "values": ["紫微", "天府"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "sun_moon_flank_observation",
+      "name": "叠加日月夹",
+      "predicate": "star.flanks",
+      "values": ["太阳", "太阴"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "quan_lu_flank_observation",
+      "name": "叠加权禄夹",
+      "predicate": "transformation.flanks",
+      "values": ["化权", "化禄"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "zuo_you_flank_observation",
+      "name": "叠加左右夹",
+      "predicate": "star.flanks",
+      "values": ["左辅", "右弼"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "chang_qu_flank_observation",
+      "name": "叠加昌曲夹",
+      "predicate": "star.flanks",
+      "values": ["文昌", "文曲"],
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "target_malefics_note",
+      "name": "目标宫煞星备注",
+      "predicate": "star.count",
+      "scope": "self",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "left_flank_malefics_note",
+      "name": "左夹宫煞星备注",
+      "predicate": "star.count",
+      "scope": "adjacent_left",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "right_flank_malefics_note",
+      "name": "右夹宫煞星备注",
+      "predicate": "star.count",
+      "scope": "adjacent_right",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    },
+    {
+      "id": "four_directions_malefics_note",
+      "name": "三方四正煞星备注",
+      "predicate": "star.count",
+      "scope": "four_directions",
+      "category": "malefic",
+      "operator": "greater_or_equal",
+      "value": 1,
+      "source_layer": "$current_layer"
+    }
+  ],
+  "ordinary_palace_observations": [
+    {
+      "id": "ordinary_kui_yue_flank_note",
+      "name": "普通宫位受魁钺夹辅",
+      "predicate": "star.flanks",
+      "values": ["天魁", "天钺"],
+      "source_layer": "$current_layer",
+      "note_template": "{focus_palace}受魁钺夹辅（仅作现象描述，不构成夹贵夹禄格）"
+    },
+    {
+      "id": "ordinary_transformations_flank_note",
+      "name": "普通宫位受四化夹辅",
+      "predicate": "transformation.flanking_count",
+      "values": ["化禄", "化权", "化科"],
+      "minimum": 2,
+      "require_both_sides": true,
+      "source_layer": "$current_layer",
+      "note_template": "{focus_palace}受四化夹辅（仅作现象描述，不构成夹贵夹禄格）"
+    }
+  ],
+  "status_policy": {
+    "required_matched": "formed",
+    "enhancer_matched": "strengthened"
+  },
+  "result": {
+    "nature": "auspicious",
+    "summary": "严格按给定古文检查丙丁壬癸辰戌魁钺夹贵、命身夹禄存、科权禄夹命身三个子型；煞曜与亮度只留事实，不参与成格判断。",
+    "interpretation_template": "{effect_palace}命中夹贵夹禄格的{matched_conditions}。古文断为富贵之象；本结果只确认原文结构成立，不把断语转换为现实事件保证。"
+  },
+  "textual_variants": [
+    {
+      "original": "廉贞化禄居限",
+      "normalized": "廉贞化禄居亥",
+      "reason": "命宫在子，左右邻宫为亥、丑；给定研究决议认定‘限’为‘亥’的传抄讹字。"
+    }
+  ],
+  "examples": [
+    {
+      "name": "丙年辰宫魁钺夹命并同时权禄夹命中子型1和3",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "丙", "palaces": []},
+        "focus": {"name": "命宫", "index": 2, "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": []},
+          "four_directions": {"stars": []},
+          "adjacent_left": {"palace": {"name": "兄弟宫", "branch": "卯"}, "stars": [
+            {"name": "天魁", "source_layer": "natal", "transformation": null, "physical_palace": "兄弟宫"},
+            {"name": "廉贞", "source_layer": "natal", "transformation": "化禄", "physical_palace": "兄弟宫"}
+          ]},
+          "adjacent_right": {"palace": {"name": "父母宫", "branch": "巳"}, "stars": [
+            {"name": "天钺", "source_layer": "natal", "transformation": null, "physical_palace": "父母宫"},
+            {"name": "破军", "source_layer": "natal", "transformation": "化权", "physical_palace": "父母宫"}
+          ]}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "辰宫魁钺夹命但出生年干不是丙丁壬癸则子型1不成立",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "甲", "palaces": []},
+        "focus": {"name": "命宫", "branch": "辰", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [{"name": "天魁", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "天钺", "source_layer": "natal"}]}
+        }
+      },
+      "expected": {"matched": false}
+    },
+    {
+      "name": "甲年命丑身卯且寅宫禄存命中子型2",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {
+          "birth_year_stem": "甲",
+          "ming": {"branch": "丑"},
+          "body": {"branch": "卯"},
+          "palaces": [
+            {"name": "某宫", "index": 0, "branch": "寅", "stars": [{"name": "禄存", "source_layer": "natal", "physical_palace": "某宫"}]}
+          ]
+        },
+        "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {"self": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    },
+    {
+      "name": "命身地支正确但禄存未在中间地支则子型2不成立",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {
+          "birth_year_stem": "甲",
+          "ming": {"branch": "丑"},
+          "body": {"branch": "卯"},
+          "palaces": [{"name": "某宫", "branch": "辰", "stars": [{"name": "禄存"}]}]
+        },
+        "focus": {"name": "命宫", "branch": "丑", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {"self": {"stars": []}, "four_directions": {"stars": []}, "adjacent_left": {"stars": []}, "adjacent_right": {"stars": []}}
+      },
+      "expected": {"matched": false}
+    },
+    {
+      "name": "身宫左右两侧各有四化且合计两类命中子型3",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "戊", "palaces": []},
+        "focus": {"name": "夫妻宫", "branch": "巳", "roles": ["body"], "effect_subject": ["身宫所落主题"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [{"name": "廉贞", "transformation": "化禄", "source_layer": "natal", "physical_palace": "子女宫"}]},
+          "adjacent_right": {"stars": [{"name": "破军", "transformation": "化权", "source_layer": "natal", "physical_palace": "兄弟宫"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "夫妻宫"}
+    },
+    {
+      "name": "两类四化都在同一侧不构成科权禄夹",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "戊", "palaces": []},
+        "focus": {"name": "命宫", "branch": "子", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [
+            {"name": "廉贞", "transformation": "化禄", "source_layer": "natal"},
+            {"name": "破军", "transformation": "化权", "source_layer": "natal"}
+          ]},
+          "adjacent_right": {"stars": []}
+        }
+      },
+      "expected": {"matched": false}
+    },
+    {
+      "name": "普通父母宫即使被魁钺和权禄夹也不判本格局",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "丙", "palaces": []},
+        "focus": {"name": "父母宫", "branch": "辰", "roles": [], "effect_subject": ["父母主题"]},
+        "scopes": {
+          "self": {"stars": []}, "four_directions": {"stars": []},
+          "adjacent_left": {"stars": [{"name": "天魁", "source_layer": "natal"}, {"name": "廉贞", "transformation": "化禄", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "天钺", "source_layer": "natal"}, {"name": "破军", "transformation": "化权", "source_layer": "natal"}]}
+        }
+      },
+      "expected": {"matched": false}
+    },
+    {
+      "name": "目标和夹宫见煞仍成格且煞曜只作为备注",
+      "context": {
+        "layer": {"id": "natal", "name": "本命"},
+        "chart": {"birth_year_stem": "丁", "palaces": []},
+        "focus": {"name": "命宫", "branch": "戌", "roles": ["ming"], "effect_subject": ["盘主自身"]},
+        "scopes": {
+          "self": {"stars": [{"name": "擎羊", "category": "malefic", "source_layer": "natal", "physical_palace": "命宫"}]},
+          "four_directions": {"stars": [{"name": "擎羊", "category": "malefic", "source_layer": "natal", "physical_palace": "命宫"}]},
+          "adjacent_left": {"stars": [{"name": "天魁", "source_layer": "natal"}, {"name": "火星", "category": "malefic", "source_layer": "natal"}]},
+          "adjacent_right": {"stars": [{"name": "天钺", "source_layer": "natal"}, {"name": "铃星", "category": "malefic", "source_layer": "natal"}]}
+        }
+      },
+      "expected": {"matched": true, "status": "formed", "effect_palace": "命宫"}
+    }
+  ],
+  "sources": [
+    {
+      "kind": "user_supplied_primary_text",
+      "title": "夹贵夹禄格给定原文及七项最终确认",
+      "received_at": "2026-09-01",
+      "original_text": "假如丙丁壬癸生，人在辰戌安命，魁钺加夹更遇紫微天府日月权禄左右昌曲夹身夹命，是为夹贵富贵必矣，如甲生人身命丑卯而寅禄居中，是生成之禄尤为上格，其余者，若甲寅乙卯庚申辛酉四位具同此格，如甲生人安命在子，廉贞化禄居限破军化权居丑，是科权禄夹，命定主富贵余仿此。"
+    },
+    {
+      "kind": "user_confirmed_rule_decision",
+      "note": "仅匹配命宫、身宫；三个严格子型可同时命中；不加入煞曜破格或亮度条件；甲寅乙卯庚申辛酉解释为禄存定位。"
+    }
+  ],
+  "updated_at": "2026-09-01"
+}
