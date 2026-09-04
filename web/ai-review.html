@@ -6,15 +6,26 @@
   <meta name="theme-color" content="#f7f8fa">
   <title>ZhouYiLab AI 多模型预评审</title>
   <link rel="stylesheet" href="/ai-review.css">
+  <link rel="stylesheet" href="/app-shell.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 紫微斗数排盘"><span class="brand-mark" aria-hidden="true">周</span><span><strong>ZhouYiLab</strong><small>紫微斗数 · 研究工具</small></span></a>
+      <nav class="primary-tabs" aria-label="命理类型"><a href="/" aria-current="page">紫微斗数</a><a href="/qimen.html">奇门遁甲</a><a href="/bazi.html">八字</a></nav>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">紫微斗数<strong>研究</strong></span>
+      <nav class="secondary-tabs" aria-label="紫微斗数内容"><a href="/">返回紫微排盘</a></nav>
+    </div>
+  </div>
   <header class="lab-header">
     <a class="brand" href="/" aria-label="返回 ZhouYiLab 排盘页"><span aria-hidden="true">周</span><strong>ZhouYiLab</strong></a>
     <div class="lab-title"><span>研究工具 v0.1</span><h1>AI 多模型预评审</h1></div>
-    <nav aria-label="研究工具"><a href="/blind-review.html">人工盲评</a><a href="/ai-review.html" aria-current="page">AI 预评审</a></nav>
   </header>
 
-  <main class="lab-shell">
+  <main id="main-content" class="lab-shell">
     <aside class="setup-panel" aria-label="实验设置">
       <section class="boundary-note">
         <strong>用途边界</strong>

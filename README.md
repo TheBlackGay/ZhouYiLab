@@ -6,7 +6,7 @@
 [![CMake](https://img.shields.io/badge/CMake-3.28%2B-green.svg)](https://cmake.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-当前开发分支为 `r_1.5.0`，HTTP API 版本为 `v1`，接口返回的算法标识为 `zhouyilab-core/1.4.1`。
+当前开发分支为 `r_1.6.0`，HTTP API 版本为 `v1`，接口返回的算法标识为 `zhouyilab-core/1.4.1`。
 
 ## 算法校准状态
 
@@ -18,7 +18,7 @@
 | --- | --- | --- |
 | 紫微斗数 | 已校准 | 已复核排盘、亮度、四化、运限和声明式格局规则，修正原有错误并建立结构化案例验证 |
 | 奇门遁甲 | 已校准 | 已重新校正原有起局实现，当前采用项目文档确认的拆补法时家转盘口径，并建立回归测试 |
-| 八字 | 待校准 | 现有 C++ 模块和示例可运行，不代表算法口径已经完成复核 |
+| 八字 | 校准中 | 已复核真太阳时、四柱基础字段、起运及首批《渊海子平》《三命通会》神煞；旺衰、喜忌与格局仍待校准 |
 | 六爻 | 待校准 | 现有 C++ 模块和示例可运行，不代表算法口径已经完成复核 |
 | 大六壬 | 待校准 | 现有 C++ 模块和示例可运行，不代表算法口径已经完成复核 |
 
@@ -34,7 +34,8 @@
 | 奇门遁甲 | 可用 | 拆补法时家转盘奇门、公历/农历起局、九宫盘、直符直使与学习提示 |
 | 紫微盲评研究 | 可用 | 匿名盲评包、维度量尺、协议与一致性研究配置 |
 | AI 多模型预评审 | 实验性 | Ollama/OpenAI 兼容接口、多模型重复实验、结果统计与 SQLite 留档 |
-| 八字、六爻、大六壬 | C++ 示例 | 核心模块与示例程序 |
+| 八字 | 初步可用 | 公历/农历输入、真太阳时、四柱、十神、藏干、十二长生、逐柱旬空、纳音、首批神煞、起运与十步大运 |
+| 六爻、大六壬 | C++ 示例 | 核心模块与示例程序 |
 
 ## 快速开始
 
@@ -57,7 +58,7 @@ git submodule update --init --recursive
 
 ```bash
 cmake -S . -B build
-cmake --build build --target zi_wei_web_cli qi_men_web_cli
+cmake --build build --target zi_wei_web_cli qi_men_web_cli ba_zi_web_cli
 ```
 
 构建产物：
@@ -65,6 +66,7 @@ cmake --build build --target zi_wei_web_cli qi_men_web_cli
 ```text
 build/examples/zi_wei_web_cli
 build/examples/qi_men_web_cli
+build/examples/ba_zi_web_cli
 ```
 
 如需构建所有示例：
@@ -87,6 +89,7 @@ cmake --build build --target all_examples
 
 - 紫微斗数：[http://127.0.0.1:8768/](http://127.0.0.1:8768/)
 - 奇门遁甲：[http://127.0.0.1:8768/qimen.html](http://127.0.0.1:8768/qimen.html)
+- 八字：[http://127.0.0.1:8768/bazi.html](http://127.0.0.1:8768/bazi.html)
 - 人工盲评：[http://127.0.0.1:8768/blind-review.html](http://127.0.0.1:8768/blind-review.html)
 - AI 预评审：[http://127.0.0.1:8768/ai-review.html](http://127.0.0.1:8768/ai-review.html)
 
@@ -141,6 +144,21 @@ python3 web/server.py --port 8768
 - 甲时旬首遁藏、中五寄坤二、天禽随天芮等当前算法口径。
 - 宫位学习提示和结构化 JSON 输出。
 
+### 八字
+
+八字页面沿用独立排盘工具的交互方式，当前支持：
+
+- 公历、农历与闰月输入。
+- 与紫微斗数共用经度、均时差和夏令时真太阳时校正，并显示实际排盘时间与跨日状态。
+- 男女命顺逆排运。
+- 年、月、日、时四柱及阴阳五行。
+- 天干十神、地支藏干及对应十神。
+- 星运、自坐十二长生、逐柱旬空与六十甲子纳音。
+- 首批《渊海子平》《三命通会》口径神煞，按四柱分别展示；童子煞明确标注为后世民间兼容规则。
+- 起运年龄、精确交运时刻与十步大运。
+
+当前页面只呈现已经校准的排盘事实。八字仍处于校准阶段，格局、旺衰、喜忌和命理断语暂不接入页面。
+
 ## HTTP API
 
 服务只监听 `127.0.0.1`，API 使用统一响应结构：
@@ -168,6 +186,7 @@ python3 web/server.py --port 8768
 | POST | `/api/v1/ziwei/fortune` | 生成紫微命盘及运限 |
 | POST | `/api/v1/ziwei/analysis` | 生成本命结构解读与格局结果 |
 | POST | `/api/v1/qimen/charts` | 生成奇门遁甲盘 |
+| POST | `/api/v1/bazi/charts` | 生成八字四柱与大运 |
 | GET | `/api/v1/ziwei/research/blind-review/packet` | 生成匿名盲评包 |
 | GET/POST | `/api/v1/ziwei/research/ai-review/*` | AI 预评审配置、实验和结果 |
 

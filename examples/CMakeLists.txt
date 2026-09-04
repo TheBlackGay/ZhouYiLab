@@ -39,6 +39,7 @@ set(EXAMPLES
     example_true_solar_time # "紫微斗数真太阳时校验"
     zi_wei_web_cli     # "紫微斗数网页JSON桥接"
     qi_men_web_cli     # "奇门遁甲网页JSON桥接"
+    ba_zi_web_cli      # "八字网页JSON桥接"
     example_stacktrace  # "std::stacktrace 功能测试"
     example_qi_men      # "奇门遁甲排盘示例"
 )
@@ -116,6 +117,7 @@ message(STATUS "    - example_zi_wei       : 紫微斗数排盘示例")
 message(STATUS "    - example_true_solar_time : 紫微斗数真太阳时校验")
 message(STATUS "    - zi_wei_web_cli      : 紫微斗数网页JSON桥接")
 message(STATUS "    - qi_men_web_cli      : 奇门遁甲网页JSON桥接")
+message(STATUS "    - ba_zi_web_cli       : 八字网页JSON桥接")
 message(STATUS "    - example_stacktrace   : std::stacktrace 功能测试")
 message(STATUS "    - example_qi_men       : 奇门遁甲排盘示例")
 message(STATUS "==========================================")

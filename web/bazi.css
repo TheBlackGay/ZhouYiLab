@@ -1,0 +1,63 @@
+@import url('/qimen.css');
+
+.unit-input { position: relative; }
+.unit-input input { padding-right: 32px; }
+.unit-input > span { position: absolute; right: 12px; top: 50%; color: var(--muted); transform: translateY(-20%); }
+.two-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.board-heading > small,
+.fortune-heading small { color: var(--muted); font-size: 11px; }
+.pillar-board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--ink); background: var(--line); gap: 1px; }
+.pillar { min-width: 0; display: grid; grid-template-rows: auto auto auto auto auto 1fr; background: var(--surface); text-align: center; }
+.pillar header { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 9px 13px; border-bottom: 1px solid var(--line); }
+.pillar header strong { font-size: 13px; }
+.pillar header span { color: var(--muted); font-size: 10px; }
+.pillar-main { display: grid; gap: 3px; padding: 17px 8px 13px; }
+.pillar-main small { color: var(--cinnabar); font-size: 11px; font-weight: 700; }
+.pillar-main strong { font: 600 38px/1.15 "Noto Serif SC", serif; }
+.pillar-main strong.stem { color: var(--cinnabar); }
+.pillar-main strong.branch { color: var(--jade); }
+.pillar-main em { color: var(--muted); font-size: 10px; font-style: normal; }
+.hidden-stems { display: grid; align-content: start; gap: 7px; min-height: 96px; padding: 12px; border-top: 1px solid var(--line); }
+.hidden-stems > small { color: var(--muted); font-size: 10px; }
+.hidden-stems div { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+.hidden-stems span { display: inline-flex; align-items: baseline; gap: 3px; padding: 4px 6px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 3px; font-weight: 700; }
+.hidden-stems span small { color: var(--muted); font-size: 9px; font-weight: 400; }
+.pillar-facts { margin: 0; border-top: 1px solid var(--line); }
+.pillar-facts div { min-height: 37px; display: grid; grid-template-columns: 42px 1fr; align-items: center; gap: 5px; padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+.pillar-facts div:last-child { border-bottom: 0; }
+.pillar-facts dt { color: var(--muted); font-size: 10px; }
+.pillar-facts dd { margin: 0; font-size: 11px; font-weight: 700; }
+.pillar-shensha { display: grid; align-content: start; gap: 7px; min-height: 92px; padding: 11px 10px; border-top: 1px solid var(--line); text-align: left; }
+.pillar-shensha > small { color: var(--muted); font-size: 10px; }
+.pillar-shensha > div { display: flex; flex-wrap: wrap; gap: 5px; }
+.pillar-shensha span { padding: 3px 6px; color: #745b28; background: #fbf8ef; border: 1px solid #ddd2b8; border-radius: 3px; font-size: 10px; font-weight: 700; line-height: 1.35; }
+.pillar-shensha span.none { color: var(--muted); background: var(--paper); border-color: var(--line); font-weight: 400; }
+.time-correction-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 18px 0 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.time-correction-summary div { min-width: 0; display: grid; gap: 4px; padding: 12px; border-right: 1px solid var(--line); }
+.time-correction-summary div:last-child { border-right: 0; }
+.time-correction-summary dt { color: var(--muted); font-size: 10px; }
+.time-correction-summary dd { margin: 0; overflow-wrap: anywhere; font-size: 12px; font-weight: 700; }
+.fortune-heading { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.fortune-heading > div { display: grid; gap: 4px; }
+.fortune-heading span { color: var(--muted); font-size: 11px; }
+.fortune-heading strong { font-size: 15px; }
+.bazi-fortune-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--line); background: var(--line); gap: 1px; }
+.fortune-card { min-width: 0; display: grid; gap: 9px; padding: 15px 12px; background: var(--surface); }
+.fortune-card.current { box-shadow: inset 0 0 0 2px var(--gold); background: #fbf8ef; }
+.fortune-card header { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+.fortune-card header strong { color: var(--jade); font: 600 22px/1.2 "Noto Serif SC", serif; }
+.fortune-card header span { color: var(--gold); font-size: 9px; font-weight: 800; }
+.fortune-card p { margin: 0; color: var(--ink); font-size: 11px; line-height: 1.55; }
+.fortune-card small { color: var(--muted); font-size: 10px; line-height: 1.5; }
+
+@media (max-width: 780px) {
+  .pillar-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bazi-fortune-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .time-correction-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .time-correction-summary div:nth-child(2) { border-right: 0; }
+}
+@media (max-width: 420px) {
+  .pillar-main strong { font-size: 32px; }
+  .pillar header { padding-inline: 9px; }
+  .hidden-stems { padding-inline: 7px; }
+}

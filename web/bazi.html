@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f2ee">
+  <title>ZhouYiLab 八字排盘</title>
+  <link rel="stylesheet" href="/bazi.css">
+  <link rel="stylesheet" href="/app-shell.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 八字排盘">
+        <span class="brand-mark" aria-hidden="true">周</span>
+        <span><strong>ZhouYiLab</strong><small>八字 · 四柱排盘</small></span>
+      </a>
+      <nav class="primary-tabs" aria-label="命理类型">
+        <a href="/">紫微斗数</a>
+        <a href="/qimen.html">奇门遁甲</a>
+        <a href="/bazi.html" aria-current="page">八字</a>
+      </nav>
+      <div class="header-tools"><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">八字<strong>内容</strong></span>
+      <div class="result-tabs secondary-tabs" role="tablist" aria-label="八字内容">
+        <button id="chart-tab" type="button" role="tab" aria-selected="true" aria-controls="chart-panel">四柱命盘</button>
+        <button id="fortune-tab" type="button" role="tab" aria-selected="false" aria-controls="fortune-panel" tabindex="-1">大运</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" class="workspace">
+    <aside class="input-panel" aria-label="八字排盘参数">
+      <form id="bazi-form">
+        <section>
+          <div class="section-heading"><span>01</span><h1>出生时间</h1></div>
+          <fieldset>
+            <legend>历法</legend>
+            <div class="segmented">
+              <label><input type="radio" name="calendar" value="solar" checked><span>公历</span></label>
+              <label><input type="radio" name="calendar" value="lunar"><span>农历</span></label>
+            </div>
+          </fieldset>
+          <div id="solar-fields">
+            <label for="solar-date">出生日期</label>
+            <input id="solar-date" type="date" value="1994-12-08" required>
+          </div>
+          <div id="lunar-fields" hidden>
+            <div class="lunar-date-fields">
+              <div><label for="lunar-year">农历年</label><input id="lunar-year" type="number" min="1" max="9999" value="1994"></div>
+              <div><label for="lunar-month">月</label><input id="lunar-month" type="number" min="1" max="12" value="11"></div>
+              <div><label for="lunar-day">日</label><input id="lunar-day" type="number" min="1" max="30" value="6"></div>
+            </div>
+            <label class="toggle-row" for="leap-month"><span><strong>闰月</strong><small>按农历闰月排盘</small></span><input id="leap-month" type="checkbox"></label>
+          </div>
+          <label for="birth-time">出生时间</label>
+          <input id="birth-time" type="time" value="09:05" step="60" required>
+        </section>
+
+        <section>
+          <div class="section-heading"><span>02</span><h2>时间校正</h2></div>
+          <label class="toggle-row" for="true-solar">
+            <span><strong>启用真太阳时</strong><small>校正后时间用于四柱与起运</small></span>
+            <input id="true-solar" type="checkbox" checked>
+          </label>
+          <div id="solar-options">
+            <label for="longitude">出生地经度（东经）</label>
+            <div class="unit-input"><input id="longitude" type="number" min="-180" max="180" step="0.000001" value="120.300000" required><span>°</span></div>
+            <div class="two-fields">
+              <div><label for="meridian">标准经线</label><div class="unit-input"><input id="meridian" type="number" min="-180" max="180" step="0.1" value="120"><span>°</span></div></div>
+              <div><label for="dst">夏令时</label><select id="dst"><option value="0">无</option><option value="60">+60 分钟</option><option value="30">+30 分钟</option></select></div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-heading"><span>03</span><h2>基本资料</h2></div>
+          <fieldset>
+            <legend>性别</legend>
+            <div class="segmented">
+              <label><input type="radio" name="gender" value="male" checked><span>男</span></label>
+              <label><input type="radio" name="gender" value="female"><span>女</span></label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="method-note">
+          <div class="section-heading"><span>04</span><h2>当前输出</h2></div>
+          <dl>
+            <div><dt>命盘</dt><dd>四柱 · 十神 · 神煞</dd></div>
+            <div><dt>运程</dt><dd>起运 · 十步大运</dd></div>
+            <div><dt>口径</dt><dd>渊海子平 · 三命通会</dd></div>
+          </dl>
+        </section>
+
+        <button class="primary-action" type="submit"><span class="button-label">排八字</span><span class="spinner" aria-hidden="true"></span></button>
+        <p id="form-error" class="error-message" role="alert" hidden></p>
+      </form>
+    </aside>
+
+    <section class="results" aria-live="polite">
+      <div id="empty-state" class="empty-state">
+        <div class="empty-symbol" aria-hidden="true">命</div>
+        <h2>等待排盘</h2>
+        <p>填写出生时间和性别，生成四柱与大运。</p>
+      </div>
+
+      <div id="result-content" hidden>
+        <header class="result-summary">
+          <div><span>八字命盘</span><strong id="summary-title">--</strong><small id="summary-date">--</small></div>
+          <dl>
+            <div><dt>日主</dt><dd id="metric-master">--</dd></div>
+            <div><dt>旬空</dt><dd id="metric-void">--</dd></div>
+            <div><dt>起运</dt><dd id="metric-start">--</dd></div>
+            <div><dt>真太阳时</dt><dd id="metric-solar">--</dd></div>
+          </dl>
+        </header>
+
+        <div id="chart-panel" role="tabpanel" aria-labelledby="chart-tab">
+          <div class="board-heading"><div><span>四柱</span><strong id="board-pillars">--</strong></div><small>十神均以日干为基准</small></div>
+          <div id="pillar-board" class="pillar-board"></div>
+          <p id="shen-sha-note" class="result-note"></p>
+          <dl id="time-correction-summary" class="time-correction-summary"></dl>
+          <p class="result-note">当前页面呈现排盘事实；旺衰、喜忌与断语将在规则校准后接入。</p>
+        </div>
+
+        <div id="fortune-panel" role="tabpanel" aria-labelledby="fortune-tab" hidden>
+          <div class="fortune-heading"><div><span>十步大运</span><strong id="fortune-title">--</strong></div><small>年龄按当前 C++ 大运模块口径</small></div>
+          <div id="fortune-list" class="bazi-fortune-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="/navigation.js" defer></script>
+  <script src="/bazi.js" defer></script>
+</body>
+</html>

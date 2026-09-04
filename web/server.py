@@ -31,6 +31,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEB_ROOT = PROJECT_ROOT / "web"
 CLI_PATH = PROJECT_ROOT / "build" / "examples" / "zi_wei_web_cli"
 QIMEN_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "qi_men_web_cli"
+BAZI_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "ba_zi_web_cli"
 API_VERSION = "v1"
 ALGORITHM_VERSION = "zhouyilab-core/1.4.1"
 MAX_BODY_BYTES = 256 * 1024
@@ -103,6 +104,7 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 "service": "zhouyilab-ziwei-api",
                 "cli_available": CLI_PATH.exists(),
                 "qimen_cli_available": QIMEN_CLI_PATH.exists(),
+                "bazi_cli_available": BAZI_CLI_PATH.exists(),
             })
             return
         if parsed.path == "/api/v1/ziwei/meta":
@@ -216,6 +218,18 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
             except subprocess.TimeoutExpired:
                 self.send_api_error(504, "CALCULATION_TIMEOUT", "奇门排盘计算超时")
+            except CliError as error:
+                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
+                self.send_api_error(status, error.code, error.message)
+            return
+        if parsed.path == "/api/v1/bazi/charts":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_engine(BAZI_CLI_PATH, payload))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "八字排盘计算超时")
             except CliError as error:
                 status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
                 self.send_api_error(status, error.code, error.message)
@@ -404,7 +418,7 @@ def main():
     parser = argparse.ArgumentParser(description="ZhouYiLab 紫微斗数 API 与本地页面服务")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
-    missing_engines = [path for path in (CLI_PATH, QIMEN_CLI_PATH) if not path.exists()]
+    missing_engines = [path for path in (CLI_PATH, QIMEN_CLI_PATH, BAZI_CLI_PATH) if not path.exists()]
     if missing_engines:
         missing = "、".join(str(path) for path in missing_engines)
         raise SystemExit(f"缺少 {missing}，请先构建网页 CLI")

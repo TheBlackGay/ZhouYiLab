@@ -6,22 +6,34 @@
   <meta name="theme-color" content="#f3f2ee">
   <title>ZhouYiLab 奇门遁甲排盘</title>
   <link rel="stylesheet" href="/qimen.css">
+  <link rel="stylesheet" href="/app-shell.css">
 </head>
 <body>
-  <header class="app-header">
-    <a class="brand" href="/" aria-label="返回紫微斗数排盘">
-      <span class="brand-mark" aria-hidden="true">周</span>
-      <span><strong>ZhouYiLab</strong><small>奇门遁甲 · 时家转盘</small></span>
-    </a>
-    <nav aria-label="术数工具">
-      <a href="/">紫微斗数</a>
-      <a href="/qimen.html" aria-current="page">奇门遁甲</a>
-    </nav>
-    <button id="open-help" class="header-help" type="button">帮助</button>
-    <div class="engine-status"><span></span>C++ 本地算法</div>
-  </header>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 奇门遁甲排盘">
+        <span class="brand-mark" aria-hidden="true">周</span>
+        <span><strong>ZhouYiLab</strong><small>奇门遁甲 · 时家转盘</small></span>
+      </a>
+      <nav class="primary-tabs" aria-label="命理类型">
+        <a href="/">紫微斗数</a>
+        <a href="/qimen.html" aria-current="page">奇门遁甲</a>
+        <a href="/bazi.html">八字</a>
+      </nav>
+      <div class="header-tools"><button id="open-help" class="header-help" type="button">帮助</button><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">奇门遁甲<strong>内容</strong></span>
+      <div class="result-tabs secondary-tabs" role="tablist" aria-label="奇门遁甲内容">
+        <button id="board-tab" type="button" role="tab" aria-selected="true" aria-controls="board-panel">九宫盘</button>
+        <button id="clues-tab" type="button" role="tab" aria-selected="false" aria-controls="clues-panel" tabindex="-1">断盘线索</button>
+        <button id="reading-tab" type="button" role="tab" aria-selected="false" aria-controls="reading-panel" tabindex="-1">解读素材</button>
+      </div>
+    </div>
+  </div>
 
-  <main class="workspace">
+  <main id="main-content" class="workspace">
     <aside class="input-panel" aria-label="奇门排盘参数">
       <form id="qimen-form">
         <section>
@@ -107,12 +119,6 @@
             <div><dt>日旬空</dt><dd id="metric-void">--</dd></div>
           </dl>
         </header>
-
-        <div class="result-tabs" role="tablist" aria-label="排盘结果视图">
-          <button id="board-tab" type="button" role="tab" aria-selected="true" aria-controls="board-panel">九宫盘</button>
-          <button id="clues-tab" type="button" role="tab" aria-selected="false" aria-controls="clues-panel" tabindex="-1">断盘线索</button>
-          <button id="reading-tab" type="button" role="tab" aria-selected="false" aria-controls="reading-panel" tabindex="-1">解读素材</button>
-        </div>
 
         <div id="board-panel" role="tabpanel" aria-labelledby="board-tab">
           <div class="board-heading">
@@ -221,6 +227,7 @@
       </section>
     </div>
   </dialog>
+  <script src="/navigation.js" defer></script>
   <script src="/qimen_learning.js" defer></script>
   <script src="/qimen.js" defer></script>
 </body>

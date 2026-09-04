@@ -6,15 +6,27 @@
   <meta name="theme-color" content="#f7f8fa">
   <title>ZhouYiLab 星曜作用盲评</title>
   <link rel="stylesheet" href="/blind-review.css">
+  <link rel="stylesheet" href="/app-shell.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 紫微斗数排盘"><span class="brand-mark" aria-hidden="true">周</span><span><strong>ZhouYiLab</strong><small>紫微斗数 · 研究工具</small></span></a>
+      <nav class="primary-tabs" aria-label="命理类型"><a href="/" aria-current="page">紫微斗数</a><a href="/qimen.html">奇门遁甲</a><a href="/bazi.html">八字</a></nav>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">紫微斗数<strong>研究</strong></span>
+      <nav class="secondary-tabs" aria-label="紫微斗数内容"><a href="/">返回紫微排盘</a></nav>
+    </div>
+  </div>
   <header class="review-header">
     <a class="brand" href="/" aria-label="返回 ZhouYiLab 排盘页"><span aria-hidden="true">周</span><strong>ZhouYiLab</strong></a>
     <div class="study-title"><span>研究模型 v0.1</span><h1>星曜作用盲评</h1></div>
-    <div class="header-progress" aria-live="polite"><a href="/ai-review.html">AI 预评审</a><span id="header-progress-text">0 / 8</span><div class="progress-track"><i id="header-progress-bar"></i></div></div>
+    <div class="header-progress" aria-live="polite"><span id="header-progress-text">0 / 8</span><div class="progress-track"><i id="header-progress-bar"></i></div></div>
   </header>
 
-  <main id="review-app" class="review-shell" hidden>
+  <main id="main-content" class="review-shell" hidden>
     <aside class="review-sidebar" aria-label="案例与评分者信息">
       <section class="identity-section">
         <div class="sidebar-heading"><span>评分者</span><small id="packet-id">--</small></div>

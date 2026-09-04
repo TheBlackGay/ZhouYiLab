@@ -1,0 +1,262 @@
+.app-navigation {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.app-navigation .app-header {
+  position: relative;
+  min-height: 68px;
+  height: auto;
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) auto minmax(190px, 1fr);
+  align-items: center;
+  padding: 9px 24px;
+  gap: 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.app-navigation .brand {
+  min-width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 0;
+  color: var(--ink);
+  text-decoration: none;
+  justify-self: start;
+  grid-column: 1;
+}
+
+.app-navigation .brand > span:last-child { display: grid; gap: 2px; }
+.app-navigation .brand strong { font-size: 17px; line-height: 1.2; }
+.app-navigation .brand small { color: var(--muted); font-size: 11px; }
+
+.primary-tabs {
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  width: max-content;
+  max-width: 100%;
+  margin: 0;
+  justify-self: center;
+  grid-column: 2;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.primary-tabs::-webkit-scrollbar,
+.secondary-tabs::-webkit-scrollbar { display: none; }
+
+.primary-tabs a {
+  min-width: max-content;
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0 14px;
+  color: var(--muted);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.primary-tabs a:hover,
+.primary-tabs a:focus-visible { color: var(--ink); }
+.primary-tabs a[aria-current="page"] { color: var(--jade, var(--navy, #25634d)); border-bottom-color: var(--jade, var(--navy, #25634d)); font-weight: 800; }
+
+.secondary-bar {
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: minmax(128px, 1fr) auto minmax(128px, 1fr);
+  align-items: stretch;
+  gap: 24px;
+  padding: 0 24px;
+  background: var(--surface-alt, var(--surface));
+  border-bottom: 1px solid var(--line);
+}
+
+.secondary-context {
+  min-width: 128px;
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.secondary-context strong { margin-left: 7px; color: var(--ink); font-size: 12px; }
+
+.secondary-tabs,
+.app-navigation .tabs,
+.app-navigation .result-tabs {
+  min-width: 0;
+  min-height: 48px;
+  display: flex;
+  align-items: stretch;
+  gap: 22px;
+  margin: 0;
+  overflow-x: auto;
+  border: 0;
+  scrollbar-width: none;
+  justify-self: center;
+}
+
+.secondary-tabs button,
+.secondary-tabs a,
+.app-navigation .tabs button,
+.app-navigation .result-tabs button {
+  min-width: max-content;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0 2px;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.secondary-tabs button:hover,
+.secondary-tabs a:hover,
+.secondary-tabs a:focus-visible,
+.app-navigation .tabs button:hover,
+.app-navigation .result-tabs button:hover { color: var(--ink); }
+
+.secondary-tabs button[aria-selected="true"],
+.secondary-tabs a[aria-current="page"],
+.app-navigation .tabs button[aria-selected="true"],
+.app-navigation .result-tabs button[aria-selected="true"] {
+  color: var(--cinnabar, var(--accent, var(--navy, #a43b32)));
+  border-bottom-color: var(--cinnabar, var(--accent, var(--navy, #a43b32)));
+  font-weight: 800;
+}
+
+.secondary-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.header-tools {
+  min-width: max-content;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 12px;
+  grid-column: 3;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 12px;
+  z-index: 200;
+  padding: 9px 12px;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transform: translateY(-160%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus { transform: translateY(0); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.app-navigation a,
+.app-navigation button { transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease; }
+
+.app-navigation a:focus-visible,
+.app-navigation button:focus-visible,
+.skip-link:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--jade, var(--focus, #25634d)) 30%, transparent);
+  outline-offset: 1px;
+}
+
+@media (min-width: 901px) {
+  body { font-size: 15px; }
+  .workspace { grid-template-columns: 320px minmax(0, 1fr); }
+}
+
+.secondary-actions a {
+  min-width: max-content;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.secondary-actions a:hover,
+.secondary-actions a:focus-visible { color: var(--ink); }
+
+.app-navigation .brand > span:last-child {
+  width: auto;
+  height: auto;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border-radius: 0;
+}
+
+.app-navigation + .review-header,
+.app-navigation + .lab-header { position: relative; top: auto; }
+.app-navigation ~ .review-shell .review-sidebar { top: 116px; height: calc(100vh - 116px); }
+
+@media (max-width: 760px) {
+  .app-navigation .app-header {
+    min-height: 58px;
+    align-items: center;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 7px 12px;
+  }
+  .app-navigation .brand { width: auto; margin-right: 0; }
+  .app-navigation .brand-mark { width: 36px; height: 36px; font-size: 18px; }
+  .app-navigation .brand > span:last-child small,
+  .app-navigation .brand p { display: none; }
+  .app-navigation .brand strong,
+  .app-navigation .brand h1 { font-size: 15px; }
+  .primary-tabs { width: 100%; justify-self: stretch; }
+  .primary-tabs a { min-height: 40px; padding: 0 10px; font-size: 12px; }
+  .app-navigation .engine-status { display: none; }
+  .secondary-bar { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0 12px; }
+  .secondary-context { display: none; }
+  .secondary-tabs,
+  .app-navigation .tabs,
+  .app-navigation .result-tabs { width: 100%; justify-self: stretch; gap: 20px; }
+  .secondary-actions { margin-left: 14px; }
+  .secondary-actions a { padding-inline: 7px; font-size: 11px; }
+  .app-navigation .header-help { position: static; min-width: 44px; margin-left: 0; }
+  .app-navigation ~ .review-shell .review-sidebar { height: auto; }
+  input, select, textarea { font-size: 16px; }
+}
+
+@media (max-width: 520px) {
+  .app-navigation .app-header { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .app-navigation .brand { display: none; }
+  .primary-tabs { width: max-content; }
+  .primary-tabs a { padding-inline: 6px; font-size: 11px; }
+  .secondary-actions { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-navigation a,
+  .app-navigation button,
+  .skip-link { transition-duration: .01ms; }
+}

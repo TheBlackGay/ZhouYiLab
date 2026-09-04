@@ -6,21 +6,36 @@
   <meta name="theme-color" content="#f4f5f2">
   <title>ZhouYiLab 紫微斗数排盘</title>
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/app-shell.css">
 </head>
 <body>
-  <header class="app-header">
-    <div class="brand-mark" aria-hidden="true">周</div>
-    <div>
-      <h1>ZhouYiLab</h1>
-      <p>紫微斗数 · 中州三合排盘</p>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 紫微斗数排盘">
+        <span class="brand-mark" aria-hidden="true">周</span>
+        <span><strong>ZhouYiLab</strong><small>紫微斗数 · 中州三合排盘</small></span>
+      </a>
+      <nav class="primary-tabs" aria-label="命理类型">
+        <a href="/" aria-current="page">紫微斗数</a>
+        <a href="/qimen.html">奇门遁甲</a>
+        <a href="/bazi.html">八字</a>
+      </nav>
+      <div class="header-tools"><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">紫微斗数<strong>内容</strong></span>
+      <div class="tabs secondary-tabs" role="tablist" aria-label="紫微斗数内容">
+        <button type="button" role="tab" aria-selected="true" data-tab="chart">十二宫</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="analysis">结构解读</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="fortune">运限</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="correction">时间校正</button>
+      </div>
     </div>
-    <a class="research-link" href="/qimen.html">奇门遁甲</a>
-    <a class="research-link" href="/blind-review.html">人工盲评</a>
-    <a class="research-link" href="/ai-review.html">AI 预评审</a>
-    <div class="engine-status"><span></span>C++ 本地算法</div>
-  </header>
+  </div>
 
-  <main class="workspace">
+  <main id="main-content" class="workspace">
+    <h1 class="sr-only">紫微斗数排盘</h1>
     <aside class="input-panel" aria-label="排盘参数">
       <form id="chart-form">
         <section class="form-section">
@@ -85,13 +100,6 @@
             <div><dt>命宫</dt><dd id="metric-ming">--</dd></div>
             <div><dt>真太阳时</dt><dd id="metric-solar">--</dd></div>
           </dl>
-        </div>
-
-        <div class="tabs" role="tablist" aria-label="排盘结果视图">
-          <button type="button" role="tab" aria-selected="true" data-tab="chart">十二宫</button>
-          <button type="button" role="tab" aria-selected="false" data-tab="analysis">结构解读</button>
-          <button type="button" role="tab" aria-selected="false" data-tab="fortune">运限</button>
-          <button type="button" role="tab" aria-selected="false" data-tab="correction">时间校正</button>
         </div>
 
         <div id="tab-chart" class="tab-panel" role="tabpanel">
@@ -160,6 +168,7 @@
     </section>
   </main>
 
+  <script src="/navigation.js" defer></script>
   <script src="/app.js" defer></script>
 </body>
 </html>

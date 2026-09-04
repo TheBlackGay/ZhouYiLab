@@ -768,38 +768,56 @@ public:
             WuXing::Jin, WuXing::Jin,   // 甲子乙丑海中金
             WuXing::Huo, WuXing::Huo,   // 丙寅丁卯炉中火
             WuXing::Mu, WuXing::Mu,     // 戊辰己巳大林木
-            WuXing::Jin, WuXing::Jin,   // 庚午辛未路旁土
-            WuXing::Tu, WuXing::Tu,     // 壬申癸酉剑锋金
-            WuXing::Shui, WuXing::Shui, // 甲戌乙亥山头火
-            WuXing::Huo, WuXing::Huo,   // 丙子丁丑涧下水
+            WuXing::Tu, WuXing::Tu,     // 庚午辛未路旁土
+            WuXing::Jin, WuXing::Jin,   // 壬申癸酉剑锋金
+            WuXing::Huo, WuXing::Huo,   // 甲戌乙亥山头火
+            WuXing::Shui, WuXing::Shui, // 丙子丁丑涧下水
             WuXing::Tu, WuXing::Tu,     // 戊寅己卯城头土
-            WuXing::Mu, WuXing::Mu,     // 庚辰辛巳白蜡金
-            WuXing::Jin, WuXing::Jin,   // 壬午癸未杨柳木
+            WuXing::Jin, WuXing::Jin,   // 庚辰辛巳白蜡金
+            WuXing::Mu, WuXing::Mu,     // 壬午癸未杨柳木
             WuXing::Shui, WuXing::Shui, // 甲申乙酉泉中水
             WuXing::Tu, WuXing::Tu,     // 丙戌丁亥屋上土
-            WuXing::Mu, WuXing::Mu,     // 戊子己丑霹雳火
-            WuXing::Huo, WuXing::Huo,   // 庚寅辛卯松柏木
-            WuXing::Jin, WuXing::Jin,   // 壬辰癸巳长流水
-            WuXing::Tu, WuXing::Tu,     // 甲午乙未沙中金
-            WuXing::Shui, WuXing::Shui, // 丙申丁酉山下火
-            WuXing::Huo, WuXing::Huo,   // 戊戌己亥平地木
-            WuXing::Mu, WuXing::Mu,     // 庚子辛丑壁上土
+            WuXing::Huo, WuXing::Huo,   // 戊子己丑霹雳火
+            WuXing::Mu, WuXing::Mu,     // 庚寅辛卯松柏木
+            WuXing::Shui, WuXing::Shui, // 壬辰癸巳长流水
+            WuXing::Jin, WuXing::Jin,   // 甲午乙未沙中金
+            WuXing::Huo, WuXing::Huo,   // 丙申丁酉山下火
+            WuXing::Mu, WuXing::Mu,     // 戊戌己亥平地木
+            WuXing::Tu, WuXing::Tu,     // 庚子辛丑壁上土
             WuXing::Jin, WuXing::Jin,   // 壬寅癸卯金箔金
-            WuXing::Tu, WuXing::Tu,     // 甲辰乙巳佛灯火
+            WuXing::Huo, WuXing::Huo,   // 甲辰乙巳佛灯火
             WuXing::Shui, WuXing::Shui, // 丙午丁未天河水
-            WuXing::Huo, WuXing::Huo,   // 戊申己酉大驿土
-            WuXing::Mu, WuXing::Mu,     // 庚戌辛亥钗钏金
-            WuXing::Jin, WuXing::Jin,   // 壬子癸丑桑柘木
-            WuXing::Tu, WuXing::Tu,     // 甲寅乙卯大溪水
-            WuXing::Shui, WuXing::Shui, // 丙辰丁巳沙中土
+            WuXing::Tu, WuXing::Tu,     // 戊申己酉大驿土
+            WuXing::Jin, WuXing::Jin,   // 庚戌辛亥钗钏金
+            WuXing::Mu, WuXing::Mu,     // 壬子癸丑桑柘木
+            WuXing::Shui, WuXing::Shui, // 甲寅乙卯大溪水
+            WuXing::Tu, WuXing::Tu,     // 丙辰丁巳沙中土
             WuXing::Huo, WuXing::Huo,   // 戊午己未天上火
             WuXing::Mu, WuXing::Mu,     // 庚申辛酉石榴木
-            WuXing::Jin, WuXing::Jin    // 壬戌癸亥大海水
+            WuXing::Shui, WuXing::Shui  // 壬戌癸亥大海水
         };
         
         return na_yin_table[to_index()];
     }
+
+    constexpr std::string_view get_na_yin_name() const {
+        constexpr std::array<std::string_view, 30> names = {
+            "海中金", "炉中火", "大林木", "路旁土", "剑锋金",
+            "山头火", "涧下水", "城头土", "白蜡金", "杨柳木",
+            "泉中水", "屋上土", "霹雳火", "松柏木", "长流水",
+            "沙中金", "山下火", "平地木", "壁上土", "金箔金",
+            "佛灯火", "天河水", "大驿土", "钗钏金", "桑柘木",
+            "大溪水", "沙中土", "天上火", "石榴木", "大海水"
+        };
+        return names[static_cast<std::size_t>(to_index() / 2)];
+    }
 };
+
+static_assert(LiuShiJiaZi(TianGan::Jia, DiZhi::Xu).get_na_yin() == WuXing::Huo);
+static_assert(LiuShiJiaZi(TianGan::Jia, DiZhi::Xu).get_na_yin_name() == "山头火");
+static_assert(LiuShiJiaZi(TianGan::Bing, DiZhi::Zi).get_na_yin_name() == "涧下水");
+static_assert(LiuShiJiaZi(TianGan::Wu, DiZhi::Chen).get_na_yin_name() == "大林木");
+static_assert(LiuShiJiaZi(TianGan::Ding, DiZhi::Si).get_na_yin_name() == "沙中土");
 
 /**
  * @brief 获取完整的六十甲子表

@@ -33,7 +33,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, .file-action:
 .study-title { min-width: 0; padding: 0 22px; display: flex; align-items: baseline; gap: 12px; }
 .study-title span { color: var(--navy); font-size: 11px; font-weight: 700; white-space: nowrap; }
 .study-title h1 { margin: 0; font-size: 18px; letter-spacing: 0; }
-.header-progress { padding-right: 22px; display: grid; grid-template-columns: auto auto 100px; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; font-weight: 700; }
+.header-progress { padding-right: 22px; display: grid; grid-template-columns: auto 100px; justify-content: end; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; font-weight: 700; }
 .header-progress a { color: var(--navy); font-size: 10px; text-decoration: none; white-space: nowrap; }
 .progress-track { height: 6px; overflow: hidden; border-radius: 3px; background: var(--surface-muted); }
 .progress-track i { width: 0; height: 100%; display: block; background: var(--green); transition: width 180ms ease; }
