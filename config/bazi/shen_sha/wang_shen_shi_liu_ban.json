@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "id": "wang_shen_shi_liu_ban",
+  "name": "亡神十六般",
+  "aliases": ["亡神十六般格局"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 14,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/亡神十六般.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-430.png",
+    "docs/bazi/img/san_ming_tong_hui/page-431.png",
+    "docs/bazi/img/san_ming_tong_hui/page-432.png",
+    "docs/bazi/img/san_ming_tong_hui/page-433.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "426-429",
+      "pdf_pages": "430-433",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "亡神十六般按亡神与年柱纳音、四柱位置、贵人、禄马、空亡、劫煞及刑冲的关系细分，生旺逢贵多主才智权力，死绝逢凶多主灾病官非。",
+  "variants": ["富藏", "长生", "临官", "奎舆", "自如", "生本", "义门", "锦里", "未降", "妄作", "啰宅", "舞群", "薄恶", "迷溺", "乖张", "真亡劫", "劫头见财", "劫煞相合", "分劫", "聚劫", "天煞", "地煞", "岁煞", "刑煞"],
+  "scan_scope": ["三合局", "年柱纳音", "四柱干支", "贵人", "禄马", "空亡", "刑冲合化"],
+  "boundaries": "亡神十六般属于组合格局，名称和别名存在版本异文，本文只保存古籍来源，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 426-429 对应 PDF 页 430-433，截图已保存到项目本地。",
+    "部分别名及真亡劫例证字形紧密，正式使用前应逐项回看底图。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
