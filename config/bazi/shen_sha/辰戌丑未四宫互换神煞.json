@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "id": "chen_xu_chou_wei_si_gong_hu_huan_shen_sha",
+  "name": "辰戌丑未四宫互换神煞",
+  "aliases": ["四库", "四墓", "四余气", "华盖"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 29,
+  "catalog_kind": "chapter_group",
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/辰戌丑未四宫互换神煞.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-499.png",
+    "docs/bazi/img/san_ming_tong_hui/page-500.png",
+    "docs/bazi/img/san_ming_tong_hui/page-501.png",
+    "docs/bazi/img/san_ming_tong_hui/page-502.png",
+    "docs/bazi/img/san_ming_tong_hui/page-503.png",
+    "docs/bazi/img/san_ming_tong_hui/page-504.png",
+    "docs/bazi/img/san_ming_tong_hui/page-505.png",
+    "docs/bazi/img/san_ming_tong_hui/page-506.png"
+  ],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"495-502","pdf_pages":"499-506","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "summary": "第29章论辰戌丑未四库、四墓、四余气及华盖、天罗地网、羊刃、亡劫、禄马、贵人、刑冲合害的互换和断语。",
+  "members": ["四库", "四墓", "华盖", "天罗地网", "羊刃", "亡神", "劫煞", "禄马", "贵人"],
+  "scan_scope": ["辰", "戌", "丑", "未", "四库", "四墓", "纳音", "华盖", "天罗地网", "羊刃", "飞刃", "亡神", "劫煞", "长生", "禄马", "贵人", "刑冲合害", "旺衰"],
+  "boundaries": "本条是章节级格局资料，不是可独立计算的单一神煞；四库、华盖和互换断语需结合完整命局校勘。",
+  "editorial_notes": [
+    "书内页 495-502 对应 PDF 页 499-506，八页截图已保存到项目本地。",
+    "PDF 507 起为附录“五音看命法”，未并入第29章。",
+    "古诗、日时例证和部分术语存在低清字形及传本差异，正式使用前应回看底图。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
