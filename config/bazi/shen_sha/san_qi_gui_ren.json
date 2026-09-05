@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "id": "san_qi_gui_ren",
+  "name": "三奇贵人",
+  "catalog_number": 6,
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/三奇贵人.md",
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "392-395",
+      "pdf_pages": "396-399",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "variants": {
+    "天上三奇": ["乙", "丙", "丁"],
+    "地上三奇": ["甲", "戊", "庚"],
+    "人间三奇（原书存疑）": ["辛", "壬", "癸"]
+  },
+  "calculation": {
+    "basis": "三干顺次排列，原书要求结合顺逆、昼夜、得体、得地、三合及六仪综合判断",
+    "ordering": "乙丙丁、甲戊庚、辛壬癸均须依次顺排，不宜倒乱或间断"
+  },
+  "boundaries": "三奇贵人是古籍格局资料，不因出现三干就直接判定绝对吉；天乙、天月二德、六仪、三合、禄马、空亡及冲破等组合须分开记录。",
+  "editorial_notes": [
+    "原书明确质疑辛壬癸为人间三奇的依据，保留为争议变体。",
+    "未完成规则实现与自动测试前保持 draft 状态。"
+  ]
+}
