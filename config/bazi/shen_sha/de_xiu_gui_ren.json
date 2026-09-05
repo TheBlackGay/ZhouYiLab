@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "id": "de_xiu_gui_ren",
+  "name": "德秀贵人",
+  "aliases": ["德秀"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 11,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/德秀贵人.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-422.png",
+    "docs/bazi/img/san_ming_tong_hui/page-423.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "418-419",
+      "pdf_pages": "422-423",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "德秀贵人按生月三合局取德干与秀干，命中得之且无冲破克压，古籍主聪明温厚；遇学堂、财官则更贵。",
+  "by_month_group": {
+    "寅午戌": {"德": ["丙", "丁"], "秀": ["戊", "癸"]},
+    "申子辰": {"德": ["壬", "癸", "戊", "己"], "秀": ["丙", "辛", "甲", "己"]},
+    "巳酉丑": {"德": ["庚", "辛"], "秀": ["乙", "庚"]},
+    "亥卯未": {"德": ["甲", "乙"], "秀": ["丁", "壬"]}
+  },
+  "scan_scope": ["月令地支", "四柱天干"],
+  "boundaries": "德秀贵人的月令分组和干支列表存在版本异文，本文只保存古籍来源，未确定工程判定口径。",
+  "editorial_notes": [
+    "书内页 418-419 对应 PDF 页 422-423，截图已保存到项目本地。",
+    "原图说明遇冲克会减力，正式规则应与主判定条件分层。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
