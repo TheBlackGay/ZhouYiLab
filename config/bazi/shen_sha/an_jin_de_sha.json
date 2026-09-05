@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "id": "an_jin_de_sha",
+  "name": "暗金的煞",
+  "aliases": ["吟呻", "破碎", "白衣"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 18,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/暗金的煞.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-452.png",
+    "docs/bazi/img/san_ming_tong_hui/page-453.png",
+    "docs/bazi/img/san_ming_tong_hui/page-454.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "448-450",
+      "pdf_pages": "452-454",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "暗金的煞由先天数四冲推导，分吟呻、破碎、白衣三名：子午卯酉见巳、寅申巳亥见酉、辰戌丑未见丑。主刑狱、破碎、丧服等象，须结合五行旺衰和诸煞吉神判断。",
+  "positions_by_year_group": {
+    "四仲": {"branches": ["子", "午", "卯", "酉"], "sha": "巳", "name": "吟呻", "sum": 30},
+    "四孟": {"branches": ["寅", "申", "巳", "亥"], "sha": "酉", "name": "破碎", "sum": 22},
+    "四季": {"branches": ["辰", "戌", "丑", "未"], "sha": "丑", "name": "白衣", "sum": 26}
+  },
+  "variants": ["吟呻", "破碎", "白衣", "四仲正煞", "四孟正煞", "四季正煞"],
+  "scan_scope": ["年支", "先天数", "四冲", "生旺死绝", "五行", "官符", "劫煞", "白虎", "羊刃", "贵人", "建禄", "岁运"],
+  "boundaries": "暗金的煞的先天数推导和与诸煞并见的轻重存在传本差异，本文保存来源规则，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 448-450 对应 PDF 页 452-454，截图已保存到项目本地；PDF 页 455 起为第 19 号灾煞。",
+    "原文个别刑伤、疾病字样以底图为准，正式使用前应继续校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
