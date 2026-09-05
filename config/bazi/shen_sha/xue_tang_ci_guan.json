@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "id": "xue_tang_ci_guan",
+  "name": "学堂词馆",
+  "aliases": ["学堂", "词馆"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 9,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/学堂词馆.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-412.png",
+    "docs/bazi/img/san_ming_tong_hui/page-413.png",
+    "docs/bazi/img/san_ming_tong_hui/page-414.png",
+    "docs/bazi/img/san_ming_tong_hui/page-415.png",
+    "docs/bazi/img/san_ming_tong_hui/page-416.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "408-412",
+      "pdf_pages": "412-416",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "学堂取五行长生，词馆取五行临官，主学业精专、文章出众。古籍又按禄、食神、官印、驿马、贵人及空亡冲破等组合细分吉凶。",
+  "positions_by_nayin_element": {
+    "金": {"学堂": "巳", "词馆": "申"},
+    "木": {"学堂": "亥", "词馆": "寅"},
+    "水": {"学堂": "申", "词馆": "亥"},
+    "土": {"学堂": "申", "词馆": "亥"},
+    "火": {"学堂": "寅", "词馆": "巳"}
+  },
+  "scan_scope": ["年干", "日干", "四柱纳音", "四柱地支"],
+  "variants": ["学堂会禄", "学堂会食", "官星学堂", "学堂会贵"],
+  "boundaries": "学堂词馆的判定混用长生、临官、纳音、年干和日干等口径，本文只保存来源规则，未确定工程实现优先级。",
+  "editorial_notes": [
+    "书内页 408-412 对应 PDF 页 412-416，截图已保存到项目本地。",
+    "原图口诀存在版本异文，文档中的表格化内容需以底图继续校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
