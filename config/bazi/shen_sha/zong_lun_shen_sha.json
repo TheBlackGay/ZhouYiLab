@@ -8,10 +8,23 @@
   "catalog_kind": "chapter_index",
   "calibration_status": "reference",
   "source_document": "docs/bazi/总论诸神煞.md",
-  "source_images": ["docs/bazi/img/san_ming_tong_hui/page-474.png"],
-  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"470","pdf_pages":"474","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-474.png",
+    "docs/bazi/img/san_ming_tong_hui/page-475.png",
+    "docs/bazi/img/san_ming_tong_hui/page-476.png",
+    "docs/bazi/img/san_ming_tong_hui/page-477.png",
+    "docs/bazi/img/san_ming_tong_hui/page-478.png",
+    "docs/bazi/img/san_ming_tong_hui/page-479.png",
+    "docs/bazi/img/san_ming_tong_hui/page-480.png",
+    "docs/bazi/img/san_ming_tong_hui/page-481.png",
+    "docs/bazi/img/san_ming_tong_hui/page-482.png",
+    "docs/bazi/img/san_ming_tong_hui/page-483.png",
+    "docs/bazi/img/san_ming_tong_hui/page-484.png",
+    "docs/bazi/img/san_ming_tong_hui/page-485.png"
+  ],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"470-481","pdf_pages":"474-485","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
   "summary": "第26章为诸神煞总论和后续其他神煞索引，不作为独立神煞计算。",
   "listed_following": ["自缢煞", "水溺煞", "挂剑煞", "天火煞", "天屠煞", "天刑煞", "雷霆煞", "吞陷煞"],
   "boundaries": "本条仅作章节索引，具体取法和吉凶由后续神煞条目保存。",
-  "editorial_notes": ["PDF 页 474 后进入其他神煞分组。"]
+  "editorial_notes": ["PDF 页 474-485 对应书内页 470-481，涵盖总论索引及其他神煞（一）至（四）分组；四个子条目另有独立文档和 JSON。"]
 }
