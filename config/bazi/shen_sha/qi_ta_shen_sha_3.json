@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "id": "qi_ta_shen_sha_3",
+  "name": "其他神煞（三）",
+  "aliases": ["日刑煞", "流血煞", "剑锋煞", "戟锋煞", "浮沉煞", "破煞", "阴阳煞", "淫欲妨害煞", "孤鸾寡鹄煞", "阴差阳错煞", "桃花煞", "短寿煞", "桃花红艳煞"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 26,
+  "catalog_subnumber": 3,
+  "catalog_kind": "grouped_shen_sha",
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/其他神煞（三）.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-481.png",
+    "docs/bazi/img/san_ming_tong_hui/page-482.png"
+  ],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"477-478","pdf_pages":"481-482","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "summary": "第26章子条目“其他神煞（三）”，收录日刑、流血、剑锋、戟锋、浮沉、破、阴阳、淫欲妨害、孤鸾寡鹄、阴差阳错、桃花、短寿及桃花红艳等煞。",
+  "members": ["日刑煞", "流血煞", "剑锋煞", "戟锋煞", "浮沉煞", "破煞", "阴阳煞", "淫欲妨害煞", "孤鸾寡鹄煞", "阴差阳错煞", "桃花煞", "短寿煞", "桃花红艳煞"],
+  "scan_scope": ["年柱", "月柱", "日柱", "时柱", "命宫", "三合", "对宫", "顺逆数", "旬位", "地支相破", "八专", "九丑", "元辰", "咸池"],
+  "boundaries": "本条为分组资料，各煞的顺逆数、宫位和日时条件不能互相替代，本文未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 477-478 对应 PDF 页 481-482，截图已保存到项目本地；PDF 页 483 起为其他神煞（四）。",
+    "部分日时口诀、旬位和九丑条目存在低清字形及传本差异，正式使用前应回看底图。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
