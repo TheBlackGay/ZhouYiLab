@@ -10,20 +10,18 @@
   "calibration_status": "draft",
   "source_document": "docs/bazi/总论禄马.md",
   "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-384.png",
     "docs/bazi/img/san_ming_tong_hui/page-385.png",
-    "docs/bazi/img/san_ming_tong_hui/page-386.png",
-    "docs/bazi/img/san_ming_tong_hui/page-387.png",
-    "docs/bazi/img/san_ming_tong_hui/page-388.png",
-    "docs/bazi/img/san_ming_tong_hui/page-389.png"
+    "docs/bazi/img/san_ming_tong_hui/page-386.png"
   ],
-  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"381-385","pdf_pages":"385-389","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"380-382","pdf_pages":"384-386","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
   "summary": "第4号总论禄马，论天禄天马、禄马交驰、禄马同乡、夹禄夹马及生旺禄、名位禄、真禄等不同禄马格局。",
   "members": ["天禄天马", "禄马交驰", "禄马同乡", "夹禄夹马", "生旺禄", "名位禄", "真禄", "进退真禄", "食神合禄", "天禄贵神"],
   "scan_scope": ["年柱", "月柱", "日柱", "时柱", "禄位", "驿马", "长生", "食神", "财", "鬼", "贵人", "空亡", "冲破", "旺衰"],
   "boundaries": "本条为禄马格局总论，不是单一神煞；各组合需结合完整四柱和岁运校勘。",
   "editorial_notes": [
-    "书内页 381-385 对应 PDF 页 385-389，五页截图已保存到项目本地。",
-    "PDF 390 起进入第5号天乙贵人。",
+    "书内页 380-382 对应 PDF 页 384-386，三页截图已保存到项目本地。",
+    "PDF 387 起进入第5号天乙贵人。",
     "古诗、例证和格局名称存在低清字形及传本差异，正式使用前应回看底图。",
     "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
   ]
