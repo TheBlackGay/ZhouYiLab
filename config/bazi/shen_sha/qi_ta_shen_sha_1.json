@@ -5,7 +5,8 @@
   "aliases": ["自缢煞", "水溺煞", "挂剑煞", "天火煞", "天屠煞", "天刑煞", "雷霆煞", "吞陷煞"],
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
-  "catalog_number": 27,
+  "catalog_number": 26,
+  "catalog_subnumber": 1,
   "catalog_kind": "grouped_shen_sha",
   "calibration_status": "draft",
   "source_document": "docs/bazi/其他神煞（一）.md",
@@ -15,7 +16,7 @@
     "docs/bazi/img/san_ming_tong_hui/page-477.png"
   ],
   "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"471-473","pdf_pages":"475-477","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
-  "summary": "第27号为书中其他神煞（一）分组，收录自缢煞、水溺煞、挂剑煞、天火煞、天屠煞、天刑煞、雷霆煞、吞陷煞。各煞取法不同，均需结合原局和岁运校勘。",
+  "summary": "第26章子条目“其他神煞（一）”，收录自缢煞、水溺煞、挂剑煞、天火煞、天屠煞、天刑煞、雷霆煞、吞陷煞。各煞取法不同，均需结合原局和岁运校勘。",
   "members": {
     "自缢煞": {"rule": "五行反系，兼相克、墓、天冲、官符、大耗"},
     "水溺煞": {"rule": "丙子、癸未、癸丑等兼咸池、金神、羊刃"},
