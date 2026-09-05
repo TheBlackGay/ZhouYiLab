@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "id": "gan_zhi_zi_za_fan",
+  "name": "干支诸字杂犯神煞",
+  "aliases": ["平头煞", "破字煞", "悬针煞", "杖刑煞", "曲脚煞"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 25,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/干支诸字杂犯神煞.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-471.png",
+    "docs/bazi/img/san_ming_tong_hui/page-472.png",
+    "docs/bazi/img/san_ming_tong_hui/page-473.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "467-469",
+      "pdf_pages": "471-473",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "古籍按天干地支字形和笔画列出平头、破字、悬针、杖刑、曲脚五类杂犯神煞，分别取僧道孤苦、破败疾病、刑伤军人、杖刃徒流、肢体刑患等象，须结合五行气势和德神判断。",
+  "patterns": {
+    "平头煞": ["甲", "丙", "丁", "壬", "辰"],
+    "破字煞": ["甲", "癸", "未", "申", "酉"],
+    "悬针煞": ["甲", "辛", "卯", "午", "申"],
+    "杖刑煞": ["戊", "庚", "戌"],
+    "曲脚煞": ["乙", "己", "丑", "己"]
+  },
+  "variants": ["平头", "破字", "悬针", "杖刑", "曲脚", "倒戈", "字形测命"],
+  "scan_scope": ["四柱天干", "四柱地支", "字形", "笔画", "空亡", "五行气势", "德神", "羊刃", "劫神"],
+  "boundaries": "五类字形杂犯存在字表、字形及字义异文，本文保存图示和原书说法，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 467-469 对应 PDF 页 471-473，截图已保存到项目本地；PDF 页 474 起为第 26 号总论诸神煞。",
+    "部分字形组合在低清底图中易混淆，正式使用前应以原图和底本复核。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
