@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "id": "yin_shen_si_hai_si_gong_hu_huan_shen_sha",
+  "name": "寅申巳亥四宫互换神煞",
+  "aliases": ["四偏", "四门", "四长生", "四驿马"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 27,
+  "catalog_kind": "chapter_group",
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/寅申巳亥四宫互换神煞.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-486.png",
+    "docs/bazi/img/san_ming_tong_hui/page-487.png",
+    "docs/bazi/img/san_ming_tong_hui/page-488.png",
+    "docs/bazi/img/san_ming_tong_hui/page-489.png",
+    "docs/bazi/img/san_ming_tong_hui/page-490.png",
+    "docs/bazi/img/san_ming_tong_hui/page-491.png",
+    "docs/bazi/img/san_ming_tong_hui/page-492.png",
+    "docs/bazi/img/san_ming_tong_hui/page-493.png"
+  ],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"482-489","pdf_pages":"486-493","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "summary": "第27章论寅申巳亥四宫的四偏、四门、四长生、四驿马属性，以及亡神、劫煞、贵人、长生、禄马的同位、互换、刑冲合害和格局断语。",
+  "members": ["亡神", "劫煞", "天乙贵人", "长生", "禄马", "驿马"],
+  "scan_scope": ["寅", "申", "巳", "亥", "四宫", "四长生", "四驿马", "亡神", "劫煞", "贵人", "禄马", "刑冲合害", "旺衰", "岁运"],
+  "boundaries": "本条是章节级格局资料，不是可独立计算的单一神煞；互换、包煞及断语需结合完整命局校勘。",
+  "editorial_notes": [
+    "书内页 482-489 对应 PDF 页 486-493，八页截图已保存到项目本地。",
+    "古诗、日时例证及部分格局术语存在低清识读和传本差异，正式实现前应逐字复核。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
