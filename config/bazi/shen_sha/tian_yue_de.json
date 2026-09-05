@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "id": "tian_yue_de",
+  "name": "天月德",
+  "aliases": ["天德贵人", "月德贵人"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 7,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/天月德.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-402.png",
+    "docs/bazi/img/san_ming_tong_hui/page-403.png",
+    "docs/bazi/img/san_ming_tong_hui/page-404.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万明英",
+      "printed_pages": "398-400",
+      "pdf_pages": "402-404",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "天德贵人与月德贵人合称天月德，古籍认为二德能回凶作善、制伏诸煞。书中同时保存以周天度数推天德、以三合所照定月德，以及万明英和现行的月令口诀。",
+  "methods": {
+    "wan_ming_ying": {
+      "description": "按月令起贵人，兼列天干与方位对应（万民英观点）",
+      "pairs": [
+        ["子月", "壬"], ["卯月", "甲"], ["寅月", "丙"], ["酉月", "庚"],
+        ["丑月", "癸"], ["辰月", "乙"], ["未月", "丁"], ["戌月", "辛"],
+        ["寅月", "艮"], ["巳月", "巽"], ["申月", "坤"], ["亥月", "乾"]
+      ]
+    },
+    "current": {
+      "description": "现行月令口诀",
+      "pairs": [
+        ["正月", "丁"], ["二月", "申"], ["三月", "壬"], ["四月", "辛"],
+        ["五月", "亥"], ["六月", "甲"], ["七月", "癸"], ["八月", "寅"],
+        ["九月", "丙"], ["十月", "乙"], ["冬月", "己"], ["腊月", "庚"]
+      ]
+    }
+  },
+  "boundaries": "天德、月德的古今口诀并不完全一致；本文只保存来源与候选取法，未确定工程判定口径。",
+  "editorial_notes": [
+    "书内页 398-400 对应 PDF 页 402-404，截图已保存到项目本地。",
+    "原图同时展示万明英观点和现行观点，不能在未选定流派前合并为单一规则。",
+    "原文中的方位字（乾、坤、艮、巽）与天干对应关系按图录入，正式使用前应回看底图校勘。"
+  ]
+}
