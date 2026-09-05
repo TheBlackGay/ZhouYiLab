@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "id": "lu_shen",
+  "name": "禄神",
+  "system": "子平八字",
+  "source": "《渊海子平》",
+  "catalog_number": 1,
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "356-360",
+      "pdf_pages": "360-364",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "calibration_status": "calibrated",
+  "original_text": "禄，爵禄也，当得势而享，乃谓之禄。自始分十干、十二支时，便以甲乙配同寅卯，居东；丙丁配同巳午，居南；庚辛配同申酉，居西；壬癸配同亥子，居北。十干就支神为禄，谓禄随旺行，所以甲禄寅，乙禄卯，庚禄申，辛禄酉，壬禄亥，癸禄子，丙禄巳，丁禄午，戊寄巳，己寄午，谓巳午乃火旺之乡，子随母得禄之义。内有辰戌丑未，辰戌为魁罡，名曰边鄙恶地，禄元不寄；丑未乃天乙贵人出入之门，禄元避之，所以四宫无禄。",
+  "summary": "禄神是日主自身的临官旺根，象征自身根基、本分俸禄与得势而享。禄本身不等于绝对吉利，还要结合禄所在柱的干支类型判断。",
+  "calculation": {
+    "basis": "只以日干取禄，遍查年、月、日、时四柱地支",
+    "excluded_bases": ["年干岁禄体系", "月干取禄", "紫微斗数化禄", "八字四化"],
+    "fixed_positions": {
+      "甲": "寅", "乙": "卯", "丙": "巳", "丁": "午", "戊": "巳",
+      "己": "午", "庚": "申", "辛": "酉", "壬": "亥", "癸": "子"
+    },
+    "no_lu_branches": ["辰", "戌", "丑", "未"]
+  },
+  "pillar_positions": [
+    {"pillar": "年柱", "name": "岁禄", "meaning": "主少年运势、祖上福禄与早年根基"},
+    {"pillar": "月柱", "name": "建禄", "meaning": "主青年运势、家庭助力与事业初基"},
+    {"pillar": "日柱", "name": "专禄", "meaning": "主中年运势、自身福气与婚姻根基"},
+    {"pillar": "时柱", "name": "归禄", "meaning": "主晚年运势、子嗣福禄与晚景"}
+  ],
+  "variants": {
+    "甲": [
+      {"ganzhi":"丙寅","name":"福星禄","nature":"吉","meaning":"食神生财，福禄安稳，有福有财"},
+      {"ganzhi":"戊寅","name":"伏马禄","nature":"吉","meaning":"偏财透出，适合动中求财，奔波得利"},
+      {"ganzhi":"庚寅","name":"破禄","nature":"半吉半凶","meaning":"七杀攻身，禄被破损，多损耗是非"},
+      {"ganzhi":"壬寅","name":"正禄","nature":"不吉","meaning":"偏印坐禄；逢截路空亡主世俗缘薄，多僧道之象"},
+      {"ganzhi":"甲寅","name":"长生禄","nature":"吉","meaning":"比劫助根，日主根基厚实，身强得禄"}
+    ],
+    "乙": [
+      {"ganzhi":"乙卯","name":"喜神旺","nature":"禄吉","meaning":"日主坐禄，旺相，福气充盈"},
+      {"ganzhi":"丁卯","name":"截路空亡","nature":"凶","meaning":"空亡耗禄，好事多磨，结果容易落空"},
+      {"ganzhi":"己卯","name":"进神禄","nature":"吉","meaning":"带进神，利于进取、升迁发展"},
+      {"ganzhi":"辛卯","name":"破禄","nature":"半吉半凶","meaning":"七杀破禄，福气受损，人生波折较多"},
+      {"ganzhi":"癸卯","name":"死禄","nature":"凶","meaning":"枭神泄禄气，禄气衰败，多操劳，福气受损"}
+    ],
+    "丙": [
+      {"ganzhi":"己巳","name":"九天库禄","nature":"吉","meaning":"火土相生，禄带财库，善于积蓄，福禄厚实"},
+      {"ganzhi":"辛巳","name":"截路空亡","nature":"凶","meaning":"空亡破禄，福禄虚浮，劳而少获"},
+      {"ganzhi":"癸巳","name":"伏贵神禄","nature":"半吉","meaning":"正官带贵气，但官星耗火气，吉凶参半"},
+      {"ganzhi":"乙巳","name":"旺马禄","nature":"吉","meaning":"印星生身，禄带动象，走动发展可得利"},
+      {"ganzhi":"丁巳","name":"库禄","nature":"吉","meaning":"劫财助禄，根基稳固，可以蓄财守财"}
+    ],
+    "丁": [
+      {"ganzhi":"庚午","name":"截路空亡","nature":"凶","meaning":"空亡破禄，付出多，实际收获少"},
+      {"ganzhi":"壬午","name":"德合禄","nature":"吉","meaning":"官星五德相合，易得贵人帮扶，福禄有情"},
+      {"ganzhi":"甲午","name":"进神禄","nature":"吉","meaning":"带进神，利于事业上进、升职"},
+      {"ganzhi":"丙午","name":"喜神禄","nature":"半吉","meaning":"比劫旺，福气足，但有竞争夺财隐患"},
+      {"ganzhi":"戊午","name":"伏羊刃禄","nature":"凶","meaning":"禄带羊刃，易招是非纠纷、破财灾祸"}
+    ],
+    "戊": [
+      {"ganzhi":"己巳","name":"九天库禄","nature":"吉","meaning":"火土气厚，禄库充足，积蓄能力强"},
+      {"ganzhi":"辛巳","name":"截路空亡","nature":"凶","meaning":"空亡，福禄虚浮，事情难落地"},
+      {"ganzhi":"癸巳","name":"贵神禄","nature":"吉","meaning":"财星带贵，可得贵人带来财利"},
+      {"ganzhi":"乙巳","name":"驿马同乡禄","nature":"吉","meaning":"禄与驿马同宫，动中取财，外出得利"},
+      {"ganzhi":"丁巳","name":"旺库禄","nature":"吉","meaning":"印星助身，禄库旺盛，根基雄厚"}
+    ],
+    "己": [
+      {"ganzhi":"庚午","name":"截路空亡","nature":"凶","meaning":"空亡破禄，福禄难成就"},
+      {"ganzhi":"壬午","name":"死鬼禄","nature":"吉","meaning":"官星来合日主，可以获取官贵俸禄"},
+      {"ganzhi":"甲午","name":"进神合禄","nature":"吉","meaning":"进神加相合，利于升职、合作得利"},
+      {"ganzhi":"丙午","name":"喜神禄","nature":"半吉","meaning":"印旺生身，福气充足，但火气过旺思虑重"},
+      {"ganzhi":"戊午","name":"伏羊刃禄","nature":"凶","meaning":"禄带羊刃，容易招惹灾祸是非"}
+    ],
+    "庚": [
+      {"ganzhi":"壬申","name":"大败禄","nature":"凶","meaning":"禄被损耗，多破败损耗，守财艰难"},
+      {"ganzhi":"甲申","name":"截路空亡","nature":"凶","meaning":"空亡破禄，福禄虚空，劳难得回报"},
+      {"ganzhi":"丙申","name":"大败禄","nature":"半吉","meaning":"带耗泄之象，有福气但多损耗，吉凶参半"},
+      {"ganzhi":"戊申","name":"伏马禄","nature":"吉","meaning":"禄带马星，利于外出奔波求财，动而得利"},
+      {"ganzhi":"庚申","name":"长生禄","nature":"吉","meaning":"日主坐禄，根基强旺，自身底气足"}
+    ],
+    "辛": [
+      {"ganzhi":"癸酉","name":"伏神禄","nature":"凶","meaning":"伏神掩禄，福气潜藏难施展，多阻滞"},
+      {"ganzhi":"乙酉","name":"破禄","nature":"凶","meaning":"七杀破禄，禄根受损，易是非破财"},
+      {"ganzhi":"丁酉","name":"空亡贵神禄","nature":"凶","meaning":"虽带贵神，但逢空亡，贵气虚浮无实际得益"},
+      {"ganzhi":"己酉","name":"进神禄","nature":"吉","meaning":"带进神，利于进取升迁，事业向上发展"},
+      {"ganzhi":"辛酉","name":"正禄","nature":"吉","meaning":"日主自坐禄地，禄气纯粹，本分福禄厚实"}
+    ],
+    "壬": [
+      {"ganzhi":"丁亥","name":"贵神合禄","nature":"吉","meaning":"贵星来合禄，得贵人提携，福禄有情"},
+      {"ganzhi":"乙亥","name":"天德禄","nature":"吉","meaning":"带天德贵气，逢凶能化吉，福禄安稳"},
+      {"ganzhi":"己亥","name":"旺禄","nature":"吉","meaning":"禄气旺盛，日主根基强，衣食丰足"},
+      {"ganzhi":"辛亥","name":"同马乡禄","nature":"吉","meaning":"禄与驿马同宫，外出、变动可得利益"},
+      {"ganzhi":"癸亥","name":"大败禄","nature":"凶","meaning":"禄过旺无制，主破败损耗，容易挥霍破财"}
+    ],
+    "癸": [
+      {"ganzhi":"甲子","name":"进神禄","nature":"吉","meaning":"进神助力，利于事业进取、升迁进步"},
+      {"ganzhi":"丙子","name":"羊刃禄","nature":"吉","meaning":"禄带羊刃，魄力强，可凭能力得财禄"},
+      {"ganzhi":"戊子","name":"伏羊刃合贵","nature":"半吉","meaning":"羊刃合贵，可得权贵机遇，但暗藏是非风险"},
+      {"ganzhi":"庚子","name":"卯禄","nature":"吉","meaning":"官星来会禄，可得官贵、事业福禄"},
+      {"ganzhi":"壬子","name":"正羊刃禄","nature":"凶","meaning":"禄羊刃同柱，刃气猖狂，易招灾、是非损耗"}
+    ]
+  },
+  "distinction": {
+    "bazi_lu_shen": "日干定禄，属于日主自身旺根与内源根基",
+    "ziwei_hua_lu": "随天干化气，属于外来机缘；二者不可混用"
+  },
+  "editorial_notes": [
+    "禄不等于绝对吉，必须结合落柱干支的分禄名与全局旺衰判断。",
+    "癸日见庚子条目的“卯禄”按本次校准资料原文保留，待异文校勘后再修订。"
+  ]
+}
