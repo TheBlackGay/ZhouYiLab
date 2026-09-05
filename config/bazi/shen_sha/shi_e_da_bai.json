@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "id": "shi_e_da_bai",
+  "name": "十恶大败",
+  "aliases": ["无禄日"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 24,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/十恶大败.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-468.png",
+    "docs/bazi/img/san_ming_tong_hui/page-469.png",
+    "docs/bazi/img/san_ming_tong_hui/page-470.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "464-466",
+      "pdf_pages": "468-470",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "十恶大败是六甲旬中日干禄位落入旬空的十个日柱：甲辰、乙巳、丙申、丁亥、戊戌、己丑、庚辰、辛巳、壬申、癸亥。以日柱为主，主凶但可受天德、月德及贵气扶助。",
+  "days": ["甲辰", "乙巳", "丙申", "丁亥", "戊戌", "己丑", "庚辰", "辛巳", "壬申", "癸亥"],
+  "variants": ["无禄日", "日犯十恶大败", "十恶大败逢吉神", "十恶大败并天罗地网", "十恶大败并官符大耗"],
+  "scan_scope": ["日柱", "旬空", "禄位", "年柱", "天德", "月德", "贵气", "天罗地网", "官符", "大耗"],
+  "boundaries": "十恶大败以日柱为主，十日列表及各日旬空禄位需依统一旬表校验，本文未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 464-466 对应 PDF 页 468-470，截图已保存到项目本地；PDF 页 471 起为第 25 号干支诸字杂犯神煞。",
+    "图示对个别日柱的旬空禄位说明较简略，正式使用前应回看底图并核对旬表。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
