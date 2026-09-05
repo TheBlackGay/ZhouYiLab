@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "id": "yuan_chen",
+  "name": "元辰",
+  "aliases": ["大耗"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 17,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/元辰.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-448.png",
+    "docs/bazi/img/san_ming_tong_hui/page-449.png",
+    "docs/bazi/img/san_ming_tong_hui/page-450.png",
+    "docs/bazi/img/san_ming_tong_hui/page-451.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "444-447",
+      "pdf_pages": "448-451",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "元辰又名大耗，按年支和性别阴阳取法：阳男阴女取冲前一位，阴男阳女取冲后一位。书中以元辰为凶煞，须结合年柱、其余三柱、旺衰、合冲及岁运判断。",
+  "positions_by_year_branch": {
+    "阳男/阴女": {"子":"未","丑":"申","寅":"酉","卯":"戌","辰":"亥","巳":"子","午":"丑","未":"寅","申":"卯","酉":"辰","戌":"巳","亥":"午"},
+    "阴男/阳女": {"子":"巳","丑":"午","寅":"未","卯":"申","辰":"酉","巳":"戌","午":"亥","未":"子","申":"丑","酉":"寅","戌":"卯","亥":"辰"}
+  },
+  "variants": ["大耗", "互换元辰", "岁运逢元辰", "元辰逢生旺", "元辰逢死绝", "元辰与官符并", "元辰与劫煞并"],
+  "scan_scope": ["年柱", "性别阴阳", "冲前冲后", "日柱", "时柱", "旺衰", "合冲", "官符", "劫煞", "岁运"],
+  "boundaries": "元辰存在男女阴阳、冲前冲后、互换和诸家异说等不同传本口径，本文保存来源规则，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 444-447 对应 PDF 页 448-451，截图已保存到项目本地；PDF 页 452 起为第 18 号暗金的煞。",
+    "诸家论元辰对元辰与大耗、亡劫、羊刃、空亡的关系存在异说，正式使用前应回看底图校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
