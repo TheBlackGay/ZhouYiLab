@@ -11,10 +11,18 @@
     {
       "work": "《图解三命通会（第1部）：八字神煞》",
       "author": "万民英",
-      "printed_pages": "392-395",
-      "pdf_pages": "396-399",
+      "printed_pages": "392-397",
+      "pdf_pages": "396-401",
       "image_directory": "docs/bazi/img/san_ming_tong_hui"
     }
+  ],
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-396.png",
+    "docs/bazi/img/san_ming_tong_hui/page-397.png",
+    "docs/bazi/img/san_ming_tong_hui/page-398.png",
+    "docs/bazi/img/san_ming_tong_hui/page-399.png",
+    "docs/bazi/img/san_ming_tong_hui/page-400.png",
+    "docs/bazi/img/san_ming_tong_hui/page-401.png"
   ],
   "variants": {
     "天上三奇": ["乙", "丙", "丁"],
