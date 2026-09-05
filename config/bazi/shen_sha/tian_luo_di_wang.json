@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "id": "tian_luo_di_wang",
+  "name": "天罗地网",
+  "aliases": ["天罗", "地网", "龙蛇混杂", "猪犬侵凌"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 23,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/天罗地网.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-465.png",
+    "docs/bazi/img/san_ming_tong_hui/page-466.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "461-462",
+      "pdf_pages": "465-466",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "天罗为戌亥，地网为辰巳，源于六阴六阳终极之位。辰巳相见为龙蛇混杂，戌亥相见为猪犬侵凌；古籍称男怕天罗、女怕地网，吉凶还须看纳音五行、诸煞及岁运。",
+  "positions": {"天罗": ["戌", "亥"], "地网": ["辰", "巳"]},
+  "variants": ["龙蛇混杂", "猪犬侵凌", "男怕天罗", "女怕地网", "天月二德解救"],
+  "scan_scope": ["年柱", "日月时支", "性别", "纳音五行", "辰巳", "戌亥", "恶煞", "天月二德", "岁运"],
+  "boundaries": "天罗地网存在年柱主取、纳音五行分命及男女轻重的不同传本口径，本文保存来源规则，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 461-462 对应 PDF 页 465-466，截图已保存到项目本地；PDF 页 467 起为下一神煞。",
+    "天罗地网与龙蛇混杂、猪犬侵凌的组合轻重存在异说，正式使用前应回看底图校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
