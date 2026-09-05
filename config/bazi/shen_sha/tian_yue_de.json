@@ -11,14 +11,18 @@
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-402.png",
     "docs/bazi/img/san_ming_tong_hui/page-403.png",
-    "docs/bazi/img/san_ming_tong_hui/page-404.png"
+    "docs/bazi/img/san_ming_tong_hui/page-404.png",
+    "docs/bazi/img/san_ming_tong_hui/page-405.png",
+    "docs/bazi/img/san_ming_tong_hui/page-406.png",
+    "docs/bazi/img/san_ming_tong_hui/page-407.png",
+    "docs/bazi/img/san_ming_tong_hui/page-408.png"
   ],
   "source_references": [
     {
       "work": "《图解三命通会（第1部）：八字神煞》",
-      "author": "万明英",
-      "printed_pages": "398-400",
-      "pdf_pages": "402-404",
+      "author": "万民英",
+      "printed_pages": "398-404",
+      "pdf_pages": "402-408",
       "image_directory": "docs/bazi/img/san_ming_tong_hui"
     }
   ],
@@ -43,7 +47,7 @@
   },
   "boundaries": "天德、月德的古今口诀并不完全一致；本文只保存来源与候选取法，未确定工程判定口径。",
   "editorial_notes": [
-    "书内页 398-400 对应 PDF 页 402-404，截图已保存到项目本地。",
+    "书内页 398-404 对应 PDF 页 402-408，截图已保存到项目本地。",
     "原图同时展示万明英观点和现行观点，不能在未选定流派前合并为单一规则。",
     "原文中的方位字（乾、坤、艮、巽）与天干对应关系按图录入，正式使用前应回看底图校勘。"
   ]
