@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "id": "zheng_yin",
+  "name": "正印",
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 10,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/正印.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-417.png",
+    "docs/bazi/img/san_ming_tong_hui/page-418.png",
+    "docs/bazi/img/san_ming_tong_hui/page-419.png",
+    "docs/bazi/img/san_ming_tong_hui/page-420.png",
+    "docs/bazi/img/san_ming_tong_hui/page-421.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "413-417",
+      "pdf_pages": "417-421",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "正印为五行正库，古籍以金乙丑、木癸未、火甲戌、水土壬辰或丙辰等为例，主法重视本家正印、库墓、生旺及贵格扶助，并细分多种印格。",
+  "positions_by_element": {
+    "金": "乙丑",
+    "木": "癸未",
+    "火": "甲戌",
+    "水": ["丙辰", "壬辰"],
+    "土": ["壬辰", "丙辰"]
+  },
+  "variants": ["贵人夹印", "华盖印", "文章印", "官印", "福聚印", "禄聚印", "破福成祸印", "带煞印", "临空印", "自刑印"],
+  "boundaries": "本章正印为五行正库概念，与十神中的正印并非完全同一规则；本文只保存古籍来源，未确定工程判定口径。",
+  "editorial_notes": [
+    "书内页 413-417 对应 PDF 页 417-421，截图已保存到项目本地。",
+    "正印的纳音与五行正库例证应结合底图校勘，部分版本有异文。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
