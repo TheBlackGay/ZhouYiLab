@@ -10,14 +10,15 @@
   "source_document": "docs/bazi/天罗地网.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-465.png",
-    "docs/bazi/img/san_ming_tong_hui/page-466.png"
+    "docs/bazi/img/san_ming_tong_hui/page-466.png",
+    "docs/bazi/img/san_ming_tong_hui/page-467.png"
   ],
   "source_references": [
     {
       "work": "《图解三命通会（第1部）：八字神煞》",
       "author": "万民英",
-      "printed_pages": "461-462",
-      "pdf_pages": "465-466",
+      "printed_pages": "461-463",
+      "pdf_pages": "465-467",
       "image_directory": "docs/bazi/img/san_ming_tong_hui"
     }
   ],
@@ -27,7 +28,7 @@
   "scan_scope": ["年柱", "日月时支", "性别", "纳音五行", "辰巳", "戌亥", "恶煞", "天月二德", "岁运"],
   "boundaries": "天罗地网存在年柱主取、纳音五行分命及男女轻重的不同传本口径，本文保存来源规则，未确定工程判定优先级。",
   "editorial_notes": [
-    "书内页 461-462 对应 PDF 页 465-466，截图已保存到项目本地；PDF 页 467 起为下一神煞。",
+    "书内页 461-463 对应 PDF 页 465-467，截图已保存到项目本地；PDF 页 468 起为下一神煞。",
     "天罗地网与龙蛇混杂、猪犬侵凌的组合轻重存在异说，正式使用前应回看底图校勘。",
     "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
   ]
