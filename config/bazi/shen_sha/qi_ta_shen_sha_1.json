@@ -11,9 +11,10 @@
   "source_document": "docs/bazi/其他神煞（一）.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-475.png",
-    "docs/bazi/img/san_ming_tong_hui/page-476.png"
+    "docs/bazi/img/san_ming_tong_hui/page-476.png",
+    "docs/bazi/img/san_ming_tong_hui/page-477.png"
   ],
-  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"471-472","pdf_pages":"475-476","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"471-473","pdf_pages":"475-477","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
   "summary": "第27号为书中其他神煞（一）分组，收录自缢煞、水溺煞、挂剑煞、天火煞、天屠煞、天刑煞、雷霆煞、吞陷煞。各煞取法不同，均需结合原局和岁运校勘。",
   "members": {
     "自缢煞": {"rule": "五行反系，兼相克、墓、天冲、官符、大耗"},
@@ -28,7 +29,7 @@
   "scan_scope": ["年柱", "日柱", "时柱", "月令", "纳音", "五行", "相克", "官符", "元辰", "白虎", "金神", "羊刃", "天德", "岁运"],
   "boundaries": "该条为分组资料，八类煞的字形、日时和方位规则不能互相替代，本文未确定工程判定优先级。",
   "editorial_notes": [
-    "书内页 471-472 对应 PDF 页 475-476，截图已保存到项目本地；后续 PDF 页将继续按书中分组维护。",
+    "书内页 471-473 对应 PDF 页 475-477，截图已保存到项目本地；PDF 页 478 起进入下一分组。",
     "雷霆煞、天屠煞及吞陷煞的口诀存在低清字形和传本差异，正式使用前应回看底图。",
     "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
   ]
