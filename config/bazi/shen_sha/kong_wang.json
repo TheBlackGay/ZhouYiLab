@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "id": "kong_wang",
+  "name": "空亡",
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 16,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/空亡.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-439.png",
+    "docs/bazi/img/san_ming_tong_hui/page-440.png",
+    "docs/bazi/img/san_ming_tong_hui/page-441.png",
+    "docs/bazi/img/san_ming_tong_hui/page-442.png",
+    "docs/bazi/img/san_ming_tong_hui/page-443.png",
+    "docs/bazi/img/san_ming_tong_hui/page-444.png",
+    "docs/bazi/img/san_ming_tong_hui/page-445.png",
+    "docs/bazi/img/san_ming_tong_hui/page-446.png",
+    "docs/bazi/img/san_ming_tong_hui/page-447.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "435-443",
+      "pdf_pages": "439-447",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "空亡为每旬十天干轮完后所余的两个地支：甲子旬戌亥、甲戌旬申酉、甲申旬午未、甲午旬辰巳、甲辰旬寅卯、甲寅旬子丑。吉凶须结合旺衰、合冲刑害、日柱互换、五行及岁运判断。",
+  "positions_by_ji": {
+    "甲子旬": ["戌", "亥"],
+    "甲戌旬": ["申", "酉"],
+    "甲申旬": ["午", "未"],
+    "甲午旬": ["辰", "巳"],
+    "甲辰旬": ["寅", "卯"],
+    "甲寅旬": ["子", "丑"]
+  },
+  "variants": ["真空亡", "截路空亡", "四大空亡", "互换空亡", "上五年", "下五年"],
+  "scan_scope": ["旬空", "旺衰", "合冲刑害", "年柱", "日柱", "时柱", "纳音", "岁运", "贵人及诸神煞"],
+  "boundaries": "空亡存在按阴阳分支、前后五年及四大空亡纳音条件的不同传本口径，本文保存来源信息，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 435-443 对应 PDF 页 439-447，截图已保存到项目本地；PDF 页 448 起为下一神煞元辰。",
+    "截路空亡的日干时支对应、四大空亡的纳音条件及真空亡定义，正式使用前应回看底图校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
