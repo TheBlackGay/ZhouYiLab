@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "id": "qi_ta_shen_sha_4",
+  "name": "其他神煞（四）",
+  "aliases": ["返本煞", "阴阳煞", "淫欲妨害煞", "孤鸾寡鹄煞", "阴差阳错煞", "桃花煞", "短寿煞", "桃花红艳煞"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 26,
+  "catalog_subnumber": 4,
+  "catalog_kind": "grouped_shen_sha",
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/其他神煞（四）.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-483.png",
+    "docs/bazi/img/san_ming_tong_hui/page-484.png",
+    "docs/bazi/img/san_ming_tong_hui/page-485.png"
+  ],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"479-481","pdf_pages":"483-485","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "summary": "第26章子条目“其他神煞（四）”，收录返本、阴阳、淫欲妨害、孤鸾寡鹄、阴差阳错、桃花、短寿及桃花红艳等煞，并保存章末“吉凶神煞，要在通变”总论。",
+  "members": ["返本煞", "阴阳煞", "淫欲妨害煞", "孤鸾寡鹄煞", "阴差阳错煞", "桃花煞", "短寿煞", "桃花红艳煞"],
+  "scan_scope": ["年柱", "月柱", "日柱", "时柱", "纳音", "八专", "九丑", "元辰", "咸池", "太岁", "岁运", "旺衰", "刑冲合破"],
+  "boundaries": "本条为分组资料，成员条目的日柱、纳音和吉凶条件不能互相替代；章末总论只作解释边界，不构成单一算法。",
+  "editorial_notes": [
+    "书内页 479-481 对应 PDF 页 483-485，截图已保存到项目本地。",
+    "PDF 485 为本章章末总论和编者评论，已随本组保存以保持古籍上下文。",
+    "八专、九丑和红艳煞清单存在低清字形及传本差异，正式使用前应回看底图。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
