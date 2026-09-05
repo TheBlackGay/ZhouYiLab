@@ -16,6 +16,14 @@
       "image_directory": "docs/bazi/img/san_ming_tong_hui"
     }
   ],
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-390.png",
+    "docs/bazi/img/san_ming_tong_hui/page-391.png",
+    "docs/bazi/img/san_ming_tong_hui/page-392.png",
+    "docs/bazi/img/san_ming_tong_hui/page-393.png",
+    "docs/bazi/img/san_ming_tong_hui/page-394.png",
+    "docs/bazi/img/san_ming_tong_hui/page-395.png"
+  ],
   "calculation": {
     "illustrated_rule": "以日干起贵人，地支见者即是",
     "common_method": {
