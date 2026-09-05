@@ -8,6 +8,18 @@
   "calibration_status": "draft",
   "source_document": "docs/bazi/驿马.md",
   "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-372.png",
+    "docs/bazi/img/san_ming_tong_hui/page-373.png",
+    "docs/bazi/img/san_ming_tong_hui/page-374.png",
+    "docs/bazi/img/san_ming_tong_hui/page-375.png",
+    "docs/bazi/img/san_ming_tong_hui/page-376.png",
+    "docs/bazi/img/san_ming_tong_hui/page-377.png",
+    "docs/bazi/img/san_ming_tong_hui/page-378.png",
+    "docs/bazi/img/san_ming_tong_hui/page-379.png",
+    "docs/bazi/img/san_ming_tong_hui/page-380.png",
+    "docs/bazi/img/san_ming_tong_hui/page-381.png",
+    "docs/bazi/img/san_ming_tong_hui/page-382.png",
+    "docs/bazi/img/san_ming_tong_hui/page-383.png",
     "docs/bazi/img/驿马-古籍摘录_part1.png",
     "docs/bazi/img/驿马-古籍摘录_part2.png",
     "docs/bazi/img/驿马-古籍摘录_part3.png",
@@ -17,8 +29,8 @@
     {
       "work": "《图解三命通会（第1部）：八字神煞》",
       "author": "万民英",
-      "printed_pages": "370-380",
-      "pdf_pages": "374-384",
+      "printed_pages": "368-379",
+      "pdf_pages": "372-383",
       "image_directory": "docs/bazi/img/san_ming_tong_hui"
     }
   ],
