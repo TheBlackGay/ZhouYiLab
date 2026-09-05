@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "id": "zi_wu_mao_you_si_gong_hu_huan_shen_sha",
+  "name": "子午卯酉四宫互换神煞",
+  "aliases": ["四正", "四桃花", "咸池", "桃花"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 28,
+  "catalog_kind": "chapter_group",
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/子午卯酉四宫互换神煞.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-494.png",
+    "docs/bazi/img/san_ming_tong_hui/page-495.png",
+    "docs/bazi/img/san_ming_tong_hui/page-496.png",
+    "docs/bazi/img/san_ming_tong_hui/page-497.png",
+    "docs/bazi/img/san_ming_tong_hui/page-498.png"
+  ],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"490-494","pdf_pages":"494-498","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "summary": "第28章论子午卯酉四正、四桃花和咸池，以及贵人、进神、羊刃、白虎、悬针、阴错阳差等神煞的互换、叠见与吉凶断语。",
+  "members": ["咸池", "桃花", "贵人", "进神", "羊刃", "白虎", "悬针", "阴错阳差", "华盖"],
+  "scan_scope": ["子", "午", "卯", "酉", "四正", "四桃花", "咸池", "沐浴", "贵人", "进神", "羊刃", "白虎", "悬针", "阴错阳差", "华盖", "刑冲合害", "旺衰"],
+  "boundaries": "本条是章节级格局资料，不是可独立计算的单一神煞；咸池、桃花和互换断语需结合完整命局校勘。",
+  "editorial_notes": [
+    "书内页 490-494 对应 PDF 页 494-498，五页截图已保存到项目本地。",
+    "古诗和日时例证存在低清字形及传本差异，正式使用前应逐字复核。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
