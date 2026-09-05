@@ -11,12 +11,15 @@
     {
       "work": "《图解三命通会（第1部）：八字神煞》",
       "author": "万民英",
-      "printed_pages": "386-391",
-      "pdf_pages": "390-395",
+      "printed_pages": "383-391",
+      "pdf_pages": "387-395",
       "image_directory": "docs/bazi/img/san_ming_tong_hui"
     }
   ],
   "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-387.png",
+    "docs/bazi/img/san_ming_tong_hui/page-388.png",
+    "docs/bazi/img/san_ming_tong_hui/page-389.png",
     "docs/bazi/img/san_ming_tong_hui/page-390.png",
     "docs/bazi/img/san_ming_tong_hui/page-391.png",
     "docs/bazi/img/san_ming_tong_hui/page-392.png",
