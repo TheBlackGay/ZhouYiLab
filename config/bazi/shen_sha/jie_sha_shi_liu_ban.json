@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "id": "jie_sha_shi_liu_ban",
+  "name": "劫煞十六般",
+  "aliases": ["劫煞十六般格局"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 13,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/劫煞十六般.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-427.png",
+    "docs/bazi/img/san_ming_tong_hui/page-428.png",
+    "docs/bazi/img/san_ming_tong_hui/page-429.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "423-425",
+      "pdf_pages": "427-429",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "劫煞十六般按劫煞与四柱干支、纳音、贵煞、刑冲和生旺死绝的关系细分十六类，前八多主吉，后八多主凶。",
+  "variants": ["聚宝", "宜权", "嘉谋", "奏号", "星瑞", "为禄", "生上", "类争", "造意", "非良", "毁焚", "酬欲", "轻盈", "党众", "暴厉", "空闲"],
+  "scan_scope": ["年柱", "日柱", "时柱", "劫煞", "纳音", "贵煞", "刑冲合化"],
+  "boundaries": "十六般属于组合格局，名称和别名存在版本异文，本文只保存古籍来源，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 423-425 对应 PDF 页 427-429，截图已保存到项目本地。",
+    "图表别名部分字形紧密，正式使用前应逐项回看底图。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
