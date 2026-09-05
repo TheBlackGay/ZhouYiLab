@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "id": "liu_e",
+  "name": "六厄",
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 20,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/六厄.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-457.png",
+    "docs/bazi/img/san_ming_tong_hui/page-458.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "453-454",
+      "pdf_pages": "457-458",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "六厄为三合局五行死地之煞：申子辰见卯、寅午戌见酉、亥卯未见午、巳酉丑见子。古籍称其为剥官之煞，主困顿、仕途受阻，得救护扶持、生旺贵气可缓。",
+  "positions_by_triple_harmony": {
+    "申子辰": {"element": "水", "death_branch": "卯", "liu_e": "卯"},
+    "寅午戌": {"element": "火", "death_branch": "酉", "liu_e": "酉"},
+    "亥卯未": {"element": "木", "death_branch": "午", "liu_e": "午"},
+    "巳酉丑": {"element": "金", "death_branch": "子", "liu_e": "子"}
+  },
+  "variants": ["剥官之煞", "马前一辰", "劫煞后一辰", "六厄见劫煞", "六厄见贵气"],
+  "scan_scope": ["年支", "三合局", "五行死地", "日月时支", "驿马", "劫煞", "生旺", "贵气", "救护扶持"],
+  "boundaries": "六厄的主要定位取年支三合局五行死地，吉凶受生旺、贵气和凶神组合影响，本文未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 453-454 对应 PDF 页 457-458，截图已保存到项目本地；PDF 页 459 起为第 21 号勾绞煞。",
+    "“马前一辰、劫煞后一辰”与三合局五行死地在不同传本中可能有表述差异，正式使用前应回看底图校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
