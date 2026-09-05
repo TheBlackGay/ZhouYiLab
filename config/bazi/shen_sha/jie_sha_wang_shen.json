@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "id": "jie_sha_wang_shen",
+  "name": "劫煞、亡神",
+  "aliases": ["劫煞", "亡神"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 12,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/劫煞亡神.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-424.png",
+    "docs/bazi/img/san_ming_tong_hui/page-425.png",
+    "docs/bazi/img/san_ming_tong_hui/page-426.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "420-422",
+      "pdf_pages": "424-426",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "劫煞取三合局五行绝处，亡神取五行临官处；古籍认为二者虽属凶煞，遇生旺、官贵、禄马等组合亦可主权力与名望，具体须结合全局。",
+  "positions": {
+    "申子辰": {"劫煞": "巳", "亡神": "亥"},
+    "寅午戌": {"劫煞": "亥", "亡神": "巳"},
+    "巳酉丑": {"劫煞": "寅", "亡神": "申"},
+    "亥卯未": {"劫煞": "申", "亡神": "寅"}
+  },
+  "variants": ["亡神富藏", "亡神长生", "亡神临官", "亡神塞舆", "亡神自如", "亡神生本", "亡神义门", "亡神锦里", "亡神未降", "亡神妄作", "亡神啰宅", "亡神舞群", "亡神薄恶", "亡神迷溺", "亡神乖张"],
+  "scan_scope": ["年支或日支三合局", "四柱地支", "年柱纳音", "日时干支"],
+  "boundaries": "劫煞、亡神及其诸格局受流派、纳音和组合条件影响，本文只保存古籍来源，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 420-422 对应 PDF 页 424-426，截图已保存到项目本地。",
+    "亡神诸格局别名部分字形模糊，正式使用前应回看底图校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
