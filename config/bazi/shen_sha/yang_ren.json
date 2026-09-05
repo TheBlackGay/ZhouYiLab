@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "id": "yang_ren",
+  "name": "羊刃",
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 15,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/羊刃.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-434.png",
+    "docs/bazi/img/san_ming_tong_hui/page-435.png",
+    "docs/bazi/img/san_ming_tong_hui/page-436.png",
+    "docs/bazi/img/san_ming_tong_hui/page-437.png",
+    "docs/bazi/img/san_ming_tong_hui/page-438.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "430-434",
+      "pdf_pages": "434-438",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "羊刃为日干禄前一辰的极盛之气，甲卯、乙辰、丙午、丁未、戊午、己未、庚酉、辛戌、壬子、癸丑。与禄、官印、贵人相扶可吉，单独或逢刑冲凶煞则主灾伤。",
+  "positions_by_day_stem": {
+    "甲": "卯", "乙": "辰", "丙": "午", "丁": "未", "戊": "午",
+    "己": "未", "庚": "酉", "辛": "戌", "壬": "子", "癸": "丑"
+  },
+  "variants": ["刃头财", "刃头鬼", "羊刃相蚀", "朝元羊刃", "连珠刃", "揽辔澄清格", "行运见羊刃"],
+  "scan_scope": ["日干", "四柱地支", "禄位", "官印", "贵人", "刑冲合化", "纳音"],
+  "boundaries": "羊刃的古籍取法与十神、禄位和贵人组合存在不同层次，本文只保存来源规则，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 430-434 对应 PDF 页 434-438，截图已保存到项目本地。",
+    "羊刃格局别名和真偏刃口径存在版本异文，正式使用前应回看底图。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
