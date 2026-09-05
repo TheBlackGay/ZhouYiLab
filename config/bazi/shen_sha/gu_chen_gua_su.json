@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "id": "gu_chen_gua_su",
+  "name": "孤辰寡宿及隔角煞",
+  "aliases": ["孤辰", "寡宿", "隔角"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 22,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/孤辰寡宿及隔角煞.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-461.png",
+    "docs/bazi/img/san_ming_tong_hui/page-462.png",
+    "docs/bazi/img/san_ming_tong_hui/page-463.png",
+    "docs/bazi/img/san_ming_tong_hui/page-464.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "457-460",
+      "pdf_pages": "461-464",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "孤辰寡宿按年支所属三会局取母绝和夫妻墓：亥子丑见寅为孤、戌为寡；寅卯辰见巳为孤、丑为寡；巳午未见申为孤、辰为寡；申酉戌见亥为孤、未为寡。隔角与之同类，主孤独、骨肉分离和婚姻不顺。",
+  "positions_by_year_group": {
+    "亥子丑": {"gu_chen": "寅", "gua_su": "戌"},
+    "寅卯辰": {"gu_chen": "巳", "gua_su": "丑"},
+    "巳午未": {"gu_chen": "申", "gua_su": "辰"},
+    "申酉戌": {"gu_chen": "亥", "gua_su": "未"}
+  },
+  "variants": ["孤辰", "寡宿", "隔角", "母绝孤辰", "夫墓寡宿", "妻墓寡宿", "孤寡并临"],
+  "scan_scope": ["年支", "三会局", "性别阴阳", "阳年阴年", "日月时支", "四季", "五行生克", "驿马", "空亡", "丧吊", "贵人", "岁运"],
+  "boundaries": "孤辰寡宿及隔角煞存在顺进逆退、男女阴阳、诸家异说和合会救应等不同口径，本文保存来源规则，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 457-460 对应 PDF 页 461-464，截图已保存到项目本地；PDF 页 465 起为第 23 号天罗地网。",
+    "原文个别三会局与隔角例证存在版本异文，正式使用前应回看底图校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
