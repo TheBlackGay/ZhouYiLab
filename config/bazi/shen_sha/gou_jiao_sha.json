@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "id": "gou_jiao_sha",
+  "name": "勾绞煞",
+  "aliases": ["勾绞", "爪牙煞"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 21,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/勾绞煞.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-459.png",
+    "docs/bazi/img/san_ming_tong_hui/page-460.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "455-456",
+      "pdf_pages": "459-460",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "勾绞煞由年支取命前三辰、后三辰，阳男阴女前三为勾后三为绞，阴男阳女反之。二煞相对冲，主牵连羁绊、口舌刑狱和灾伤，身克煞或有福神扶助时轻重不同。",
+  "positions_by_year_branch": {
+    "阳男/阴女": {
+      "子": {"gou": "卯", "jiao": "酉"}, "丑": {"gou": "辰", "jiao": "戌"}, "寅": {"gou": "巳", "jiao": "亥"}, "卯": {"gou": "午", "jiao": "子"}, "辰": {"gou": "未", "jiao": "丑"}, "巳": {"gou": "申", "jiao": "寅"}, "午": {"gou": "酉", "jiao": "卯"}, "未": {"gou": "戌", "jiao": "辰"}, "申": {"gou": "亥", "jiao": "巳"}, "酉": {"gou": "子", "jiao": "午"}, "戌": {"gou": "丑", "jiao": "未"}, "亥": {"gou": "寅", "jiao": "申"}
+    },
+    "阴男/阳女": {
+      "子": {"gou": "酉", "jiao": "卯"}, "丑": {"gou": "戌", "jiao": "辰"}, "寅": {"gou": "亥", "jiao": "巳"}, "卯": {"gou": "子", "jiao": "午"}, "辰": {"gou": "丑", "jiao": "未"}, "巳": {"gou": "寅", "jiao": "申"}, "午": {"gou": "卯", "jiao": "酉"}, "未": {"gou": "辰", "jiao": "戌"}, "申": {"gou": "巳", "jiao": "亥"}, "酉": {"gou": "午", "jiao": "子"}, "戌": {"gou": "未", "jiao": "丑"}, "亥": {"gou": "申", "jiao": "寅"}
+    }
+  },
+  "variants": ["勾", "绞", "爪牙煞", "勾绞并临", "自身克勾绞", "勾绞克身"],
+  "scan_scope": ["年支", "性别阴阳", "命前三辰", "命后三辰", "日柱", "岁运", "身煞生克", "金神", "白虎", "羊刃", "福神", "鬼煞"],
+  "boundaries": "勾绞煞的定位取年支前三辰和后三辰，凶吉受性别阴阳、身煞生克及诸煞组合影响，本文未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 455-456 对应 PDF 页 459-460，截图已保存到项目本地；PDF 页 461 起为下一神煞。",
+    "勾绞与爪牙煞、亡劫同类的关系及“有鬼则重”的鬼煞范围存在传本差异，正式使用前应回看底图校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
