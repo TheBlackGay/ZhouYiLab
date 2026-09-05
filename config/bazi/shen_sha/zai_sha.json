@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "id": "zai_sha",
+  "name": "灾煞",
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 19,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/灾煞.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-455.png",
+    "docs/bazi/img/san_ming_tong_hui/page-456.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "451-452",
+      "pdf_pages": "455-456",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "灾煞为三合局将星受冲之煞：申子辰见午、寅午戌见子、巳酉丑见卯、亥卯未见酉。主血光、横死、焚溺、杖刃、坠落等凶象，得官星印绶及福神扶助时凶性可缓，亦可能主武权。",
+  "positions_by_triple_harmony": {
+    "申子辰": {"general_star": "子", "zai_sha": "午"},
+    "寅午戌": {"general_star": "午", "zai_sha": "子"},
+    "巳酉丑": {"general_star": "酉", "zai_sha": "卯"},
+    "亥卯未": {"general_star": "卯", "zai_sha": "酉"}
+  },
+  "variants": ["将星受冲", "灾煞见劫煞", "灾煞见官星印绶", "水火灾象", "金木杖刃", "土坠落"],
+  "scan_scope": ["年支", "三合局", "将星", "冲", "日月时支", "五行", "官星", "印绶", "劫煞", "福神"],
+  "boundaries": "灾煞的主要定位取年支三合局将星之冲，具体吉凶仍受五行旺衰和福煞组合影响，本文未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 451-452 对应 PDF 页 455-456，截图已保存到项目本地；PDF 页 457 起为第 20 号六厄。",
+    "《神白经》引文及部分灾象字句以底图为准，正式使用前应继续校勘。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
