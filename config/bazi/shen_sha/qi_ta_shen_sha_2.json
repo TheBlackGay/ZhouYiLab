@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "id": "qi_ta_shen_sha_2",
+  "name": "其他神煞（二）",
+  "aliases": ["官符煞", "病符煞", "死符煞", "丧吊煞", "宅墓煞", "日刑煞", "流血煞", "剑锋煞", "戟锋煞", "浮沉煞", "破煞", "返本煞", "阴阳煞", "淫欲妨害煞"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 28,
+  "catalog_kind": "grouped_shen_sha",
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/其他神煞（二）.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-478.png",
+    "docs/bazi/img/san_ming_tong_hui/page-479.png",
+    "docs/bazi/img/san_ming_tong_hui/page-480.png"
+  ],
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"474-476","pdf_pages":"478-480","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "summary": "第28号为其他神煞（二）分组，收录官符、病符、死符、丧吊、宅墓、日刑、流血、剑锋、戟锋、浮沉、破、返本、阴阳及淫欲妨害等煞。",
+  "members": ["官符煞", "病符煞", "死符煞", "丧吊煞", "宅墓煞", "日刑煞", "流血煞", "剑锋煞", "戟锋煞", "浮沉煞", "破煞", "返本煞", "阴阳煞", "淫欲妨害煞"],
+  "scan_scope": ["太岁", "年柱", "月柱", "日柱", "时柱", "宫位", "顺逆数", "地支相破", "五行生克", "官符", "羊刃", "元辰", "咸池", "岁运"],
+  "boundaries": "本条为分组资料，各煞的日时、宫位和顺逆规则不能互相替代，本文未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 474-476 对应 PDF 页 478-480，截图已保存到项目本地；PDF 页 481 起为其他神煞（三）。",
+    "部分口诀和宫位取法存在低清字形、传本及编者解释差异，正式使用前应回看底图。",
+    "古籍吉凶断语仅作知识资料保存，不等同于现代命理结论。"
+  ]
+}
