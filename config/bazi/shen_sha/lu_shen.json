@@ -3,16 +3,28 @@
   "id": "lu_shen",
   "name": "禄神",
   "system": "子平八字",
-  "source": "《渊海子平》",
+  "source": "《渊海子平》；《图解三命通会（第1部）：八字神煞》",
   "catalog_number": 1,
   "source_references": [
     {
       "work": "《图解三命通会（第1部）：八字神煞》",
       "author": "万民英",
-      "printed_pages": "356-360",
-      "pdf_pages": "360-364",
+      "printed_pages": "356-365",
+      "pdf_pages": "360-369",
       "image_directory": "docs/bazi/img/san_ming_tong_hui"
     }
+  ],
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-360.png",
+    "docs/bazi/img/san_ming_tong_hui/page-361.png",
+    "docs/bazi/img/san_ming_tong_hui/page-362.png",
+    "docs/bazi/img/san_ming_tong_hui/page-363.png",
+    "docs/bazi/img/san_ming_tong_hui/page-364.png",
+    "docs/bazi/img/san_ming_tong_hui/page-365.png",
+    "docs/bazi/img/san_ming_tong_hui/page-366.png",
+    "docs/bazi/img/san_ming_tong_hui/page-367.png",
+    "docs/bazi/img/san_ming_tong_hui/page-368.png",
+    "docs/bazi/img/san_ming_tong_hui/page-369.png"
   ],
   "calibration_status": "calibrated",
   "original_text": "禄，爵禄也，当得势而享，乃谓之禄。自始分十干、十二支时，便以甲乙配同寅卯，居东；丙丁配同巳午，居南；庚辛配同申酉，居西；壬癸配同亥子，居北。十干就支神为禄，谓禄随旺行，所以甲禄寅，乙禄卯，庚禄申，辛禄酉，壬禄亥，癸禄子，丙禄巳，丁禄午，戊寄巳，己寄午，谓巳午乃火旺之乡，子随母得禄之义。内有辰戌丑未，辰戌为魁罡，名曰边鄙恶地，禄元不寄；丑未乃天乙贵人出入之门，禄元避之，所以四宫无禄。",
