@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "id": "tai_ji_gui",
+  "name": "太极贵",
+  "aliases": ["太极贵人"],
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "catalog_number": 8,
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/太极贵.md",
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-409.png",
+    "docs/bazi/img/san_ming_tong_hui/page-410.png",
+    "docs/bazi/img/san_ming_tong_hui/page-411.png"
+  ],
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "405-407",
+      "pdf_pages": "409-411",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "summary": "太极贵人以五行始终、归藏之理取贵，主法为以日干起贵人，甲乙见子午、丙丁见卯酉、戊己见四季库、庚辛见寅亥、壬癸见申巳。与禄位等组合又分文昌、文誉、文星、天印等格局。",
+  "positions_by_day_stem": {
+    "甲": ["子", "午"],
+    "乙": ["子", "午"],
+    "丙": ["卯", "酉"],
+    "丁": ["卯", "酉"],
+    "戊": ["辰", "戌", "丑", "未"],
+    "己": ["辰", "戌", "丑", "未"],
+    "庚": ["寅", "亥"],
+    "辛": ["寅", "亥"],
+    "壬": ["申", "巳"],
+    "癸": ["申", "巳"]
+  },
+  "variants": ["文昌贵人", "文誉贵人", "文星贵人", "天印贵人"],
+  "boundaries": "太极贵主法与文昌、文星、天印等组合的取干口径并不完全相同，本文只保存来源规则，未确定工程判定优先级。",
+  "editorial_notes": [
+    "书内页 405-407 对应 PDF 页 409-411，截图已保存到项目本地。",
+    "四类相关贵人的原图口诀部分字形紧密，文档保留了表格化候选转录，正式使用前应回看底图。",
+    "原文吉凶属于古籍断语，不等同于现代命理或程序判定结论。"
+  ]
+}
