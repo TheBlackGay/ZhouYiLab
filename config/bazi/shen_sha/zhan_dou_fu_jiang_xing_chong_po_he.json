@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "id": "zhan_dou_fu_jiang_xing_chong_po_he",
+  "name": "战斗伏降刑冲破合",
+  "catalog_number": 30,
+  "catalog_kind": "chapter_group",
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "calibration_status": "draft",
+  "source_document": "docs/bazi/战斗伏降刑冲破合.md",
+  "source_references": [{"work":"《图解三命通会（第1部）：八字神煞》","author":"万民英","printed_pages":"498-503","pdf_pages":"502-507","image_directory":"docs/bazi/img/san_ming_tong_hui"}],
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-502.png",
+    "docs/bazi/img/san_ming_tong_hui/page-503.png",
+    "docs/bazi/img/san_ming_tong_hui/page-504.png",
+    "docs/bazi/img/san_ming_tong_hui/page-505.png",
+    "docs/bazi/img/san_ming_tong_hui/page-506.png",
+    "docs/bazi/img/san_ming_tong_hui/page-507.png"
+  ],
+  "summary": "第30章战斗伏降刑冲破合，保存原书关于干支关系与刑冲破合的章节资料。",
+  "boundaries": "本条为章节级古籍资料，原文断语及组合规则需结合页面逐字校勘后再实现。",
+  "editorial_notes": ["书内页498-503对应PDF页502-507，六页截图已保存到项目本地。"]
+}
