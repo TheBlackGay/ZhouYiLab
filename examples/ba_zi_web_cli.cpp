@@ -166,6 +166,90 @@ int main() {
         constexpr std::array<std::string_view, 4> pillar_keys{"year", "month", "day", "hour"};
         for (std::size_t i = 0; i < pillar_keys.size(); ++i) {
             output["pillars"][pillar_keys[i]]["shen_sha"] = shen_sha.pillars[i].names;
+            output["pillars"][pillar_keys[i]]["shen_sha_details"] = json::array();
+        }
+        for (const auto& occurrence : shen_sha.lu_shen) {
+            output["pillars"][pillar_keys[occurrence.pillar_index]]["shen_sha_details"].push_back({
+                {"id", "lu_shen"},
+                {"name", "禄神"},
+                {"position", occurrence.position},
+                {"ganzhi", occurrence.ganzhi},
+                {"variant", occurrence.variant},
+                {"nature", occurrence.nature}
+            });
+        }
+        for (const auto& occurrence : shen_sha.jin_yu) {
+            output["pillars"][pillar_keys[occurrence.pillar_index]]["shen_sha_details"].push_back({
+                {"id", "jin_yu"},
+                {"name", "金舆"},
+                {"position", occurrence.position},
+                {"priority", occurrence.pillar_index >= 2 ? "优先" : "次之"}
+            });
+        }
+        // Every calculated name gets a stable resource id so the web layer can
+        // open the matching knowledge-base entry, even when it has no bespoke
+        // occurrence payload yet.
+        const std::unordered_map<std::string, std::string> shen_sha_resource_ids{
+            {"暗金的煞", "an_jin_de_sha"}, {"德秀贵人", "de_xiu_gui_ren"},
+            {"勾绞煞", "gou_jiao_sha"}, {"空亡", "kong_wang"}, {"六厄", "liu_e"},
+            {"灾煞", "zai_sha"}, {"太极贵人", "tai_ji_gui"}, {"天德贵人", "tian_yue_de"},
+            {"月德合", "tian_yue_de"}, {"羊刃", "yang_ren"}, {"元辰", "yuan_chen"},
+            {"孤辰", "gu_chen_gua_su"}, {"寡宿", "gu_chen_gua_su"}, {"隔角煞", "gu_chen_gua_su"},
+            {"十恶大败", "shi_e_da_bai"}, {"劫煞", "jie_sha_wang_shen"},
+            {"亡神", "jie_sha_wang_shen"}, {"驿马", "yi_ma"}, {"正印", "zheng_yin"},
+            {"天乙贵人", "tian_yi_gui_ren"}, {"三奇贵人", "san_qi_gui_ren"},
+            {"学堂词馆", "xue_tang_ci_guan"}, {"战斗伏降刑冲破合", "zhan_dou_fu_jiang_xing_chong_po_he"},
+            {"国印贵人", "qi_ta_shen_sha_1"}, {"福星贵人", "qi_ta_shen_sha_1"},
+            {"飞刃", "qi_ta_shen_sha_3"}, {"丧门", "qi_ta_shen_sha_2"}, {"将星", "qi_ta_shen_sha_1"},
+            {"红艳煞", "qi_ta_shen_sha_3"}, {"文昌贵人", "tai_ji_gui"},
+            {"天厨贵人", "qi_ta_shen_sha_1"}, {"流霞", "qi_ta_shen_sha_3"},
+            {"天罗", "tian_luo_di_wang"}, {"地网", "tian_luo_di_wang"},
+            {"劫煞十六般", "jie_sha_shi_liu_ban"}, {"亡神十六般", "wang_shen_shi_liu_ban"},
+            {"华盖", "yin_shen_si_hai_si_gong_hu_huan_shen_sha"}, {"阴差阳错煞", "qi_ta_shen_sha_4"},
+            {"淫欲妨害煞", "qi_ta_shen_sha_4"}, {"桃花煞", "qi_ta_shen_sha_3"},
+            {"官符煞", "qi_ta_shen_sha_2"}, {"病符煞", "qi_ta_shen_sha_2"},
+            {"死符煞", "qi_ta_shen_sha_2"}, {"吊客", "qi_ta_shen_sha_2"},
+            {"丧吊煞", "qi_ta_shen_sha_2"}, {"宅墓煞", "qi_ta_shen_sha_2"}, {"桃花红艳煞", "qi_ta_shen_sha_3"},
+            {"阴阳煞", "qi_ta_shen_sha_4"}, {"孤鸾寡鹄煞", "qi_ta_shen_sha_4"},
+            {"天火煞", "qi_ta_shen_sha_1"}, {"自缢煞", "qi_ta_shen_sha_1"},
+            {"水溺煞", "qi_ta_shen_sha_1"}, {"挂剑煞", "qi_ta_shen_sha_1"},
+            {"天屠煞", "qi_ta_shen_sha_1"}, {"天刑煞", "qi_ta_shen_sha_1"}, {"雷霆煞", "qi_ta_shen_sha_1"}, {"吞陷煞", "qi_ta_shen_sha_1"},
+            {"破煞", "qi_ta_shen_sha_3"}
+            , {"学堂", "xue_tang_ci_guan"}, {"词馆", "xue_tang_ci_guan"}, {"桃花", "qi_ta_shen_sha_3"},
+            {"咸池", "qi_ta_shen_sha_3"}, {"月德贵人", "tian_yue_de"}, {"德秀", "de_xiu_gui_ren"},
+            {"平头煞", "gan_zhi_zi_za_fan"}, {"破字煞", "gan_zhi_zi_za_fan"}, {"悬针煞", "gan_zhi_zi_za_fan"},
+            {"杖刑煞", "gan_zhi_zi_za_fan"}, {"曲脚煞", "gan_zhi_zi_za_fan"}
+            , {"贵人", "tian_yi_gui_ren"}, {"禄马", "zong_lun_lu_ma"},
+            {"四库", "chen_xu_chou_wei_si_gong_hu_huan_shen_sha"}, {"四墓", "chen_xu_chou_wei_si_gong_hu_huan_shen_sha"},
+            {"龙蛇混杂", "tian_luo_di_wang"}, {"猪犬侵凌", "tian_luo_di_wang"},
+            {"剑锋煞", "qi_ta_shen_sha_3"}, {"戟锋煞", "qi_ta_shen_sha_3"},
+            {"短寿煞", "qi_ta_shen_sha_4"}, {"禄神", "lu_shen"}, {"童子煞", "qi_ta_shen_sha_2"},
+            {"返本煞", "qi_ta_shen_sha_4"}, {"进神", "zi_wu_mao_you_si_gong_hu_huan_shen_sha"},
+            {"金舆", "jin_yu"}, {"长生", "yin_shen_si_hai_si_gong_hu_huan_shen_sha"},
+            {"悬针", "gan_zhi_zi_za_fan"}, {"日刑煞", "qi_ta_shen_sha_3"},
+            {"流血煞", "qi_ta_shen_sha_3"}, {"浮沉煞", "qi_ta_shen_sha_3"},
+            {"白虎", "qi_ta_shen_sha_1"}, {"阴错阳差", "qi_ta_shen_sha_3"}
+            , {"亡神十六般格局", "wang_shen_shi_liu_ban"}, {"劫煞十六般格局", "jie_sha_shi_liu_ban"},
+            {"勾绞", "gou_jiao_sha"}, {"大耗", "yuan_chen"}, {"天月德", "tian_yue_de"},
+            {"天罗地网", "tian_luo_di_wang"}, {"太极贵", "tai_ji_gui"}, {"无禄日", "shi_e_da_bai"},
+            {"爪牙煞", "gou_jiao_sha"}, {"吟呻", "an_jin_de_sha"}, {"破碎", "an_jin_de_sha"}, {"白衣", "an_jin_de_sha"}
+            , {"隔角", "gu_chen_gua_su"}, {"天禄天马", "zong_lun_lu_ma"}, {"禄马交驰", "zong_lun_lu_ma"},
+            {"禄马同乡", "zong_lun_lu_ma"}, {"生旺禄", "zong_lun_lu_ma"}, {"名位禄", "zong_lun_lu_ma"},
+            {"天禄贵神", "zong_lun_lu_ma"}, {"夹禄夹马", "zong_lun_lu_ma"}, {"真禄", "zong_lun_lu_ma"},
+            {"进退真禄", "zong_lun_lu_ma"}, {"食神合禄", "zong_lun_lu_ma"}
+        };
+        for (std::size_t i = 0; i < pillar_keys.size(); ++i) {
+            for (const auto& name : shen_sha.pillars[i].names) {
+                const auto found = shen_sha_resource_ids.find(name);
+                if (found == shen_sha_resource_ids.end()) continue;
+                auto& details = output["pillars"][pillar_keys[i]]["shen_sha_details"];
+                const bool already_present = std::ranges::any_of(details, [&](const json& item) {
+                    return item.value("name", "") == name;
+                });
+                if (!already_present) details.push_back({
+                    {"id", found->second}, {"name", name}, {"position", pillar_keys[i]}
+                });
+            }
         }
         const auto stems_to_json = [](const std::vector<ZhouYi::GanZhi::TianGan>& values) {
             json result = json::array();
@@ -176,11 +260,75 @@ int main() {
         };
         output["shen_sha_summary"] = {
             {"source", "渊海子平·三命通会口径"},
+            {"relations", {
+                {"branch_relations", json::array()}, {"stem_relations", json::array()},
+                {"interchanges", json::array()}, {"sanhe_ju", json::array()},
+                {"wangshuai_info", nullptr}
+            }},
+            {"xue_guan", [&] {
+                json value = { {"occurrences", json::array()} };
+                for (const auto& item : shen_sha.xue_guan) value["occurrences"].push_back({
+                    {"pillar", pillar_keys[item.pillar_index]}, {"id", item.id}, {"is_zheng", item.is_zheng}
+                });
+                return value;
+            }()},
+            {"yi_ma", [&] {
+                json value = { {"matched", !shen_sha.yi_ma.empty()}, {"occurrences", json::array()} };
+                for (const auto& item : shen_sha.yi_ma) value["occurrences"].push_back({
+                    {"pillar", pillar_keys[item.pillar_index]}, {"source", item.source}
+                });
+                return value;
+            }()},
+            {"tian_yi_gui_ren", [&] {
+                json value = { {"matched", !shen_sha.tian_yi.empty()}, {"occurrences", json::array()} };
+                for (const auto& item : shen_sha.tian_yi) value["occurrences"].push_back({
+                    {"pillar", pillar_keys[item.pillar_index]}, {"method", item.method}
+                });
+                return value;
+            }()},
+            {"san_qi", [&] {
+                json value = { {"matched", !shen_sha.san_qi.empty()}, {"occurrences", json::array()} };
+                for (const auto& item : shen_sha.san_qi) value["occurrences"].push_back({
+                    {"type", item.type}, {"positions", item.positions}
+                });
+                return value;
+            }()},
+            {"tian_yue_de", {
+                {"tiande", shen_sha.tian_yue_de.tiande},
+                {"yuede", shen_sha.tian_yue_de.yuede},
+                {"tiandehe", shen_sha.tian_yue_de.tiandehe},
+                {"yuedehe", shen_sha.tian_yue_de.yuedehe}
+            }},
             {"de_xiu", {
                 {"matched", shen_sha.de_xiu.matched},
                 {"de_stems", stems_to_json(shen_sha.de_xiu.de_stems)},
-                {"xiu_stems", stems_to_json(shen_sha.de_xiu.xiu_stems)}
+                {"xiu_stems", stems_to_json(shen_sha.de_xiu.xiu_stems)},
+                {"sub_tags", shen_sha.de_xiu.sub_tags}
             }},
+            {"tai_ji", [&] {
+                json value = { {"matched", !shen_sha.tai_ji.empty()}, {"occurrences", json::array()} };
+                for (const auto& item : shen_sha.tai_ji) value["occurrences"].push_back({
+                    {"pillar", pillar_keys[item.pillar_index]}, {"sources", item.sources}
+                });
+                return value;
+            }()},
+            {"source_occurrences", [&] {
+                json value = json::array();
+                for (const auto& item : shen_sha.source_occurrences) value.push_back({
+                    {"pillar", pillar_keys[item.pillar_index]}, {"name", item.name}, {"source", item.sources}, {"sub_tags", item.sub_tags}
+                });
+                return value;
+            }()},
+            {"lu_ma_patterns", [&] {
+                json value = json::array();
+                for (const auto& item : shen_sha.lu_ma_patterns) value.push_back({
+                    {"pattern_key", item.pattern_key}, {"involved_pillars", item.involved_pillars},
+                    {"trigger_basis", item.trigger_basis}, {"hit", item.hit}
+                });
+                return value;
+            }()},
+            {"group1_occurrences", json::array()},
+            {"group2_occurrences", json::array()},
             {"tong_zi", {
                 {"matched", shen_sha.tong_zi.matched},
                 {"month_rule", shen_sha.tong_zi.month_rule},
@@ -192,9 +340,49 @@ int main() {
             {"tian_luo_di_wang", {
                 {"tian_luo", shen_sha.luo_wang.tian_luo},
                 {"di_wang", shen_sha.luo_wang.di_wang},
-                {"gender_note", shen_sha.luo_wang.gender_note}
+                {"gender_note", shen_sha.luo_wang.gender_note},
+                {"sub_tags", shen_sha.luo_wang.sub_tags}
+            }},
+            {"auxiliary", {
+                {"guchen", shen_sha.auxiliary.guchen},
+                {"guaxiu", shen_sha.auxiliary.guaxiu},
+                {"gejiao", shen_sha.auxiliary.gejiao},
+                {"goushen", shen_sha.auxiliary.goushen},
+                {"jiaoshen", shen_sha.auxiliary.jiaoshen},
+                {"yangren", shen_sha.auxiliary.yangren},
+                {"feiren", shen_sha.auxiliary.feiren},
+                {"kongwang", shen_sha.auxiliary.kongwang},
+                {"yuanchen", shen_sha.auxiliary.yuanchen},
+                {"yuanchen_alias", shen_sha.auxiliary.yuanchen_alias},
+                {"sub_tags", shen_sha.auxiliary.sub_tags},
+                {"an_jin_sources", shen_sha.auxiliary.an_jin_sources},
+                {"an_jin_sub_tags", shen_sha.auxiliary.an_jin_sub_tags}
+            }},
+            {"lu_shen", {
+                {"matched", !shen_sha.lu_shen.empty()},
+                {"basis", "日干定禄，遍查年、月、日、时四支"},
+                {"day_stem", bazi.day.stem()},
+                {"occurrence_count", shen_sha.lu_shen.size()}
+            }},
+            {"jin_yu", {
+                {"matched", !shen_sha.jin_yu.empty()},
+                {"basis", "日干取禄，禄神地支顺推二辰"},
+                {"day_stem", bazi.day.stem()},
+                {"occurrence_count", shen_sha.jin_yu.size()}
             }}
         };
+        for (const auto& item : shen_sha.branch_relations) output["shen_sha_summary"]["relations"]["branch_relations"].push_back({
+            {"type", item.type}, {"pillars", item.pillars}, {"branches", item.symbols}, {"detail", item.detail}
+        });
+        for (const auto& item : shen_sha.stem_relations) output["shen_sha_summary"]["relations"]["stem_relations"].push_back({
+            {"type", "wuhe"}, {"pillars", item.pillars}, {"stems", item.stems}, {"combine_element", item.combine_element}, {"hua_success", nullptr}
+        });
+        for (const auto& item : shen_sha.sanhe_ju) output["shen_sha_summary"]["relations"]["sanhe_ju"].push_back({
+            {"pillars", item.pillars}, {"branches", item.symbols}, {"element", item.detail}
+        });
+        for (const auto& item : shen_sha.interchanges) output["shen_sha_summary"]["relations"]["interchanges"].push_back({
+            {"type", item.type}, {"pillars", item.pillars}, {"detail", item.detail}
+        });
         output["day_master"] = {
             {"stem", bazi.day.stem()},
             {"element", std::string(ZhouYi::GanZhi::Mapper::to_zh(ZhouYi::GanZhi::get_wu_xing(bazi.day.gan)))},

@@ -6,7 +6,7 @@
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 7,
-  "calibration_status": "draft",
+  "calibration_status": "calibrated",
   "source_document": "docs/bazi/天月德.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-402.png",
@@ -45,7 +45,13 @@
       ]
     }
   },
-  "boundaries": "天德、月德的古今口诀并不完全一致；本文只保存来源与候选取法，未确定工程判定口径。",
+  "calculation": {
+    "main": ["tiande", "yuede"],
+    "he": ["tiandehe", "yuedehe"],
+    "basis": "天德、月德按月令取；合神取对应天干五合",
+    "output": "四者独立布尔字段，上层聚合展示"
+  },
+  "boundaries": "工程采用月令主规则；天德合取天德天干五合，月德合取月德天干五合。古今其他口诀仅作资料备注。",
   "editorial_notes": [
     "书内页 398-404 对应 PDF 页 402-408，截图已保存到项目本地。",
     "原图同时展示万民英观点和现行观点，不能在未选定流派前合并为单一规则。",

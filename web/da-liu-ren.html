@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f2ee">
+  <title>ZhouYiLab 大六壬排盘</title>
+  <link rel="stylesheet" href="/ui-foundation.css">
+  <link rel="stylesheet" href="/divination.css">
+  <link rel="stylesheet" href="/app-shell.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 大六壬排盘"><span class="brand-mark" aria-hidden="true">周</span><span><strong>ZhouYiLab</strong><small>大六壬 · 四课三传</small></span></a>
+      <nav class="primary-tabs" aria-label="命理类型"><a href="/">紫微斗数</a><a href="/qimen.html">奇门遁甲</a><a href="/bazi.html">八字</a><a href="/liu-yao.html">六爻</a><a href="/da-liu-ren.html" aria-current="page">大六壬</a></nav>
+      <div class="header-tools"><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+    <div class="secondary-bar"><span class="secondary-context">大六壬<strong>内容</strong></span><div class="result-tabs secondary-tabs" role="tablist" aria-label="大六壬内容"><button id="chart-tab" type="button" role="tab" aria-selected="true" aria-controls="chart-panel">四课三传</button><button id="summary-tab" type="button" role="tab" aria-selected="false" aria-controls="summary-panel" tabindex="-1">天地盘摘要</button></div></div>
+  </div>
+  <main id="main-content" class="workspace">
+    <aside class="input-panel" aria-label="大六壬起课参数"><form id="da-liu-ren-form">
+      <section><div class="section-heading"><span>01</span><h1>起课时间</h1></div>
+        <fieldset><legend>历法</legend><div class="segmented"><label><input type="radio" name="calendar" value="solar" checked><span>公历</span></label><label><input type="radio" name="calendar" value="lunar"><span>农历</span></label></div></fieldset>
+        <div class="two-fields"><div><label for="year">年</label><input id="year" type="number" value="2025" min="1" max="9999" required></div><div><label for="month">月</label><input id="month" type="number" value="11" min="1" max="12" required></div></div>
+        <div class="two-fields"><div><label for="day">日</label><input id="day" type="number" value="3" min="1" max="31" required></div><div><label for="hour">时</label><input id="hour" type="number" value="16" min="0" max="23" required></div></div>
+        <p class="field-help">当前控制器按小时起课，分钟不参与大六壬核心计算。</p>
+      </section>
+      <button class="primary-action" type="submit">开始起课</button><p id="form-error" class="error-message" role="alert" hidden></p>
+    </form></aside>
+    <section class="results" aria-live="polite"><div id="empty-state" class="empty-state"><div class="empty-symbol" aria-hidden="true">壬</div><h2>等待起课</h2><p>输入起课时间，生成月将、贵人、四课和三传。</p></div>
+      <div id="result-content" hidden><header class="result-summary"><div><span>大六壬排盘</span><strong id="summary-title">--</strong><small id="summary-date" class="muted">--</small></div><dl id="metrics" class="metrics"></dl></header>
+        <div id="chart-panel" role="tabpanel" aria-labelledby="chart-tab"><div class="board-heading"><span>四课三传</span><strong>先看起课结构，再看天地盘</strong></div><div id="chart-grid" class="result-grid"></div></div>
+        <div id="summary-panel" role="tabpanel" aria-labelledby="summary-tab" hidden><div id="summary-grid" class="result-grid"></div></div>
+      </div>
+    </section>
+  </main>
+  <script src="/navigation.js" defer></script><script src="/da-liu-ren.js" defer></script>
+</body>
+</html>

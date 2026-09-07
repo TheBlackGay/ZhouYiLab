@@ -6,7 +6,7 @@
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 18,
-  "calibration_status": "draft",
+  "calibration_status": "calibrated",
   "source_document": "docs/bazi/暗金的煞.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-452.png",
@@ -30,7 +30,8 @@
   },
   "variants": ["吟呻", "破碎", "白衣", "四仲正煞", "四孟正煞", "四季正煞"],
   "scan_scope": ["年支", "先天数", "四冲", "生旺死绝", "五行", "官符", "劫煞", "白虎", "羊刃", "贵人", "建禄", "岁运"],
-  "boundaries": "暗金的煞的先天数推导和与诸煞并见的轻重存在传本差异，本文保存来源规则，未确定工程判定优先级。",
+  "calculation": {"basis": "年支、日支双源并行，命中记录 source", "sub_tags": ["yinshen", "posui", "baiyi"]},
+  "boundaries": "原典主流为年支取，日支为兼容变体；回头破碎仅作资料备注，不单独布尔命中。",
   "editorial_notes": [
     "书内页 448-450 对应 PDF 页 452-454，截图已保存到项目本地；PDF 页 455 起为第 19 号灾煞。",
     "原文个别刑伤、疾病字样以底图为准，正式使用前应继续校勘。",

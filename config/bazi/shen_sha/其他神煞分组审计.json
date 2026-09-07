@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "groups": {
+    "group1": {
+      "items": ["桃花", "咸池", "华盖", "将星", "文昌", "天厨", "流霞"],
+      "status": "pending_implementation",
+      "main_rule": "年支、日支双源并行；年干、日干仅作资料变体",
+      "sources": ["year_branch", "day_branch"]
+    },
+    "group2": {
+      "items": ["阴差阳错", "淫欲妨害", "孤鸾寡鹄"],
+      "status": "pending_implementation",
+      "main_rule": "固定干支命中为基础布尔，性别、刑冲、十神只作 sub_tags/note"
+    },
+    "group3": {
+      "items": ["天火", "自缢", "水溺", "挂剑", "天屠", "天刑", "雷霆", "吞陷"],
+      "status": "reference"
+    },
+    "group4": {
+      "items": ["官符", "病符", "死符", "丧吊", "宅墓"],
+      "status": "pending_implementation",
+      "main_rule": "岁煞体系仅年支偏移单源，日支仅作知识库变体"
+    },
+    "group5": {
+      "items": ["剑锋", "戟锋", "流血", "浮沉", "返本", "破煞"],
+      "status": "reference"
+    }
+  }
+}

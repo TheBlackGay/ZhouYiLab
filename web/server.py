@@ -32,6 +32,14 @@ WEB_ROOT = PROJECT_ROOT / "web"
 CLI_PATH = PROJECT_ROOT / "build" / "examples" / "zi_wei_web_cli"
 QIMEN_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "qi_men_web_cli"
 BAZI_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "ba_zi_web_cli"
+LIU_YAO_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "liu_yao_web_cli"
+DA_LIU_REN_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "da_liu_ren_web_cli"
+BAZI_SHEN_SHA_ROOT = PROJECT_ROOT / "config" / "bazi" / "shen_sha"
+BAZI_SHEN_SHA_ALIASES = {
+    "zi_wu_mao_you_si_gong_hu_huan_shen_sha": "子午卯酉四宫互换神煞.json",
+    "yin_shen_si_hai_si_gong_hu_huan_shen_sha": "寅申巳亥四宫互换神煞.json",
+    "chen_xu_chou_wei_si_gong_hu_huan_shen_sha": "辰戌丑未四宫互换神煞.json",
+}
 API_VERSION = "v1"
 ALGORITHM_VERSION = "zhouyilab-core/1.4.1"
 MAX_BODY_BYTES = 256 * 1024
@@ -105,6 +113,8 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 "cli_available": CLI_PATH.exists(),
                 "qimen_cli_available": QIMEN_CLI_PATH.exists(),
                 "bazi_cli_available": BAZI_CLI_PATH.exists(),
+                "liu_yao_cli_available": LIU_YAO_CLI_PATH.exists(),
+                "da_liu_ren_cli_available": DA_LIU_REN_CLI_PATH.exists(),
             })
             return
         if parsed.path == "/api/v1/ziwei/meta":
@@ -191,6 +201,29 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             except (ResearchConfigError, KeyError, TypeError, ValueError) as error:
                 self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
             return
+        if parsed.path.startswith("/api/v1/bazi/shen-sha/"):
+            shen_sha_id = parsed.path.rsplit("/", 1)[-1]
+            if not shen_sha_id or not all(
+                character.isascii() and (character.isalnum() or character == "_")
+                for character in shen_sha_id
+            ):
+                self.send_api_error(400, "INVALID_SHEN_SHA_ID", "神煞 ID 无效")
+                return
+            resource_path = BAZI_SHEN_SHA_ROOT / BAZI_SHEN_SHA_ALIASES.get(shen_sha_id, f"{shen_sha_id}.json")
+            if not resource_path.is_file():
+                self.send_api_error(404, "SHEN_SHA_NOT_FOUND", "神煞说明尚未收录")
+                return
+            try:
+                resource = json.loads(resource_path.read_text(encoding="utf-8"))
+                source_document = resource.get("source_document")
+                if source_document:
+                    document_path = PROJECT_ROOT / source_document
+                    if document_path.is_file():
+                        resource["document_markdown"] = document_path.read_text(encoding="utf-8")
+                self.send_api_success(resource)
+            except (OSError, json.JSONDecodeError):
+                self.send_api_error(500, "SHEN_SHA_RESOURCE_ERROR", "神煞说明加载失败")
+            return
         if parsed.path.startswith("/api/"):
             self.send_api_error(404, "ENDPOINT_NOT_FOUND", "接口不存在")
             return
@@ -230,6 +263,30 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
             except subprocess.TimeoutExpired:
                 self.send_api_error(504, "CALCULATION_TIMEOUT", "八字排盘计算超时")
+            except CliError as error:
+                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
+                self.send_api_error(status, error.code, error.message)
+            return
+        if parsed.path == "/api/v1/liu-yao/charts":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_engine(LIU_YAO_CLI_PATH, payload))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "六爻排盘计算超时")
+            except CliError as error:
+                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
+                self.send_api_error(status, error.code, error.message)
+            return
+        if parsed.path == "/api/v1/da-liu-ren/charts":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_engine(DA_LIU_REN_CLI_PATH, payload))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "大六壬排盘计算超时")
             except CliError as error:
                 status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
                 self.send_api_error(status, error.code, error.message)
@@ -418,7 +475,7 @@ def main():
     parser = argparse.ArgumentParser(description="ZhouYiLab 紫微斗数 API 与本地页面服务")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
-    missing_engines = [path for path in (CLI_PATH, QIMEN_CLI_PATH, BAZI_CLI_PATH) if not path.exists()]
+    missing_engines = [path for path in (CLI_PATH, QIMEN_CLI_PATH, BAZI_CLI_PATH, LIU_YAO_CLI_PATH, DA_LIU_REN_CLI_PATH) if not path.exists()]
     if missing_engines:
         missing = "、".join(str(path) for path in missing_engines)
         raise SystemExit(f"缺少 {missing}，请先构建网页 CLI")

@@ -6,7 +6,7 @@
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 8,
-  "calibration_status": "draft",
+  "calibration_status": "calibrated",
   "source_document": "docs/bazi/太极贵.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-409.png",
@@ -36,7 +36,8 @@
     "癸": ["申", "巳"]
   },
   "variants": ["文昌贵人", "文誉贵人", "文星贵人", "天印贵人"],
-  "boundaries": "太极贵主法与文昌、文星、天印等组合的取干口径并不完全相同，本文只保存来源规则，未确定工程判定优先级。",
+  "calculation": {"basis": "年干、日干双源并行，任一命中即为太极贵人", "source_field": ["year_stem", "day_stem"]},
+  "boundaries": "年干、日干双源均参与判定；仅日干起法作为知识库变体，不参与主逻辑。",
   "editorial_notes": [
     "书内页 405-407 对应 PDF 页 409-411，截图已保存到项目本地。",
     "四类相关贵人的原图口诀部分字形紧密，文档保留了表格化候选转录，正式使用前应回看底图。",

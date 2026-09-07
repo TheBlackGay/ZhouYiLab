@@ -1,0 +1,33 @@
+/* Shared UI contract for every divination workspace. Page styles may specialize tokens. */
+:root {
+  --paper: #f3f2ee;
+  --surface: #fff;
+  --ink: #1d2421;
+  --muted: #68716c;
+  --line: #d8dcd8;
+  --jade: #25634d;
+  --cinnabar: #a43b32;
+  --gold: #a67b2e;
+  color-scheme: light;
+  font-synthesis: none;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: hidden; }
+body { min-width: 320px; }
+.workspace, .input-panel, .results { min-width: 0; }
+[hidden] { display: none !important; }
+button, input, select, textarea { font: inherit; }
+button, a, label:has(input) { cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
+  outline: 3px solid rgb(37 99 77 / 25%);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  input, select, textarea { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

@@ -7,7 +7,7 @@
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 4,
   "catalog_kind": "chapter_group",
-  "calibration_status": "draft",
+  "calibration_status": "calibrated",
   "source_document": "docs/bazi/总论禄马.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-384.png",
@@ -18,7 +18,8 @@
   "summary": "第4号总论禄马，论天禄天马、禄马交驰、禄马同乡、夹禄夹马及生旺禄、名位禄、真禄等不同禄马格局。",
   "members": ["天禄天马", "禄马交驰", "禄马同乡", "夹禄夹马", "生旺禄", "名位禄", "真禄", "进退真禄", "食神合禄", "天禄贵神"],
   "scan_scope": ["年柱", "月柱", "日柱", "时柱", "禄位", "驿马", "长生", "食神", "财", "鬼", "贵人", "空亡", "冲破", "旺衰"],
-  "boundaries": "本条为禄马格局总论，不是单一神煞；各组合需结合完整四柱和岁运校勘。",
+  "calculation": {"output": "shen_sha_summary.lu_ma_patterns", "patterns": ["禄马同乡", "天禄天马", "禄马交驰", "生旺禄", "名位禄", "真禄", "夹禄夹马", "进退真禄", "食神合禄", "天禄贵神"], "hit_semantics": "仅表示组合结构成立，不代表吉凶"},
+  "boundaries": "禄马组合格局统一输出到 lu_ma_patterns，不进入单柱 shen_sha；吉凶断语仅作释义。",
   "editorial_notes": [
     "书内页 380-382 对应 PDF 页 384-386，三页截图已保存到项目本地。",
     "PDF 387 起进入第5号天乙贵人。",

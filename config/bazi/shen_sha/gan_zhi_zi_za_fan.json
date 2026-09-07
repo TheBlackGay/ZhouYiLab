@@ -6,7 +6,7 @@
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 25,
-  "calibration_status": "draft",
+  "calibration_status": "reference",
   "source_document": "docs/bazi/干支诸字杂犯神煞.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-471.png",
@@ -32,7 +32,8 @@
   },
   "variants": ["平头", "破字", "悬针", "杖刑", "曲脚", "倒戈", "字形测命"],
   "scan_scope": ["四柱天干", "四柱地支", "字形", "笔画", "空亡", "五行气势", "德神", "羊刃", "劫神"],
-  "boundaries": "五类字形杂犯存在字表、字形及字义异文，本文保存图示和原书说法，未确定工程判定优先级。",
+  "calculation": {"main": [], "sub_tags": ["平头", "破字", "悬针", "杖刑", "曲脚"], "status": "reference_only"},
+  "boundaries": "字形杂犯目前仅作为资料型子标签，不参与稳定主神煞布尔判定；各字表异文待逐项校勘。",
   "editorial_notes": [
     "书内页 467-469 对应 PDF 页 471-473，截图已保存到项目本地；PDF 页 474 起为第 26 号总论诸神煞。",
     "部分字形组合在低清底图中易混淆，正式使用前应以原图和底本复核。",

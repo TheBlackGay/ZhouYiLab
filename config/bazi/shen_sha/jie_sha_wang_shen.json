@@ -6,7 +6,7 @@
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 12,
-  "calibration_status": "draft",
+  "calibration_status": "calibrated",
   "source_document": "docs/bazi/劫煞亡神.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-424.png",
@@ -31,7 +31,8 @@
   },
   "variants": ["亡神富藏", "亡神长生", "亡神临官", "亡神塞舆", "亡神自如", "亡神生本", "亡神义门", "亡神锦里", "亡神未降", "亡神妄作", "亡神啰宅", "亡神舞群", "亡神薄恶", "亡神迷溺", "亡神乖张"],
   "scan_scope": ["年支或日支三合局", "四柱地支", "年柱纳音", "日时干支"],
-  "boundaries": "劫煞、亡神及其诸格局受流派、纳音和组合条件影响，本文只保存古籍来源，未确定工程判定优先级。",
+  "calculation": {"basis": "年支、日支所属三合局分别取劫煞和亡神，扫描四柱地支", "base_outputs": ["jiesha", "wangshen"], "shiliuban": "仅资料结构，不参与布尔命中"},
+  "boundaries": "基础劫煞、亡神参与命中；十六般子型、纳音和组合格局只作知识资料。",
   "editorial_notes": [
     "书内页 420-422 对应 PDF 页 424-426，截图已保存到项目本地。",
     "亡神诸格局别名部分字形模糊，正式使用前应回看底图校勘。",

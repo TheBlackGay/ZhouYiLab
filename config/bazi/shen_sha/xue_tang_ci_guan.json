@@ -6,7 +6,7 @@
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 9,
-  "calibration_status": "draft",
+  "calibration_status": "calibrated",
   "source_document": "docs/bazi/学堂词馆.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-412.png",
@@ -34,7 +34,13 @@
   },
   "scan_scope": ["年干", "日干", "四柱纳音", "四柱地支"],
   "variants": ["学堂会禄", "学堂会食", "官星学堂", "学堂会贵"],
-  "boundaries": "学堂词馆的判定混用长生、临官、纳音、年干和日干等口径，本文只保存来源规则，未确定工程实现优先级。",
+  "calculation": {
+    "sources": ["xuetang_nayin", "ciguan_nayin", "xuetang_ri", "ciguan_ri"],
+    "nayin_basis": "年柱纳音取五行长生为学堂、临官为词馆",
+    "ri_basis": "日干五行取长生为学堂、临官为词馆",
+    "is_zheng": "柱纳音与年柱纳音相同的命中附加标记"
+  },
+  "boundaries": "纳音法和日干法并行输出；年干取法仅作知识库变体，不参与计算。",
   "editorial_notes": [
     "书内页 408-412 对应 PDF 页 412-416，截图已保存到项目本地。",
     "原图口诀存在版本异文，文档中的表格化内容需以底图继续校勘。",

@@ -5,7 +5,7 @@
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 19,
-  "calibration_status": "draft",
+  "calibration_status": "calibrated",
   "source_document": "docs/bazi/灾煞.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-455.png",
@@ -29,7 +29,8 @@
   },
   "variants": ["将星受冲", "灾煞见劫煞", "灾煞见官星印绶", "水火灾象", "金木杖刃", "土坠落"],
   "scan_scope": ["年支", "三合局", "将星", "冲", "日月时支", "五行", "官星", "印绶", "劫煞", "福神"],
-  "boundaries": "灾煞的主要定位取年支三合局将星之冲，具体吉凶仍受五行旺衰和福煞组合影响，本文未确定工程判定优先级。",
+  "calculation": {"basis": "年支、日支所属三合局分别取灾煞，扫描四柱地支", "positions_by_triple_harmony": {"申子辰": "午", "寅午戌": "子", "巳酉丑": "卯", "亥卯未": "酉"}},
+  "boundaries": "年支和日支双源参与基础命中；将星受冲及吉凶断语属于格局解释。",
   "editorial_notes": [
     "书内页 451-452 对应 PDF 页 455-456，截图已保存到项目本地；PDF 页 457 起为第 20 号六厄。",
     "《神白经》引文及部分灾象字句以底图为准，正式使用前应继续校勘。",

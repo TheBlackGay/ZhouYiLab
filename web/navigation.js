@@ -16,5 +16,19 @@ document.addEventListener('click', event => {
   }
 });
 
+document.addEventListener('keydown', event => {
+  const tab = event.target.closest?.('[role="tab"]');
+  if (!tab) return;
+  const tabs = [...tab.parentElement.querySelectorAll('[role="tab"]')];
+  if (!tabs.length || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+  event.preventDefault();
+  const current = tabs.indexOf(tab);
+  const next = event.key === 'Home' ? 0
+    : event.key === 'End' ? tabs.length - 1
+      : (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+  tabs[next].click();
+  tabs[next].focus();
+});
+
 window.addEventListener('resize', centerCurrentNavigation);
 centerCurrentNavigation();

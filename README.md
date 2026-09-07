@@ -90,6 +90,8 @@ cmake --build build --target all_examples
 - 紫微斗数：[http://127.0.0.1:8768/](http://127.0.0.1:8768/)
 - 奇门遁甲：[http://127.0.0.1:8768/qimen.html](http://127.0.0.1:8768/qimen.html)
 - 八字：[http://127.0.0.1:8768/bazi.html](http://127.0.0.1:8768/bazi.html)
+- 六爻：[http://127.0.0.1:8768/liu-yao.html](http://127.0.0.1:8768/liu-yao.html)
+- 大六壬：[http://127.0.0.1:8768/da-liu-ren.html](http://127.0.0.1:8768/da-liu-ren.html)
 - 人工盲评：[http://127.0.0.1:8768/blind-review.html](http://127.0.0.1:8768/blind-review.html)
 - AI 预评审：[http://127.0.0.1:8768/ai-review.html](http://127.0.0.1:8768/ai-review.html)
 

@@ -40,6 +40,8 @@ set(EXAMPLES
     zi_wei_web_cli     # "紫微斗数网页JSON桥接"
     qi_men_web_cli     # "奇门遁甲网页JSON桥接"
     ba_zi_web_cli      # "八字网页JSON桥接"
+    liu_yao_web_cli    # "六爻网页JSON桥接"
+    da_liu_ren_web_cli # "大六壬网页JSON桥接"
     example_stacktrace  # "std::stacktrace 功能测试"
     example_qi_men      # "奇门遁甲排盘示例"
 )

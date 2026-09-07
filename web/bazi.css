@@ -7,6 +7,10 @@
 .board-heading > small,
 .fortune-heading small { color: var(--muted); font-size: 11px; }
 .pillar-board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--ink); background: var(--line); gap: 1px; }
+.reading-guide { display: flex; align-items: baseline; gap: 12px; margin: 0 0 14px; padding: 11px 14px; color: var(--muted); background: #f7f3e9; border-left: 3px solid var(--gold); font-size: 12px; }
+.reading-guide strong { flex: 0 0 auto; color: var(--ink); font-size: 13px; }
+.fact-boundary { margin: 0 0 14px; padding: 10px 12px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--gold); font-size: 11px; line-height: 1.6; }
+.fact-boundary strong { color: var(--ink); }
 .pillar { min-width: 0; display: grid; grid-template-rows: auto auto auto auto auto 1fr; background: var(--surface); text-align: center; }
 .pillar header { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 9px 13px; border-bottom: 1px solid var(--line); }
 .pillar header strong { font-size: 13px; }
@@ -30,8 +34,62 @@
 .pillar-shensha { display: grid; align-content: start; gap: 7px; min-height: 92px; padding: 11px 10px; border-top: 1px solid var(--line); text-align: left; }
 .pillar-shensha > small { color: var(--muted); font-size: 10px; }
 .pillar-shensha > div { display: flex; flex-wrap: wrap; gap: 5px; }
-.pillar-shensha span { padding: 3px 6px; color: #745b28; background: #fbf8ef; border: 1px solid #ddd2b8; border-radius: 3px; font-size: 10px; font-weight: 700; line-height: 1.35; }
+.pillar-shensha span,
+.pillar-shensha button { min-height: 28px; display: inline-flex; align-items: center; padding: 3px 6px; color: #745b28; background: #fbf8ef; border: 1px solid #ddd2b8; border-radius: 3px; font-size: 10px; font-weight: 700; line-height: 1.35; }
+.pillar-shensha button { min-height: 44px; cursor: pointer; font-family: inherit; text-decoration: underline; text-decoration-color: #ad9a70; text-underline-offset: 3px; }
+.pillar-shensha button:hover { color: var(--cinnabar); border-color: var(--gold); }
+.pillar-shensha button:focus-visible { outline: 3px solid color-mix(in srgb, var(--jade) 34%, transparent); outline-offset: 2px; }
 .pillar-shensha span.none { color: var(--muted); background: var(--paper); border-color: var(--line); font-weight: 400; }
+.shen-sha-dialog { width: min(760px, calc(100vw - 32px)); max-height: min(86dvh, 820px); padding: 0; color: var(--ink); background: var(--surface); border: 1px solid var(--ink); border-radius: 6px; box-shadow: 0 18px 55px rgb(27 32 29 / 24%); }
+.shen-sha-dialog::backdrop { background: rgb(22 28 25 / 46%); }
+.shen-sha-dialog > header { position: sticky; top: 0; z-index: 10; min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 18px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.shen-sha-dialog > header div { display: grid; gap: 3px; }
+.shen-sha-dialog > header span { color: var(--muted); font-size: 11px; }
+.shen-sha-dialog > header h2 { margin: 0; font: 600 22px/1.25 "Noto Serif SC", serif; }
+.dialog-close { width: 44px; height: 44px; flex: 0 0 44px; display: grid; place-items: center; padding: 0; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 4px; cursor: pointer; font-size: 24px; line-height: 1; }
+.dialog-close:hover { color: var(--cinnabar); border-color: var(--cinnabar); }
+.shen-sha-dialog-content { padding: 0 20px 22px; }
+.shen-sha-dialog-content section { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.shen-sha-dialog-content section:last-child { border-bottom: 0; }
+.shen-sha-dialog-content h3 { margin: 0 0 10px; font-size: 14px; }
+.shen-sha-dialog-content p { margin: 0; font-size: 13px; line-height: 1.75; }
+.shen-sha-dialog-content blockquote { margin: 14px 0; padding: 11px 14px; color: #4d5651; background: var(--paper); border-left: 3px solid var(--gold); font-size: 12px; line-height: 1.75; }
+.shen-sha-catalog { margin: 22px 0; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.shen-sha-catalog > header { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.shen-sha-catalog > header div { display: grid; gap: 3px; }
+.shen-sha-catalog > header span, .shen-sha-catalog > header small { color: var(--muted); font-size: 11px; }
+.shen-sha-catalog > header strong { font-size: 15px; }
+.shen-sha-catalog-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+.shen-sha-catalog-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; padding: 8px 9px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: transparent; text-align: left; cursor: pointer; }
+.shen-sha-catalog-item:hover, .shen-sha-catalog-item:focus-visible { border-color: var(--gold); background: var(--paper); }
+.shen-sha-catalog-item.matched { border-color: var(--accent); }
+.shen-sha-catalog-item span { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.shen-sha-catalog-item small { flex: 0 0 auto; color: var(--muted); font-size: 10px; }
+.source-document { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
+.source-document summary { cursor: pointer; color: var(--accent); font-size: 12px; }
+.source-document pre { max-height: 420px; overflow: auto; margin: 10px 0 0; white-space: pre-wrap; color: var(--muted); font: 12px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.help-current ul { display: grid; gap: 8px; margin: 13px 0 0; padding: 0; list-style: none; }
+.help-current li { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 9px 0; border-top: 1px dotted var(--line); font-size: 12px; }
+.help-current li span { color: var(--muted); }
+.lu-position-grid { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--line); }
+.lu-position-grid span { display: flex; justify-content: center; gap: 6px; padding: 9px 5px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 12px; }
+.lu-position-grid span:nth-child(5n) { border-right: 0; }
+.lu-position-grid span:nth-last-child(-n+5) { border-bottom: 0; }
+.lu-position-grid strong { color: var(--cinnabar); }
+.help-note { margin-top: 12px !important; color: var(--muted); font-size: 11px !important; }
+.help-quote-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.help-quote-list li { display: grid; gap: 3px; padding: 10px 12px; background: var(--paper); border-left: 2px solid var(--gold); font-size: 12px; line-height: 1.6; }
+.help-quote-list li span { color: var(--muted); }
+.help-table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+.help-table-wrap table { width: 100%; min-width: 580px; border-collapse: collapse; font-size: 12px; }
+.help-table-wrap th,
+.help-table-wrap td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.help-table-wrap thead th { color: var(--muted); background: var(--paper); font-size: 10px; }
+.help-table-wrap tbody tr:last-child th,
+.help-table-wrap tbody tr:last-child td { border-bottom: 0; }
+.dialog-loading,
+.dialog-error { padding: 28px 0; }
+.dialog-error { color: var(--cinnabar); }
 .time-correction-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 18px 0 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .time-correction-summary div { min-width: 0; display: grid; gap: 4px; padding: 12px; border-right: 1px solid var(--line); }
 .time-correction-summary div:last-child { border-right: 0; }
@@ -60,4 +118,13 @@
   .pillar-main strong { font-size: 32px; }
   .pillar header { padding-inline: 9px; }
   .hidden-stems { padding-inline: 7px; }
+  .shen-sha-dialog { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
+  .shen-sha-dialog-content { padding-inline: 14px; }
+  .shen-sha-catalog-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .help-current li { grid-template-columns: 1fr; gap: 4px; }
+  .lu-position-grid { grid-template-columns: repeat(2, 1fr); }
+  .lu-position-grid span:nth-child(5n) { border-right: 1px solid var(--line); }
+  .lu-position-grid span:nth-last-child(-n+5) { border-bottom: 1px solid var(--line); }
+  .lu-position-grid span:nth-child(2n) { border-right: 0; }
+  .lu-position-grid span:nth-last-child(-n+2) { border-bottom: 0; }
 }

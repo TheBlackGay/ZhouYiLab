@@ -6,7 +6,7 @@
   "system": "子平八字",
   "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
   "catalog_number": 22,
-  "calibration_status": "draft",
+  "calibration_status": "calibrated",
   "source_document": "docs/bazi/孤辰寡宿及隔角煞.md",
   "source_images": [
     "docs/bazi/img/san_ming_tong_hui/page-461.png",
@@ -32,7 +32,8 @@
   },
   "variants": ["孤辰", "寡宿", "隔角", "母绝孤辰", "夫墓寡宿", "妻墓寡宿", "孤寡并临"],
   "scan_scope": ["年支", "三会局", "性别阴阳", "阳年阴年", "日月时支", "四季", "五行生克", "驿马", "空亡", "丧吊", "贵人", "岁运"],
-  "boundaries": "孤辰寡宿及隔角煞存在顺进逆退、男女阴阳、诸家异说和合会救应等不同口径，本文保存来源规则，未确定工程判定优先级。",
+  "calculation": {"basis": "年支所属三合局取孤辰、寡宿、隔角，三者独立命中", "main": ["guchen", "guaxiu", "gejiao"]},
+  "boundaries": "采用年支原典取法；日支、日时隔一位和盲派墓库变体仅作资料备注。",
   "editorial_notes": [
     "书内页 457-460 对应 PDF 页 461-464，截图已保存到项目本地；PDF 页 465 起为第 23 号天罗地网。",
     "原文个别三会局与隔角例证存在版本异文，正式使用前应回看底图校勘。",
