@@ -8,6 +8,8 @@ const solarOptions = document.querySelector('#solar-options');
 
 const desktopPositions = [13, 9, 5, 1, 2, 3, 4, 8, 12, 16, 15, 14];
 const layerNames = { da_xian: '大限', xiao_xian: '小限', liu_nian: '流年', liu_yue: '流月', liu_ri: '流日', liu_shi: '流时' };
+const layerPalacePrefixes = { da_xian: '大', xiao_xian: '小', liu_nian: '年', liu_yue: '月', liu_ri: '日', liu_shi: '时' };
+const fortuneLayerOrder = ['da_xian', 'liu_nian', 'liu_yue', 'liu_ri', 'liu_shi'];
 const layerColors = { all: '#18201d', da_xian: '#59625d', liu_nian: '#286fa6', liu_yue: '#bc681b', liu_ri: '#7650a3', liu_shi: '#a83232' };
 let currentData = null;
 let currentAnalysis = null;
@@ -92,7 +94,7 @@ function renderSummary(data) {
   document.querySelector('#center-four-pillars').textContent = fourPillars(data).replaceAll(' ', '　');
   document.querySelector('#center-recorded').textContent = correction.recorded_time.slice(11, 16);
   document.querySelector('#center-solar').textContent = correction.mode === 'true_solar_time' ? correction.chart_time.slice(11, 16) : '未启用';
-  document.querySelector('#center-target').textContent = `运限 · ${data.target.solar_time}`;
+  document.querySelector('#center-target').textContent = `本命盘 · 原始天盘 | 运限目标 ${data.target.solar_time}`;
 }
 
 function renderBoard(data) {
@@ -126,22 +128,59 @@ function renderBoard(data) {
     const transitZone = transitStars
       ? `<div class="transit-zone"><small class="zone-label">运限流曜</small><div class="transit-stars">${transitStars}</div></div>`
       : '';
-    const flags = palaceFlags.map(item => `<span class="flow-flag ${item.key}">${item.label}</span>`).join('');
-    node.innerHTML = `<header><h3>${escapeHtml(palace.name)}</h3><span class="branch">${escapeHtml(palace.gan_zhi)}</span></header><div class="star-zone"><small class="zone-label">主星</small><div class="stars">${primary || '<span class="star">空宫</span>'}</div></div><div class="secondary-zone"><small class="zone-label">辅星 · 煞曜 · 杂曜</small><div class="stars">${secondary || '<span class="star">无</span>'}</div></div>${shenShaMarkup(palace)}${transitZone}<div class="flow-flags">${flags}</div>`;
+    const flags = palaceFlags.map(item => `<span class="flow-flag ${item.key}" data-layer="${item.key}">${item.label}</span>`).join('');
+    node.innerHTML = `<header><div class="palace-title"><h3>${escapeHtml(palace.name)}</h3><span class="layer-palace-labels" aria-label="运限宫位"></span></div><span class="branch">${escapeHtml(palace.gan_zhi)}</span></header><span class="fortune-relation-arrow" aria-hidden="true"></span><div class="star-zone"><small class="zone-label">主星</small><div class="stars">${primary || '<span class="star">空宫</span>'}</div></div><div class="secondary-zone"><small class="zone-label">辅星 · 煞曜 · 杂曜</small><div class="stars">${secondary || '<span class="star">无</span>'}</div></div>${shenShaMarkup(palace)}${transitZone}<div class="flow-flags">${flags}</div>`;
     board.appendChild(node);
   });
 }
 
 function setActiveLayer(layer) {
   const board = document.querySelector('#palace-board');
+  const selectedFortune = currentData?.fortune?.[layer];
+  const selectedIndex = Number.isInteger(selectedFortune?.palace_index) ? selectedFortune.palace_index : -1;
+  const selectedLayerIndex = fortuneLayerOrder.indexOf(layer);
   board.dataset.activeLayer = layer;
   board.style.setProperty('--active-layer-color', layerColors[layer] || layerColors.all);
-  board.querySelectorAll('.palace').forEach(node => {
+  board.querySelectorAll('.palace').forEach((node, index) => {
     const layers = node.dataset.layers.split(' ');
-    node.classList.toggle('layer-active', layer === 'all' || layers.includes(layer));
+    const activeLayer = layer === 'all' || layer === 'natal'
+      ? layer
+      : layers.some(item => {
+        const itemIndex = fortuneLayerOrder.indexOf(item);
+        return itemIndex >= 0 && itemIndex <= selectedLayerIndex;
+      });
+    node.classList.toggle('layer-active', layer !== 'natal' && activeLayer);
+    const labels = node.querySelector('.layer-palace-labels');
+    const arrow = node.querySelector('.fortune-relation-arrow');
+    const offset = selectedIndex >= 0 ? (index - selectedIndex + 12) % 12 : -1;
+    node.classList.toggle('fortune-layer-active', layer !== 'all' && layer !== 'natal' && selectedIndex >= 0);
+    node.classList.toggle('fortune-focus', layer !== 'all' && layer !== 'natal' && offset === 0);
+    node.classList.toggle('fortune-triad', layer !== 'all' && layer !== 'natal' && (offset === 4 || offset === 8));
+    node.classList.toggle('fortune-opposite', layer !== 'all' && layer !== 'natal' && offset === 6);
+    if (labels) {
+      const activeLayers = selectedLayerIndex >= 0 ? fortuneLayerOrder.slice(0, selectedLayerIndex + 1) : [];
+      labels.innerHTML = activeLayers.map(activeKey => {
+        const activeIndex = currentData?.fortune?.[activeKey]?.palace_index;
+        if (!Number.isInteger(activeIndex)) return '';
+        const activeOffset = (index - activeIndex + 12) % 12;
+        return `<span class="layer-palace-label layer-${activeKey}">${layerPalacePrefixes[activeKey]}${['命', '父', '福', '田', '官', '奴', '迁', '疾', '财', '子', '夫', '兄'][activeOffset] || ''}</span>`;
+      }).join('');
+    }
+    if (arrow) arrow.textContent = offset === 0 ? '命' : offset === 6 ? '↔' : offset === 4 ? '↘' : offset === 8 ? '↖' : '';
   });
   board.querySelectorAll('.transit-star').forEach(node => {
-    node.hidden = layer !== 'all' && node.dataset.layer !== layer;
+    const transitLayerIndex = fortuneLayerOrder.indexOf(node.dataset.layer);
+    node.hidden = layer === 'natal' || (layer !== 'all' && (transitLayerIndex < 0 || transitLayerIndex > selectedLayerIndex));
+  });
+  board.querySelectorAll('.flow-flags').forEach(node => {
+    node.querySelectorAll('.flow-flag').forEach(flag => {
+      const flagLayerIndex = fortuneLayerOrder.indexOf(flag.dataset.layer);
+      flag.hidden = layer === 'natal' || (layer !== 'all' && (flagLayerIndex < 0 || flagLayerIndex > selectedLayerIndex));
+    });
+    node.hidden = layer === 'natal' || (layer !== 'all' && !node.querySelector('.flow-flag:not([hidden])'));
+  });
+  board.querySelectorAll('.transit-zone').forEach(node => {
+    node.hidden = layer === 'natal' || (layer !== 'all' && !node.querySelector('.transit-star:not([hidden])'));
   });
   document.querySelectorAll('.layer-filter button, .flow-track button').forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.layer === layer));
@@ -236,6 +275,30 @@ function fragmentDetail(fragment) {
   if (fragment.type === 'unconfigured_star') return fragment.summary;
   const originals = fragment.star_original_meanings || [];
   return originals.map(item => item.definition).join('；') || '宫位基础定义与场景映射';
+}
+
+function palaceConclusion(palace) {
+  const patterns = palace.fragments.filter(fragment => fragment.type === 'pattern' && fragment.summary);
+  if (patterns.length) {
+    const status = patterns[0].facts?.status || 'formed';
+    const qualifier = { formed: '在必要条件满足时', strengthened: '在增强条件支持下', weakened: '在条件偏弱的情况下', broken: '在核心结构受到破格因素影响时', tendency: '在部分条件呈现时' }[status] || '在当前本命结构中';
+    return `${qualifier}，${patterns[0].summary}`;
+  }
+  const stars = palace.facts.primary_stars?.join('、');
+  const subject = palace.fragments.find(fragment => fragment.type === 'palace_symbolism')?.effect_subject?.join('、') || '当前宫位主题';
+  return `${subject}以${stars || '空宫借对宫'}为主要观察入口；具体表现仍需结合三方四正、四化与亮度判断。`;
+}
+
+function renderNatalSummary(analysis) {
+  const ming = analysis.palaces.find(palace => palace.facts.is_ming_palace) || analysis.palaces[0];
+  const patterns = analysis.fragments.filter(fragment => fragment.type === 'pattern');
+  const signalCount = analysis.fragments.length;
+  const coreCount = ming?.signal_summary?.core.length || 0;
+  const patternText = patterns.length ? `识别到 ${patterns.length} 条本命格局信号` : '当前规则库未识别到正式本命格局';
+  document.querySelector('#analysis-natal-summary-body').innerHTML = `
+    <p>本命盘以${escapeHtml(ming?.palace || '命宫')}为主要观察入口，当前分析包含 ${signalCount} 条结构信号；其中焦点宫有 ${coreCount} 条核心信号。</p>
+    <div class="summary-points"><span><b>命宫</b>${escapeHtml(ming?.palace || '--')} · ${escapeHtml(ming?.facts.primary_stars?.join('、') || '空宫')}</span><span><b>格局</b>${escapeHtml(patternText)}</span><span><b>阅读边界</b>本摘要只描述本命层，不代表大限或流年结果。</span></div>`;
+  document.querySelector('#analysis-natal-summary').hidden = false;
 }
 
 function evidenceLabel(evidence) {
@@ -357,7 +420,7 @@ function renderFragmentRows(fragments, signalSummary) {
       <article class="fragment-row">
         <div class="fragment-kind">${escapeHtml(fragmentTypeLabels[fragment.type] || fragment.type)}</div>
         <div class="fragment-body"><strong>${escapeHtml(fragmentHeadline(fragment))}</strong><p>${escapeHtml(fragmentDetail(fragment))}</p>${patternMeta(fragment)}<small>${factMeta.map(escapeHtml).join(' · ')}</small></div>
-        <div class="fragment-source"><div>${signals.join('') || `<span>${escapeHtml(fragment.confidence?.level || 'fact')}</span>`}</div>${evidence}</div>
+        <div class="fragment-source"><div>${signals.join('') || `<span>${escapeHtml(fragment.confidence?.level || 'fact')}</span>`}</div>${evidence ? `<details class="fragment-evidence"><summary>来源</summary>${evidence}</details>` : ''}</div>
       </article>
     `;
   }).join('')}</div>`;
@@ -403,6 +466,7 @@ function renderAnalysisPalace(palaceName) {
       <div><span>${escapeHtml(palace.gan_zhi)}</span><h2>${escapeHtml(palace.palace)}</h2></div>
       <dl><div><dt>三合</dt><dd>${directions.triads.map(item => escapeHtml(item.palace)).join(' · ')}</dd></div><div><dt>对宫</dt><dd>${escapeHtml(directions.opposite.palace)}</dd></div><div><dt>主星</dt><dd>${palace.facts.primary_stars.map(escapeHtml).join(' · ') || '空宫'}</dd></div></dl>
     </header>
+    <p class="palace-conclusion"><b>条件性结论</b>${escapeHtml(palaceConclusion(palace))}</p>
     ${summaryBar}
     ${renderFragmentSection('格局匹配', sections.patterns, fragmentMap, summary, '格局效果归属于当前焦点宫代表的人与领域；未命中表示当前宫不符合已配置规则。')}
     ${renderFragmentSection('宫位规则', sections.palace_rules || [], fragmentMap, summary, '展示空宫借对宫等基础宫位关系，不计入格局数量。')}
@@ -411,10 +475,10 @@ function renderAnalysisPalace(palaceName) {
     ${renderFragmentSection('本宫星曜', sections.self_stars, fragmentMap, summary, '星曜实际坐入当前焦点宫。')}
     ${renderFragmentSection('三方星曜', sections.triad_stars, fragmentMap, summary, '保留实际落宫，仅作为三合关系作用于当前宫。')}
     ${renderFragmentSection('对宫星曜', sections.opposite_stars, fragmentMap, summary, '保留实际落宫，仅作为对宫关系作用于当前宫。')}
-    ${renderFragmentSection('四化修正', sections.transformations, fragmentMap, summary, '四化只在此处计权，星曜碎片仅保留关联。')}
+    ${renderFragmentSection('四化修正', sections.transformations, fragmentMap, summary, '四化只在此处计权，相关星曜仅保留关联。')}
     ${renderFragmentSection('星曜组合', sections.combinations || [], fragmentMap, summary, '组合描述星曜共同作用，保留实际宫位和三方四正关系。')}
     ${renderFragmentSection('十二神', sections.shen_sha, fragmentMap, summary, '四套系统独立展示，重名条目不会合并。')}
-    ${renderFragmentSection('未配置内容', sections.unconfigured, fragmentMap, summary, '仅保留盘面事实，不进入推理结论。')}
+    <details class="analysis-advanced"><summary>高级详情：未配置内容</summary>${renderFragmentSection('未配置内容', sections.unconfigured, fragmentMap, summary, '仅保留盘面事实，不进入推理结论。')}</details>
   `;
 }
 
@@ -476,6 +540,7 @@ function renderAnalysis(analysis) {
   document.querySelector('#analysis-palace-count').textContent = analysis.palaces.length;
   document.querySelector('#analysis-fragment-count').textContent = analysis.fragments.length;
   document.querySelector('#analysis-config-version').textContent = `${analysis.config.pattern_count} 条`;
+  renderNatalSummary(analysis);
   renderPatternOverview(analysis);
   renderPatternLibrary(analysis);
   const navigation = document.querySelector('#analysis-palace-tabs');
@@ -497,8 +562,10 @@ async function loadAnalysis(chart) {
   document.querySelector('#analysis-loading').hidden = false;
   document.querySelector('#analysis-pattern-overview').hidden = true;
   document.querySelector('#analysis-pattern-library').hidden = true;
+  document.querySelector('#analysis-pattern-library-detail').open = false;
+  document.querySelector('#analysis-natal-summary').hidden = true;
   document.querySelector('#analysis-workspace').hidden = true;
-  document.querySelector('#analysis-title').textContent = '正在生成结构化碎片';
+  document.querySelector('#analysis-title').textContent = '正在生成结构信号';
   try {
     const response = await fetch('/api/v1/ziwei/analysis', {
       method: 'POST',
