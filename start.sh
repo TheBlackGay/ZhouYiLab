@@ -25,7 +25,7 @@ if [[ -n "$port_pid" ]]; then
 fi
 
 cd "$ROOT_DIR"
-nohup python3 "$ROOT_DIR/web/server.py" --port "$PORT" >"$LOG_FILE" 2>&1 &
+nohup python3 "$ROOT_DIR/web/server.py" --port "$PORT" </dev/null >"$LOG_FILE" 2>&1 &
 pid=$!
 echo "$pid" >"$PID_FILE"
 

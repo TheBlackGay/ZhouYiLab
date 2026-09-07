@@ -54,11 +54,10 @@ git submodule update --init --recursive
 
 ### 2. 构建网页计算引擎
 
-网页服务依赖两个 C++ JSON CLI：
+网页服务依赖五个 C++ JSON CLI。项目根目录的 `build.sh` 会自动配置并构建它们：
 
 ```bash
-cmake -S . -B build
-cmake --build build --target zi_wei_web_cli qi_men_web_cli ba_zi_web_cli
+./build.sh
 ```
 
 构建产物：
@@ -67,6 +66,8 @@ cmake --build build --target zi_wei_web_cli qi_men_web_cli ba_zi_web_cli
 build/examples/zi_wei_web_cli
 build/examples/qi_men_web_cli
 build/examples/ba_zi_web_cli
+build/examples/liu_yao_web_cli
+build/examples/da_liu_ren_web_cli
 ```
 
 如需构建所有示例：
@@ -83,6 +84,16 @@ cmake --build build --target all_examples
 ./start.sh
 ./stop.sh
 ./restart.sh
+```
+
+也可以使用统一入口：
+
+```bash
+./manage.sh build
+./manage.sh start
+./manage.sh restart
+./manage.sh stop
+./manage.sh status
 ```
 
 启动后访问：

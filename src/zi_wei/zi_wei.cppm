@@ -381,7 +381,6 @@ export namespace ZhouYi::ZiWei {
         int tian_kong2_idx = get_tian_kong_index(year_pillar.zhi);
         auto [tian_ku_idx, tian_xu_idx] = get_tian_ku_tian_xu_index(year_pillar.zhi);
         auto [tian_shi_idx, tian_shang_idx] = get_tian_shi_tian_shang_index(ming_index, is_male, year_pillar.zhi);
-        int nian_jie_idx = get_nian_jie_index(year_pillar.zhi);
         auto [xun_kong1_idx, xun_kong2_idx] = get_xun_kong_index(year_pillar.gan, year_pillar.zhi);
         auto [jie_lu_idx, kong_wang_idx] = get_jie_lu_kong_wang_index(year_pillar.gan);
         auto [da_hao_idx, long_de2_idx] = get_da_hao_long_de_index(year_pillar.zhi);
@@ -785,13 +784,6 @@ export namespace ZhouYi::ZiWei {
             if (i == tian_shang_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianShang)),
-                    .liang_du = nullopt,
-                    .gong_index = i
-                });
-            }
-            if (i == nian_jie_idx) {
-                palace_info.za_yao.push_back(StarData{
-                    .name = string(to_zh(ZaYao::NianJie)),
                     .liang_du = nullopt,
                     .gong_index = i
                 });

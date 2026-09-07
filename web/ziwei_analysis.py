@@ -42,6 +42,7 @@ SECTION_KEYS = (
 SHEN_SHA_SYSTEMS = (
     "chang_sheng_12", "bo_shi_12", "sui_qian_12", "jiang_qian_12",
 )
+SIGNAL_TYPES = {"核心象义", "辅助提示", "张力信号"}
 
 
 class AnalysisConfigError(ValueError):
@@ -98,6 +99,14 @@ def _validate_symbolism(symbolism):
             raise AnalysisConfigError(f"象义条目重复: {entry_id}/{entry_name}")
         entry_ids.add(entry_id)
         entry_names.add(entry_name)
+        signal_type = entry.get("signal_type")
+        if signal_type is not None and signal_type not in SIGNAL_TYPES:
+            raise AnalysisConfigError(f"{entry_id} 的 signal_type 不受支持: {signal_type}")
+        aliases = entry.get("aliases", [])
+        if not isinstance(aliases, list) or any(not isinstance(alias, str) for alias in aliases):
+            raise AnalysisConfigError(f"{entry_id} 的 aliases 必须是字符串数组")
+        if entry_name in aliases or len(aliases) != len(set(aliases)):
+            raise AnalysisConfigError(f"{entry_id} 的 aliases 存在重复或自引用")
 
         original_ids = set()
         for original in entry.get("original_definitions", []):
@@ -201,6 +210,9 @@ def analyze_natal_chart(
 
     palace_entries = {entry["name"]: entry for entry in symbolism["palaces"]}
     star_entries = {entry["name"]: entry for entry in symbolism["stars"]}
+    for entry in symbolism["stars"]:
+        for alias in entry.get("aliases", []):
+            star_entries[alias] = entry
     chart_names = [palace.get("name") for palace in palaces]
     if len(set(chart_names)) != 12 or set(chart_names) != set(palace_entries):
         raise AnalysisRequestError("chart.palaces 宫名必须与象义词典中的十二宫完整对应")
@@ -478,6 +490,7 @@ def _star_fragment(focus_index, focus, palace_entry, direction, star, entry, sce
             "relation": relation,
             "star": star["name"],
             "star_category": entry.get("category"),
+            "signal_type": entry.get("signal_type", "核心象义"),
             "brightness": star.get("liang_du"),
             "transformation": star.get("si_hua"),
         },
