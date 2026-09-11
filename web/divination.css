@@ -106,3 +106,4 @@ a { color:inherit; } button,input,select { font:inherit; }
   .term-help dl { grid-template-columns:1fr; }
   .reading-guide { align-items:flex-start; flex-direction:column; gap:3px; }
 }
+.fact-card p { white-space: pre-wrap; }

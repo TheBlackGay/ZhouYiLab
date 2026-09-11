@@ -126,6 +126,96 @@ ZHOUYILAB_PORT=9000 ./start.sh
 python3 web/server.py --port 8768
 ```
 
+### Docker 部署
+
+项目提供多阶段 `Dockerfile` 和 `docker-compose.yml`。以下命令均在项目根目录执行，需要 Docker Engine 24+ 和 Docker Compose v2+。
+
+#### 从源码构建并启动
+
+```bash
+docker compose up -d --build
+```
+
+该命令会编译 C++ 计算引擎、构建镜像并启动容器。启动后访问 `http://127.0.0.1:8768/`，持久化数据保存在 Compose volume `zhouyilab-data` 中。
+
+查看容器状态和日志：
+
+```bash
+docker compose ps
+docker compose logs -f zhouyilab
+```
+
+停止、重启和移除容器：
+
+```bash
+docker compose stop
+docker compose restart
+docker compose down
+```
+
+#### 构建并推送 Docker Hub 镜像
+
+镜像仓库为 `1047028213/zhouyilab`：
+
+```bash
+docker login -u 1047028213
+docker build -t 1047028213/zhouyilab:latest .
+docker push 1047028213/zhouyilab:latest
+```
+
+建议同时发布版本标签：
+
+```bash
+docker build -t 1047028213/zhouyilab:1.6.0 -t 1047028213/zhouyilab:latest .
+docker push 1047028213/zhouyilab:1.6.0
+docker push 1047028213/zhouyilab:latest
+```
+
+#### 使用 Docker Hub 镜像部署
+
+在目标服务器安装 Docker 后，拉取并启动最新镜像：
+
+```bash
+docker login -u 1047028213
+docker compose pull
+docker compose up -d
+```
+
+只使用 Docker CLI 运行（不使用 Compose）：
+
+```bash
+docker pull 1047028213/zhouyilab:latest
+docker volume create zhouyilab-data
+docker run -d --name zhouyilab \
+  --restart unless-stopped \
+  -p 8768:8768 \
+  -v zhouyilab-data:/app/.zhouyilab \
+  1047028213/zhouyilab:latest
+```
+
+查看运行状态：
+
+```bash
+docker ps
+curl http://127.0.0.1:8768/api/v1/health
+```
+
+更新镜像并重新部署：
+
+```bash
+docker compose pull
+docker compose up -d
+docker image prune -f
+```
+
+自定义宿主机端口（容器内部仍使用 `8768`）：
+
+```bash
+ZHOUYILAB_PORT=9000 docker compose up -d
+```
+
+此时访问 `http://127.0.0.1:9000/`。如果服务器通过公网访问，请在防火墙或安全组中放行对应端口。
+
 ## 页面说明
 
 ### 紫微斗数

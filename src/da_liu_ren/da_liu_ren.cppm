@@ -444,11 +444,15 @@ public:
     const std::array<DiZhi, 12>& get_shen_jiang() const { return shen_jiang_; }
     
     /**
-     * @brief 获取地支对应的神将
+     * @brief 反向获取落在指定地支上的神将索引
      */
     DiZhi get_shen_jiang_at(DiZhi zhi) const {
-        int index = static_cast<int>(zhi);
-        return shen_jiang_[index];
+        for (int i = 0; i < 12; ++i) {
+            if (shen_jiang_[i] == zhi) {
+                return static_cast<DiZhi>(i);
+            }
+        }
+        return DiZhi::Zi;
     }
     
     /**

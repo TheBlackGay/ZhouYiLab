@@ -750,6 +750,34 @@ nlohmann::json DaLiuRenResult::to_json() const {
     j["yue_jiang"] = std::string(Mapper::to_zh(yue_jiang));
     j["gui_ren"] = std::string(Mapper::to_zh(gui_ren));
     j["is_day"] = is_day;
+
+    const auto day_gan = ba_zi.day.gan;
+    const auto day_zhi = ba_zi.day.zhi;
+    nlohmann::json pan = nlohmann::json::array();
+    const auto& di_pan = tian_di_pan.get_di_pan();
+    const auto& tian_pan = tian_di_pan.get_tian_pan();
+    const auto& shen_jiang = tian_di_pan.get_shen_jiang();
+    static constexpr std::array<std::string_view, 12> shen_jiang_names = {
+        "贵人", "螣蛇", "朱雀", "六合", "勾陈", "青龙",
+        "天空", "白虎", "太常", "玄武", "太阴", "天后"
+    };
+    for (int i = 0; i < 12; ++i) {
+        const auto dun_gan = ZhouYi::GanZhi::get_dun_gan(tian_pan[i], day_gan, day_zhi);
+        std::string shen_jiang_name;
+        for (int k = 0; k < 12; ++k) {
+            if (shen_jiang[k] == di_pan[i]) {
+                shen_jiang_name = std::string(shen_jiang_names[k]);
+                break;
+            }
+        }
+        pan.push_back({
+            {"position", std::string(Mapper::to_zh(di_pan[i]))},
+            {"tian_pan", std::string(Mapper::to_zh(tian_pan[i]))},
+            {"dun_gan", dun_gan ? std::string(Mapper::to_zh(*dun_gan)) : ""},
+            {"shen_jiang", shen_jiang_name}
+        });
+    }
+    j["tian_di_pan"] = pan;
     
     j["si_ke"] = {
         {"first", si_ke.first.to_string()},
@@ -764,6 +792,24 @@ nlohmann::json DaLiuRenResult::to_json() const {
         {"mo_chuan", std::string(Mapper::to_zh(san_chuan.get_mo_chuan()))},
         {"ke_shi", san_chuan.get_ke_shi()}
     };
+    const auto san_chuan_dun_gan = san_chuan.get_dun_gan(day_gan, day_zhi);
+    const auto san_chuan_liu_qin = san_chuan.get_liu_qin(day_gan);
+    auto& san_chuan_json = j["san_chuan"];
+    san_chuan_json["details"] = nlohmann::json::array();
+    const std::array<std::string, 3> san_chuan_names = {"chu_chuan", "zhong_chuan", "mo_chuan"};
+    const std::array<DiZhi, 3> san_chuan_zhi = {
+        san_chuan.get_chu_chuan(), san_chuan.get_zhong_chuan(), san_chuan.get_mo_chuan()
+    };
+    for (int i = 0; i < 3; ++i) {
+        san_chuan_json["details"].push_back({
+            {"stage", san_chuan_names[i]},
+            {"branch", std::string(Mapper::to_zh(san_chuan_zhi[i]))},
+            {"dun_gan", san_chuan_dun_gan[i] ? std::string(Mapper::to_zh(*san_chuan_dun_gan[i])) : ""},
+            {"liu_qin", std::string(san_chuan_liu_qin[i])}
+        });
+    }
+    j["shen_sha"] = shen_sha.to_json();
+    j["gua_ti"] = gua_ti;
     
     return j;
 }
