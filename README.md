@@ -216,6 +216,12 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 
 此时访问 `http://127.0.0.1:9000/`。如果服务器通过公网访问，请在防火墙或安全组中放行对应端口。
 
+### 2.x 产品规划
+
+- [2.x 版本路线图](docs/product/ZhouYiLab-2.x-版本路线图.md)
+- [2.0.0 需求规格](docs/product/ZhouYiLab-2.0.0-需求规格.md)
+- [2.0.0 产品规划头脑风暴](docs/product/ZhouYiLab-2.0.0-产品规划头脑风暴.md)
+
 ## 页面说明
 
 ### 紫微斗数
