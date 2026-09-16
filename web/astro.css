@@ -1,0 +1,45 @@
+:root { --astro-ink:#18201d; --astro-line:#d8ddd8; --astro-paper:#f4f5f2; }
+.astro-workspace { max-width: 1440px; margin: 0 auto; padding: 28px; display:grid; grid-template-columns: minmax(250px,320px) minmax(0,1fr); gap:28px; }
+.astro-input form { display:grid; gap:12px; padding:20px; border:1px solid var(--astro-line); background:var(--astro-paper); }
+.astro-input h1 { margin:0 0 8px; font-size:22px; }
+.astro-input label { display:grid; gap:5px; color:#59625d; font-size:12px; }
+.astro-input input,.astro-input select { min-height:40px; padding:8px; border:1px solid var(--astro-line); background:white; font:inherit; }
+.astro-input button { min-height:44px; border:0; background:var(--astro-ink); color:white; cursor:pointer; }
+.astro-two { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.astro-check { display:flex!important; grid-template-columns:none!important; align-items:center; gap:8px!important; }
+.astro-check input { min-height:auto; }
+.astro-results { min-width:0; }
+.astro-results header { border-bottom:1px solid var(--astro-line); margin-bottom:18px; }
+.astro-results h2 { margin:0 0 6px; font-size:24px; }
+.astro-results h3 { margin:24px 0 8px; font-size:15px; }
+.astro-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--astro-line); }
+.astro-grid div { padding:12px; border-right:1px solid var(--astro-line); }
+.astro-grid small { display:block; color:#59625d; }
+.astro-table { overflow:auto; border:1px solid var(--astro-line); }
+.astro-table table { width:100%; min-width:560px; border-collapse:collapse; font-size:12px; }
+.astro-table th,.astro-table td { padding:9px 10px; border-bottom:1px solid var(--astro-line); text-align:left; white-space:nowrap; }
+.astro-prompt { margin-top:28px; border:1px solid var(--astro-line); background:var(--astro-paper); padding:18px; }
+.astro-prompt-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+.astro-prompt h3 { margin:0 0 5px; }
+.astro-prompt-head p { margin:0; color:#59625d; font-size:12px; }
+.astro-prompt button { min-height:40px; padding:0 14px; border:0; background:var(--astro-ink); color:#fff; cursor:pointer; white-space:nowrap; }
+.astro-prompt button:focus-visible { outline:3px solid #a16207; outline-offset:2px; }
+.astro-prompt textarea { display:block; width:100%; min-height:260px; margin-top:14px; padding:12px; resize:vertical; border:1px solid var(--astro-line); background:#fff; color:var(--astro-ink); font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace; box-sizing:border-box; }
+#astro-copy-status { min-height:18px; margin:8px 0 0; color:#59625d; font-size:12px; }
+#astro-error { color:#a83232; }
+.astro-wheel-wrap { display:grid; place-items:center; padding:12px; border:1px solid var(--astro-line); background:#fff; }
+.astro-wheel { width:min(100%,620px); height:auto; overflow:visible; }
+.astro-wheel .ring { fill:none; stroke:var(--astro-ink); stroke-width:2; }
+.astro-wheel .inner-ring { fill:none; stroke:var(--astro-line); stroke-width:1; }
+.astro-wheel .sign-sector { fill:#f7f8f5; stroke:var(--astro-line); stroke-width:1; }
+.astro-wheel .sign-sector:nth-of-type(even) { fill:#eef1ed; }
+.astro-wheel .sign-label { fill:var(--astro-ink); font-size:15px; font-weight:600; text-anchor:middle; dominant-baseline:middle; }
+.astro-wheel .house-line { stroke:#aeb8b0; stroke-width:1; }
+.astro-wheel .house-line.major { stroke:var(--astro-ink); stroke-width:2; }
+.astro-wheel .house-label { fill:#59625d; font-size:12px; text-anchor:middle; dominant-baseline:middle; }
+.astro-wheel .aspect-line { stroke:#a16207; stroke-width:1.2; opacity:.52; }
+.astro-wheel .planet-dot { stroke:#fff; stroke-width:2; cursor:pointer; transition:transform 180ms ease; transform-box:fill-box; transform-origin:center; }
+.astro-wheel .planet-dot:hover,.astro-wheel .planet-dot:focus { transform:scale(1.35); outline:none; }
+.astro-wheel .planet-label { fill:var(--astro-ink); font-size:13px; text-anchor:middle; dominant-baseline:middle; pointer-events:none; }
+@media (prefers-reduced-motion: reduce) { .astro-wheel .planet-dot { transition:none; } }
+@media (max-width: 760px) { .astro-workspace { grid-template-columns:1fr; padding:16px; } .astro-grid { grid-template-columns:repeat(2,1fr); } .astro-prompt-head { flex-direction:column; } .astro-prompt button { width:100%; } }

@@ -5,6 +5,8 @@ import ZhouYi.tyme;
 import ZhouYi.ZiWei;
 import ZhouYi.ZiWei.Controller;
 import ZhouYi.ZiWei.Horoscope;
+import ZhouYi.Common.DateTime;
+import ZhouYi.Common.Calendar;
 import nlohmann.json;
 
 using json = nlohmann::json;
@@ -26,19 +28,13 @@ namespace {
         return month;
     }
 
-    std::string format_date_time(const BirthDateTime& value) {
-        return std::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
-            value.year, value.month, value.day,
-            value.hour, value.minute, value.second);
-    }
-
     json correction_json(const SolarTimeCorrection& correction) {
         return {
             {"mode", correction.mode == BirthTimeMode::TrueSolarTime
                 ? "true_solar_time" : "standard_time"},
-            {"recorded_time", format_date_time(correction.recorded_time)},
-            {"standard_time", format_date_time(correction.standard_time)},
-            {"chart_time", format_date_time(correction.chart_time)},
+            {"recorded_time", ZhouYi::Common::DateTime::format(correction.recorded_time)},
+            {"standard_time", ZhouYi::Common::DateTime::format(correction.standard_time)},
+            {"chart_time", ZhouYi::Common::DateTime::format(correction.chart_time)},
             {"longitude", correction.longitude},
             {"standard_meridian", correction.standard_meridian},
             {"daylight_saving_minutes", correction.daylight_saving_minutes},
@@ -185,9 +181,7 @@ namespace {
         }
 
         const auto chart = pai_pan_solar(birth, is_male, options);
-        const auto target_time = tyme::SolarTime::from_ymd_hms(
-            target.year, target.month, target.day,
-            target.hour, target.minute, target.second);
+        const auto target_time = ZhouYi::Common::Calendar::to_solar_time(target);
         const auto solar_day = target_time.get_solar_day();
         const auto lunar_day = solar_day.get_lunar_day();
         const auto cycle_day = solar_day.get_sixty_cycle_day();

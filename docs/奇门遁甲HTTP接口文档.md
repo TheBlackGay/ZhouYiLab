@@ -2,6 +2,20 @@
 
 奇门网页与接口由 `web/server.py` 提供，默认只监听本机地址。
 
+## 对外访问地址
+
+- 生产 Base URL：`https://zhouyilab.k8s.gold`
+- 内网直连 Base URL：`http://192.168.31.183:8768`
+- 本地开发 Base URL：`http://127.0.0.1:8765`
+
+其他项目接入时请优先使用生产地址，例如：
+
+```text
+https://zhouyilab.k8s.gold/api/v1/qimen/charts
+```
+
+生产域名由 HTTPS 反向代理转发至应用容器，不需要直接暴露或依赖容器端口。
+
 ## 启动
 
 ```bash

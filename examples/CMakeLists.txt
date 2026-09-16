@@ -37,6 +37,7 @@ set(EXAMPLES
     example_liu_yao     # "六爻起卦示例"
     example_zi_wei      # "紫微斗数排盘示例"
     example_true_solar_time # "紫微斗数真太阳时校验"
+    common_calendar_web_cli # "公共日历与真太阳时 JSON API"
     zi_wei_web_cli     # "紫微斗数网页JSON桥接"
     qi_men_web_cli     # "奇门遁甲网页JSON桥接"
     ba_zi_web_cli      # "八字网页JSON桥接"
@@ -45,6 +46,10 @@ set(EXAMPLES
     example_stacktrace  # "std::stacktrace 功能测试"
     example_qi_men      # "奇门遁甲排盘示例"
 )
+
+if(ZHOUYILAB_ENABLE_ASTRO)
+    list(APPEND EXAMPLES astro_web_cli) # "西洋占星网页JSON桥接"
+endif()
 
 # ==============================================================================
 # 辅助函数：创建示例可执行文件
@@ -62,7 +67,6 @@ function(add_zhouyi_example name)
     # 设置模块依赖
     target_compile_features(${name} PRIVATE cxx_std_23)
     
-    # 链接核心库（包含所有模块）
     target_link_libraries(${name} PRIVATE ZhouYiLabCore)
     
     # 设置输出目录
@@ -117,6 +121,7 @@ message(STATUS "    - example_da_liu_ren   : 大六壬起课示例")
 message(STATUS "    - example_liu_yao      : 六爻起卦示例")
 message(STATUS "    - example_zi_wei       : 紫微斗数排盘示例")
 message(STATUS "    - example_true_solar_time : 紫微斗数真太阳时校验")
+message(STATUS "    - common_calendar_web_cli : 公共日历与真太阳时 JSON API")
 message(STATUS "    - zi_wei_web_cli      : 紫微斗数网页JSON桥接")
 message(STATUS "    - qi_men_web_cli      : 奇门遁甲网页JSON桥接")
 message(STATUS "    - ba_zi_web_cli       : 八字网页JSON桥接")

@@ -4,6 +4,7 @@ export module ZhouYi.ZiWei;
 import std;
 import ZhouYi.GanZhi;
 import ZhouYi.BaZiBase;
+import ZhouYi.Common.Calendar;
 import ZhouYi.ZiWei.Constants;
 export import ZhouYi.ZiWei.SolarTime;
 import ZhouYi.ZiWei.Palace;
@@ -204,19 +205,13 @@ export namespace ZhouYi::ZiWei {
             result += "           紫微斗数命盘\n";
             result += "\n\n";
 
-            const auto format_date_time = [](const BirthDateTime& value) {
-                return fmt::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
-                    value.year, value.month, value.day,
-                    value.hour, value.minute, value.second);
-            };
-
             result += fmt::format("记录时间：{}\n",
-                format_date_time(time_correction.recorded_time));
+                ZhouYi::Common::DateTime::format(time_correction.recorded_time));
             if (time_correction.mode == BirthTimeMode::TrueSolarTime) {
                 result += fmt::format("标准时间：{}\n",
-                    format_date_time(time_correction.standard_time));
+                    ZhouYi::Common::DateTime::format(time_correction.standard_time));
                 result += fmt::format("真太阳时：{}{}\n",
-                    format_date_time(time_correction.chart_time),
+                    ZhouYi::Common::DateTime::format(time_correction.chart_time),
                     time_correction.crossed_date_boundary ? "（已跨日）" : "");
                 result += fmt::format("校正参数：经度{:.6f}°，标准经线{:.6f}°，夏令时{}分钟\n",
                     time_correction.longitude,
@@ -281,7 +276,7 @@ export namespace ZhouYi::ZiWei {
         // 使用最终排盘时间统一转换农历日期和四柱
         tyme::LunarDay lunar_day = solar_day.get_lunar_day();
         tyme::LunarHour lunar_hour = solar_time.get_lunar_hour();
-        tyme::EightChar bazi = lunar_hour.get_eight_char();
+        tyme::EightChar bazi = ZhouYi::Common::Calendar::eight_char_from_lunar_time(lunar_hour);
          
         // 转换为我们的 Pillar 类型
         auto convert_cycle = [](const tyme::SixtyCycle& cycle) -> Pillar {

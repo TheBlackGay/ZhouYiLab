@@ -4,10 +4,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      ZHOUYILAB_EPHEMERIS_PATH: /app/data/ephemeris
+      ZHOUYILAB_BIND_HOST: 0.0.0.0
     ports:
-      - "${ZHOUYILAB_PORT:-8768}:8768"
+      - "192.168.31.183:${ZHOUYILAB_PORT:-8768}:8768"
     volumes:
       - zhouyilab-data:/app/.zhouyilab
+    networks:
+      - 1panel-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8768/api/v1/health', timeout=3)"]
@@ -18,3 +23,7 @@ services:
 
 volumes:
   zhouyilab-data:
+
+networks:
+  1panel-network:
+    external: true

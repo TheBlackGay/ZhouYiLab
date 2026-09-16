@@ -25,8 +25,7 @@ if [[ -n "$port_pid" ]]; then
 fi
 
 cd "$ROOT_DIR"
-nohup python3 "$ROOT_DIR/web/server.py" --port "$PORT" </dev/null >"$LOG_FILE" 2>&1 &
-pid=$!
+pid="$(python3 -c 'import os, subprocess, sys; root, port, log_path = sys.argv[1:]; log = open(log_path, "ab", buffering=0); process = subprocess.Popen([sys.executable, os.path.join(root, "web", "server.py"), "--port", port], cwd=root, stdin=subprocess.DEVNULL, stdout=log, stderr=log, start_new_session=True); print(process.pid)' "$ROOT_DIR" "$PORT" "$LOG_FILE")"
 echo "$pid" >"$PID_FILE"
 
 sleep 0.2

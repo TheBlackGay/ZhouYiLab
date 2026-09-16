@@ -35,6 +35,7 @@
 | 紫微盲评研究 | 可用 | 匿名盲评包、维度量尺、协议与一致性研究配置 |
 | AI 多模型预评审 | 实验性 | Ollama/OpenAI 兼容接口、多模型重复实验、结果统计与 SQLite 留档 |
 | 八字 | 初步可用 | 公历/农历输入、真太阳时、四柱、十神、藏干、十二长生、逐柱旬空、纳音、首批神煞、起运与十步大运 |
+| 西洋占星 | 实验性 | Swiss Ephemeris 本命盘、主要行星、四轴、十二宫、主要相位和 Moshier 降级提示 |
 | 六爻、大六壬 | C++ 示例 | 核心模块与示例程序 |
 
 ## 快速开始
@@ -54,7 +55,7 @@ git submodule update --init --recursive
 
 ### 2. 构建网页计算引擎
 
-网页服务依赖五个 C++ JSON CLI。项目根目录的 `build.sh` 会自动配置并构建它们：
+网页服务依赖六个 C++ JSON CLI。项目根目录的 `build.sh` 会自动配置并构建它们：
 
 ```bash
 ./build.sh
@@ -68,6 +69,7 @@ build/examples/qi_men_web_cli
 build/examples/ba_zi_web_cli
 build/examples/liu_yao_web_cli
 build/examples/da_liu_ren_web_cli
+build/examples/common_calendar_web_cli
 ```
 
 如需构建所有示例：
@@ -103,6 +105,7 @@ cmake --build build --target all_examples
 - 八字：[http://127.0.0.1:8768/bazi.html](http://127.0.0.1:8768/bazi.html)
 - 六爻：[http://127.0.0.1:8768/liu-yao.html](http://127.0.0.1:8768/liu-yao.html)
 - 大六壬：[http://127.0.0.1:8768/da-liu-ren.html](http://127.0.0.1:8768/da-liu-ren.html)
+- 西洋占星：[http://127.0.0.1:8768/astro.html](http://127.0.0.1:8768/astro.html)
 - 人工盲评：[http://127.0.0.1:8768/blind-review.html](http://127.0.0.1:8768/blind-review.html)
 - AI 预评审：[http://127.0.0.1:8768/ai-review.html](http://127.0.0.1:8768/ai-review.html)
 
@@ -130,6 +133,19 @@ python3 web/server.py --port 8768
 
 项目提供多阶段 `Dockerfile` 和 `docker-compose.yml`。以下命令均在项目根目录执行，需要 Docker Engine 24+ 和 Docker Compose v2+。
 
+#### 部署到 192.168.31.183
+
+项目提供固定部署脚本 `scripts/deploy-zhouyilab-183.sh`，默认使用
+`/opt/app/zhouyilab`、`1panel-network` 和端口 `8768`：
+
+```bash
+./scripts/deploy-zhouyilab-183.sh
+```
+
+脚本使用 SSH/rsync 认证，不保存服务器密码；建议提前配置 SSH 公钥登录。
+如需临时覆盖端口或目标目录，可通过 `ZHOUYILAB_DEPLOY_PORT`、
+`ZHOUYILAB_DEPLOY_DIR` 等同名环境变量覆盖默认值。
+
 #### 从源码构建并启动
 
 ```bash
@@ -137,6 +153,8 @@ docker compose up -d --build
 ```
 
 该命令会编译 C++ 计算引擎、构建镜像并启动容器。启动后访问 `http://127.0.0.1:8768/`，持久化数据保存在 Compose volume `zhouyilab-data` 中。
+
+生产环境统一访问地址为 `https://zhouyilab.k8s.gold`；其他项目接入时请以该域名作为 API Base URL。
 
 查看容器状态和日志：
 
@@ -286,9 +304,13 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 
 主要接口：
 
+对外生产 API Base URL：`https://zhouyilab.k8s.gold`。下表中的接口路径均拼接在该 Base URL 后使用；内网直连地址为 `http://192.168.31.183:8768`，本地开发地址按启动参数为 `http://127.0.0.1:8765` 或 `http://127.0.0.1:8768`。
+
 | 方法 | 路径 | 用途 |
 | --- | --- | --- |
 | GET | `/api/v1/health` | 服务及 C++ 引擎健康状态 |
+| POST | `/api/v1/calendar/convert` | 公历/农历互转 |
+| POST | `/api/v1/calendar/true-solar-time` | 通用真太阳时计算 |
 | GET | `/api/v1/ziwei/meta` | 紫微接口能力和版本信息 |
 | POST | `/api/v1/ziwei/time-correction` | 真太阳时校正 |
 | POST | `/api/v1/ziwei/charts` | 生成紫微本命盘 |
@@ -296,6 +318,9 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 | POST | `/api/v1/ziwei/analysis` | 生成本命结构解读与格局结果 |
 | POST | `/api/v1/qimen/charts` | 生成奇门遁甲盘 |
 | POST | `/api/v1/bazi/charts` | 生成八字四柱与大运 |
+| GET | `/api/v1/astro/meta` | 西洋占星能力和版本信息 |
+| POST | `/api/v1/astro/charts` | 使用 Swiss Ephemeris 生成西洋星盘 |
+| POST | `/api/v1/astro/analysis` | 基于结构化星盘和规则库生成证据分析包 |
 | GET | `/api/v1/ziwei/research/blind-review/packet` | 生成匿名盲评包 |
 | GET/POST | `/api/v1/ziwei/research/ai-review/*` | AI 预评审配置、实验和结果 |
 
@@ -326,7 +351,15 @@ curl -sS \
 完整请求和响应契约见：
 
 - [紫微斗数 HTTP 接口文档](docs/ziwei/紫微斗数HTTP接口文档.md)
+- [公共日历 API 文档](docs/common/公共日历API.md)
 - [奇门遁甲 HTTP 接口文档](docs/奇门遁甲HTTP接口文档.md)
+- [西洋占星 HTTP 接口文档](docs/astro/西洋占星HTTP接口文档.md)
+- [统一 HTTP 接口访问地址](docs/HTTP接口访问地址.md)
+- [Swiss Ephemeris 集成设计与 Astro 接口契约](docs/astro/Swiss-Ephemeris-集成设计.md)
+
+Astro 默认使用项目内置的高精度星历文件 `data/ephemeris/*.se1`。健康检查中的
+`astro_ephemeris_available` 为 `true` 时，未开启 Moshier 降级的请求会使用 Swiss
+高精度模式；部署时请勿删除该目录。
 
 ## 紫微格局引擎
 

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZhouYiLab 西洋占星</title>
+  <link rel="stylesheet" href="/ui-foundation.css">
+  <link rel="stylesheet" href="/app-shell.css">
+  <link rel="stylesheet" href="/astro.css">
+</head>
+<body>
+  <div class="app-navigation"><header class="app-header">
+    <a class="brand" href="/"><span class="brand-mark">周</span><span><strong>ZhouYiLab</strong><small>西洋占星 · Swiss Ephemeris</small></span></a>
+    <nav class="primary-tabs" aria-label="命理类型"><a href="/">紫微斗数</a><a href="/qimen.html">奇门遁甲</a><a href="/bazi.html">八字</a><a href="/liu-yao.html">六爻</a><a href="/da-liu-ren.html">大六壬</a><a href="/astro.html" aria-current="page">西洋占星</a></nav>
+  </header></div>
+  <main id="main-content" class="astro-workspace">
+    <aside class="astro-input"><form id="astro-form">
+      <h1>西洋占星本命盘</h1>
+      <label>出生日期 <input id="astro-date" type="date" value="1990-05-20" required></label>
+      <label>出生时间 <input id="astro-time" type="time" value="14:00" step="1" required></label>
+      <label>UTC 偏移（分钟） <input id="astro-offset" type="number" value="480" min="-720" max="840" step="30" required></label>
+      <div class="astro-two"><label>纬度 <input id="astro-lat" type="number" value="31.2304" min="-90" max="90" step="0.0001" required></label><label>经度 <input id="astro-lon" type="number" value="121.4737" min="-180" max="180" step="0.0001" required></label></div>
+      <label>宫制 <select id="astro-houses"><option value="placidus">Placidus</option><option value="whole_sign">Whole Sign</option></select></label>
+      <label>黄道 <select id="astro-zodiac"><option value="tropical">热带黄道</option><option value="sidereal">恒星黄道</option></select></label>
+      <label class="astro-check"><input id="astro-moshier" type="checkbox"> 星历文件缺失时允许 Moshier 降级</label>
+      <button type="submit">计算本命盘</button><p id="astro-error" role="alert" hidden></p>
+    </form></aside>
+    <section class="astro-results" aria-live="polite"><div id="astro-empty">提交出生资料后显示星体、宫位和相位。</div><div id="astro-output" hidden><header><h2 id="astro-title"></h2><p id="astro-meta"></p></header><div id="astro-angles" class="astro-grid"></div><h3>星盘</h3><div class="astro-wheel-wrap"><svg id="astro-wheel" class="astro-wheel" viewBox="0 0 620 620" role="img" aria-label="本命盘圆盘图"></svg></div><h3>行星</h3><div id="astro-planets" class="astro-table"></div><h3>十二宫</h3><div id="astro-houses-list" class="astro-table"></div><h3>主要相位</h3><div id="astro-aspects" class="astro-table"></div><section class="astro-prompt" aria-labelledby="astro-prompt-title"><div class="astro-prompt-head"><div><h3 id="astro-prompt-title">AI 结构化解析提示词</h3><p>复制后粘贴给 AI，要求它只基于结构化事实进行分析。</p></div><button id="astro-copy-prompt" type="button">复制提示词</button></div><textarea id="astro-prompt-text" readonly spellcheck="false" aria-label="AI 结构化解析提示词"></textarea><p id="astro-copy-status" role="status" aria-live="polite"></p></section></div></section>
+  </main>
+  <script src="/navigation.js"></script><script src="/astro.js"></script>
+</body></html>

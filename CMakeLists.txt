@@ -27,6 +27,8 @@ set(ZHOUYILAB_SHARED_REQUIRED_MODULE_SPECS
     "std=std.*,std-*.pcm;std.compat=std.compat.*,std.compat-*.pcm;nlohmann.json=nlohmann.json.*,nlohmann_json.*,json.*"
     CACHE STRING "SHARED mode required modules: name=glob1,glob2;name2=glob1,glob2")
 
+option(ZHOUYILAB_ENABLE_ASTRO "Build the Swiss Ephemeris astronomy module" ON)
+
 # ==============================================================================
 # 平台特定编译标志（MSVC）
 # ==============================================================================
@@ -83,6 +85,9 @@ endif()
 
 # 添加第三方库
 add_subdirectory(3rdparty/fmt)
+if(ZHOUYILAB_ENABLE_ASTRO)
+    add_subdirectory(3rdparty/swisseph)
+endif()
 if(ZHOUYILAB_EFFECTIVE_MODULE_MODE STREQUAL "SHARED")
     # Shared mode: nlohmann_json module comes from -fprebuilt-module-path.
     # Still add_subdirectory for headers, but create stub for module target.
@@ -126,6 +131,7 @@ file(GLOB_RECURSE MODULE_INTERFACE_FILES
     "src/*.ixx"     # MSVC module 接口文件
 )
 
+
 # 排除测试文件（它有自己的 main 函数）
 list(REMOVE_ITEM CPP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/test_tyme_module.cpp")
 
@@ -166,6 +172,9 @@ target_link_libraries(ZhouYiLabCore PUBLIC
     fmt::fmt
     nlohmann_json_modules
 )
+if(ZHOUYILAB_ENABLE_ASTRO)
+    target_link_libraries(ZhouYiLabCore PUBLIC swisseph)
+endif()
 
 # Windows 平台需要链接网络库
 if(WIN32)
@@ -177,6 +186,14 @@ endif()
 set_property(TARGET ZhouYiLabCore PROPERTY
     CXX_MODULE_GENERATION_MODE "SEPARATE"
 )
+
+if(ZHOUYILAB_ENABLE_ASTRO)
+    file(GLOB_RECURSE ASTRO_CPP_SOURCES "src/astro/*.cpp")
+    file(GLOB_RECURSE ASTRO_MODULE_INTERFACE_FILES "src/astro/*.cppm" "src/astro/*.ixx")
+    target_sources(ZhouYiLabCore PRIVATE ${ASTRO_CPP_SOURCES})
+    target_sources(ZhouYiLabCore PUBLIC FILE_SET cxx_modules TYPE CXX_MODULES FILES ${ASTRO_MODULE_INTERFACE_FILES})
+    target_include_directories(ZhouYiLabCore PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/swisseph)
+endif()
 
 # ==============================================================================
 # 主可执行文件目标

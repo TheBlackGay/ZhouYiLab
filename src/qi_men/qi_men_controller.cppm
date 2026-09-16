@@ -5,6 +5,7 @@ export module ZhouYi.QiMen.Controller;
 
 import ZhouYi.GanZhi;
 import ZhouYi.BaZiBase;
+import ZhouYi.Common.Calendar;
 import ZhouYi.QiMen;
 import ZhouYi.QiMen.Pan;
 import ZhouYi.tyme;
@@ -52,17 +53,11 @@ public:
     ) -> std::expected<QiMenPan, std::string> {
         
         // 参数验证
-        if (month < 1 || month > 12) {
-            return std::unexpected("月份必须在 1-12 之间");
-        }
-        if (day < 1 || day > 31) {
-            return std::unexpected("日期必须在 1-31 之间");
-        }
-        if (hour < 0 || hour > 23) {
-            return std::unexpected("小时必须在 0-23 之间");
-        }
-        if (minute < 0 || minute > 59) {
-            return std::unexpected("分钟必须在 0-59 之间");
+        const ZhouYi::Common::SolarDateTime date{
+            year, month, day, hour, minute, 0
+        };
+        if (!ZhouYi::Common::DateTime::is_valid_solar_date_time(date)) {
+            return std::unexpected("公历日期时间无效");
         }
         
         // 声明变量
@@ -72,13 +67,13 @@ public:
         // 从 tyme 模块获取节气、天干、地支信息
         try {
             // 创建公历时间
-            auto solar_time = tyme::SolarTime::from_ymd_hms(year, month, day, hour, minute, 0);
+            auto solar_time = ZhouYi::Common::Calendar::to_solar_time(date);
             
             // 获取农历时间
             auto lunar_hour = solar_time.get_lunar_hour();
             
             // 获取八字
-            auto eight_char = lunar_hour.get_eight_char();
+            auto eight_char = ZhouYi::Common::Calendar::eight_char_from_lunar_time(lunar_hour);
             
             // 获取日柱（干支）
             auto day_cycle = eight_char.get_day();
@@ -124,7 +119,7 @@ public:
             
             // 农历日期
             try {
-                auto solar_time = tyme::SolarTime::from_ymd_hms(year, month, day, hour, minute, 0);
+                auto solar_time = ZhouYi::Common::Calendar::to_solar_time(date);
                 auto lunar_day = solar_time.get_lunar_hour().get_lunar_day();
                 auto lunar_month = lunar_day.get_lunar_month();
                 
@@ -174,17 +169,11 @@ public:
     ) -> std::expected<QiMenPan, std::string> {
         
         // 参数验证
-        if (month < -12 || month > 12 || month == 0) {
-            return std::unexpected("农历月份必须在 -12 到 12 之间（负数表示闰月）");
-        }
-        if (day < 1 || day > 30) {
-            return std::unexpected("农历日期必须在 1-30 之间");
-        }
-        if (hour < 0 || hour > 23) {
-            return std::unexpected("小时必须在 0-23 之间");
-        }
-        if (minute < 0 || minute > 59) {
-            return std::unexpected("分钟必须在 0-59 之间");
+        const ZhouYi::Common::LunarDateTime date{
+            year, month, day, hour, minute, 0
+        };
+        if (!ZhouYi::Common::DateTime::is_valid_lunar_date(date)) {
+            return std::unexpected("农历日期时间无效");
         }
         
         // 声明变量
@@ -194,10 +183,10 @@ public:
         // 从 tyme 模块进行农历到公历的转换，获取节气、天干、地支信息
         try {
             // 创建农历时间
-            auto lunar_hour = tyme::LunarHour::from_ymd_hms(year, month, day, hour, minute, 0);
+            auto lunar_hour = ZhouYi::Common::Calendar::to_lunar_hour(date);
             
             // 获取八字
-            auto eight_char = lunar_hour.get_eight_char();
+            auto eight_char = ZhouYi::Common::Calendar::eight_char_from_lunar_time(lunar_hour);
             
             // 获取日柱（干支）
             auto day_cycle = eight_char.get_day();
@@ -245,7 +234,7 @@ public:
             
             // 阳历日期（转换）
             try {
-                auto lunar_hour = tyme::LunarHour::from_ymd_hms(year, month, day, hour, minute, 0);
+                auto lunar_hour = ZhouYi::Common::Calendar::to_lunar_hour(date);
                 auto solar_time = lunar_hour.get_solar_time();
                 auto solar_day = solar_time.get_solar_day();
                 

@@ -4,7 +4,8 @@ import ZhouYi.BaZiBase;
 import ZhouYi.BaZi.ShenSha;
 import ZhouYi.GanZhi;
 import ZhouYi.tyme;
-import ZhouYi.ZiWei.SolarTime;
+import ZhouYi.Common.DateTime;
+import ZhouYi.Common.Calendar;
 import nlohmann.json;
 
 using json = nlohmann::json;
@@ -15,19 +16,14 @@ json error_response(std::string code, std::string message) {
     return {{"error", {{"code", std::move(code)}, {"message", std::move(message)}}}};
 }
 
-std::string format_date_time(const ZhouYi::ZiWei::BirthDateTime& value) {
-    return std::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
-        value.year, value.month, value.day, value.hour, value.minute, value.second);
-}
-
-json correction_json(const ZhouYi::ZiWei::SolarTimeCorrection& correction) {
-    using ZhouYi::ZiWei::BirthTimeMode;
+json correction_json(const ZhouYi::Common::Calendar::SolarTimeCorrection& correction) {
+    using ZhouYi::Common::Calendar::SolarTimeMode;
     return {
-        {"mode", correction.mode == BirthTimeMode::TrueSolarTime
+        {"mode", correction.mode == SolarTimeMode::TrueSolarTime
             ? "true_solar_time" : "standard_time"},
-        {"recorded_time", format_date_time(correction.recorded_time)},
-        {"standard_time", format_date_time(correction.standard_time)},
-        {"chart_time", format_date_time(correction.chart_time)},
+        {"recorded_time", ZhouYi::Common::DateTime::format(correction.recorded_time)},
+        {"standard_time", ZhouYi::Common::DateTime::format(correction.standard_time)},
+        {"chart_time", ZhouYi::Common::DateTime::format(correction.chart_time)},
         {"longitude", correction.longitude},
         {"standard_meridian", correction.standard_meridian},
         {"daylight_saving_minutes", correction.daylight_saving_minutes},
@@ -38,15 +34,15 @@ json correction_json(const ZhouYi::ZiWei::SolarTimeCorrection& correction) {
     };
 }
 
-ZhouYi::ZiWei::BirthTimeOptions parse_time_options(const json& request) {
-    using namespace ZhouYi::ZiWei;
+ZhouYi::Common::Calendar::SolarTimeOptions parse_time_options(const json& request) {
+    using namespace ZhouYi::Common::Calendar;
     const auto options = request.value("time_correction", json::object());
     const auto mode = options.value("mode", std::string("standard_time"));
     if (mode != "standard_time" && mode != "true_solar_time") {
         throw std::invalid_argument("time_correction.mode 必须是 standard_time 或 true_solar_time");
     }
-    return BirthTimeOptions{
-        .mode = mode == "true_solar_time" ? BirthTimeMode::TrueSolarTime : BirthTimeMode::StandardTime,
+    return SolarTimeOptions{
+        .mode = mode == "true_solar_time" ? SolarTimeMode::TrueSolarTime : SolarTimeMode::StandardTime,
         .longitude = options.value("longitude", 120.0),
         .standard_meridian = options.value("standard_meridian", 120.0),
         .daylight_saving_minutes = options.value("daylight_saving_minutes", 0)
@@ -56,11 +52,13 @@ ZhouYi::ZiWei::BirthTimeOptions parse_time_options(const json& request) {
 void validate_date_time(int year, int month, int day, int hour, int minute, bool lunar) {
     if (year < 1 || year > 9999) throw std::invalid_argument("年份必须在 1 到 9999 之间");
     if (month < 1 || month > 12) throw std::invalid_argument("月份必须在 1 到 12 之间");
-    if (day < 1 || day > (lunar ? 30 : 31)) {
-        throw std::invalid_argument(lunar ? "农历日期必须在 1 到 30 之间" : "日期必须在 1 到 31 之间");
-    }
-    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-        throw std::invalid_argument("时间必须在 00:00 到 23:59 之间");
+    const auto valid = lunar
+        ? ZhouYi::Common::DateTime::is_valid_lunar_date(
+            ZhouYi::Common::LunarDateTime{year, month, day, hour, minute, 0})
+        : ZhouYi::Common::DateTime::is_valid_solar_date_time(
+            ZhouYi::Common::SolarDateTime{year, month, day, hour, minute, 0});
+    if (!valid) {
+        throw std::invalid_argument("日期时间无效");
     }
 }
 
@@ -125,13 +123,15 @@ int main() {
         const bool lunar = calendar == "lunar";
         validate_date_time(year, month, day, hour, minute, lunar);
 
-        tyme::SolarTime recorded_solar = lunar
-            ? tyme::LunarHour::from_ymd_hms(
-                year, date.value("leap_month", false) ? -month : month,
-                day, hour, minute, 0).get_solar_time()
-            : tyme::SolarTime::from_ymd_hms(year, month, day, hour, minute, 0);
-        const auto recorded = ZhouYi::ZiWei::to_birth_date_time(recorded_solar);
-        const auto correction = ZhouYi::ZiWei::correct_birth_time(recorded, parse_time_options(request));
+        const auto recorded = lunar
+            ? ZhouYi::Common::Calendar::lunar_to_solar(
+                ZhouYi::Common::LunarDateTime{
+                    year, date.value("leap_month", false) ? -month : month,
+                    day, hour, minute, 0})
+            : ZhouYi::Common::SolarDateTime{year, month, day, hour, minute, 0};
+        const auto recorded_solar = ZhouYi::Common::Calendar::to_solar_time(recorded);
+        const auto correction = ZhouYi::Common::Calendar::correct_solar_time(
+            recorded, parse_time_options(request));
         const auto& chart = correction.chart_time;
         auto result = ZhouYi::BaZiController::pai_pan_solar(
             chart.year, chart.month, chart.day, chart.hour, chart.minute, gender == "male");
@@ -142,12 +142,13 @@ int main() {
         output["birth_date"] = {
             {"year", recorded.year}, {"month", recorded.month}, {"day", recorded.day},
             {"hour", recorded.hour}, {"minute", recorded.minute},
-            {"display", format_date_time(recorded)}
+            {"display", ZhouYi::Common::DateTime::format(recorded)}
         };
         output["birth_time"] = correction_json(correction);
         output["solar_date"] = recorded_solar.to_string();
         output["lunar_date"] = recorded_solar.get_lunar_hour().to_string();
-        output["chart_lunar_date"] = ZhouYi::ZiWei::to_solar_time(chart).get_lunar_hour().to_string();
+        output["chart_lunar_date"] = ZhouYi::Common::Calendar::to_solar_time(chart)
+            .get_lunar_hour().to_string();
 
         const auto ten_gods = result.get_si_zhu_shi_shen();
         const auto& bazi = result.ba_zi;

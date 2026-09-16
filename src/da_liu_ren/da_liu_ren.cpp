@@ -4,6 +4,7 @@ module ZhouYi.DaLiuRen;
 import std;
 import fmt;
 import ZhouYi.DaLiuRen.GuaTi;
+import ZhouYi.Common.Calendar;
 
 namespace ZhouYi::DaLiuRen {
 
@@ -842,14 +843,15 @@ std::string DaLiuRenResult::to_string() const {
 // ==================== DaLiuRenEngine 实现 ====================
 
 DaLiuRenResult DaLiuRenEngine::pai_pan(int year, int month, int day, int hour) {
-    auto solar_time = tyme::SolarTime::from_ymd_hms(year, month, day, hour, 0, 0);
+    auto solar_time = ZhouYi::Common::Calendar::to_solar_time(
+        ZhouYi::Common::SolarDateTime{year, month, day, hour, 0, 0});
     BaZi ba_zi = BaZi::from_solar(year, month, day, hour);
     return pai_pan_from_bazi(ba_zi, solar_time);
 }
 
 DaLiuRenResult DaLiuRenEngine::pai_pan_lunar(int year, int month, int day, int hour) {
-    auto lunar_hour = tyme::LunarHour::from_ymd_hms(year, month, day, hour, 0, 0);
-    auto solar_time = lunar_hour.get_solar_time();
+    auto solar_time = ZhouYi::Common::Calendar::to_solar_time(
+        ZhouYi::Common::LunarDateTime{year, month, day, hour, 0, 0});
     BaZi ba_zi = BaZi::from_lunar(year, month, day, hour);
     return pai_pan_from_bazi(ba_zi, solar_time);
 }

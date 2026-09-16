@@ -1,6 +1,7 @@
 import std;
 import ZhouYi.ZiWei;
 import ZhouYi.ZiWei.Controller;
+import ZhouYi.Common.Calendar;
 import fmt;
 
 using namespace ZhouYi::ZiWei;
@@ -20,6 +21,20 @@ namespace {
 
 int main() {
     const BirthDateTime birth{1994, 12, 8, 9, 5, 0};
+
+    const ZhouYi::Common::SolarDateTime new_year{2024, 2, 10, 9, 5, 0};
+    const auto lunar_new_year = ZhouYi::Common::Calendar::solar_to_lunar(new_year);
+    require(lunar_new_year.year == 2024 && lunar_new_year.month == 1
+        && lunar_new_year.day == 1,
+        "公历转农历应识别2024年春节");
+    const auto solar_round_trip = ZhouYi::Common::Calendar::lunar_to_solar(lunar_new_year);
+    require(solar_round_trip.year == new_year.year
+        && solar_round_trip.month == new_year.month
+        && solar_round_trip.day == new_year.day
+        && solar_round_trip.hour == new_year.hour
+        && solar_round_trip.minute == new_year.minute
+        && solar_round_trip.second == new_year.second,
+        "公历和农历互转应保持日期时间一致");
 
     const auto uncorrected = correct_birth_time(birth);
     require(same_date_time(uncorrected.recorded_time, uncorrected.chart_time),
@@ -44,6 +59,16 @@ int main() {
     const auto chengdu_time = correct_birth_time(birth, chengdu);
     require(chengdu_time.longitude_offset_seconds == -3824,
         "成都经度校正应约为-63分44秒");
+    const auto common_chengdu_time = ZhouYi::Common::Calendar::calculate_true_solar_time(
+        birth,
+        ZhouYi::Common::Calendar::TrueSolarTimeOptions{.longitude = 104.066});
+    require(common_chengdu_time.chart_time.year == chengdu_time.chart_time.year
+        && common_chengdu_time.chart_time.month == chengdu_time.chart_time.month
+        && common_chengdu_time.chart_time.day == chengdu_time.chart_time.day
+        && common_chengdu_time.chart_time.hour == chengdu_time.chart_time.hour
+        && common_chengdu_time.chart_time.minute == chengdu_time.chart_time.minute
+        && common_chengdu_time.chart_time.second == chengdu_time.chart_time.second,
+        "公共真太阳时API应与紫微兼容接口保持一致");
 
     BirthTimeOptions urumqi{
         .mode = BirthTimeMode::TrueSolarTime,

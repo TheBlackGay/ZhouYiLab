@@ -1,0 +1,12 @@
+{
+  "schema_version": "astro-rules/1.0",
+  "rules": [
+    {"rule_id": "struct.angular_planet", "signal_type": "angular_planet", "observation_code": "planet_in_angular_house", "dimension": "angularity"},
+    {"rule_id": "struct.retrograde_point", "signal_type": "retrograde_point", "observation_code": "point_retrograde", "dimension": "motion"},
+    {"rule_id": "struct.element_emphasis", "signal_type": "element_emphasis", "observation_code": "element_count_reaches_threshold", "dimension": "distribution"},
+    {"rule_id": "struct.modality_emphasis", "signal_type": "modality_emphasis", "observation_code": "modality_count_reaches_threshold", "dimension": "distribution"},
+    {"rule_id": "struct.sign_stellium", "signal_type": "sign_stellium", "observation_code": "multiple_points_in_sign", "dimension": "concentration"},
+    {"rule_id": "struct.house_stellium", "signal_type": "house_stellium", "observation_code": "multiple_points_in_house", "dimension": "concentration"},
+    {"rule_id": "struct.tight_aspect", "signal_type": "tight_aspect", "observation_code": "aspect_within_orb_threshold", "dimension": "aspect"}
+  ]
+}

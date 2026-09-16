@@ -6,6 +6,20 @@
 > 字符编码：UTF-8
 > 当前服务：本地 Python HTTP 适配层 + C++ 紫微斗数计算核心
 
+## 对外访问地址
+
+- 生产 Base URL：`https://zhouyilab.k8s.gold`
+- 内网直连 Base URL：`http://192.168.31.183:8768`
+- 本地开发 Base URL：`http://127.0.0.1:8765`
+
+其他项目接入时请优先使用生产地址。例如紫微本命盘接口：
+
+```text
+https://zhouyilab.k8s.gold/api/v1/ziwei/charts
+```
+
+生产域名由 HTTPS 反向代理转发至应用容器；接口路径保持 `/api/v1` 不变。
+
 ## 1. 接口范围
 
 当前 API 提供以下能力：

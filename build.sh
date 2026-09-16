@@ -13,7 +13,11 @@ build_args=(
   ba_zi_web_cli
   liu_yao_web_cli
   da_liu_ren_web_cli
+  common_calendar_web_cli
 )
+if [[ "${ZHOUYILAB_ENABLE_ASTRO:-ON}" != "OFF" ]]; then
+  build_args+=(astro_web_cli)
+fi
 if [[ -n "${ZHOUYILAB_BUILD_JOBS:-}" ]]; then
   build_args+=(--parallel "$ZHOUYILAB_BUILD_JOBS")
 fi

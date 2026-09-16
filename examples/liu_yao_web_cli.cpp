@@ -1,6 +1,7 @@
 import std;
 import ZhouYi.LiuYaoController;
 import ZhouYi.BaZiBase;
+import ZhouYi.Common.DateTime;
 import nlohmann.json;
 
 using json = nlohmann::json;
@@ -10,13 +11,12 @@ json error_response(std::string code, std::string message) {
     return {{"error", {{"code", std::move(code)}, {"message", std::move(message)}}}};
 }
 void validate_date(int year, int month, int day, int hour, bool lunar) {
-    if (year < 1 || year > 9999 || month < 1 || month > 12 || day < 1 || day > (lunar ? 30 : 31))
-        throw std::invalid_argument("日期范围无效");
-    if (!lunar) {
-        const auto calendarDate = std::chrono::year{year} / std::chrono::month{static_cast<unsigned>(month)} / std::chrono::day{static_cast<unsigned>(day)};
-        if (!calendarDate.ok()) throw std::invalid_argument("公历日期无效");
-    }
-    if (hour < 0 || hour > 23) throw std::invalid_argument("小时必须在 0 到 23 之间");
+    const auto valid = lunar
+        ? ZhouYi::Common::DateTime::is_valid_lunar_date(
+            ZhouYi::Common::LunarDateTime{year, month, day, hour, 0, 0})
+        : ZhouYi::Common::DateTime::is_valid_solar_date_time(
+            ZhouYi::Common::SolarDateTime{year, month, day, hour, 0, 0});
+    if (!valid) throw std::invalid_argument("日期时间无效");
 }
 }
 

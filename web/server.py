@@ -2,6 +2,7 @@
 import argparse
 import json
 import mimetypes
+import os
 import subprocess
 import uuid
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -25,6 +26,11 @@ from ziwei_ai_review import (
     AiReviewService,
 )
 from ziwei_research_engine import ResearchConfigError
+from astro_analysis import (
+    AstroAnalysisConfigError,
+    AstroAnalysisRequestError,
+    analyze_natal_chart as analyze_astro_natal_chart,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -34,6 +40,8 @@ QIMEN_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "qi_men_web_cli"
 BAZI_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "ba_zi_web_cli"
 LIU_YAO_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "liu_yao_web_cli"
 DA_LIU_REN_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "da_liu_ren_web_cli"
+CALENDAR_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "common_calendar_web_cli"
+ASTRO_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "astro_web_cli"
 BAZI_SHEN_SHA_ROOT = PROJECT_ROOT / "config" / "bazi" / "shen_sha"
 BAZI_SHEN_SHA_ALIASES = {
     "zi_wu_mao_you_si_gong_hu_huan_shen_sha": "子午卯酉四宫互换神煞.json",
@@ -48,9 +56,12 @@ _AI_REVIEW_LOCK = None
 
 POST_OPERATIONS = {
     "/api/v1/ziwei/time-correction": "time_correction",
+    "/api/v1/calendar/convert": "calendar_convert",
+    "/api/v1/calendar/true-solar-time": "calendar_true_solar_time",
     "/api/v1/ziwei/charts": "chart",
     "/api/v1/ziwei/fortune": "fortune",
     "/api/v1/ziwei/analysis": "analysis",
+    "/api/v1/astro/analysis": "astro_analysis",
 }
 
 
@@ -115,7 +126,24 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 "bazi_cli_available": BAZI_CLI_PATH.exists(),
                 "liu_yao_cli_available": LIU_YAO_CLI_PATH.exists(),
                 "da_liu_ren_cli_available": DA_LIU_REN_CLI_PATH.exists(),
+                "calendar_cli_available": CALENDAR_CLI_PATH.exists(),
+                "astro_cli_available": ASTRO_CLI_PATH.exists(),
+                "astro_ephemeris_available": any(
+                    path.is_file()
+                    for path in (Path(os.environ["ZHOUYILAB_EPHEMERIS_PATH"])
+                                 if os.environ.get("ZHOUYILAB_EPHEMERIS_PATH")
+                                 else PROJECT_ROOT / "data" / "ephemeris").rglob("*.se1")
+                ),
             })
+            return
+        if parsed.path == "/api/v1/astro/meta":
+            if not ASTRO_CLI_PATH.exists():
+                self.send_api_error(500, "ENGINE_UNAVAILABLE", "Astro 计算引擎尚未构建")
+                return
+            try:
+                self.send_api_success(self.run_engine(ASTRO_CLI_PATH, {"operation": "meta"}))
+            except CliError as error:
+                self.send_api_error(500, error.code, error.message)
             return
         if parsed.path == "/api/v1/ziwei/meta":
             self.send_api_success({
@@ -291,6 +319,18 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
                 self.send_api_error(status, error.code, error.message)
             return
+        if parsed.path == "/api/v1/astro/charts":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_engine(ASTRO_CLI_PATH, payload))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "西洋占星计算超时")
+            except CliError as error:
+                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED", "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST"} else 500
+                self.send_api_error(status, error.code, error.message)
+            return
         if parsed.path == f"{ai_prefix}/connections/test":
             try:
                 payload = self.read_json_body()
@@ -337,6 +377,15 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             payload = self.read_json_body()
             if operation == "analysis":
                 result = self.run_analysis(payload)
+            elif operation == "astro_analysis":
+                result = self.run_astro_analysis(payload)
+            elif operation in {"calendar_convert", "calendar_true_solar_time"}:
+                result = self.run_engine(CALENDAR_CLI_PATH, {
+                    **payload,
+                    "operation": "convert"
+                        if operation == "calendar_convert"
+                        else "true_solar_time",
+                })
             else:
                 request = legacy_request(payload) if is_legacy else {
                     **payload,
@@ -347,8 +396,10 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 self.send_json(200, legacy_response(result))
             else:
                 self.send_api_success(result)
-        except (AnalysisConfigError, BrightnessConfigError):
+        except (AnalysisConfigError, BrightnessConfigError, AstroAnalysisConfigError):
             self.send_api_error(500, "ANALYSIS_CONFIG_ERROR", "分析配置加载或校验失败")
+        except AstroAnalysisRequestError as error:
+            self.send_api_error(400, "INVALID_REQUEST", str(error))
         except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
             if is_legacy:
                 self.send_json(400, {"error": f"输入参数无效：{error}"})
@@ -357,7 +408,10 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         except subprocess.TimeoutExpired:
             self.send_api_error(504, "CALCULATION_TIMEOUT", "排盘计算超时")
         except CliError as error:
-            status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT"} else 500
+            status = 422 if error.code in {
+                "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
+                "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST",
+            } else 500
             self.send_api_error(status, error.code, error.message)
         except Exception:
             self.send_api_error(500, "INTERNAL_ERROR", "服务内部错误")
@@ -380,12 +434,18 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
     def run_engine(self, executable, request, normalize=False):
         if not executable.exists():
             raise CliError("ENGINE_UNAVAILABLE", "计算引擎尚未构建")
+        engine_env = os.environ.copy()
+        engine_env.setdefault(
+            "ZHOUYILAB_EPHEMERIS_PATH",
+            str(PROJECT_ROOT / "data" / "ephemeris"),
+        )
         completed = subprocess.run(
             [str(executable)],
             input=json.dumps(request, ensure_ascii=False),
             cwd=PROJECT_ROOT,
             capture_output=True,
             text=True,
+            env=engine_env,
             timeout=20,
             check=False,
         )
@@ -418,6 +478,20 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         return {
             "chart": chart,
             "analysis": analyze_natal_chart(chart, payload.get("scope")),
+        }
+
+    def run_astro_analysis(self, payload):
+        chart = payload.get("chart")
+        chart_request = payload.get("chart_request")
+        if chart is not None and chart_request is not None:
+            raise AstroAnalysisRequestError("chart 与 chart_request 只能提供一个")
+        if chart is None:
+            if not isinstance(chart_request, dict):
+                raise AstroAnalysisRequestError("必须提供 chart 或 chart_request")
+            chart = self.run_engine(ASTRO_CLI_PATH, {**chart_request, "operation": "chart"})
+        return {
+            "chart": chart,
+            "analysis": analyze_astro_natal_chart(chart, payload.get("scope")),
         }
 
     def send_api_success(self, data, status=200):
@@ -475,13 +549,18 @@ def main():
     parser = argparse.ArgumentParser(description="ZhouYiLab 紫微斗数 API 与本地页面服务")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
-    missing_engines = [path for path in (CLI_PATH, QIMEN_CLI_PATH, BAZI_CLI_PATH, LIU_YAO_CLI_PATH, DA_LIU_REN_CLI_PATH) if not path.exists()]
+    required_engines = [CLI_PATH, QIMEN_CLI_PATH, BAZI_CLI_PATH, LIU_YAO_CLI_PATH, DA_LIU_REN_CLI_PATH]
+    if os.environ.get("ZHOUYILAB_ENABLE_ASTRO", "ON") != "OFF":
+        required_engines.append(ASTRO_CLI_PATH)
+    missing_engines = [path for path in required_engines if not path.exists()]
     if missing_engines:
         missing = "、".join(str(path) for path in missing_engines)
         raise SystemExit(f"缺少 {missing}，请先构建网页 CLI")
     mimetypes.add_type("text/javascript", ".js")
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), ZhouYiHandler)
-    print(f"ZhouYiLab API 与页面已启动：http://127.0.0.1:{args.port}")
+    bind_host = os.environ.get("ZHOUYILAB_BIND_HOST", "127.0.0.1")
+    server = ThreadingHTTPServer((bind_host, args.port), ZhouYiHandler)
+    display_host = "127.0.0.1" if bind_host == "0.0.0.0" else bind_host
+    print(f"ZhouYiLab API 与页面已启动：http://{display_host}:{args.port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

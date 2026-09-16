@@ -1,5 +1,7 @@
 ﻿# ZhouYiLab 模块架构文档
 
+公共能力清单与组件抽取记录见 [`docs/common/公共能力与组件设计.md`](docs/common/公共能力与组件设计.md)。
+
 ## 模块层次结构
 
 ```
@@ -20,13 +22,13 @@
 
               通用模块层                          
      
-   BaZiBase   WuXingUtils  DiZhiRelations   
+   BaZiBase   WuXingUtils  Common.Calendar
      
      
-    TianGan      DiZhi         GanZhi       
+    GanZhi   Common.DateTime   ZhMapper
      
                     
-   ZhMapper       Tyme                       
+                 ZhouYi.tyme
                     
 
                         
@@ -46,7 +48,7 @@
 ### 1. 通用基础模块 (Common Layer)
 
 #### ZhouYi.BaZiBase
-**文件**: `src/common/ba_zi_base.cppm`
+**文件**: `src/common/tian_gan/ba_zi_base.cppm`
 
 **导出内容**:
 - `struct Pillar` - 干支柱（天干地支组合）
@@ -55,10 +57,47 @@
 **依赖**:
 ```cpp
 import nlohmann.json;  // JSON 序列化
+import ZhouYi.GanZhi;  // 干支类型
+import ZhouYi.Common.Calendar;  // 历法适配
+import ZhouYi.tyme;  // 农历历法
 import std;            // 标准库
 ```
 
-**用途**: 被所有需要使用干支柱和八字的模块引用
+**用途**: 被所有需要使用干支柱和八字的模块引用。日期和 `tyme` 适配流程通过 `ZhouYi.Common.Calendar` 复用。
+
+---
+
+#### ZhouYi.Common.DateTime
+**文件**: `src/common/calendar/date_time.cppm`
+
+**导出内容**:
+- `SolarDateTime`、`LunarDateTime` - 公历/农历日期时间值对象
+- `is_leap_year()`、`days_in_month()`、`day_of_year()` - 公历基础计算
+- `is_valid_solar_date_time()`、`is_valid_lunar_date()` - 输入校验
+- `format()` - 统一日期时间格式化
+
+**用途**: 统一所有排盘入口的日期时间基础能力，不包含时区和术数规则。
+
+---
+
+#### ZhouYi.Common.Calendar
+**文件**: `src/common/calendar/calendar.cppm`
+
+**导出内容**:
+- `to_solar_time()`、`to_lunar_hour()` - 创建 `tyme` 时间对象
+- `solar_to_lunar()`、`lunar_to_solar()` - 公历/农历公共值对象互转
+- `from_solar_time()`、`from_lunar_time()` - 转换为公共日期值对象
+- `correct_solar_time()`、`calculate_true_solar_time()` - 标准时间/真太阳时校正 API
+- `calculate_equation_of_time_seconds()` - 均时差计算 API
+- `eight_char_from_solar_time()`、`eight_char_from_lunar_time()` - 统一获取八字
+
+**依赖**:
+```cpp
+export import ZhouYi.Common.DateTime;
+import ZhouYi.tyme;
+```
+
+**用途**: 隔离功能模块与 `tyme4cpp` 的重复适配代码，并向外提供统一的公历/农历转换和真太阳时计算 API。
 
 ---
 
@@ -83,26 +122,6 @@ import std;  // 标准库
 
 ---
 
-#### ZhouYi.DiZhiRelations
-**文件**: `src/common/di_zhi_relations.cppm`
-
-**导出内容**:
-- `clashMap` - 地支六冲映射
-- `combineMap` - 地支六合映射
-- `harmMap` - 地支六害映射
-- `punishmentMap` - 地支相刑映射
-- `sanHeMap` - 地支三合局映射
-- `isClash()`, `isCombine()`, `isHarm()`, `isPunishment()` - 判断函数
-
-**依赖**:
-```cpp
-import std;  // 标准库
-```
-
-**用途**: 提供地支关系的所有映射表和判断函数
-
----
-
 #### ZhouYi.GanZhi
 **文件**: `src/common/ganzhi.cppm`
 
@@ -113,38 +132,6 @@ import std;  // 标准库
 - `enum class YinYang` - 阴阳枚举
 - 六十甲子相关函数
 - 干支关系判断函数
-
-**依赖**:
-```cpp
-import magic_enum;  // 枚举反射
-import std;         // 标准库
-```
-
----
-
-#### ZhouYi.TianGan
-**文件**: `src/common/example_module.cppm`
-
-**导出内容**:
-- `class TianGan` - 天干类
-- `TianGan::Type` - 天干类型枚举
-- `TianGanMapper` - 中英文映射
-
-**依赖**:
-```cpp
-import magic_enum;  // 枚举反射
-import std;         // 标准库
-```
-
----
-
-#### ZhouYi.DiZhi
-**文件**: `src/common/dizhi_module.cppm`
-
-**导出内容**:
-- `class DiZhi` - 地支类
-- `DiZhi::Type` - 地支类型枚举
-- `DiZhiMapper` - 中英文映射
 
 **依赖**:
 ```cpp
@@ -191,7 +178,7 @@ import std;         // 标准库
 ```cpp
 import ZhouYi.BaZiBase;        // 八字基础
 import ZhouYi.GanZhi;          // 干支系统
-import ZhouYi.Tyme;            // 农历历法
+import ZhouYi.tyme;            // 农历历法
 import std;                    // 标准库
 ```
 
@@ -223,7 +210,7 @@ std::println("年柱：{}", ba_zi.year.to_string());
 **依赖**:
 ```cpp
 import ZhouYi.GanZhi;          // 干支系统
-import ZhouYi.Tyme;            // 农历历法
+import ZhouYi.tyme;            // 农历历法
 import nlohmann.json;          // JSON 序列化
 import std;                    // 标准库
 ```
@@ -256,7 +243,7 @@ std::println("月将: {}", result.yue_jiang);
 **依赖**:
 ```cpp
 import ZhouYi.GanZhi;          // 干支系统
-import ZhouYi.Tyme;            // 农历历法
+import ZhouYi.tyme;            // 农历历法
 import std;                    // 标准库
 ```
 
@@ -296,7 +283,7 @@ import fmt;                    // 格式化输出
 import nlohmann.json;          // JSON 序列化
 import ZhouYi.BaZiBase;        // 八字基础
 import ZhouYi.WuXingUtils;     // 五行工具
-import ZhouYi.DiZhiRelations;  // 地支关系
+import ZhouYi.GanZhi;          // 地支关系与干支映射
 import std;                    // 标准库
 ```
 
@@ -312,6 +299,25 @@ auto [yaoList, json] = sixYaoDivination("111111", bazi, {1, 4});
 
 ---
 
+#### ZhouYi.Astro
+**文件**: `src/astro/astro.cppm`, `src/astro/astro_controller.cppm`
+
+**导出内容**:
+- `ChartRequest`、`ChartResult` - 西洋占星输入与结果
+- `calculate()` - Swiss Ephemeris 本命盘计算
+- `ZhouYi.Astro.Controller` - JSON 请求解析和结构化输出
+
+**依赖**:
+```cpp
+import ZhouYi.Common.DateTime;  // 公历日期校验
+import nlohmann.json;
+import std;
+```
+
+**用途**: 西洋占星历算和结构化 JSON 输出。占星规则不进入传统术数公共层。
+
+---
+
 ## 模块依赖关系
 
 ### BaZi 依赖树
@@ -324,7 +330,7 @@ ZhouYi.BaZi
  ZhouYi.GanZhi
     magic_enum
     std
- ZhouYi.Tyme
+ ZhouYi.tyme
     std
  std
 ```
@@ -336,7 +342,7 @@ ZhouYi.DaLiuRen
  ZhouYi.GanZhi
     magic_enum
     std
- ZhouYi.Tyme
+ ZhouYi.tyme
     std
  nlohmann.json
  std
@@ -349,7 +355,7 @@ ZhouYi.QiMen
  ZhouYi.GanZhi
     magic_enum
     std
- ZhouYi.Tyme
+ ZhouYi.tyme
     std
  std
 ```
@@ -363,7 +369,8 @@ ZhouYi.LiuYao
     std
  ZhouYi.WuXingUtils
     std
- ZhouYi.DiZhiRelations
+ ZhouYi.GanZhi
+    magic_enum
     std
  fmt
  nlohmann.json
@@ -380,20 +387,16 @@ ZhouYi.BaZiBase
 ZhouYi.WuXingUtils
  std
 
-ZhouYi.DiZhiRelations
- std
+ ZhouYi.GanZhi
+    magic_enum
+    std
 
-ZhouYi.GanZhi
- magic_enum
- std
+ ZhouYi.Common.DateTime
+    std
 
-ZhouYi.TianGan
- magic_enum
- std
-
-ZhouYi.DiZhi
- magic_enum
- std
+ ZhouYi.Common.Calendar
+    ZhouYi.Common.DateTime
+    ZhouYi.tyme
 
 ZhouYi.ZhMapper
  magic_enum
@@ -447,7 +450,7 @@ export namespace ZhouYi::ModuleName {
 file(GLOB_RECURSE MODULE_FILES 
     "src/*.cppm"           # C++23 module 接口文件（递归搜索所有子目录）
     "src/*.ixx"            # MSVC module 接口文件
-    "common/tyme/*.cppm"   # common/tyme 模块文件
+    "src/common/**/*.cppm"  # common 模块文件
 )
 
 target_sources(ZhouYiLab

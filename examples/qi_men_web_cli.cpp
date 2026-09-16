@@ -1,6 +1,7 @@
 import std;
 import ZhouYi.QiMen;
 import ZhouYi.QiMen.Controller;
+import ZhouYi.Common.DateTime;
 import nlohmann.json;
 
 using json = nlohmann::json;
@@ -20,15 +21,16 @@ void validate_date_time(int year, int month, int day, int hour, int minute, bool
     if (year < 1 || year > 9999) {
         throw std::invalid_argument("年份必须在 1 到 9999 之间");
     }
-    const int max_day = lunar ? 30 : 31;
     if (month < 1 || month > 12) {
         throw std::invalid_argument("月份必须在 1 到 12 之间");
     }
-    if (day < 1 || day > max_day) {
-        throw std::invalid_argument(lunar ? "农历日期必须在 1 到 30 之间" : "日期必须在 1 到 31 之间");
-    }
-    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-        throw std::invalid_argument("时间必须在 00:00 到 23:59 之间");
+    const auto valid = lunar
+        ? ZhouYi::Common::DateTime::is_valid_lunar_date(
+            ZhouYi::Common::LunarDateTime{year, month, day, hour, minute, 0})
+        : ZhouYi::Common::DateTime::is_valid_solar_date_time(
+            ZhouYi::Common::SolarDateTime{year, month, day, hour, minute, 0});
+    if (!valid) {
+        throw std::invalid_argument("日期时间无效");
     }
 }
 
