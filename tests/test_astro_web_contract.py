@@ -231,6 +231,33 @@ class AstroWebSourceContractTests(unittest.TestCase):
             html.index('href="/app-shell.css"'),
         )
 
+    def test_astro_wheel_has_layered_rings_and_orientation_control(self):
+        html = (ROOT / "web" / "astro.html").read_text(encoding="utf-8")
+        script = (ROOT / "web" / "astro.js").read_text(encoding="utf-8")
+        css = (ROOT / "web" / "astro.css").read_text(encoding="utf-8")
+        for fragment in (
+            'data-orientation="ascendant"', 'data-orientation="aries"',
+            'id="astro-wheel-legend"', 'viewBox="0 0 640 640"',
+        ):
+            self.assertIn(fragment, html)
+        # 星座环必须是圆环扇形（annulus），不能是从圆心铺满整盘的整块楔形。
+        self.assertIn("function annulus(", script)
+        self.assertIn("annulus(WHEEL.cx, WHEEL.cy, WHEEL.rim, WHEEL.signInner, mid)", script)
+        for fragment in ("element-", "mode-", "axis-label", "planet-degree", "spreadLabels", "dotRadii"):
+            self.assertIn(fragment, script)
+        for fragment in (
+            ".sign-sector.element-fire", ".mode-sector.mode-cardinal",
+            ".planet-degree", ".wheel-legend", ".axis-label",
+        ):
+            self.assertIn(fragment, css)
+
+    def test_astro_wheel_orders_zodiac_counterclockwise(self):
+        script = (ROOT / "web" / "astro.js").read_text(encoding="utf-8")
+        # 标准西洋星盘：黄经逆时针排列。上升点在左时上升黄经映射到屏幕 270°，
+        # 因此屏幕角为 base - 黄经；白羊在顶时 base 为 0。
+        self.assertIn("(Number(data.angles?.ascendant ?? 0) + 270) % 360", script)
+        self.assertIn("const screen = longitude => ((base - Number(longitude)) % 360 + 360) % 360;", script)
+
 
 if __name__ == "__main__":
     unittest.main()

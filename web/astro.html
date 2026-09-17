@@ -99,8 +99,28 @@
         </header>
 
         <div id="astro-chart-panel" class="astro-tab-panel" role="tabpanel" aria-labelledby="astro-chart-tab">
-          <div class="board-heading"><div><span>本命盘</span><strong>黄道与宫位布局</strong></div><small>点位按地心视黄经绘制</small></div>
-          <div class="astro-wheel-wrap"><svg id="astro-wheel" class="astro-wheel" viewBox="0 0 620 620" role="img" aria-label="本命盘圆盘图"></svg></div>
+          <div class="board-heading">
+            <div><span>本命盘</span><strong>黄道与宫位布局</strong></div>
+            <div class="wheel-orientation" role="group" aria-label="圆盘朝向">
+              <button id="wheel-ascendant" type="button" data-orientation="ascendant" aria-pressed="true">上升点在左</button>
+              <button id="wheel-aries" type="button" data-orientation="aries" aria-pressed="false">白羊在顶</button>
+            </div>
+          </div>
+          <p class="wheel-note"><strong>阅读方式</strong> 黄道按地心视黄经逆时针排列；外环按火、土、风、水四元素着色，内环为基本、固定、变动三模式；宫位号、四轴标注与星体度数为计算事实，逆行以 R 标记。</p>
+          <div class="astro-wheel-wrap"><svg id="astro-wheel" class="astro-wheel" viewBox="0 0 640 640" role="img" aria-label="本命盘圆盘图，上升点在左侧，黄道逆时针排列"></svg></div>
+          <div id="astro-wheel-legend" class="wheel-legend" aria-label="圆盘图例">
+            <span class="legend-item"><i class="legend-fire"></i>火</span>
+            <span class="legend-item"><i class="legend-earth"></i>土</span>
+            <span class="legend-item"><i class="legend-air"></i>风</span>
+            <span class="legend-item"><i class="legend-water"></i>水</span>
+            <span class="legend-sep" aria-hidden="true"></span>
+            <span class="legend-item"><i class="legend-cardinal"></i>基本</span>
+            <span class="legend-item"><i class="legend-fixed"></i>固定</span>
+            <span class="legend-item"><i class="legend-mutable"></i>变动</span>
+            <span class="legend-sep" aria-hidden="true"></span>
+            <span class="legend-item"><i class="legend-aspect"></i>主要相位</span>
+            <span class="legend-item"><b class="legend-retro">R</b>逆行</span>
+          </div>
         </div>
 
         <div id="astro-facts-panel" class="astro-tab-panel" role="tabpanel" aria-labelledby="astro-facts-tab" hidden>

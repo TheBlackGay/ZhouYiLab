@@ -23,21 +23,62 @@
 .astro-prompt textarea { display: block; width: 100%; min-height: 300px; margin-top: 14px; padding: 14px; resize: vertical; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 3px; font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .copy-status { min-height: 22px; margin: 8px 0 0; color: var(--jade); font-size: 12px; text-align: right; }
 #astro-error { margin-top: -12px; }
+.wheel-orientation { display: flex; flex-wrap: wrap; gap: 4px; padding: 3px; background: var(--paper); border: 1px solid var(--line); border-radius: 4px; }
+.wheel-orientation button { min-height: 38px; padding: 0 12px; color: var(--muted); background: transparent; border: 0; border-radius: 3px; font-size: 12px; font-weight: 700; }
+.wheel-orientation button[aria-pressed="true"] { color: var(--ink); background: var(--surface); box-shadow: 0 1px 3px rgb(0 0 0 / 10%); }
+.wheel-note { margin: 0 0 14px; padding: 10px 12px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--gold); font-size: 11px; line-height: 1.7; }
+.wheel-note strong { color: var(--ink); }
+.wheel-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--line); background: var(--surface); font-size: 11px; }
+.legend-item { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); }
+.legend-item i { width: 10px; height: 10px; border: 1px solid rgb(0 0 0 / 12%); border-radius: 2px; }
+.legend-fire { background: #b14b3d; }
+.legend-earth { background: #a67b2e; }
+.legend-air { background: #4c6475; }
+.legend-water { background: #3d777d; }
+.legend-cardinal { background: #c2703f; }
+.legend-fixed { background: #6f7f74; }
+.legend-mutable { background: #7b8fa6; }
+.legend-aspect { background: var(--gold); }
+.legend-sep { width: 1px; height: 14px; background: var(--line); }
+.legend-retro { color: var(--cinnabar); font-weight: 800; }
 .astro-wheel-wrap { display: grid; place-items: center; padding: clamp(12px, 2vw, 22px); background: var(--surface); border: 1px solid var(--line); }
 .astro-wheel { width: min(100%, 620px); height: auto; overflow: visible; }
 .astro-wheel .ring { fill: none; stroke: var(--ink); stroke-width: 2; }
 .astro-wheel .inner-ring { fill: none; stroke: var(--line); stroke-width: 1; }
-.astro-wheel .sign-sector { fill: #f7f8f5; stroke: var(--line); stroke-width: 1; }
-.astro-wheel .sign-sector:nth-of-type(even) { fill: #eef1ed; }
-.astro-wheel .sign-label { fill: var(--ink); font-size: 15px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
+.astro-wheel .sign-sector { stroke: var(--line); stroke-width: 1; }
+.astro-wheel .sign-sector.element-fire { fill: #f7e9e5; }
+.astro-wheel .sign-sector.element-earth { fill: #f4efe2; }
+.astro-wheel .sign-sector.element-air { fill: #eaf0f5; }
+.astro-wheel .sign-sector.element-water { fill: #e6f0ef; }
+.astro-wheel .mode-sector { stroke: none; }
+.astro-wheel .mode-sector.mode-cardinal { fill: #e8c9b4; }
+.astro-wheel .mode-sector.mode-fixed { fill: #ccd6cf; }
+.astro-wheel .mode-sector.mode-mutable { fill: #d2dae4; }
+.astro-wheel .sign-label { fill: var(--ink); font-size: 13px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
 .astro-wheel .house-line { stroke: #aeb8b0; stroke-width: 1; }
-.astro-wheel .house-line.major { stroke: var(--ink); stroke-width: 2; }
-.astro-wheel .house-label { fill: var(--muted); font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
-.astro-wheel .aspect-line { stroke: var(--gold); stroke-width: 1.2; opacity: .52; }
-.astro-wheel .planet-dot { stroke: #fff; stroke-width: 2; cursor: pointer; transition: transform 180ms ease; transform-box: fill-box; transform-origin: center; }
-.astro-wheel .planet-dot:hover,
-.astro-wheel .planet-dot:focus { transform: scale(1.35); outline: none; }
-.astro-wheel .planet-label { fill: var(--ink); font-size: 13px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
+.astro-wheel .house-line.major { stroke: var(--ink); stroke-width: 1.6; }
+.astro-wheel .house-label { fill: var(--muted); font-size: 11px; text-anchor: middle; dominant-baseline: middle; }
+.astro-wheel .axis-label { fill: var(--ink); font-size: 12px; font-weight: 800; letter-spacing: .04em; text-anchor: middle; dominant-baseline: middle; }
+.astro-wheel .axis-ascendant { fill: var(--cinnabar); }
+.astro-wheel .axis-descendant { fill: var(--jade); }
+.astro-wheel .aspect-line { stroke: var(--gold); stroke-width: 1; opacity: .3; }
+.astro-wheel .aspect-line.aspect-square,
+.astro-wheel .aspect-line.aspect-opposition { stroke: var(--cinnabar); stroke-width: 1.2; opacity: .42; }
+.astro-wheel .aspect-line.aspect-quincunx { opacity: .2; }
+.astro-wheel .planet-leader { fill: none; stroke: #b4bcb6; stroke-width: 1; }
+.astro-wheel .planet { cursor: pointer; }
+.astro-wheel .planet-dot { stroke: var(--surface); stroke-width: 1.5; transition: transform 180ms ease, stroke 160ms ease; transform-box: fill-box; transform-origin: center; }
+.astro-wheel .planet:hover .planet-dot,
+.astro-wheel .planet:focus-visible .planet-dot { transform: scale(1.25); }
+.astro-wheel .planet:focus-visible .planet-dot { stroke: var(--jade); stroke-width: 3; }
+.astro-wheel .planet-glyph { fill: #fff; font-size: 11px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
+.astro-wheel .planet-degree { fill: var(--ink); font-size: 10.5px; text-anchor: middle; dominant-baseline: middle; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+
+@media (max-width: 620px) {
+  /* 圆盘信息密度高，窄屏保持最小可读尺寸，只在容器内横向滚动。 */
+  .astro-wheel-wrap { place-items: start; overflow-x: auto; }
+  .astro-wheel { width: 560px; max-width: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .astro-wheel .planet-dot { transition: none; }
