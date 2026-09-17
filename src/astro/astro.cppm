@@ -31,6 +31,15 @@ struct ChartRequest {
     bool allow_moshier_fallback = false;
 };
 
+struct TransitRequest {
+    ChartRequest natal;
+    ChartRequest target;
+    std::vector<std::string> transit_points;
+    std::vector<std::string> natal_points;
+    bool include_aspects = true;
+    bool allow_moshier_fallback = false;
+};
+
 struct PlanetPosition {
     std::string id;
     std::string name;
@@ -77,6 +86,26 @@ struct ChartResult {
     std::vector<PlanetPosition> planets;
     std::vector<HouseCusp> houses;
     std::vector<Aspect> aspects;
+};
+
+struct TransitAspect {
+    std::string transit_point;
+    std::string natal_point;
+    std::string type;
+    double exact_angle = 0.0;
+    double actual_angle = 0.0;
+    double orb = 0.0;
+    bool applying = false;
+};
+
+struct TransitResult {
+    TransitRequest request;
+    ChartResult natal;
+    ChartResult target;
+    std::vector<PlanetPosition> transit_planets;
+    std::vector<TransitAspect> aspects;
+    std::string precision_mode = "high";
+    std::vector<std::string> warnings;
 };
 
 class AstroError : public std::runtime_error {
@@ -198,6 +227,50 @@ inline bool is_major(double actual, double exact, double& orb) {
     return orb <= 8.0;
 }
 
+inline int house_for_longitude(double longitude, const std::vector<HouseCusp>& houses) {
+    const auto normalized = normalize(longitude);
+    for (const auto& house : houses) {
+        const double start = normalize(house.cusp);
+        const auto next = house.number == 12 ? houses.front().cusp : houses[house.number].cusp;
+        const double end = normalize(next);
+        const bool contains = start <= end ? normalized >= start && normalized < end
+            : normalized >= start || normalized < end;
+        if (contains) return house.number;
+    }
+    return 0;
+}
+
+inline const PlanetPosition* find_planet(const std::vector<PlanetPosition>& planets,
+                                          std::string_view id) {
+    for (const auto& planet : planets) {
+        if (planet.id == id) return &planet;
+    }
+    return nullptr;
+}
+
+inline std::optional<double> natal_point_longitude(const ChartResult& chart,
+                                                   std::string_view id) {
+    if (const auto* planet = find_planet(chart.planets, id)) return planet->longitude;
+    if (id == "ascendant") return chart.ascendant;
+    if (id == "midheaven") return chart.midheaven;
+    if (id == "descendant") return chart.descendant;
+    if (id == "imum_coeli") return chart.imum_coeli;
+    return std::nullopt;
+}
+
+inline double natal_point_speed(const ChartResult& chart, std::string_view id) {
+    if (const auto* planet = find_planet(chart.planets, id)) return planet->longitude_speed;
+    return 0.0;
+}
+
+inline std::vector<std::string> default_transit_points() {
+    return {"sun", "moon", "mercury", "venus", "mars"};
+}
+
+inline std::vector<std::string> default_natal_points() {
+    return {"sun", "moon", "mercury", "venus", "mars", "ascendant"};
+}
+
 }  // namespace detail
 
 inline ChartResult calculate(const ChartRequest& request) {
@@ -290,6 +363,83 @@ inline ChartResult calculate(const ChartRequest& request) {
                             - result.planets[j].longitude_speed;
                         result.aspects.push_back({result.planets[i].id, result.planets[j].id,
                             name, exact, actual, orb, relative_speed > 0.0});
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return result;
+}
+
+inline TransitResult calculate_transit(const TransitRequest& request) {
+    if (request.natal.zodiac != request.target.zodiac
+        || request.natal.ayanamsa != request.target.ayanamsa
+        || request.natal.house_system != request.target.house_system) {
+        throw AstroError("INVALID_REQUEST", "本命盘与目标时刻必须使用相同的黄道、岁差和宫制");
+    }
+
+    TransitRequest normalized = request;
+    if (normalized.transit_points.empty()) normalized.transit_points = detail::default_transit_points();
+    if (normalized.natal_points.empty()) normalized.natal_points = detail::default_natal_points();
+    normalized.natal.points.clear();
+    for (const auto& id : normalized.natal_points) {
+        if (detail::find_point(id)) normalized.natal.points.push_back(id);
+    }
+    const bool angle_only = normalized.natal.points.empty();
+    if (angle_only) normalized.natal.points.push_back("sun");
+    normalized.natal.include_aspects = false;
+    normalized.natal.allow_moshier_fallback = normalized.allow_moshier_fallback;
+    normalized.target.points = normalized.transit_points;
+    normalized.target.include_aspects = false;
+    normalized.target.allow_moshier_fallback = normalized.allow_moshier_fallback;
+
+    for (const auto& id : normalized.natal_points) {
+        if (id != "ascendant" && id != "midheaven" && id != "descendant" && id != "imum_coeli"
+            && !detail::find_point(id)) {
+            throw AstroError("INVALID_REQUEST", "不支持的本命点位: " + id);
+        }
+    }
+
+    TransitResult result;
+    result.request = normalized;
+    result.natal = calculate(normalized.natal);
+    if (angle_only) {
+        result.natal.planets.clear();
+    }
+    result.target = calculate(normalized.target);
+    result.transit_planets = result.target.planets;
+    for (auto& planet : result.transit_planets) {
+        planet.house = detail::house_for_longitude(planet.longitude, result.natal.houses);
+    }
+
+    result.precision_mode = result.natal.precision_mode == "moshier"
+        || result.target.precision_mode == "moshier" ? "moshier" : "high";
+    result.warnings = result.natal.warnings;
+    for (const auto& warning : result.target.warnings) {
+        if (std::ranges::find(result.warnings, warning) == result.warnings.end()) {
+            result.warnings.push_back(warning);
+        }
+    }
+
+    if (normalized.include_aspects) {
+        constexpr std::array<std::pair<double, const char*>, 5> aspect_types{{
+            {0.0, "conjunction"}, {60.0, "sextile"}, {90.0, "square"},
+            {120.0, "trine"}, {180.0, "opposition"}
+        }};
+        for (const auto& transit : result.transit_planets) {
+            for (const auto& natal_id : normalized.natal_points) {
+                const auto natal_longitude = detail::natal_point_longitude(result.natal, natal_id);
+                if (!natal_longitude) continue;
+                const double raw = std::abs(transit.longitude - *natal_longitude);
+                const double actual = std::min(raw, 360.0 - raw);
+                for (const auto [exact, name] : aspect_types) {
+                    double orb = 0.0;
+                    if (detail::is_major(actual, exact, orb)) {
+                        const double relative_speed = transit.longitude_speed
+                            - detail::natal_point_speed(result.natal, natal_id);
+                        result.aspects.push_back({transit.id, natal_id, name, exact, actual,
+                            orb, relative_speed > 0.0});
                         break;
                     }
                 }

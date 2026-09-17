@@ -31,6 +31,18 @@ from astro_analysis import (
     AstroAnalysisRequestError,
     analyze_natal_chart as analyze_astro_natal_chart,
 )
+from astro_transit_analysis import (
+    DIMENSIONS as ASTRO_DIMENSIONS,
+    AstroTransitAnalysisConfigError,
+    AstroTransitAnalysisRequestError,
+    analyze_transit,
+)
+from astro_daily_reading import (
+    AstroDailyReadingConfigError,
+    AstroDailyReadingRequestError,
+    analyze_and_render as analyze_and_render_daily_reading,
+    render_daily_reading,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -331,6 +343,57 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED", "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST"} else 500
                 self.send_api_error(status, error.code, error.message)
             return
+        if parsed.path == "/api/v1/astro/transits":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_engine(ASTRO_CLI_PATH, {**payload, "operation": "transit"}))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "西洋占星行运计算超时")
+            except CliError as error:
+                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED", "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST"} else 500
+                self.send_api_error(status, error.code, error.message)
+            return
+        if parsed.path == "/api/v1/astro/transit-analysis":
+            try:
+                payload = self.read_json_body()
+                result = self.run_astro_transit_analysis(payload)
+                self.send_api_success(result)
+            except (AstroTransitAnalysisConfigError,):
+                self.send_api_error(500, "ANALYSIS_CONFIG_ERROR", "行运分析规则配置加载或校验失败")
+            except AstroTransitAnalysisRequestError as error:
+                self.send_api_error(400, "INVALID_REQUEST", str(error))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "西洋占星行运分析计算超时")
+            except CliError as error:
+                status = 422 if error.code in {
+                    "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
+                    "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST",
+                } else 500
+                self.send_api_error(status, error.code, error.message)
+            return
+        if parsed.path == "/api/v1/astro/daily-reading":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_astro_daily_reading(payload))
+            except AstroDailyReadingConfigError as error:
+                self.send_api_error(500, "ANALYSIS_CONFIG_ERROR", str(error))
+            except AstroDailyReadingRequestError as error:
+                self.send_api_error(400, "INVALID_REQUEST", str(error))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "西洋占星日运计算超时")
+            except CliError as error:
+                status = 422 if error.code in {
+                    "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
+                    "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST",
+                } else 500
+                self.send_api_error(status, error.code, error.message)
+            return
         if parsed.path == f"{ai_prefix}/connections/test":
             try:
                 payload = self.read_json_body()
@@ -493,6 +556,88 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             "chart": chart,
             "analysis": analyze_astro_natal_chart(chart, payload.get("scope")),
         }
+
+    def run_astro_transit_analysis(self, payload):
+        chart = payload.get("chart")
+        transit_request = payload.get("transit_request")
+        if chart is not None and transit_request is not None:
+            raise AstroTransitAnalysisRequestError("chart 与 transit_request 只能提供一个")
+        if chart is None:
+            if not isinstance(transit_request, dict):
+                raise AstroTransitAnalysisRequestError("必须提供 chart 或 transit_request")
+            chart = self.run_engine(ASTRO_CLI_PATH, {**transit_request, "operation": "transit"})
+        if not isinstance(chart, dict):
+            raise AstroTransitAnalysisRequestError("chart 必须是 JSON 对象")
+        return analyze_transit(
+            chart,
+            payload.get("scope"),
+            payload.get("dimensions"),
+        )
+
+    def run_astro_daily_reading(self, payload):
+        chart = payload.get("chart")
+        transit_request = payload.get("transit_request")
+        analysis = payload.get("analysis")
+        supplied = sum(value is not None for value in (chart, transit_request, analysis))
+        if supplied > 1:
+            raise AstroDailyReadingRequestError(
+                "chart、transit_request、analysis 只能提供一个"
+            )
+        period = payload.get("period", "day")
+        scope = payload.get("scope")
+        if isinstance(scope, str):
+            if period != "day" and period != scope:
+                raise AstroDailyReadingRequestError("period 与 scope 的时间范围不一致")
+            period = scope
+            scope = None
+        if period != "day":
+            raise AstroDailyReadingRequestError("A3 目前只支持 day 时间范围")
+        dimensions = payload.get("dimensions")
+        requested_date = payload.get("date")
+        if analysis is not None:
+            if not isinstance(analysis, dict):
+                raise AstroDailyReadingRequestError("analysis 必须是 JSON 对象")
+            if scope is not None and dimensions is not None and scope != dimensions:
+                raise AstroDailyReadingRequestError("scope 与 dimensions 只能提供一个")
+            requested_dimensions = dimensions if dimensions is not None else scope
+            if requested_dimensions is not None:
+                if (
+                    not isinstance(requested_dimensions, list)
+                    or not requested_dimensions
+                    or any(not isinstance(item, str) for item in requested_dimensions)
+                    or not set(requested_dimensions).issubset(ASTRO_DIMENSIONS)
+                ):
+                    raise AstroDailyReadingRequestError(
+                        "scope 或 dimensions 必须是支持的非空生活领域数组"
+                    )
+                analysis = {
+                    **analysis,
+                    "signals": [
+                        signal for signal in analysis.get("signals", [])
+                        if signal.get("dimension") in requested_dimensions
+                    ],
+                }
+            return render_daily_reading(
+                analysis,
+                requested_date=requested_date,
+            )
+        if chart is None:
+            if not isinstance(transit_request, dict):
+                raise AstroDailyReadingRequestError(
+                    "必须提供 chart、transit_request 或 analysis"
+                )
+            chart = self.run_engine(
+                ASTRO_CLI_PATH,
+                {**transit_request, "operation": "transit"},
+            )
+        if not isinstance(chart, dict):
+            raise AstroDailyReadingRequestError("chart 必须是 JSON 对象")
+        return analyze_and_render_daily_reading(
+            chart,
+            scope=scope,
+            dimensions=dimensions,
+            requested_date=requested_date,
+        )
 
     def send_api_success(self, data, status=200):
         self.send_json(status, {

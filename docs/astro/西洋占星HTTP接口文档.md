@@ -7,7 +7,7 @@
 - 本地开发 Base URL：`http://127.0.0.1:8768`
 - Content-Type：`application/json`
 - 当前生产域名由 HTTPS 反向代理转发至应用容器；调用方优先使用生产 Base URL，不要依赖容器端口。
-- 当前仅支持本命盘（`natal`）
+- 当前支持本命盘（`natal`）和指定时刻行运事实包（`transit`）
 - 角度单位为度（°），速度单位为度/日（°/day），距离单位为 AU
 
 所有接口使用统一响应封装：
@@ -18,7 +18,7 @@
   "data": {},
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-astro/0.1.0",
+    "algorithm_version": "zhouyilab-astro/0.2.0",
     "request_id": "..."
   }
 }
@@ -116,6 +116,45 @@ curl -sS -X POST https://zhouyilab.k8s.gold/api/v1/astro/charts \
 - `high`：使用项目内 `data/ephemeris/*.se1` 的 Swiss 高精度星历
 - `moshier`：未找到高精度文件且显式允许降级
 
+## 计算指定时刻行运
+
+`POST /api/v1/astro/transits`
+
+行运接口只返回可复核的天文和占星结构事实，不生成生活化文案、评分或吉凶判断。请求使用两个完整的时间输入：`natal` 是本命盘，`target` 是要观察的当地时刻。`target` 缺少 `utc_offset_minutes`、`location`、`zodiac`、`ayanamsa` 或 `house_system` 时，分别继承本命盘对应字段。
+
+请求示例：
+
+```json
+{
+  "natal": {
+    "date": {"year": 1990, "month": 5, "day": 20, "hour": 14},
+    "utc_offset_minutes": 480,
+    "location": {"latitude": 31.2304, "longitude": 121.4737},
+    "zodiac": "tropical",
+    "house_system": "placidus"
+  },
+  "target": {
+    "date": {"year": 2026, "month": 9, "day": 17, "hour": 12}
+  },
+  "transit_points": ["sun", "moon", "mercury", "venus", "mars"],
+  "natal_points": ["sun", "moon", "mercury", "venus", "mars", "ascendant"],
+  "include_aspects": true,
+  "allow_moshier_fallback": false
+}
+```
+
+省略 `transit_points` 时默认计算太阳、月亮、水星、金星和火星；省略 `natal_points` 时默认比较本命太阳、月亮、水星、金星、火星和上升点。`natal_points` 可以包含 `ascendant`、`midheaven`、`descendant`、`imum_coeli` 四个角度；其余值必须是支持的天体点位。两个输入必须使用相同的黄道、岁差和宫制。
+
+成功响应的 `data` 包含：
+
+- `natal`：按 `natal_points` 计算的本命盘，保留本命宫位和输入口径；
+- `transit.planets`：目标时刻的行运行星，`natal_house` 表示它落入本命盘的宫位；
+- `aspects`：行运行星与本命点位的主要相位，包含相位角、偏差、入相/出相；
+- `calculation`：本命和目标时刻的 Julian 日、星历来源、精度模式和警告；
+- `structured`：版本为 `astro-transit-structured/1.0` 的机器可读事实包。
+
+`structured` 不携带性格、运势、领域评分或生活化断语。后续 A2 规则层只能引用其中的点位、宫位、相位和计算证据。
+
 ## 结构化分析
 
 `POST /api/v1/astro/analysis` 接受以下两种输入之一：
@@ -129,6 +168,70 @@ curl -sS -X POST https://zhouyilab.k8s.gold/api/v1/astro/charts \
 或直接传入 `/api/v1/astro/charts` 返回的 `chart` 对象。可选 `scope` 限制分区：`core_points`、`distribution`、`signals`、`aspect_network`。返回的 `analysis` 版本为 `astro-analysis/1.0`，每个分区都保留来源结构版本和信号 ID；`observations` 由 `config/astro/rules.json` 匹配生成，规则版本记录在 `rules_version`。
 
 规则输出仍是事实代码（如 `planet_in_angular_house`、`aspect_within_orb_threshold`），不直接生成性格、吉凶或运势文案。
+
+## 行运生活领域信号分析
+
+`POST /api/v1/astro/transit-analysis` 将 A1 的行运事实包映射为可追溯的生活领域信号。请求可以直接传入 `/api/v1/astro/transits` 返回的 `chart`，也可以传入 `transit_request`，由服务先调用行运计算。
+
+```json
+{
+  "transit_request": {
+    "natal": {
+      "date": {"year": 1990, "month": 5, "day": 20, "hour": 14},
+      "utc_offset_minutes": 480,
+      "location": {"latitude": 31.2304, "longitude": 121.4737}
+    },
+    "target": {"date": {"year": 2026, "month": 9, "day": 17, "hour": 12}},
+    "include_aspects": true
+  },
+  "dimensions": ["love", "career"]
+}
+```
+
+`scope` 与 `dimensions` 都可以限定 `love`、`wealth`、`career`、`learning`、`social`，两者只能提供一个。也可以把整个行运响应作为 `chart` 传入：
+
+```json
+{
+  "chart": {
+    "chart_type": "transit",
+    "structured": {
+      "schema_version": "astro-transit-structured/1.0",
+      "natal": {"schema_version": "astro-structured/1.0"}
+    },
+    "transit": {"planets": [{"id": "venus", "natal_house": 2}]},
+    "aspects": []
+  }
+}
+```
+
+返回的 `data` 版本为 `astro-transit-analysis/1.0`，包括 `dimensions` 领域索引、扁平 `signals` 数组、`astro-transit-rules/1.0` 规则版本和 `source_schema_versions`。每个信号包含 `signal_id`、`rule_id`、`revision`、`dimension`、`direction`、`intensity`、`observation_code`、`point_ids`、A1 事实 `evidence` 和 `boundary`。
+
+规则配置位于 `config/astro/transit_rules.json`，当前只支持 `transit_planet_in_natal_house` 和 `transit_aspect_to_natal_point`。该接口只输出事实到领域的映射，不生成摘要、建议、避免事项、幸运信息、领域评分或确定性事件判断；财富信号不提供投资、借贷或金额建议。
+
+## 日运解析包
+
+`POST /api/v1/astro/daily-reading` 将 A2 生活领域信号渲染为不带评分的日运解析包。可以直接传入 A2 返回的 `analysis`，也可以传入 A1 的 `chart` 或 `transit_request`，由服务依次完成行运计算、规则匹配和模板渲染。
+
+```json
+{
+  "transit_request": {
+    "natal": {
+      "date": {"year": 1990, "month": 5, "day": 20, "hour": 14},
+      "utc_offset_minutes": 480,
+      "location": {"latitude": 31.2304, "longitude": 121.4737}
+    },
+    "target": {"date": {"year": 2026, "month": 9, "day": 17, "hour": 12}},
+    "include_aspects": true
+  },
+  "dimensions": ["love", "career"]
+}
+```
+
+当前只支持 `day` 范围；省略 `period` 时默认为 `day`。`scope` 可以传入 `day` 作为范围，也可以沿用 A2 的生活领域数组；`dimensions` 用于限定返回前参与渲染的领域。输出的 `data` 版本为 `astro-daily-reading/1.0`，模板版本为 `astro-daily-templates/1.0`。
+
+输出包含 `overall`、`dimensions`、`summary`、`focus`、`actions`、`avoid`、`lucky` 和 `evidence`。所有领域的 `index` 和总体 `overall.index` 在 A3 固定为 `null`；`lucky` 为空对象，待后续规则校准后再启用。每个领域卡片、重点提醒和证据项都保留 `signal_ids`，顶层 `evidence` 继续携带 A2 的 `rule_id`、点位、事实证据和边界。
+
+模板配置位于 `config/astro/daily_reading_templates.json`。缺少对应规则模板、日期格式无效或分析包版本不匹配时，接口返回 `INVALID_REQUEST`；日运解析不会补写没有命中规则的生活领域结论。
 
 ## 健康检查
 

@@ -70,6 +70,9 @@ function(detect_stdlib_module_paths)
                     OUTPUT_VARIABLE MACOS_SDK_PATH
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                 )
+                if(NOT MACOS_SDK_PATH AND CMAKE_OSX_SYSROOT)
+                    set(MACOS_SDK_PATH "${CMAKE_OSX_SYSROOT}")
+                endif()
                 message(STATUS "macOS SDK path: ${MACOS_SDK_PATH}")
 
                 get_filename_component(LLVM_LIB_PATH "${STDLIB_MODULE_DIRS}/../../../lib/c++" ABSOLUTE)

@@ -8,8 +8,13 @@ using json = nlohmann::json;
 int main() {
     try {
         const auto request = json::parse(std::cin);
-        if (request.value("operation", std::string("chart")) == "meta") {
+        const auto operation = request.value("operation", std::string("chart"));
+        if (operation == "meta") {
             std::cout << ZhouYi::Astro::Controller::meta_json().dump() << '\n';
+            return 0;
+        }
+        if (operation == "transit") {
+            std::cout << ZhouYi::Astro::Controller::calculate_transit_json(request).dump() << '\n';
             return 0;
         }
         std::cout << ZhouYi::Astro::Controller::calculate_json(request).dump() << '\n';

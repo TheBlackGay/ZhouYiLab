@@ -239,6 +239,7 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 - [2.x 版本路线图](docs/product/ZhouYiLab-2.x-版本路线图.md)
 - [2.0.0 需求规格](docs/product/ZhouYiLab-2.0.0-需求规格.md)
 - [2.0.0 产品规划头脑风暴](docs/product/ZhouYiLab-2.0.0-产品规划头脑风暴.md)
+- [西洋占星生活化解析设计方案](docs/product/西洋占星生活化解析设计方案.md)
 
 ## 页面说明
 
@@ -320,7 +321,10 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 | POST | `/api/v1/bazi/charts` | 生成八字四柱与大运 |
 | GET | `/api/v1/astro/meta` | 西洋占星能力和版本信息 |
 | POST | `/api/v1/astro/charts` | 使用 Swiss Ephemeris 生成西洋星盘 |
+| POST | `/api/v1/astro/transits` | 计算指定时刻的行运事实包 |
 | POST | `/api/v1/astro/analysis` | 基于结构化星盘和规则库生成证据分析包 |
+| POST | `/api/v1/astro/transit-analysis` | 将行运事实映射为生活领域信号，不生成文案或评分 |
+| POST | `/api/v1/astro/daily-reading` | 将生活领域信号渲染为无评分日运解析包 |
 | GET | `/api/v1/ziwei/research/blind-review/packet` | 生成匿名盲评包 |
 | GET/POST | `/api/v1/ziwei/research/ai-review/*` | AI 预评审配置、实验和结果 |
 

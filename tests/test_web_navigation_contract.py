@@ -9,6 +9,7 @@ PAGES = {
     "index.html": ("紫微斗数", ["十二宫", "结构解读", "运限", "时间校正"]),
     "qimen.html": ("奇门遁甲", ["九宫盘", "断盘线索", "解读素材"]),
     "bazi.html": ("八字", ["四柱命盘", "大运"]),
+    "astro.html": ("西洋占星", ["本命盘", "结构事实", "解析提示词"]),
 }
 RESEARCH_PAGES = ("blind-review.html", "ai-review.html")
 

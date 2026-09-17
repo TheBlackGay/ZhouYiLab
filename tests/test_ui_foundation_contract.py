@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
-PAGES = ("index.html", "qimen.html", "bazi.html", "liu-yao.html", "da-liu-ren.html")
+PAGES = ("index.html", "qimen.html", "bazi.html", "liu-yao.html", "da-liu-ren.html", "astro.html")
 
 
 class UiFoundationContractTests(unittest.TestCase):

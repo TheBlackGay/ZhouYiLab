@@ -218,6 +218,21 @@
 .app-navigation + .lab-header { position: relative; top: auto; }
 .app-navigation ~ .review-shell .review-sidebar { top: 116px; height: calc(100vh - 116px); }
 
+/* Tablet range: the fixed 190px side columns plus a six-item primary nav exceed
+   the viewport, so let the nav track flex and keep the header inside the page. */
+@media (min-width: 761px) and (max-width: 920px) {
+  .app-navigation .app-header {
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+    gap: 14px;
+    padding: 9px 16px;
+  }
+  .app-navigation .brand { min-width: 0; }
+  .app-navigation .header-tools { min-width: 0; }
+  .app-navigation .engine-status { display: none; }
+  .primary-tabs { width: 100%; justify-self: stretch; }
+  .primary-tabs a { padding: 0 10px; font-size: 12px; }
+}
+
 @media (max-width: 760px) {
   .app-navigation .app-header {
     min-height: 58px;

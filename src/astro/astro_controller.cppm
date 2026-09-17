@@ -196,6 +196,36 @@ inline ChartRequest parse_request(const json& input) {
     return request;
 }
 
+inline TransitRequest parse_transit_request(const json& input) {
+    const auto& natal_input = input.at("natal");
+    auto natal = parse_request(natal_input);
+    auto target_input = input.at("target");
+    if (!target_input.contains("utc_offset_minutes")) {
+        target_input["utc_offset_minutes"] = natal_input.at("utc_offset_minutes");
+    }
+    if (!target_input.contains("location")) {
+        target_input["location"] = natal_input.at("location");
+    }
+    if (!target_input.contains("zodiac") && natal_input.contains("zodiac")) {
+        target_input["zodiac"] = natal_input.at("zodiac");
+    }
+    if (!target_input.contains("ayanamsa") && natal_input.contains("ayanamsa")) {
+        target_input["ayanamsa"] = natal_input.at("ayanamsa");
+    }
+    if (!target_input.contains("house_system") && natal_input.contains("house_system")) {
+        target_input["house_system"] = natal_input.at("house_system");
+    }
+    auto target = parse_request(target_input);
+    return TransitRequest{
+        .natal = natal,
+        .target = target,
+        .transit_points = input.value("transit_points", std::vector<std::string>{}),
+        .natal_points = input.value("natal_points", std::vector<std::string>{}),
+        .include_aspects = input.value("include_aspects", true),
+        .allow_moshier_fallback = input.value("allow_moshier_fallback", false)
+    };
+}
+
 inline json chart_to_json(const ChartResult& result) {
     const auto utc_seconds = static_cast<long long>(
         (result.julian_day_ut - 2440587.5) * 86400.0 + 0.5);
@@ -257,14 +287,97 @@ inline json chart_to_json(const ChartResult& result) {
     };
 }
 
+inline json transit_planet_json(const PlanetPosition& value) {
+    return {
+        {"id", value.id}, {"name", value.name},
+        {"longitude", value.longitude}, {"latitude", value.latitude},
+        {"distance_au", value.distance_au}, {"longitude_speed", value.longitude_speed},
+        {"sign", value.sign}, {"sign_name", value.sign_name},
+        {"degree_in_sign", value.degree_in_sign}, {"natal_house", value.house},
+        {"retrograde", value.retrograde}, {"stationary", value.stationary}
+    };
+}
+
+inline json transit_aspect_json(const TransitAspect& value) {
+    return {
+        {"transit_point", value.transit_point}, {"natal_point", value.natal_point},
+        {"type", value.type}, {"exact_angle", value.exact_angle},
+        {"actual_angle", value.actual_angle}, {"orb", value.orb},
+        {"phase", value.applying ? "applying" : "separating"}
+    };
+}
+
+inline json transit_structured_json(const TransitResult& result) {
+    json transit_points = json::array();
+    for (const auto& value : result.transit_planets) {
+        transit_points.push_back(transit_planet_json(value));
+    }
+    json aspects = json::array();
+    for (const auto& value : result.aspects) {
+        aspects.push_back(transit_aspect_json(value));
+    }
+    return {
+        {"schema_version", "astro-transit-structured/1.0"},
+        {"coordinate_frame", "geocentric_apparent"},
+        {"natal", structured_json(result.natal)},
+        {"transit_points", std::move(transit_points)},
+        {"aspects", std::move(aspects)},
+        {"transit_julian_day_ut", result.target.julian_day_ut}
+    };
+}
+
+inline json transit_to_json(const TransitResult& result) {
+    const auto natal_json = chart_to_json(result.natal);
+    const auto target_json = chart_to_json(result.target);
+    json transit_points = json::array();
+    for (const auto& value : result.transit_planets) {
+        transit_points.push_back(transit_planet_json(value));
+    }
+    json aspects = json::array();
+    for (const auto& value : result.aspects) {
+        aspects.push_back(transit_aspect_json(value));
+    }
+    return {
+        {"chart_type", "transit"},
+        {"input", {
+            {"natal", natal_json["input"]},
+            {"target", target_json["input"]},
+            {"transit_points", result.request.transit_points},
+            {"natal_points", result.request.natal_points},
+            {"include_aspects", result.request.include_aspects}
+        }},
+        {"calculation", {
+            {"natal_julian_day_ut", result.natal.julian_day_ut},
+            {"transit_julian_day_ut", result.target.julian_day_ut},
+            {"ephemeris", result.natal.ephemeris},
+            {"ephemeris_version", result.natal.ephemeris_version},
+            {"precision_mode", result.precision_mode},
+            {"warnings", result.warnings}
+        }},
+        {"natal", natal_json},
+        {"transit", {
+            {"input", target_json["input"]},
+            {"calculation", target_json["calculation"]},
+            {"planets", std::move(transit_points)},
+            {"natal_houses", natal_json["houses"]}
+        }},
+        {"aspects", std::move(aspects)},
+        {"structured", transit_structured_json(result)}
+    };
+}
+
 inline json calculate_json(const json& input) {
     return chart_to_json(calculate(parse_request(input)));
+}
+
+inline json calculate_transit_json(const json& input) {
+    return transit_to_json(calculate_transit(parse_transit_request(input)));
 }
 
 inline json meta_json() {
     return {
         {"api_version", "v1"},
-        {"algorithm_version", "zhouyilab-astro/0.1.0"},
+        {"algorithm_version", "zhouyilab-astro/0.2.0"},
         {"ephemeris", "swiss"},
         {"supported_points", {"sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto", "true_node", "chiron"}},
         {"zodiacs", {"tropical", "sidereal"}},
@@ -272,7 +385,8 @@ inline json meta_json() {
         {"house_systems", {"placidus", "whole_sign"}},
         {"aspect_types", {"conjunction", "sextile", "square", "trine", "opposition"}},
         {"structured_schema_version", "astro-structured/1.0"},
-        {"derived_signals_schema_version", "astro-derived-signals/1.0"}
+        {"derived_signals_schema_version", "astro-derived-signals/1.0"},
+        {"transit_structured_schema_version", "astro-transit-structured/1.0"}
     };
 }
 

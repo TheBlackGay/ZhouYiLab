@@ -1,0 +1,36 @@
+{
+  "request": {
+    "natal": {
+      "date": {"year": 1990, "month": 5, "day": 20, "hour": 14},
+      "utc_offset_minutes": 480,
+      "location": {"latitude": 31.2304, "longitude": 121.4737},
+      "zodiac": "tropical",
+      "house_system": "placidus"
+    },
+    "target": {"date": {"year": 2026, "month": 9, "day": 17, "hour": 12}},
+    "transit_points": ["sun", "moon", "mercury", "venus", "mars"],
+    "natal_points": ["sun", "moon", "mercury", "venus", "mars", "ascendant"],
+    "include_aspects": true,
+    "allow_moshier_fallback": false
+  },
+  "expected": {
+    "schema_version": "astro-transit-structured/1.0",
+    "precision_mode": "high",
+    "natal_julian_day_ut": 2448031.75,
+    "transit_julian_day_ut": 2461300.6666666665,
+    "transit_longitudes": {
+      "sun": 174.29838574379028,
+      "moon": 245.69616924036106,
+      "mercury": 190.58408962990973,
+      "venus": 214.01550918433145,
+      "mars": 113.44600306196298
+    },
+    "natal_houses": {
+      "sun": 12,
+      "moon": 3,
+      "mercury": 1,
+      "venus": 2,
+      "mars": 10
+    }
+  }
+}

@@ -35,6 +35,27 @@ async function loadAstroAnalysis(chart) {
     return payload.success ? payload.data.analysis : null;
   } catch (error) { return null; }
 }
+const astroTabs = [...document.querySelectorAll('[role="tab"][aria-controls^="astro-"]')];
+function activateAstroTab(tab) {
+  astroTabs.forEach(item => {
+    const selected = item === tab;
+    item.setAttribute('aria-selected', String(selected));
+    item.tabIndex = selected ? 0 : -1;
+    const panel = document.getElementById(item.getAttribute('aria-controls'));
+    if (panel) panel.hidden = !selected;
+  });
+}
+astroTabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => activateAstroTab(tab));
+  tab.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const offset = event.key === 'ArrowLeft' ? -1 : event.key === 'ArrowRight' ? 1 : 0;
+    const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? astroTabs.length - 1 : (index + offset + astroTabs.length) % astroTabs.length;
+    astroTabs[nextIndex].focus();
+    activateAstroTab(astroTabs[nextIndex]);
+  });
+});
 async function copyPrompt() {
   const text = document.querySelector('#astro-prompt-text').value;
   const status = document.querySelector('#astro-copy-status');
