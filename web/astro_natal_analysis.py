@@ -38,6 +38,8 @@ DISTRIBUTION_POINTS = (
     "sun", "moon", "mercury", "venus", "mars",
     "jupiter", "saturn", "uranus", "neptune", "pluto",
 )
+# 逐点位卡片的展示顺序：先十大行星，再虚点。
+POINT_ORDER = DISTRIBUTION_POINTS + ("true_node", "chiron")
 HEMISPHERES = {
     "left": (1, 2, 3, 10, 11, 12),
     "right": (4, 5, 6, 7, 8, 9),
@@ -238,6 +240,16 @@ def _layout(structured, point_by_id, angle_by_id, sign_names, ruler_system, hous
     aspects = [aspect for aspect in (structured.get("aspects") or []) if isinstance(aspect, dict)]
     by_type = Counter(aspect.get("type") for aspect in aspects)
     orbs = [aspect["orb"] for aspect in aspects if isinstance(aspect.get("orb"), (int, float))]
+    aspect_items = [{
+        "source_id": aspect.get("source_id"),
+        "target_id": aspect.get("target_id"),
+        "type": aspect.get("type"),
+        "orb": aspect.get("orb"),
+        "phase": aspect.get("phase"),
+        "exact_angle": aspect.get("exact_angle"),
+        "actual_angle": aspect.get("actual_angle"),
+    } for aspect in sorted(aspects, key=lambda item: item.get("orb")
+                           if isinstance(item.get("orb"), (int, float)) else 999.0)]
     harmony = sum(by_type.get(name, 0) for name in HARMONY_ASPECTS)
     tension = sum(by_type.get(name, 0) for name in TENSION_ASPECTS)
     if harmony > tension:
@@ -316,6 +328,7 @@ def _layout(structured, point_by_id, angle_by_id, sign_names, ruler_system, hous
             "definition": ASPECT_DEFINITION,
             "total": len(aspects),
             "by_type": {name: by_type.get(name, 0) for name in ASPECT_ORDER},
+            "items": aspect_items,
             "harmony": harmony,
             "tension": tension,
             "neutral": sum(by_type.get(name, 0) for name in NEUTRAL_ASPECTS),

@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import subprocess
 import tempfile
 import unittest
@@ -276,10 +277,18 @@ class AstroWebSourceContractTests(unittest.TestCase):
         for fragment in ("hemisphere_stat", "quadrant_stat", "empty_house", "aspect_network_stat",
                          "counted_point_ids", "DISTRIBUTION_POINTS"):
             self.assertIn(fragment, analysis)
-        # 只统计十大行星，虚点不参与分布统计。
-        self.assertIn("DISTRIBUTION_POINTS = (", analysis)
-        self.assertNotIn('"true_node"', analysis)
-        self.assertNotIn('"chiron"', analysis)
+        # 组合式文案槽位必须完整覆盖星体、星座、宫位、相位与 override 机制。
+        for section in ("core_text", "planet_core", "sign_style", "house_field", "aspect_style",
+                        "ascendant_sign", "sun_sign", "moon_sign", "house_ruler",
+                        "summary", "overrides"):
+            self.assertIn(f'"{section}"', templates)
+        # 未覆盖项必须区分「没命中规则」与「命中规则但没有模板」。
+        self.assertIn('"no_rule"', analysis)
+        self.assertIn('"no_template"', reading)
+        # 只统计十大行星：分布统计口径里不得出现虚点（虚点只出现在逐点位卡片顺序里）。
+        distribution_scope = re.search(r"DISTRIBUTION_POINTS = \((.*?)\)", analysis, re.S).group(1)
+        self.assertNotIn("true_node", distribution_scope)
+        self.assertNotIn("chiron", distribution_scope)
 
     def test_astro_reading_tab_and_layout_bars_are_present(self):
         html = (ROOT / "web" / "astro.html").read_text(encoding="utf-8")

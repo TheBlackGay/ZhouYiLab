@@ -1,15 +1,19 @@
 import json
 import os
+import re
 import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 
 from web.astro_natal_analysis import (
+    POINT_ORDER,
     AstroNatalAnalysisRequestError,
     analyze_natal_layout,
     load_rules,
 )
 from web.astro_natal_reading import (
+    AstroNatalReadingConfigError,
     AstroNatalReadingRequestError,
     load_templates,
     render_natal_reading,
@@ -22,7 +26,7 @@ DISTRIBUTION_POINT_IDS = [
     "sun", "moon", "mercury", "venus", "mars",
     "jupiter", "saturn", "uranus", "neptune", "pluto",
 ]
-DETERMINISTIC_WORDS = ("一定会", "必然", "注定", "你就是", "你会")
+DETERMINISTIC_WORDS = ("一定会", "必然", "注定", "你就是", "你会", "必定", "绝对", "永远", "肯定会")
 
 
 def run_cli(request):
@@ -195,8 +199,10 @@ class AstroNatalReadingTests(unittest.TestCase):
             self.assertTrue(entry["rule_id"])
             self.assertGreaterEqual(entry["revision"], 1)
             self.assertTrue(entry["signal_ids"])
-        # N2 只交付布局速读，逐点位卡片留到 N3。
-        self.assertEqual(reading["points"], [])
+        # N3 起逐点位、十二宫与相位卡片都由组合式文案填充。
+        self.assertEqual(len(reading["points"]), 12)
+        self.assertEqual(len(reading["houses"]), 12)
+        self.assertEqual(len(reading["aspects"]), 29)
         self.assertEqual(reading["coverage"]["matched"], reading["coverage"]["rendered"])
         self.assertTrue(reading["boundaries"])
 
@@ -204,7 +210,14 @@ class AstroNatalReadingTests(unittest.TestCase):
         reading = render_natal_reading(analyze_natal_layout(self.chart()))
         texts = [entry["text"] for entry in reading["layout"]]
         texts += [item["summary"] for item in reading["highlights"].values()]
+        texts += [item["fact"] for item in reading["highlights"].values()]
+        texts += [point["summary"] for point in reading["points"]]
+        texts += [block["text"] for point in reading["points"] for block in point["blocks"]]
+        texts += [house["summary"] for house in reading["houses"]]
+        texts += [block["text"] for house in reading["houses"] for block in house["blocks"]]
+        texts += [aspect["summary"] for aspect in reading["aspects"]]
         texts += reading["boundaries"]
+        self.assertGreater(len(texts), 120)
         for text in texts:
             for word in DETERMINISTIC_WORDS:
                 self.assertNotIn(word, text)
@@ -223,6 +236,135 @@ class AstroNatalReadingTests(unittest.TestCase):
             render_natal_reading({"analysis_version": "astro-analysis/1.0", "signals": []})
         with self.assertRaises(AstroNatalReadingRequestError):
             render_natal_reading({"analysis_version": "astro-natal-analysis/1.0"})
+
+    def test_point_cards_are_composed_from_three_slots(self):
+        reading = render_natal_reading(analyze_natal_layout(self.chart()))
+        points = {point["point_id"]: point for point in reading["points"]}
+        self.assertEqual(set(points), set(POINT_ORDER))
+        sun = points["sun"]
+        self.assertEqual([block["slot"] for block in sun["blocks"]],
+                         ["planet_core", "sign_style", "house_field"])
+        self.assertEqual([block["rule_id"] for block in sun["blocks"]],
+                         ["template.planet_core.sun", "template.sign_style.taurus",
+                          "template.house_field.9"])
+        self.assertEqual(sun["title"], "太阳 · 金牛座 · 第9宫")
+        self.assertEqual(sun["summary"], "太阳落在金牛座第9宫：稳定、重实际，重心放在远方与高等学习。")
+        self.assertEqual(sun["evidence"]["house"], 9)
+        self.assertIn("tight_aspect:sun:moon:sextile", sun["markers"])
+        # 组合式渲染：同一星座/宫位文案被复用，但卡片主语只出现一次。
+        self.assertEqual(points["moon"]["blocks"][1]["rule_id"], "template.sign_style.pisces")
+        for point in reading["points"]:
+            self.assertTrue(point["blocks"])
+            self.assertEqual(point["blocks"][0]["slot"], "planet_core")
+            self.assertTrue(all(block["revision"] >= 1 for block in point["blocks"]))
+
+    def test_house_cards_carry_ruler_and_point_census(self):
+        reading = render_natal_reading(analyze_natal_layout(self.chart()))
+        houses = {house["house"]: house for house in reading["houses"]}
+        self.assertEqual(len(houses), 12)
+        self.assertEqual(houses[4]["title"], "第4宫 · 射手座")
+        self.assertEqual(houses[4]["summary"], "第4宫宫头在射手座，宫内有土星、天王星、海王星。")
+        self.assertEqual(houses[4]["ruler"]["point_id"], "jupiter")
+        self.assertEqual(houses[4]["ruler"]["house"], 10)
+        # 只统计十大行星时第5宫是空宫，但宫内确有虚点，文案必须说清楚。
+        self.assertTrue(houses[5]["empty_of_planets"])
+        self.assertEqual(houses[5]["point_ids"], ["true_node"])
+        self.assertEqual(houses[5]["summary"],
+                         "第5宫宫头在水瓶座，没有十大行星落入，宫内另有北交点。")
+        # 十大行星与虚点同宫时两类都要出现。
+        self.assertEqual(houses[10]["point_ids"], ["jupiter", "chiron"])
+        self.assertIn("另有凯龙星", houses[10]["summary"])
+        self.assertEqual([block["slot"] for block in houses[1]["blocks"]],
+                         ["house_field", "house_ruler"])
+        self.assertIn("主星水星落在金牛座第8宫", houses[1]["blocks"][1]["text"])
+        self.assertEqual(reading["layout_stats"]["house_occupancy"]["empty_houses"],
+                         [houses[house]["house"] for house in (1, 3, 5, 11, 12)])
+
+    def test_aspect_cards_sort_by_orb_and_avoid_good_bad_labels(self):
+        reading = render_natal_reading(analyze_natal_layout(self.chart()))
+        orbs = [aspect["evidence"]["orb"] for aspect in reading["aspects"]]
+        self.assertEqual(orbs, sorted(orbs))
+        by_tone = {}
+        for aspect in reading["aspects"]:
+            by_tone.setdefault(aspect["tone"], []).append(aspect)
+            self.assertIn(aspect["phase_label"], ("入相", "出相"))
+            self.assertIn(aspect["label"], ("合相", "六合", "刑相", "拱相", "对冲", "梅花"))
+            self.assertNotIn("吉", aspect["text"] if "text" in aspect else "")
+            self.assertNotIn("凶", aspect["summary"])
+        self.assertEqual(len(by_tone["harmony"]), 15)
+        self.assertEqual(len(by_tone["tension"]), 11)
+        self.assertEqual(len(by_tone["merge"]), 3)
+        tight = [aspect for aspect in reading["aspects"] if aspect["tight"]]
+        self.assertEqual(len(tight), 8)
+        self.assertTrue(all(aspect["signal_ids"] for aspect in tight))
+        self.assertEqual(reading["aspects"][0]["title"], "海王星 对冲 凯龙星")
+        self.assertEqual(reading["aspects"][0]["orb"], 0.6756)
+
+    def test_reading_has_no_placeholder_residue(self):
+        reading = render_natal_reading(analyze_natal_layout(self.chart()))
+        residue = []
+
+        def walk(node, path):
+            if isinstance(node, dict):
+                for key, value in node.items():
+                    walk(value, f"{path}.{key}")
+            elif isinstance(node, list):
+                for index, value in enumerate(node):
+                    walk(value, f"{path}[{index}]")
+            elif isinstance(node, str) and re.search(r"\{\w+\}|—", node):
+                residue.append((path, node))
+
+        walk(reading, "reading")
+        self.assertEqual(residue, [])
+
+    def test_overrides_replace_combination_slots(self):
+        templates = json.loads(json.dumps(load_templates()))
+        templates["overrides"]["point_sign"]["sun:taurus"] = {
+            "revision": 7, "short": "精修过的金牛表达", "text": "太阳在金牛座的精修段落。"}
+        templates["overrides"]["point_house"]["moon:7"] = {
+            "revision": 8, "text": "月亮落第7宫的精修段落。"}
+        templates["overrides"]["point_sign_house"]["mars:pisces:6"] = {
+            "revision": 9, "short": "整段精修", "text": "火星双鱼第6宫的整段精修。"}
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "templates.json"
+            path.write_text(json.dumps(templates, ensure_ascii=False), encoding="utf-8")
+            validated = load_templates(path)
+        reading = render_natal_reading(analyze_natal_layout(self.chart()), templates=validated)
+        points = {point["point_id"]: point for point in reading["points"]}
+        # 精修只替换对应槽位，其余组合段落保持模板输出。
+        self.assertEqual([block["slot"] for block in points["sun"]["blocks"]],
+                         ["planet_core", "point_sign", "house_field"])
+        self.assertEqual(points["sun"]["blocks"][1]["text"], "太阳在金牛座的精修段落。")
+        self.assertEqual(points["sun"]["blocks"][2]["rule_id"], "template.house_field.9")
+        self.assertEqual(points["sun"]["overrides"], ["point_sign"])
+        self.assertIn("精修过的金牛表达", points["sun"]["summary"])
+        self.assertEqual([block["slot"] for block in points["moon"]["blocks"]],
+                         ["planet_core", "sign_style", "point_house"])
+        self.assertEqual(points["moon"]["overrides"], ["point_house"])
+        # 整段精修替换星座与宫位两段，只保留星体基义。
+        self.assertEqual([block["slot"] for block in points["mars"]["blocks"]],
+                         ["planet_core", "point_sign_house"])
+        self.assertEqual(points["mars"]["overrides"], ["point_sign_house"])
+        self.assertIn("整段精修", points["mars"]["summary"])
+        # 未精修的点位不受影响。
+        self.assertEqual([block["slot"] for block in points["venus"]["blocks"]],
+                         ["planet_core", "sign_style", "house_field"])
+
+    def test_incomplete_templates_are_rejected(self):
+        templates = json.loads(json.dumps(load_templates()))
+        del templates["planet_core"]["chiron"]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "templates.json"
+            path.write_text(json.dumps(templates, ensure_ascii=False), encoding="utf-8")
+            with self.assertRaises(AstroNatalReadingConfigError):
+                load_templates(path)
+        templates = json.loads(json.dumps(load_templates()))
+        templates["layout_text"]["natal.empty_house"]["text"] = "第 {house} 宫，{unknown_key}。"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "templates.json"
+            path.write_text(json.dumps(templates, ensure_ascii=False), encoding="utf-8")
+            with self.assertRaises(AstroNatalReadingConfigError):
+                load_templates(path)
 
     def test_every_configured_rule_has_a_template(self):
         rule_ids = {rule["rule_id"] for rule in load_rules()["rules"]}
