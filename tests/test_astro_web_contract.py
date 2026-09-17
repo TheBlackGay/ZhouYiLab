@@ -307,6 +307,25 @@ class AstroWebSourceContractTests(unittest.TestCase):
                          ".layout-note-meta", ".wheel-highlight-note"):
             self.assertIn(fragment, css)
 
+    def test_astro_card_sections_and_wheel_linkage_are_present(self):
+        html = (ROOT / "web" / "astro.html").read_text(encoding="utf-8")
+        script = (ROOT / "web" / "astro.js").read_text(encoding="utf-8")
+        css = (ROOT / "web" / "astro.css").read_text(encoding="utf-8")
+        for fragment in (
+            'id="astro-point-cards"', 'id="astro-house-cards"', 'id="astro-aspect-list"',
+            'data-sort="point"', 'data-sort="house"', 'data-sort="sign"',
+        ):
+            self.assertIn(fragment, html)
+        for fragment in ("pointCard", "houseCard", "aspectRow", "renderPointCards",
+                         "renderHouseCards", "renderAspects", "focusPlanet", "openPointCard",
+                         "data-locate", "natal-point-", "natal-house-"):
+            self.assertIn(fragment, script)
+        # 圆盘星体必须带点位 ID，卡片与圆盘才能互相定位。
+        self.assertIn("'data-point': planet.id", script)
+        for fragment in (".natal-card", ".natal-blocks", ".natal-aspect.tone-harmony",
+                         ".natal-aspect.tone-tension", ".planet.is-focused", ".natal-marker"):
+            self.assertIn(fragment, css)
+
 
 if __name__ == "__main__":
     unittest.main()

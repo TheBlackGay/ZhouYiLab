@@ -141,6 +141,25 @@
             <p id="astro-reading-empty" class="reading-empty" hidden></p>
           </section>
           <section class="astro-section">
+            <div class="board-heading">
+              <div><span>行星</span><strong>逐点位解读</strong></div>
+              <div class="card-sort" role="group" aria-label="行星卡片排序">
+                <button type="button" data-sort="point" aria-pressed="true">按星体</button>
+                <button type="button" data-sort="house" aria-pressed="false">按宫位</button>
+                <button type="button" data-sort="sign" aria-pressed="false">按星座</button>
+              </div>
+            </div>
+            <div id="astro-point-cards" class="natal-cards"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>十二宫</span><strong>宫位与宫内点位</strong></div><small>宫头星座 · 宫内点位 · 宫主星</small></div>
+            <div id="astro-house-cards" class="natal-cards"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>相位</span><strong>按容许度排序</strong></div><small>顺畅 / 张力 / 合并 / 调整</small></div>
+            <div id="astro-aspect-list" class="natal-aspects"></div>
+          </section>
+          <section class="astro-section">
             <div class="board-heading"><div><span>分布</span><strong>元素与模式</strong></div><small>十大行星口径</small></div>
             <div id="astro-distribution" class="astro-distribution"></div>
           </section>

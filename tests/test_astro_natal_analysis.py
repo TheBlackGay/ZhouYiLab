@@ -249,6 +249,9 @@ class AstroNatalReadingTests(unittest.TestCase):
                           "template.house_field.9"])
         self.assertEqual(sun["title"], "太阳 · 金牛座 · 第9宫")
         self.assertEqual(sun["summary"], "太阳落在金牛座第9宫：稳定、重实际，重心放在远方与高等学习。")
+        # 每段文案都带中文标签，页面标题行与展开区直接复用。
+        self.assertEqual([block["label"] for block in sun["blocks"]],
+                         ["核心意志", "金牛座", "第9宫"])
         self.assertEqual(sun["evidence"]["house"], 9)
         self.assertIn("tight_aspect:sun:moon:sextile", sun["markers"])
         # 组合式渲染：同一星座/宫位文案被复用，但卡片主语只出现一次。
@@ -274,6 +277,13 @@ class AstroNatalReadingTests(unittest.TestCase):
         # 十大行星与虚点同宫时两类都要出现。
         self.assertEqual(houses[10]["point_ids"], ["jupiter", "chiron"])
         self.assertIn("另有凯龙星", houses[10]["summary"])
+        # 宫位卡片要能直接渲染点位名，并标出其中哪些是虚点。
+        self.assertEqual(houses[10]["points"], [
+            {"point_id": "jupiter", "point_name": "木星", "virtual": False},
+            {"point_id": "chiron", "point_name": "凯龙星", "virtual": True},
+        ])
+        self.assertEqual(houses[5]["points"],
+                         [{"point_id": "true_node", "point_name": "北交点", "virtual": True}])
         self.assertEqual([block["slot"] for block in houses[1]["blocks"]],
                          ["house_field", "house_ruler"])
         self.assertIn("主星水星落在金牛座第8宫", houses[1]["blocks"][1]["text"])

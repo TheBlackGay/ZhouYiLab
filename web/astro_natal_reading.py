@@ -291,26 +291,31 @@ def _points(layout, facts, templates, sign_names, signals, uncovered):
         override_both = templates["overrides"]["point_sign_house"].get(f"{point_id}:{sign_id}:{house}")
         override_sign = templates["overrides"]["point_sign"].get(f"{point_id}:{sign_id}")
         override_house = templates["overrides"]["point_house"].get(f"{point_id}:{house}")
-        blocks = [_block("planet_core", f"template.planet_core.{point_id}", core, title=core["title"])]
+        blocks = [_block("planet_core", f"template.planet_core.{point_id}", core, label=core["title"])]
         applied = []
         if override_both is not None:
             blocks.append(_block("point_sign_house",
-                                 f"override.point_sign_house.{point_id}:{sign_id}:{house}", override_both))
+                                 f"override.point_sign_house.{point_id}:{sign_id}:{house}", override_both,
+                                 label="精修"))
             applied.append("point_sign_house")
         else:
             if override_sign is not None:
-                blocks.append(_block("point_sign", f"override.point_sign.{point_id}:{sign_id}", override_sign))
+                blocks.append(_block("point_sign", f"override.point_sign.{point_id}:{sign_id}", override_sign,
+                                     label="精修"))
                 applied.append("point_sign")
             elif style is not None:
-                blocks.append(_block("sign_style", f"template.sign_style.{sign_id}", style, lead=style["lead"]))
+                blocks.append(_block("sign_style", f"template.sign_style.{sign_id}", style,
+                                     lead=style["lead"], label=style["label"]))
             else:
                 uncovered.append({"signal_id": f"sign_style:{sign_id}", "rule_id": None,
                                   "reason": "no_template"})
             if override_house is not None:
-                blocks.append(_block("point_house", f"override.point_house.{point_id}:{house}", override_house))
+                blocks.append(_block("point_house", f"override.point_house.{point_id}:{house}", override_house,
+                                     label="精修"))
                 applied.append("point_house")
             elif field is not None:
-                blocks.append(_block("house_field", f"template.house_field.{house}", field, lead=field["lead"]))
+                blocks.append(_block("house_field", f"template.house_field.{house}", field,
+                                     lead=field["lead"], label=field["label"]))
             elif house:
                 uncovered.append({"signal_id": f"house_field:{house}", "rule_id": None,
                                   "reason": "no_template"})
@@ -376,12 +381,14 @@ def _houses(layout, facts, templates, sign_names, signals, uncovered):
                        if point_id not in DISTRIBUTION_POINTS and point_id not in planet_ids]
         blocks = []
         if field is not None:
-            blocks.append(_block("house_field", f"template.house_field.{number}", field, lead=field["lead"]))
+            blocks.append(_block("house_field", f"template.house_field.{number}", field,
+                                 lead=field["lead"], label=field["label"]))
         if ruler_entry is not None:
             blocks.append({
                 "slot": "house_ruler",
                 "rule_id": f"template.house_ruler.{number}",
                 "revision": ruler_entry["revision"],
+                "label": f"第{number}宫主星",
                 "text": _render(ruler_entry["text"], {
                     "sign_name": sign_name,
                     "ruler_name": ruler.get("ruler_name"),
@@ -413,6 +420,11 @@ def _houses(layout, facts, templates, sign_names, signals, uncovered):
             "title": f"第{number}宫 · {sign_name}",
             "summary": summary,
             "point_ids": planet_ids + virtual_ids,
+            "points": [{
+                "point_id": point_id,
+                "point_name": point_names.get(point_id, point_id),
+                "virtual": point_id not in DISTRIBUTION_POINTS,
+            } for point_id in planet_ids + virtual_ids],
             "virtual_point_ids": virtual_ids,
             "empty_of_planets": not planet_ids,
             "ruler": {
@@ -490,7 +502,7 @@ def _core_item(slot, layout, templates, sign_names, signals):
         values = {"sign_name": sign_name, "degree_in_sign": _round(source.get("degree_in_sign"), 2)}
         title = f"上升 {sign_name}"
         point_ids = ["ascendant"]
-        blocks = [_block("ascendant_sign", f"template.ascendant_sign.{sign_id}", special)] if special else []
+        blocks = [_block("ascendant_sign", f"template.ascendant_sign.{sign_id}", special, label=sign_name)] if special else []
     elif slot in ("sun", "moon"):
         sign_id = source.get("sign_id")
         house = source.get("house")
@@ -507,9 +519,10 @@ def _core_item(slot, layout, templates, sign_names, signals):
         point_ids = [source.get("point_id")]
         blocks = []
         if special is not None:
-            blocks.append(_block(f"{slot}_sign", f"template.{slot}_sign.{sign_id}", special))
+            blocks.append(_block(f"{slot}_sign", f"template.{slot}_sign.{sign_id}", special, label=sign_name))
         if field is not None:
-            blocks.append(_block("house_field", f"template.house_field.{house}", field, lead=field["lead"]))
+            blocks.append(_block("house_field", f"template.house_field.{house}", field,
+                                 lead=field["lead"], label=field["label"]))
     else:
         sign_id = (core.get("ascendant") or {}).get("sign_id")
         sign_name = (core.get("ascendant") or {}).get("sign_name") or sign_names.get(sign_id)
@@ -528,6 +541,7 @@ def _core_item(slot, layout, templates, sign_names, signals):
                 "slot": "house_ruler",
                 "rule_id": "template.house_ruler.1",
                 "revision": ruler_entry["revision"],
+                "label": "第1宫主星",
                 "text": _render(ruler_entry["text"], values),
                 "house": 1,
             })

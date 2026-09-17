@@ -121,6 +121,47 @@ button.layout-bar-seg.is-active { background: var(--gold); color: #fff; }
 .astro-boundaries li { padding: 9px 11px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--line); font-size: 11.5px; line-height: 1.7; }
 .reading-empty { margin: 14px 0 0; padding: 12px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--cinnabar); font-size: 12px; }
 
+/* 本命解读：逐点位 / 十二宫 / 相位卡片 */
+.card-sort { display: flex; flex-wrap: wrap; gap: 4px; padding: 3px; background: var(--paper); border: 1px solid var(--line); border-radius: 4px; }
+.card-sort button { min-height: 34px; padding: 0 11px; color: var(--muted); background: transparent; border: 0; border-radius: 3px; font-size: 11px; font-weight: 700; }
+.card-sort button[aria-pressed="true"] { color: var(--ink); background: var(--surface); box-shadow: 0 1px 3px rgb(0 0 0 / 10%); }
+.natal-cards { display: grid; gap: 6px; }
+.natal-card { background: var(--surface); border: 1px solid var(--line); }
+.natal-card[open] { border-color: #c9cdc6; }
+.natal-card > summary { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; padding: 11px 13px; cursor: pointer; list-style: none; }
+.natal-card > summary::-webkit-details-marker { display: none; }
+.natal-card > summary:focus-visible { outline: 2px solid var(--jade); outline-offset: -2px; }
+.natal-card-title { display: grid; gap: 3px; min-width: 0; }
+.natal-card-title strong { color: var(--ink); font-size: 13.5px; }
+.natal-card-title small { color: var(--muted); font-size: 11.5px; line-height: 1.6; }
+.natal-card-tags { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 5px; }
+.natal-marker { padding: 2px 7px; color: #6b5a1f; background: #f6efdc; border: 1px solid #e6dcc0; border-radius: 999px; font-size: 10.5px; white-space: nowrap; }
+.natal-retro { padding: 1px 6px; color: var(--cinnabar); border: 1px solid currentcolor; border-radius: 3px; font-size: 10.5px; font-weight: 800; }
+.natal-chip { padding: 2px 8px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 999px; font-size: 11px; }
+.natal-chip.is-virtual { color: var(--muted); border-style: dashed; }
+.natal-chip.is-muted { color: var(--muted); }
+.natal-chip.is-empty { color: var(--muted); border-style: dashed; }
+.natal-card-body { padding: 2px 13px 14px; border-top: 1px solid var(--line); }
+.natal-chips { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0 0; }
+.natal-blocks { display: grid; gap: 9px; margin: 12px 0 0; }
+.natal-blocks dt { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .06em; }
+.natal-blocks dd { margin: 3px 0 0; font-size: 12.5px; line-height: 1.75; }
+.natal-evidence, .natal-rule { margin: 12px 0 0; color: var(--muted); font: 10.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
+.natal-locate { min-height: 34px; margin-top: 12px; padding: 0 12px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 3px; font-size: 11px; font-weight: 700; }
+.natal-locate:hover { background: #f1efe6; }
+.natal-aspects { display: grid; gap: 5px; }
+.natal-aspect { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--line); }
+.natal-aspect.tone-harmony { border-left-color: var(--jade); }
+.natal-aspect.tone-tension { border-left-color: var(--cinnabar); }
+.natal-aspect.tone-merge { border-left-color: var(--gold); }
+.natal-aspect.tone-adjust { border-left-color: #9aa3ad; }
+.natal-aspect.is-tight { background: #fdfcf7; }
+.natal-aspect-title { display: grid; gap: 3px; min-width: 0; }
+.natal-aspect-title strong { color: var(--ink); font-size: 12.5px; }
+.natal-aspect-title small { color: var(--muted); font-size: 11.5px; line-height: 1.6; }
+.natal-aspect-meta { color: var(--muted); font-size: 10.5px; white-space: nowrap; }
+.astro-wheel .planet.is-focused .planet-dot { stroke: var(--gold); stroke-width: 3; transform: scale(1.35); }
+
 @media (max-width: 620px) {
   /* 圆盘信息密度高，窄屏保持最小可读尺寸，只在容器内横向滚动。 */
   .astro-wheel-wrap { place-items: start; overflow-x: auto; }
@@ -129,6 +170,10 @@ button.layout-bar-seg.is-active { background: var(--gold); color: #fff; }
   .layout-bar { grid-template-columns: 1fr; gap: 4px; }
   .layout-bar-label, .layout-bar-total { font-size: 10px; }
   .astro-core-row { grid-template-columns: 1fr; }
+  /* 卡片标题行在窄屏改为纵向堆叠，证据行自带换行不撑破容器。 */
+  .natal-card > summary { grid-template-columns: 1fr; }
+  .natal-card-tags { justify-content: flex-start; }
+  .natal-aspect { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

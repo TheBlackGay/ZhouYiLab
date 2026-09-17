@@ -138,7 +138,7 @@ function drawWheel(root, data, orientation) {
     } else {
       root.appendChild(svg('line', {x1: dx, y1: dy, x2: lx, y2: ly, class: 'planet-leader'}));
     }
-    const group = svg('g', {class: 'planet', tabindex: '0', role: 'img', 'aria-label': `${planet.name} ${fmt(planet.longitude)}°，第 ${planet.house} 宫${planet.retrograde ? '，逆行' : ''}`});
+    const group = svg('g', {class: 'planet', 'data-point': planet.id, tabindex: '0', role: 'img', 'aria-label': `${planet.name} ${fmt(planet.longitude)}°，第 ${planet.house} 宫${planet.retrograde ? '，逆行' : ''}`});
     const title = svg('title');
     title.textContent = `${planet.name} ${fmt(planet.longitude)}° ${planet.sign_name} 第 ${planet.house} 宫`;
     const dot = svg('circle', {cx: dx, cy: dy, r: WHEEL.dotR, fill: palette.get(planet.id), class: 'planet-dot'});
@@ -253,6 +253,7 @@ function clearLayoutSelection() {
   highlightWheelHouses([], '');
 }
 function renderNatalReading(reading) {
+  natalReading = reading;
   const stats = reading.layout_stats || {};
   const hemispheres = Object.fromEntries((((stats.hemispheres || {}).items) || []).map(item => [item.name, item]));
   const core = reading.highlights || {};
@@ -304,7 +305,132 @@ function renderNatalReading(reading) {
   ].join('');
   document.querySelector('#astro-boundaries').innerHTML = (reading.boundaries || []).map(item => `<li>${esc(item)}</li>`).join('');
   document.querySelector('#astro-layout-meta').textContent = `${reading.ruler_system === 'traditional' ? '传统主星' : '现代主星'} · 命中 ${reading.coverage.matched} / 事实 ${reading.coverage.facts} · 未覆盖 ${reading.coverage.uncovered}`;
+  renderPointCards();
+  renderHouseCards();
+  renderAspects();
 }
+/* ---------- 本命解读：逐点位 / 十二宫 / 相位卡片（方案 N4） ---------- */
+const SIGN_SEQUENCE = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'];
+const MARKER_LABELS = {angular_planet: '角宫', retrograde_point: '逆行', house_stellium: '宫位聚集', sign_stellium: '星座聚集'};
+let natalReading = null;
+let pointSort = 'point';
+
+function markerChips(point, aspectById) {
+  return (point.markers || []).map(signalId => {
+    const aspect = aspectById.get(signalId);
+    const text = aspect ? `${aspect.title} ${aspect.orb}°` : (MARKER_LABELS[signalId.split(':')[0]] || signalId);
+    return `<span class="natal-marker" title="${esc(signalId)}">${esc(text)}</span>`;
+  }).join('');
+}
+function blockList(blocks) {
+  return (blocks || []).map(block => `<div><dt>${esc(block.label || block.slot)}</dt><dd>${esc(block.text)}</dd></div>`).join('');
+}
+function pointCard(point, aspectById) {
+  const evidence = point.evidence || {};
+  const facts = [];
+  if (typeof evidence.longitude === 'number') facts.push(`黄经 ${fmt(evidence.longitude)}°`);
+  if (typeof evidence.degree_in_sign === 'number') facts.push(`座内 ${fmt(evidence.degree_in_sign)}°`);
+  if (evidence.house) facts.push(`第${evidence.house}宫${evidence.house_system ? `（${esc(evidence.house_system)}，宫头 ${fmt(evidence.house_cusp)}°）` : ''}`);
+  return `<details class="natal-card" id="natal-point-${esc(point.point_id)}" data-point="${esc(point.point_id)}" data-house="${esc(point.house || '')}" data-sign="${esc(point.sign_id || '')}">
+    <summary>
+      <span class="natal-card-title"><strong>${esc(point.title)}</strong><small>${esc(point.summary)}</small></span>
+      <span class="natal-card-tags">${point.retrograde ? '<span class="natal-retro">R</span>' : ''}${markerChips(point, aspectById)}</span>
+    </summary>
+    <div class="natal-card-body">
+      <dl class="natal-blocks">${blockList(point.blocks)}</dl>
+      <p class="natal-evidence">证据：${esc(facts.join('、')) || '—'}</p>
+      <p class="natal-rule">rule: ${esc((point.blocks || []).map(block => block.rule_id).join(' · '))}</p>
+      <button type="button" class="natal-locate" data-locate="${esc(point.point_id)}">在圆盘上查看</button>
+    </div>
+  </details>`;
+}
+function houseCard(house) {
+  const chips = (house.points || []).map(point =>
+    `<span class="natal-chip${point.virtual ? ' is-virtual' : ''}">${esc(point.point_name)}</span>`).join('');
+  const ruler = house.ruler || {};
+  const rulerText = ruler.point_id
+    ? `${esc(ruler.point_name)} · ${esc(ruler.sign_name)} · 第${esc(ruler.house)}宫`
+    : '未找到宫主星';
+  const system = house.evidence && house.evidence.house_system;
+  return `<details class="natal-card" id="natal-house-${esc(house.house)}" data-house="${esc(house.house)}">
+    <summary>
+      <span class="natal-card-title"><strong>${esc(house.title)}</strong><small>${esc(house.summary)}</small></span>
+      <span class="natal-card-tags"><span class="natal-chip is-muted">主星 ${esc(ruler.point_name || '—')}</span></span>
+    </summary>
+    <div class="natal-card-body">
+      <p class="natal-chips">${chips || '<span class="natal-chip is-empty">宫内无点位</span>'}</p>
+      <dl class="natal-blocks">${blockList(house.blocks)}</dl>
+      <p class="natal-evidence">证据：宫头 ${fmt(house.cusp)}°${system ? ` · ${esc(system)}` : ''}</p>
+      <p class="natal-rule">宫主星：${rulerText}</p>
+    </div>
+  </details>`;
+}
+function aspectRow(aspect) {
+  return `<div class="natal-aspect tone-${esc(aspect.tone)}${aspect.tight ? ' is-tight' : ''}">
+    <span class="natal-aspect-title"><strong>${esc(aspect.title)}</strong><small>${esc(aspect.summary)}</small></span>
+    <span class="natal-aspect-meta">${esc(aspect.label)} · ${fmt(aspect.orb)}° · ${esc(aspect.phase_label)}${aspect.tight ? ' · 紧密' : ''}</span>
+  </div>`;
+}
+function renderPointCards() {
+  const root = document.querySelector('#astro-point-cards');
+  if (!root || !natalReading) return;
+  const aspectById = new Map((natalReading.aspects || []).flatMap(aspect =>
+    (aspect.signal_ids || []).map(signalId => [signalId, aspect])));
+  const points = [...(natalReading.points || [])];
+  if (pointSort === 'house') points.sort((first, second) => (first.house || 99) - (second.house || 99) || first.point_id.localeCompare(second.point_id));
+  else if (pointSort === 'sign') points.sort((first, second) => SIGN_SEQUENCE.indexOf(first.sign_id) - SIGN_SEQUENCE.indexOf(second.sign_id) || first.point_id.localeCompare(second.point_id));
+  root.innerHTML = points.map(point => pointCard(point, aspectById)).join('');
+}
+function renderHouseCards() {
+  const root = document.querySelector('#astro-house-cards');
+  if (root && natalReading) root.innerHTML = (natalReading.houses || []).map(houseCard).join('');
+}
+function renderAspects() {
+  const root = document.querySelector('#astro-aspect-list');
+  if (root && natalReading) root.innerHTML = (natalReading.aspects || []).map(aspectRow).join('');
+}
+function focusPlanet(pointId) {
+  const root = document.querySelector('#astro-wheel');
+  if (!root) return;
+  root.querySelectorAll('.planet.is-focused').forEach(node => node.classList.remove('is-focused'));
+  const target = root.querySelector(`.planet[data-point="${pointId}"]`);
+  if (!target) return;
+  target.classList.add('is-focused');
+  target.scrollIntoView({block: 'center', behavior: 'smooth'});
+}
+function openPointCard(pointId) {
+  activateAstroTab(document.querySelector('#astro-reading-tab'));
+  const card = document.getElementById(`natal-point-${pointId}`);
+  if (!card) return;
+  card.open = true;
+  card.scrollIntoView({block: 'center', behavior: 'smooth'});
+  const summary = card.querySelector('summary');
+  if (summary) summary.focus();
+}
+document.querySelectorAll('[data-sort]').forEach(button => {
+  button.addEventListener('click', () => {
+    pointSort = button.dataset.sort;
+    document.querySelectorAll('[data-sort]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    renderPointCards();
+  });
+});
+document.querySelector('#astro-point-cards').addEventListener('click', event => {
+  const button = event.target.closest('[data-locate]');
+  if (!button) return;
+  activateAstroTab(document.querySelector('#astro-chart-tab'));
+  focusPlanet(button.dataset.locate);
+});
+document.querySelector('#astro-wheel').addEventListener('click', event => {
+  const group = event.target.closest('.planet[data-point]');
+  if (group) openPointCard(group.dataset.point);
+});
+document.querySelector('#astro-wheel').addEventListener('keydown', event => {
+  if (!['Enter', ' '].includes(event.key)) return;
+  const group = event.target.closest('.planet[data-point]');
+  if (!group) return;
+  event.preventDefault();
+  openPointCard(group.dataset.point);
+});
 async function loadNatalReading(chart) {
   try {
     const response = await fetch('/api/v1/astro/natal-reading', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({chart})});
@@ -317,7 +443,10 @@ async function refreshNatalReading(chart) {
   const empty = document.querySelector('#astro-reading-empty');
   const reading = await loadNatalReading(chart);
   if (!reading) {
-    ['#astro-core-row', '#astro-layout-bars', '#astro-layout-notes', '#astro-layout-defs-body', '#astro-distribution', '#astro-boundaries']
+    natalReading = null;
+    ['#astro-core-row', '#astro-layout-bars', '#astro-layout-notes', '#astro-layout-defs-body',
+     '#astro-distribution', '#astro-boundaries', '#astro-point-cards', '#astro-house-cards',
+     '#astro-aspect-list']
       .forEach(selector => { document.querySelector(selector).innerHTML = ''; });
     document.querySelector('#astro-layout-meta').textContent = '解读不可用';
     empty.hidden = false;

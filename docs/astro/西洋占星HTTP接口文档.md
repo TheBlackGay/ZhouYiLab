@@ -285,8 +285,8 @@ curl -sS -X POST https://zhouyilab.k8s.gold/api/v1/astro/charts \
 
 卡片结构：
 
-- `points`：逐点位卡片，每个点位一张，由 `planet_core × sign_style × house_field` 组合而成。每张卡片带 `title`（如「太阳 · 金牛座 · 第9宫」）、`summary`（唯一句式拼装）、`blocks`（每段含 `slot`、`rule_id`、`revision`、`text`）、`markers`（来自派生信号的重点连接）、`signal_ids` 和 `evidence`（黄经、座内度数、宫头、宫制）；`retrograde` 标记逆行，`overrides` 列出被精修替换的槽位。
-- `houses`：十二宫卡片，含宫头星座、`point_ids`（宫内点位）、`virtual_point_ids`（其中的虚点）、`empty_of_planets`（是否无十大行星）、`ruler`（宫主星及其落点）与 `house_ruler` / `house_field` 文案块。空宫、只有虚点的宫、行星与虚点同宫三种情况使用不同句式，不会把「没有十大行星」说成「宫内什么都没有」。
+- `points`：逐点位卡片，每个点位一张，由 `planet_core × sign_style × house_field` 组合而成。每张卡片带 `title`（如「太阳 · 金牛座 · 第9宫」）、`summary`（唯一句式拼装）、`blocks`（每段含 `slot`、`rule_id`、`revision`、`label`、`text`）、`markers`（来自派生信号的重点连接）、`signal_ids` 和 `evidence`（黄经、座内度数、宫头、宫制）；`retrograde` 标记逆行，`overrides` 列出被精修替换的槽位。
+- `houses`：十二宫卡片，含宫头星座、`points`（宫内点位，含 `point_name` 与 `virtual` 标记）、`point_ids`、`virtual_point_ids`（其中的虚点）、`empty_of_planets`（是否无十大行星）、`ruler`（宫主星及其落点）与 `house_ruler` / `house_field` 文案块。空宫、只有虚点的宫、行星与虚点同宫三种情况使用不同句式，不会把「没有十大行星」说成「宫内什么都没有」。
 - `aspects`：按容许度升序排列的相位卡片，含 `label`、`tone`（`harmony` / `tension` / `merge` / `adjust`）、`orb`、`phase_label`（入相 / 出相）、`tight`（容许度不大于 3°）与 `blocks`。只描述顺畅 / 张力，不出现吉凶分类。
 
 模板配置位于 `config/astro/natal_reading_templates.json`，覆盖 `planet_core`、`sign_style`、`house_field`、`aspect_style`、`ascendant_sign`、`sun_sign`、`moon_sign`、`house_ruler`、`summary` 与 `overrides`。`load_templates` 会校验槽位是否覆盖全部点位、十二星座、十二宫与六种相位，以及模板里的占位符是否在白名单内；缺槽位或未知占位符直接返回 `ANALYSIS_CONFIG_ERROR`。`overrides` 支持三种精修粒度：`point_sign`（星体 × 座）、`point_house`（星体 × 宫）、`point_sign_house`（整段替换星座与宫位两段），未精修的条目继续走组合式。缺失模板时进入 `uncovered`，不用大模型补写。
