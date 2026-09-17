@@ -73,13 +73,65 @@
 .astro-wheel .planet:focus-visible .planet-dot { stroke: var(--jade); stroke-width: 3; }
 .astro-wheel .planet-glyph { fill: #fff; font-size: 11px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
 .astro-wheel .planet-degree { fill: var(--ink); font-size: 10.5px; text-anchor: middle; dominant-baseline: middle; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.astro-wheel .house-sector { fill: none; stroke: none; transition: fill 160ms ease; }
+.astro-wheel .house-sector.on { fill: var(--gold); opacity: .22; }
+.wheel-highlight-note { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 0; padding: 9px 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-left: 2px solid var(--gold); font-size: 11px; }
+.wheel-highlight-note strong { color: var(--ink); }
+.wheel-highlight-note button { min-height: 30px; padding: 0 10px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 3px; font-size: 11px; font-weight: 700; }
+
+/* 本命解读：布局速读 */
+.astro-core-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.core-card { display: grid; gap: 4px; padding: 12px; background: var(--surface); border: 1px solid var(--line); border-top: 2px solid var(--gold); }
+.core-card small { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .06em; }
+.core-card strong { color: var(--ink); font-size: 14px; }
+.core-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.astro-layout-bars { display: grid; gap: 8px; }
+.layout-bar { display: grid; grid-template-columns: 72px 1fr auto; align-items: center; gap: 10px; }
+.layout-bar-label { color: var(--muted); font-size: 11px; font-weight: 700; }
+.layout-bar-total { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.layout-bar-track { display: flex; min-height: 34px; overflow: hidden; background: var(--paper); border: 1px solid var(--line); border-radius: 3px; }
+.layout-bar-seg { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 8px; min-width: 0; color: var(--ink); background: var(--surface); border: 0; border-right: 1px solid var(--line); font: inherit; font-size: 11px; }
+.layout-bar-seg:last-child { border-right: 0; }
+.layout-bar-seg span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.layout-bar-seg b { font-size: 12px; }
+.layout-bar-seg.tone-fire { background: #f7e9e5; }
+.layout-bar-seg.tone-earth { background: #f4efe2; }
+.layout-bar-seg.tone-air { background: #eaf0f5; }
+.layout-bar-seg.tone-water { background: #e6f0ef; }
+.layout-bar-seg.tone-jade { background: #e8f0ec; }
+.layout-bar-seg.tone-cinnabar { background: #f8ebe7; }
+.layout-bar-seg.tone-muted { background: #f0f0ee; }
+button.layout-bar-seg { cursor: pointer; }
+button.layout-bar-seg:hover { background: #f1efe6; }
+button.layout-bar-seg:focus-visible { outline: 2px solid var(--jade); outline-offset: -2px; }
+button.layout-bar-seg.is-active { background: var(--gold); color: #fff; }
+.astro-layout-notes { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
+.layout-note-group h3 { margin: 0 0 6px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .06em; }
+.layout-note-group > ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.layout-note-group > ul > li { display: grid; gap: 3px; padding: 9px 11px; background: var(--surface); border: 1px solid var(--line); }
+.layout-note-group p { margin: 0; font-size: 12.5px; line-height: 1.7; }
+.layout-note-meta { color: var(--muted); font: 10px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.astro-layout-defs { margin-top: 14px; border: 1px solid var(--line); background: var(--surface); }
+.astro-layout-defs summary { padding: 10px 12px; color: var(--ink); font-size: 12px; font-weight: 700; cursor: pointer; }
+.astro-layout-defs dl { display: grid; gap: 8px; margin: 0; padding: 0 12px 12px; }
+.astro-layout-defs dt { color: var(--muted); font-size: 10px; font-weight: 700; }
+.astro-layout-defs dd { margin: 2px 0 0; font-size: 12px; line-height: 1.7; }
+.astro-distribution { display: grid; gap: 8px; }
+.astro-boundaries { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.astro-boundaries li { padding: 9px 11px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--line); font-size: 11.5px; line-height: 1.7; }
+.reading-empty { margin: 14px 0 0; padding: 12px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--cinnabar); font-size: 12px; }
 
 @media (max-width: 620px) {
   /* 圆盘信息密度高，窄屏保持最小可读尺寸，只在容器内横向滚动。 */
   .astro-wheel-wrap { place-items: start; overflow-x: auto; }
   .astro-wheel { width: 560px; max-width: none; }
+  /* 布局条在窄屏改为纵向堆叠，避免出现整页横向滚动。 */
+  .layout-bar { grid-template-columns: 1fr; gap: 4px; }
+  .layout-bar-label, .layout-bar-total { font-size: 10px; }
+  .astro-core-row { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .astro-wheel .planet-dot { transition: none; }
+  .astro-wheel .house-sector { transition: none; }
 }

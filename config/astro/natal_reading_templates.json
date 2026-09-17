@@ -1,0 +1,127 @@
+{
+  "schema_version": "astro-natal-templates/1.0",
+  "core_text": {
+    "ascendant": {
+      "revision": 1,
+      "text": "上升点落在{sign_name}，座内 {degree_in_sign}°。"
+    },
+    "sun": {
+      "revision": 1,
+      "text": "{point_name}落在{sign_name}{house_text}，黄经 {longitude}°。"
+    },
+    "moon": {
+      "revision": 1,
+      "text": "{point_name}落在{sign_name}{house_text}，黄经 {longitude}°。"
+    },
+    "chart_ruler": {
+      "revision": 1,
+      "text": "上升{sign_name}由{ruler_name}定位，{ruler_name}落在{ruler_sign_name}{ruler_house_text}。"
+    }
+  },
+  "layout_text": {
+    "natal.hemisphere_left_majority": {
+      "revision": 1,
+      "text": "{count}/{total} 个行星落在左半盘（{houses} 宫），盘面结构重心更多集中在这一侧。"
+    },
+    "natal.hemisphere_right_majority": {
+      "revision": 1,
+      "text": "{count}/{total} 个行星落在右半盘（{houses} 宫），盘面结构重心更多集中在这一侧。"
+    },
+    "natal.hemisphere_above_majority": {
+      "revision": 1,
+      "text": "{count}/{total} 个行星落在上半盘（{houses} 宫），盘面结构重心更多集中在这一侧。"
+    },
+    "natal.hemisphere_below_majority": {
+      "revision": 1,
+      "text": "{count}/{total} 个行星落在下半盘（{houses} 宫），盘面结构重心更多集中在这一侧。"
+    },
+    "natal.quadrant_emphasis": {
+      "revision": 1,
+      "text": "{quadrant_label}（{houses} 宫）集中了 {count} 个行星，是四个象限里点位较多的一块。"
+    },
+    "natal.empty_house": {
+      "revision": 1,
+      "text": "第 {house} 宫没有十大行星落入（宫头{sign_name}）。"
+    },
+    "natal.aspect_harmony_majority": {
+      "revision": 1,
+      "text": "已计算的 {total} 条主要相位中，顺畅连接 {harmony} 条（{harmony_percent}%）、张力连接 {tension} 条，整体以顺畅连接为主。"
+    },
+    "natal.aspect_tension_majority": {
+      "revision": 1,
+      "text": "已计算的 {total} 条主要相位中，张力连接 {tension} 条（{tension_percent}%）、顺畅连接 {harmony} 条，整体以需要协调的连接为主。"
+    },
+    "natal.chart_ruler_placement": {
+      "revision": 1,
+      "text": "命主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，是这张盘上被上升点指向的点位。"
+    },
+    "natal.angular_planet": {
+      "revision": 1,
+      "text": "{point_names}落在第 {house} 宫，靠近四轴。"
+    },
+    "natal.retrograde_point": {
+      "revision": 1,
+      "text": "{point_names}在本命盘中为逆行视运动，表达上偏向向内、回看与重做。"
+    },
+    "natal.element_emphasis": {
+      "revision": 1,
+      "text": "{element_label}元素点位数达到 {count}（阈值 {threshold}），是本盘上数量较多的元素。"
+    },
+    "natal.modality_emphasis": {
+      "revision": 1,
+      "text": "{modality_label}模式点位数达到 {count}（阈值 {threshold}），是本盘上数量较多的模式。"
+    },
+    "natal.house_stellium": {
+      "revision": 1,
+      "text": "第 {house} 宫聚集了 {count} 个点位：{point_names}。"
+    },
+    "natal.sign_stellium": {
+      "revision": 1,
+      "text": "{sign_name}聚集了 {count} 个点位：{point_names}。"
+    },
+    "natal.tight_aspect": {
+      "revision": 1,
+      "text": "{pair_text}形成{aspect_label}，容许度 {orb}°，是连接较紧密的一组。"
+    }
+  },
+  "labels": {
+    "hemisphere": {
+      "left": "左半盘",
+      "right": "右半盘",
+      "above": "上半盘",
+      "below": "下半盘"
+    },
+    "quadrant": {
+      "1": "第一象限",
+      "2": "第二象限",
+      "3": "第三象限",
+      "4": "第四象限"
+    },
+    "element": {
+      "fire": "火",
+      "earth": "土",
+      "air": "风",
+      "water": "水"
+    },
+    "modality": {
+      "cardinal": "基本",
+      "fixed": "固定",
+      "mutable": "变动"
+    },
+    "aspect": {
+      "conjunction": "合相",
+      "sextile": "六合",
+      "square": "刑相",
+      "trine": "拱相",
+      "opposition": "对冲",
+      "quincunx": "梅花"
+    }
+  },
+  "boundaries": [
+    "布局速读只描述排盘结构事实（点位、宫位、相位、统计口径），不判断吉凶，也不给出人生结论。",
+    "半球、象限、星座与宫位占据只统计十大行星；真交点、凯龙等虚点不参与分布统计。",
+    "空宫只表示该宫没有十大行星落入，不代表该领域缺失或空白。",
+    "相位只按顺畅 / 张力两轴描述，不使用吉凶相位分类。",
+    "逆行只表示视运动方向，不表述为负面事件。"
+  ]
+}

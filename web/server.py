@@ -43,6 +43,17 @@ from astro_daily_reading import (
     analyze_and_render as analyze_and_render_daily_reading,
     render_daily_reading,
 )
+from astro_natal_analysis import (
+    AstroNatalAnalysisConfigError,
+    AstroNatalAnalysisRequestError,
+    analyze_natal_layout,
+)
+from astro_natal_reading import (
+    AstroNatalReadingConfigError,
+    AstroNatalReadingRequestError,
+    analyze_and_render_natal,
+    render_natal_reading,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -394,6 +405,44 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 } else 500
                 self.send_api_error(status, error.code, error.message)
             return
+        if parsed.path == "/api/v1/astro/natal-analysis":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_astro_natal_analysis(payload))
+            except AstroNatalAnalysisConfigError as error:
+                self.send_api_error(500, "ANALYSIS_CONFIG_ERROR", str(error))
+            except AstroNatalAnalysisRequestError as error:
+                self.send_api_error(400, "INVALID_REQUEST", str(error))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "西洋占星本命布局分析计算超时")
+            except CliError as error:
+                status = 422 if error.code in {
+                    "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
+                    "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST",
+                } else 500
+                self.send_api_error(status, error.code, error.message)
+            return
+        if parsed.path == "/api/v1/astro/natal-reading":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_astro_natal_reading(payload))
+            except (AstroNatalAnalysisConfigError, AstroNatalReadingConfigError) as error:
+                self.send_api_error(500, "ANALYSIS_CONFIG_ERROR", str(error))
+            except (AstroNatalAnalysisRequestError, AstroNatalReadingRequestError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", str(error))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "西洋占星本命布局解读计算超时")
+            except CliError as error:
+                status = 422 if error.code in {
+                    "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
+                    "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST",
+                } else 500
+                self.send_api_error(status, error.code, error.message)
+            return
         if parsed.path == f"{ai_prefix}/connections/test":
             try:
                 payload = self.read_json_body()
@@ -638,6 +687,41 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             dimensions=dimensions,
             requested_date=requested_date,
         )
+
+    def run_astro_natal_analysis(self, payload):
+        chart = payload.get("chart")
+        chart_request = payload.get("chart_request")
+        if chart is not None and chart_request is not None:
+            raise AstroNatalAnalysisRequestError("chart 与 chart_request 只能提供一个")
+        if chart is None:
+            if not isinstance(chart_request, dict):
+                raise AstroNatalAnalysisRequestError("必须提供 chart 或 chart_request")
+            chart = self.run_engine(ASTRO_CLI_PATH, {**chart_request, "operation": "chart"})
+        if not isinstance(chart, dict):
+            raise AstroNatalAnalysisRequestError("chart 必须是 JSON 对象")
+        return analyze_natal_layout(chart, payload.get("ruler_system"))
+
+    def run_astro_natal_reading(self, payload):
+        chart = payload.get("chart")
+        chart_request = payload.get("chart_request")
+        analysis = payload.get("analysis")
+        supplied = sum(value is not None for value in (chart, chart_request, analysis))
+        if supplied > 1:
+            raise AstroNatalReadingRequestError("chart、chart_request、analysis 只能提供一个")
+        ruler_system = payload.get("ruler_system")
+        if analysis is not None:
+            if not isinstance(analysis, dict):
+                raise AstroNatalReadingRequestError("analysis 必须是 JSON 对象")
+            if ruler_system is not None:
+                raise AstroNatalReadingRequestError("传入 analysis 时不再接受 ruler_system")
+            return render_natal_reading(analysis)
+        if chart is None:
+            if not isinstance(chart_request, dict):
+                raise AstroNatalReadingRequestError("必须提供 chart、chart_request 或 analysis")
+            chart = self.run_engine(ASTRO_CLI_PATH, {**chart_request, "operation": "chart"})
+        if not isinstance(chart, dict):
+            raise AstroNatalReadingRequestError("chart 必须是 JSON 对象")
+        return analyze_and_render_natal(chart, ruler_system=ruler_system)
 
     def send_api_success(self, data, status=200):
         self.send_json(status, {

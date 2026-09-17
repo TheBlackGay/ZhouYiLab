@@ -35,7 +35,7 @@
 | 紫微盲评研究 | 可用 | 匿名盲评包、维度量尺、协议与一致性研究配置 |
 | AI 多模型预评审 | 实验性 | Ollama/OpenAI 兼容接口、多模型重复实验、结果统计与 SQLite 留档 |
 | 八字 | 初步可用 | 公历/农历输入、真太阳时、四柱、十神、藏干、十二长生、逐柱旬空、纳音、首批神煞、起运与十步大运 |
-| 西洋占星 | 实验性 | Swiss Ephemeris 本命盘、主要行星、四轴、十二宫、主要相位和 Moshier 降级提示 |
+| 西洋占星 | 实验性 | Swiss Ephemeris 本命盘、主要行星、四轴、十二宫、主要相位、黄道与宫位布局速读和 Moshier 降级提示 |
 | 六爻、大六壬 | C++ 示例 | 核心模块与示例程序 |
 
 ## 快速开始
@@ -326,6 +326,8 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 | POST | `/api/v1/astro/analysis` | 基于结构化星盘和规则库生成证据分析包 |
 | POST | `/api/v1/astro/transit-analysis` | 将行运事实映射为生活领域信号，不生成文案或评分 |
 | POST | `/api/v1/astro/daily-reading` | 将生活领域信号渲染为无评分日运解析包 |
+| POST | `/api/v1/astro/natal-analysis` | 将本命盘读成黄道与宫位布局统计、原始信号和规则命中 |
+| POST | `/api/v1/astro/natal-reading` | 将布局统计与规则命中渲染为无评分布局速读解析包 |
 | GET | `/api/v1/ziwei/research/blind-review/packet` | 生成匿名盲评包 |
 | GET/POST | `/api/v1/ziwei/research/ai-review/*` | AI 预评审配置、实验和结果 |
 

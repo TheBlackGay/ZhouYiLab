@@ -31,6 +31,7 @@
       <span class="secondary-context">西洋占星<strong>内容</strong></span>
       <div class="result-tabs secondary-tabs" role="tablist" aria-label="西洋占星内容">
         <button id="astro-chart-tab" type="button" role="tab" aria-selected="true" aria-controls="astro-chart-panel">本命盘</button>
+        <button id="astro-reading-tab" type="button" role="tab" aria-selected="false" aria-controls="astro-reading-panel" tabindex="-1">本命解读</button>
         <button id="astro-facts-tab" type="button" role="tab" aria-selected="false" aria-controls="astro-facts-panel" tabindex="-1">结构事实</button>
         <button id="astro-prompt-tab" type="button" role="tab" aria-selected="false" aria-controls="astro-prompt-panel" tabindex="-1">解析提示词</button>
       </div>
@@ -121,6 +122,32 @@
             <span class="legend-item"><i class="legend-aspect"></i>主要相位</span>
             <span class="legend-item"><b class="legend-retro">R</b>逆行</span>
           </div>
+          <p id="astro-wheel-highlight" class="wheel-highlight-note" role="status" aria-live="polite" hidden></p>
+        </div>
+
+        <div id="astro-reading-panel" class="astro-tab-panel" role="tabpanel" aria-labelledby="astro-reading-tab" hidden>
+          <section class="astro-section">
+            <div class="board-heading">
+              <div><span>布局速读</span><strong>黄道与宫位布局</strong></div>
+              <small id="astro-layout-meta">--</small>
+            </div>
+            <div id="astro-core-row" class="astro-core-row"></div>
+            <div id="astro-layout-bars" class="astro-layout-bars"></div>
+            <ul id="astro-layout-notes" class="astro-layout-notes"></ul>
+            <details id="astro-layout-defs" class="astro-layout-defs">
+              <summary>统计口径（可核对）</summary>
+              <dl id="astro-layout-defs-body"></dl>
+            </details>
+            <p id="astro-reading-empty" class="reading-empty" hidden></p>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>分布</span><strong>元素与模式</strong></div><small>十大行星口径</small></div>
+            <div id="astro-distribution" class="astro-distribution"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>阅读边界</span><strong>事实与推断</strong></div><small>不判定吉凶</small></div>
+            <ul id="astro-boundaries" class="astro-boundaries"></ul>
+          </section>
         </div>
 
         <div id="astro-facts-panel" class="astro-tab-panel" role="tabpanel" aria-labelledby="astro-facts-tab" hidden>

@@ -233,6 +233,58 @@ curl -sS -X POST https://zhouyilab.k8s.gold/api/v1/astro/charts \
 
 模板配置位于 `config/astro/daily_reading_templates.json`。缺少对应规则模板、日期格式无效或分析包版本不匹配时，接口返回 `INVALID_REQUEST`；日运解析不会补写没有命中规则的生活领域结论。
 
+## 本命布局分析包
+
+`POST /api/v1/astro/natal-analysis` 把 `/api/v1/astro/charts` 返回的本命盘读成「黄道与宫位布局」的结构事实，不新增排盘计算、不修改 C++ 排盘核心。可以传入完整的 `chart`，也可以用 `chart_request` 让服务先排盘。可选 `ruler_system` 取 `modern`（默认）或 `traditional`。
+
+```json
+{
+  "chart_request": {
+    "date": {"year": 1990, "month": 5, "day": 20, "hour": 14},
+    "utc_offset_minutes": 480,
+    "location": {"latitude": 31.2304, "longitude": 121.4737},
+    "include_aspects": true
+  },
+  "ruler_system": "modern"
+}
+```
+
+输出的 `data` 版本为 `astro-natal-analysis/1.0`，规则版本为 `astro-natal-rules/1.0`，分三块：
+
+- `layout`：描述性统计，与规则配置解耦（规则为空时也必须完整可用）。包含 `core`（上升、中天、太阳、月亮、命主星）、`hemispheres`、`quadrants`、`sign_occupancy`、`house_occupancy`（含 `empty_houses`）、`elements`、`modalities` 和 `aspect_network`。`hemispheres` 显式回传 `definition`（统计口径）、`counted_point_ids`、`counted_point_names`、`counted_total` 和 `missing_point_ids`。
+- `facts`：由 `layout` 与 `structured.derived_signals` 生成的原始信号，每项含 `signal_id`、`type`、`point_ids`、`point_names` 和 `evidence`。信号类型包括 `angle_in_sign`、`point_in_sign`、`point_in_house`、`house_cusp_sign`、`house_ruler_placement`、`chart_ruler_placement`、`hemisphere_stat`、`quadrant_stat`、`sign_occupancy_stat`、`empty_house`、`aspect_network_stat`，以及排盘已有的 `angular_planet`、`retrograde_point`、`element_emphasis`、`modality_emphasis`、`sign_stellium`、`house_stellium`、`tight_aspect`。
+- `signals`：`config/astro/natal_rules.json` 命中的规则，每项含 `rule_id`、`revision`、`signal_id`、`signal_type`、`observation_code`、`dimension`、`point_ids`、`evidence` 和 `boundary`；规则可用 `match`、`min_count`、`min_ratio` 做阈值判定。
+- `uncovered`：没有命中任何规则的信号，显式列出而不是静默丢弃。
+
+统计口径：半球、象限、星座与宫位占据只统计十大行星（太阳、月亮、水星、金星、火星、木星、土星、天王星、海王星、冥王星）中落宫有效的点位；真交点、凯龙等虚点仍出现在逐点位信号里，但不参与分布统计。相位网络统计 `structured.aspects` 中已计算的全部主要相位，顺畅指拱相与六合，张力指刑相与对冲。所有输出都不含吉凶、评分或人生结论。
+
+## 本命布局解析包
+
+`POST /api/v1/astro/natal-reading` 把布局分析与规则命中渲染成可读的布局速读。可以直接传入 `/natal-analysis` 返回的 `analysis`，也可以传入 `chart` 或 `chart_request`，由服务依次完成排盘、布局分析和模板渲染。
+
+```json
+{
+  "chart_request": {
+    "date": {"year": 1990, "month": 5, "day": 20, "hour": 14},
+    "utc_offset_minutes": 480,
+    "location": {"latitude": 31.2304, "longitude": 121.4737},
+    "include_aspects": true
+  },
+  "ruler_system": "traditional"
+}
+```
+
+输出的 `data` 版本为 `astro-natal-reading/1.0`，模板版本为 `astro-natal-templates/1.0`，包含：
+
+- `highlights`：上升、太阳、月亮、命主星四张核心卡，含 `title`、`summary`、`signal_ids`；
+- `layout`：布局速读条目，每条含 `rule_id`、`revision`、`text`、`count`/`total`、`point_ids`、`signal_ids`、`evidence` 和 `boundary`（`core` 维度由 `highlights` 承载，不重复成条目）；
+- `layout_stats`：`/natal-analysis` 的 `layout` 原样回传，供页面画分布条与「统计口径」折叠区；
+- `distribution`：元素与模式计数，以及命中的强调信号 ID；
+- `coverage`：`facts`、`matched`、`rendered`、`layout_lines`、`uncovered` 计数；
+- `boundaries`、`uncovered`、`versions`。
+
+模板配置位于 `config/astro/natal_reading_templates.json`，按 `rule_id` 选择文案并做占位符替换；缺失模板时进入 `uncovered`。`points`、`houses`、`aspects` 在 N2 阶段固定为空数组，逐点位卡片在 N3 交付。
+
 ## 健康检查
 
 `GET /api/v1/health`

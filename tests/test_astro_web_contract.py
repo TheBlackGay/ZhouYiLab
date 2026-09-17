@@ -258,6 +258,46 @@ class AstroWebSourceContractTests(unittest.TestCase):
         self.assertIn("(Number(data.angles?.ascendant ?? 0) + 270) % 360", script)
         self.assertIn("const screen = longitude => ((base - Number(longitude)) % 360 + 360) % 360;", script)
 
+    def test_natal_layout_analysis_and_reading_are_exposed(self):
+        server = (ROOT / "web" / "server.py").read_text(encoding="utf-8")
+        analysis = (ROOT / "web" / "astro_natal_analysis.py").read_text(encoding="utf-8")
+        reading = (ROOT / "web" / "astro_natal_reading.py").read_text(encoding="utf-8")
+        rules = (ROOT / "config" / "astro" / "natal_rules.json").read_text(encoding="utf-8")
+        templates = (ROOT / "config" / "astro" / "natal_reading_templates.json").read_text(encoding="utf-8")
+        self.assertIn('"/api/v1/astro/natal-analysis"', server)
+        self.assertIn('"/api/v1/astro/natal-reading"', server)
+        self.assertIn("run_astro_natal_analysis", server)
+        self.assertIn("run_astro_natal_reading", server)
+        self.assertIn('"astro-natal-analysis/1.0"', analysis)
+        self.assertIn('"astro-natal-reading/1.0"', reading)
+        self.assertIn('"astro-natal-rules/1.0"', rules)
+        self.assertIn('"astro-natal-templates/1.0"', templates)
+        # 布局统计口径必须显式回传，且与规则层解耦。
+        for fragment in ("hemisphere_stat", "quadrant_stat", "empty_house", "aspect_network_stat",
+                         "counted_point_ids", "DISTRIBUTION_POINTS"):
+            self.assertIn(fragment, analysis)
+        # 只统计十大行星，虚点不参与分布统计。
+        self.assertIn("DISTRIBUTION_POINTS = (", analysis)
+        self.assertNotIn('"true_node"', analysis)
+        self.assertNotIn('"chiron"', analysis)
+
+    def test_astro_reading_tab_and_layout_bars_are_present(self):
+        html = (ROOT / "web" / "astro.html").read_text(encoding="utf-8")
+        script = (ROOT / "web" / "astro.js").read_text(encoding="utf-8")
+        css = (ROOT / "web" / "astro.css").read_text(encoding="utf-8")
+        for fragment in (
+            'id="astro-reading-tab"', 'id="astro-reading-panel"', 'id="astro-core-row"',
+            'id="astro-layout-bars"', 'id="astro-layout-notes"', 'id="astro-layout-defs"',
+            'id="astro-wheel-highlight"', 'id="astro-reading-empty"',
+        ):
+            self.assertIn(fragment, html)
+        for fragment in ("/api/v1/astro/natal-reading", "layoutBar", "highlightWheelHouses",
+                         "house-sector", "clearLayoutSelection"):
+            self.assertIn(fragment, script)
+        for fragment in (".layout-bar-seg", ".house-sector.on", ".astro-core-row",
+                         ".layout-note-meta", ".wheel-highlight-note"):
+            self.assertIn(fragment, css)
+
 
 if __name__ == "__main__":
     unittest.main()
