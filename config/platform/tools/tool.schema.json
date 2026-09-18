@@ -97,6 +97,15 @@
       "type": "boolean",
       "default": true,
       "description": "false 表示该引擎缺失时服务仍可启动（运行期由 health 暴露不可用）"
+    },
+    "interface_doc": {
+      "type": "string",
+      "pattern": "^docs/",
+      "description": "接口文档仓库相对路径"
+    },
+    "rule_profile_version": {
+      "type": "string",
+      "description": "引擎 meta.rule_profile.profile_version 对齐值"
     }
   }
 }

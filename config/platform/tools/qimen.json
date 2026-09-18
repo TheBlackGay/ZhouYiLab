@@ -4,6 +4,7 @@
   "name": "奇门遁甲",
   "engine_cli": "build/examples/qi_men_web_cli",
   "calibration_status": "calibrated",
+  "interface_doc": "docs/奇门遁甲HTTP接口文档.md",
   "pages": [
     "qimen.html"
   ],

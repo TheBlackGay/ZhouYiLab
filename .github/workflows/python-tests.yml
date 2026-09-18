@@ -43,3 +43,6 @@ jobs:
 
       - name: Unit and contract tests (C++ engines absent -> CLI-dependent cases skip)
         run: python3 -m unittest discover -s tests -v
+
+      - name: Calibration claim consistency (permissive; pre-release 在完整构建树上跑 --strict)
+        run: python3 scripts/check_calibration.py

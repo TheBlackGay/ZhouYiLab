@@ -55,6 +55,8 @@ class ToolManifest:
     health_key: str
     optional_env: str = None
     required_at_startup: bool = True
+    interface_doc: str = None
+    rule_profile_version: str = None
 
     def engine_path(self, project_root: Path) -> Path:
         return project_root / self.engine_cli
@@ -69,6 +71,7 @@ def builtin_tools():
             "name": "紫微斗数",
             "engine_cli": "build/examples/zi_wei_web_cli",
             "calibration_status": "calibrated",
+            "interface_doc": "docs/ziwei/紫微斗数HTTP接口文档.md",
             "pages": ["index.html"],
             "api_prefixes": ["/api/v1/ziwei/"],
             "routes": [
@@ -87,6 +90,7 @@ def builtin_tools():
             "name": "奇门遁甲",
             "engine_cli": "build/examples/qi_men_web_cli",
             "calibration_status": "calibrated",
+            "interface_doc": "docs/奇门遁甲HTTP接口文档.md",
             "pages": ["qimen.html"],
             "api_prefixes": ["/api/v1/qimen/"],
             "routes": [
@@ -127,6 +131,8 @@ def builtin_tools():
             "name": "大六壬",
             "engine_cli": "build/examples/da_liu_ren_web_cli",
             "calibration_status": "pending",
+            "interface_doc": "docs/大六壬HTTP接口文档.md",
+            "rule_profile_version": "da-liu-ren-rules/0.1",
             "pages": ["da-liu-ren.html"],
             "api_prefixes": ["/api/v1/da-liu-ren/"],
             "routes": [
@@ -144,6 +150,7 @@ def builtin_tools():
             "engine_cli": "build/examples/common_calendar_web_cli",
             "calibration_status": "calibrated",
             "required_at_startup": False,
+            "interface_doc": "docs/common/公共日历API.md",
             "pages": [],
             "api_prefixes": ["/api/v1/calendar/"],
             "routes": [
@@ -157,6 +164,7 @@ def builtin_tools():
             "name": "西洋占星",
             "engine_cli": "build/examples/astro_web_cli",
             "calibration_status": "experimental",
+            "interface_doc": "docs/astro/西洋占星HTTP接口文档.md",
             "pages": ["astro.html"],
             "api_prefixes": ["/api/v1/astro/", "/api/v1/geo/"],
             "optional_env": "ZHOUYILAB_ENABLE_ASTRO",
@@ -265,10 +273,21 @@ def _validate_manifest(raw, source_label):
     required_at_startup = raw.get("required_at_startup", True)
     if not isinstance(required_at_startup, bool):
         raise ToolRegistryError(f"{where}: required_at_startup 必须是布尔值")
+    interface_doc = raw.get("interface_doc")
+    if interface_doc is not None:
+        interface_doc = _require_string(raw, "interface_doc", where)
+        _validate_relative_asset(interface_doc, where, "interface_doc")
+        if not interface_doc.startswith("docs/"):
+            raise ToolRegistryError(f"{where}: interface_doc 必须位于 docs/ 下")
+    rule_profile_version = raw.get("rule_profile_version")
+    if rule_profile_version is not None and (
+            not isinstance(rule_profile_version, str) or not rule_profile_version.strip()):
+        raise ToolRegistryError(f"{where}: rule_profile_version 必须是非空字符串")
 
     return ToolManifest(tool_id, name, engine_cli, calibration,
                         pages, api_prefixes, tuple(routes), health_key,
-                        optional_env, required_at_startup)
+                        optional_env, required_at_startup,
+                        interface_doc, rule_profile_version)
 
 
 class ToolRegistry:
@@ -336,6 +355,8 @@ class ToolRegistry:
                     "engine_available": manifest.engine_path(project_root).exists(),
                     "calibration_status": manifest.calibration_status,
                     "required_at_startup": manifest.required_at_startup,
+                    "interface_doc": manifest.interface_doc,
+                    "rule_profile_version": manifest.rule_profile_version,
                     "pages": list(manifest.pages),
                     "api_prefixes": list(manifest.api_prefixes),
                     "optional_env": manifest.optional_env,

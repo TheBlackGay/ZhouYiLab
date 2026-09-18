@@ -4,6 +4,7 @@
   "name": "紫微斗数",
   "engine_cli": "build/examples/zi_wei_web_cli",
   "calibration_status": "calibrated",
+  "interface_doc": "docs/ziwei/紫微斗数HTTP接口文档.md",
   "pages": [
     "index.html"
   ],

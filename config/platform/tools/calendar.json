@@ -5,6 +5,7 @@
   "engine_cli": "build/examples/common_calendar_web_cli",
   "calibration_status": "calibrated",
   "required_at_startup": false,
+  "interface_doc": "docs/common/公共日历API.md",
   "pages": [],
   "api_prefixes": [
     "/api/v1/calendar/"

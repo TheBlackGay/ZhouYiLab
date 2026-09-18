@@ -1,0 +1,50 @@
+{
+  "schema": "zhouyilab-calibration/1.0",
+  "description": "工具校准声明的验证套件登记。scripts/check_calibration.py 按此清单执行：claim=calibrated 的工具必须全部套件通过（strict 下不得 skip）；其余 claim 只报告不强制。",
+  "tools": {
+    "ziwei": {
+      "suites": [
+        {"type": "pattern_catalog", "directory": "config/ziwei/patterns"},
+        {"type": "python_test", "target": "tests.test_ziwei_pattern_engine"},
+        {"type": "python_test", "target": "tests.test_ziwei_analysis"},
+        {"type": "python_test", "target": "tests.test_ziwei_brightness"},
+        {"type": "python_test", "target": "tests.test_ziwei_symbols_contract", "requires_engine": "zi_wei_web_cli"}
+      ]
+    },
+    "qimen": {
+      "suites": [
+        {"type": "python_test", "target": "tests.test_qimen_learning_rules"},
+        {"type": "python_test", "target": "tests.test_qimen_regression", "requires_engine": "qi_men_web_cli"}
+      ]
+    },
+    "bazi": {
+      "suites": [
+        {"type": "python_test", "target": "tests.test_bazi_web_contract", "requires_engine": "ba_zi_web_cli"}
+      ]
+    },
+    "liu_yao": {
+      "suites": [
+        {"type": "python_test", "target": "tests.test_divination_web_contract", "requires_engine": "liu_yao_web_cli"}
+      ]
+    },
+    "da_liu_ren": {
+      "suites": [
+        {"type": "python_test", "target": "tests.test_da_liu_ren_glossary"},
+        {"type": "python_test", "target": "tests.test_da_liu_ren_engine_contract", "requires_engine": "da_liu_ren_web_cli"},
+        {"type": "python_test", "target": "tests.test_da_liu_ren_web_contract", "requires_engine": "da_liu_ren_web_cli"}
+      ]
+    },
+    "calendar": {
+      "suites": [
+        {"type": "python_test", "target": "tests.test_calendar_api_contract"}
+      ]
+    },
+    "astro": {
+      "suites": [
+        {"type": "python_test", "target": "tests.test_astro_analysis", "requires_engine": "astro_web_cli"},
+        {"type": "python_test", "target": "tests.test_astro_natal_analysis", "requires_engine": "astro_web_cli"},
+        {"type": "python_test", "target": "tests.test_astro_web_contract"}
+      ]
+    }
+  }
+}
