@@ -4,26 +4,63 @@
   "title": "大六壬术语帮助词典（DLR-204）",
   "description": "每条术语必须带当前实现口径（caliber），并与引擎 meta.rule_profile 的对应规则项（related_profile_rule）交叉一致。",
   "type": "object",
-  "required": ["schema", "glossary_version", "terms"],
+  "required": [
+    "schema",
+    "glossary_version",
+    "terms"
+  ],
   "additionalProperties": false,
   "properties": {
-    "schema": {"const": "daliuren-glossary/1.0"},
-    "glossary_version": {"type": "string", "minLength": 1},
-    "profile_ref": {"type": "string", "description": "对齐的引擎规则口径版本"},
-    "notes": {"type": "string"},
+    "schema": {
+      "const": "daliuren-glossary/1.0"
+    },
+    "glossary_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_ref": {
+      "type": "string",
+      "description": "对齐的引擎规则口径版本"
+    },
+    "notes": {
+      "type": "string"
+    },
     "terms": {
       "type": "array",
       "minItems": 10,
       "items": {
         "type": "object",
-        "required": ["id", "term", "definition", "caliber"],
+        "required": [
+          "id",
+          "term",
+          "definition",
+          "caliber"
+        ],
         "additionalProperties": false,
         "properties": {
-          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
-          "term": {"type": "string", "minLength": 1},
-          "definition": {"type": "string", "minLength": 8},
-          "caliber": {"type": "string", "minLength": 4},
-          "related_profile_rule": {"type": "string"}
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "term": {
+            "type": "string",
+            "minLength": 1
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 8
+          },
+          "caliber": {
+            "type": "string",
+            "minLength": 4
+          },
+          "related_profile_rule": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "zhouyilab-source-ref/1.0",
+            "description": "该词条口径的古籍出处（可选；挂接需人工校勘）"
+          }
         }
       }
     }

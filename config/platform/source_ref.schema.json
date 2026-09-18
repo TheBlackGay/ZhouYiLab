@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "zhouyilab-source-ref/1.0",
+  "title": "古籍出处引用（D8）",
+  "description": "事后可追溯，不是事中可计算：source_ref 只用于把规则/术语/判断映射到古籍原文与版本出处，禁止把古籍条文硬编码为排盘 if-else。不开放全文阅读，引用卡片按需展开。",
+  "type": "object",
+  "required": [
+    "book",
+    "edition"
+  ],
+  "properties": {
+    "book": {
+      "type": "string",
+      "minLength": 1,
+      "description": "书名，如《六壬毕法赋》（收《六壬大全》）"
+    },
+    "edition": {
+      "type": "string",
+      "minLength": 1,
+      "description": "版本出处，如 浙江郑大节家藏本"
+    },
+    "chapter": {
+      "type": "string",
+      "description": "卷/目/篇"
+    },
+    "clause": {
+      "type": "string",
+      "description": "句序或条目号，如 毕法赋上卷·第12句"
+    },
+    "quote": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "原文摘句（可展开卡片内容，非全文）"
+    },
+    "calendar_context": {
+      "enum": [
+        "zhongqi_guogong",
+        "guifa_lian_du",
+        "unknown"
+      ],
+      "description": "该出处的历法背景标注：中气过宫 / 古法躔度 / 不明（D2×D8 耦合：引用与平台默认口径的一致性对用户可见）"
+    },
+    "doc": {
+      "type": "string",
+      "description": "仓库内文档路径，如 docs/毕法赋.md"
+    }
+  },
+  "additionalProperties": false
+}
