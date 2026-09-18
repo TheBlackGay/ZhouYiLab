@@ -161,6 +161,54 @@ namespace {
         };
     }
 
+    /**
+     * @brief 规则口径标识（参照大六壬 DLR-205 样板，纯新增 meta.rule_profile 字段）
+     *
+     * 每条描述以当前代码行为为准（括号内为内核位置），不引入未经代码证实的古籍归属。
+     */
+    json rule_profile() {
+        return {
+            {"profile_version", "ziwei-rules/1.0"},
+            {"calibration_status", "calibrated"},
+            {"rules", {
+                {"true_solar_time",
+                    "出生时间校正与八字共用 ZhouYi.Common.Calendar：标准时间=钟表时间−夏令时分钟数；"
+                    "true_solar_time 模式下真太阳时=标准时间+(出生地经度−标准经线)×4分钟/度+均时差"
+                    "（NOAA 年分数近似式，四舍五入到秒），并以校正后时间排盘、记录是否跨公历日；"
+                    "standard_time 模式不作任何校正；longitude 与 standard_meridian 缺省均为东经120度"},
+                {"ming_gong_shen_gong",
+                    "命宫身宫用寅起生月生时法：寅宫起正月顺数至生月，逆数生时为命宫、顺数生时为身宫；"
+                    "五行局以命宫干支按干支取数歌诀定（非纳音查表）：干甲乙1丙丁2戊己3庚辛4壬癸5、"
+                    "支子午丑未1寅申卯酉2辰戌巳亥3，和满5减5对应木三金四水二火六土五局"},
+                {"zi_wei_star_method",
+                    "紫微星按农历日数加借数后除局数定宫：取最小借数使(农历日+借数)整除局数，商数自寅宫起数，"
+                    "借数偶数进宫、奇数退宫；天府宫按寅申轴镜像（紫微在寅申与天府同宫）；"
+                    "紫微系六星自紫微逆行安天机−1、太阳−3、武曲−4、天同−5、廉贞−8；"
+                    "天府系八星自天府顺行安太阴+1、贪狼+2、巨门+3、天相+4、天梁+5、七杀+6、破军+10"},
+                {"si_hua",
+                    "四化取代码实测十干表（禄权科忌顺序，与紫微斗数全书三合派通行表一致）："
+                    "甲廉贞破军武曲太阳、乙天机天梁紫微太阴、丙天同天机文昌廉贞、丁太阴天同天机巨门、"
+                    "戊贪狼太阴右弼天机、己武曲贪狼天梁文曲、庚太阳武曲天同天相、辛巨门太阳文曲文昌、"
+                    "壬天梁紫微左辅武曲、癸破军巨门太阴贪狼；丙干作同机昌廉（中州派为同昌机廉，权科次序不同）；"
+                    "大限流年流月流日流时四化按各层之干查同一表"},
+                {"brightness",
+                    "亮度仅十四主星赋格：按星曜×宫位地支固定取表，七等庙旺得平陷不利；"
+                    "辅星煞星杂曜神煞在本命输出中亮度为空（实现以代码为准）"},
+                {"fortune_layers",
+                    "大限以五行局数为起限虚岁（水二局自2岁），每限管十年虚岁，阳男阴女顺行、阴男阳女逆行（以年支奇偶判阴阳）；"
+                    "小限按年支三合起宫（寅午戌起辰、申子辰起戌、巳酉丑起未、亥卯未起丑），男顺女逆一岁一宫；"
+                    "流年太岁地支入宫；流月斗君法（太岁宫起逆数生月至宫，自该宫起子时顺数生时起斗君，斗君起正月顺数至目标月），流月干由年干五虎遁；"
+                    "流月闰月换算：目标时刻为闰月且日数大于15时按下一月计（effective_flow_month，与本盘控制器流月规则同源）；"
+                    "流日自流月宫起初一顺数至农历日、流时自流日宫起子时顺数至时支，日干支取实际六十甲子日、时干五鼠遁（由本接口推算）；"
+                    "边界：大限显示干支非该宫五虎遁本干支（干自甲起循环、支取宫序号），安命身与按月起诸星对闰月出生取负月数模12入算（等效闰M月按12−M月），"
+                    "此两条实现以代码为准，口径待复核"},
+                {"ge_ju_note",
+                    "接口 ge_ju 字段仅为内核 C++ GeJuAnalyzer 评分结果（ji_ge/xiong_ge/total_score）的兼容导出，不作权威判定；"
+                    "权威格局判定由网页端声明式规则引擎执行（web/ziwei_pattern_engine.py 加载 config/ziwei/patterns/ 规则配置），本接口不含其结论"}
+            }}
+        };
+    }
+
     json calculate_chart(const json& request) {
         const auto& birth_json = request.at("birth");
         const auto birth = parse_date_time(birth_json);
@@ -365,14 +413,22 @@ namespace {
 
     json execute(const json& request) {
         const auto operation = request.at("operation").get<std::string>();
+        json out;
         if (operation == "time_correction") {
-            return correction_json(correct_birth_time(
+            out = correction_json(correct_birth_time(
                 parse_date_time(request.at("birth")), parse_time_options(request)));
+        } else if (operation == "chart") {
+            out = calculate_chart(request);
+        } else if (operation == "fortune") {
+            out = calculate_fortune(request);
+        } else if (operation == "symbols") {
+            out = calculate_symbols();
+        } else {
+            throw std::invalid_argument("不支持的 operation: " + operation);
         }
-        if (operation == "chart") return calculate_chart(request);
-        if (operation == "fortune") return calculate_fortune(request);
-        if (operation == "symbols") return calculate_symbols();
-        throw std::invalid_argument("不支持的 operation: " + operation);
+        // 纯增量挂载规则口径标识，不改变任何既有字段（大六壬 DLR-205 样板）。
+        out["meta"]["rule_profile"] = rule_profile();
+        return out;
     }
 
     json legacy_request(int argc, char** argv) {

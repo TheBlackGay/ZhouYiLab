@@ -18,6 +18,56 @@ void validate_date(int year, int month, int day, int hour, bool lunar) {
             ZhouYi::Common::SolarDateTime{year, month, day, hour, 0, 0});
     if (!valid) throw std::invalid_argument("日期时间无效");
 }
+
+/**
+ * @brief 规则口径标识（参照大六壬 DLR-205 样板，纯新增 meta.rule_profile 字段）
+ *
+ * 每条描述以 src/liu_yao 当前代码行为为准，不引入未经代码证实的古籍归属。
+ */
+json rule_profile() {
+    return {
+        {"profile_version", "liu-yao-rules/0.1"},
+        {"calibration_status", "pending"},
+        {"rules", {
+            {"input_format",
+                "入参为 hexagram_code 六位字符串（仅 0/1，第 1 位是初爻、自下而上，1 阳 0 阴）"
+                "与 changing_lines 动爻位列表（1-6，1=初爻，去重升序归一）；老阴老阳不经字符串传入，"
+                "6/7/8/9 爻题到 0/1+动爻的换算由调用方或摇卦模拟器完成；"
+                "时间入参 date 支持 solar/lunar（闰月以 leap_month 标志），公历可给分钟、农历仅取时辰，"
+                "四柱（含晚子时日柱算次日、日柱旬空）复用统一八字历法口径"},
+            {"na_jia",
+                "京房纳甲按内外卦分别查固定表：每宫一张六位数组，前 3 位配内卦、后 3 位配外卦，"
+                "乾内甲子寅辰、外壬午申戌，坤内乙未巳卯、外癸丑亥酉，震庚、坎戊、艮丙、巽辛、离己、兑丁，"
+                "阳卦支顺行、阴卦支逆行；乾坤之干固定取通行一套（代码注释自注为冬至后口径，无开关）"},
+            {"shi_ying",
+                "世应不做算法推导，按 64 卦逐卦硬编码查表打 世/应 标记，"
+                "宫名与宫五行同为查表；表序与八宫卦序标准一致（本宫世6应3，一至五世递增，"
+                "游魂4应1、归魂3应6），但游魂/归魂类别字段不在 JSON 输出中"},
+            {"liu_qin_basis",
+                "六亲一律以本卦所属八纯卦的宫五行为我（同我兄弟、我生子孙、我克妻财、克我官鬼、生我父母），"
+                "与日干、世爻无关；变爻与伏神六亲亦按本卦宫五行计算"},
+            {"six_spirits",
+                "六神按日干起、自初爻顺布循环：甲乙青龙、丙丁朱雀、戊勾陈、己螣蛇、庚辛白虎、壬癸玄武；"
+                "六神序列青龙朱雀勾陈螣蛇白虎玄武；变卦不再布六神"},
+            {"fu_shen",
+                "伏神取本卦所属宫之八纯卦六爻纳甲为候选，凡某六亲在本卦六爻一处不现者，"
+                "即伏于本卦同序号爻下，伏神另算月破/旬空/日合日冲/入日墓入月墓/入飞神墓状态标签；"
+                "无多现取先、伏不伏破空等古法限制，实现以代码为准，口径待复核"},
+            {"wang_shuai",
+                "旺衰仅以月支对每爻地支五行判旺相休囚死五态（辰戌丑未月先视作土），日辰不并入旺衰、"
+                "另以生克冲合标签标注；代码实际映射为同月令旺、爻生日令相、月令生爻休、月令克爻囚、爻克月令死，"
+                "与主流教材的相休、囚死两组恰好对调且与函数注释相反，实现以代码为准，口径待复核"},
+            {"bian_gua",
+                "变卦按动爻位 0/1 翻转得之卦、查表输出宫名卦名，仅将动爻位对应变爻的干支五行抄回本卦，"
+                "静爻无变出信息；动爻标记阳动 O、阴动 X；注意无伏神/静爻时 hiddenPillar、changedPillar "
+                "因默认构造恒显示甲子，判空须看 hiddenRelative、changedElement 是否空串"},
+            {"state_tags_scope",
+                "每爻输出月破、旬空（日柱旬）、入日墓、日合日冲、暗动、合绊、化破化墓、进退神等状态标签"
+                "与约 20 种神煞（按日干/日支三合局/月支起）；进退神取相邻支顺行对表（如寅卯、卯辰），"
+                "与通行《增删卜易》进退神例不完全一致，口径待复核；不输出卦身、应期与吉凶断语"}
+        }}
+    };
+}
 }
 
 int main() {
@@ -36,6 +86,8 @@ int main() {
             ? ZhouYi::BaZiBase::BaZi::from_lunar(year, date.value("leap_month", false) ? -month : month, day, hour)
             : ZhouYi::BaZiBase::BaZi::from_solar(year, month, day, hour, date.value("minute", 0));
         auto result = ZhouYi::LiuYaoController::calculate_liu_yao(code, bazi, changing, true);
+        // 纯增量挂载规则口径标识，不改变任何既有字段（大六壬 DLR-205 样板）。
+        result.json_data["meta"]["rule_profile"] = rule_profile();
         std::cout << result.json_data.dump();
     } catch (const json::exception& error) {
         std::cout << error_response("INVALID_JSON", error.what()).dump(); return 1;
