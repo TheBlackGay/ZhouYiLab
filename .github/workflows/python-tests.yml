@@ -1,0 +1,45 @@
+name: Python Tests
+
+# A4：Web 服务层、格局引擎、治理与注册表的 300+ 项行为测试此前只在本机运行，
+# 与 C++ 编译矩阵（clang.yml/msvc.yml）互补，这里守住 Python 面契约。
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install python deps (tzdata pin)
+        run: pip install -r web/requirements.txt
+
+      - name: Syntax gates
+        run: |
+          python3 -m py_compile web/*.py
+          for f in web/*.js; do node --check "$f"; done
+          git diff --check
+
+      - name: Unit and contract tests (C++ engines absent -> CLI-dependent cases skip)
+        run: python3 -m unittest discover -s tests -v
