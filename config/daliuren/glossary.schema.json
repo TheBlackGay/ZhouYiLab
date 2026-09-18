@@ -58,8 +58,9 @@
             "type": "string"
           },
           "source": {
-            "$ref": "zhouyilab-source-ref/1.0",
-            "description": "该词条口径的古籍出处（可选；挂接需人工校勘）"
+            "type": "object",
+            "description": "口径的古籍出处引用（source-ref/1.0），基础设施先行，具体绑定待人工核对",
+            "$comment": "见 config/platform/source_ref.schema.json"
           }
         }
       }

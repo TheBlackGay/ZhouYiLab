@@ -1,0 +1,10 @@
+{
+  "schema": "bazi-case-manifest/1.0",
+  "school": "ziping-geju",
+  "auxiliary_dimension": "wangshuai_index",
+  "excluded_schools": [
+    "mangpai"
+  ],
+  "calibration_stage": "stage1_qualitative_boundaries",
+  "cases": []
+}

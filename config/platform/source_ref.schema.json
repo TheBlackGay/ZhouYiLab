@@ -1,49 +1,54 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "zhouyilab-source-ref/1.0",
-  "title": "古籍出处引用（D8）",
-  "description": "事后可追溯，不是事中可计算：source_ref 只用于把规则/术语/判断映射到古籍原文与版本出处，禁止把古籍条文硬编码为排盘 if-else。不开放全文阅读，引用卡片按需展开。",
+  "$id": "source-ref/1.0",
+  "title": "规则/术语/断语的古籍出处引用（D8 三层结构：规则条目→古籍原文→版本出处）",
+  "description": "引用用于向用户展示解释依据（事后可追溯），不得作为可执行判定逻辑（事中不计算）。calendar_context 声明该出处的历法背景，与排盘口径保持一致性标注。",
   "type": "object",
   "required": [
     "book",
-    "edition"
+    "edition",
+    "calendar_context"
   ],
+  "additionalProperties": false,
   "properties": {
     "book": {
       "type": "string",
-      "minLength": 1,
-      "description": "书名，如《六壬毕法赋》（收《六壬大全》）"
+      "description": "如《六壬毕法赋》"
     },
     "edition": {
       "type": "string",
-      "minLength": 1,
-      "description": "版本出处，如 浙江郑大节家藏本"
+      "description": "版本出处，如《六壬大全》收（浙江郑大节家藏本）"
     },
     "chapter": {
       "type": "string",
-      "description": "卷/目/篇"
+      "description": "卷/篇目"
     },
-    "clause": {
-      "type": "string",
-      "description": "句序或条目号，如 毕法赋上卷·第12句"
+    "lines": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 2,
+      "description": "句序区间 [起,止]；毕法赋百句按序标 1..100"
     },
     "quote": {
       "type": "string",
       "maxLength": 500,
-      "description": "原文摘句（可展开卡片内容，非全文）"
+      "description": "原文节选（不开放全文阅读）"
     },
     "calendar_context": {
       "enum": [
         "zhongqi_guogong",
         "guifa_lian_du",
+        "chao_jie_zhi_run",
         "unknown"
       ],
-      "description": "该出处的历法背景标注：中气过宫 / 古法躔度 / 不明（D2×D8 耦合：引用与平台默认口径的一致性对用户可见）"
+      "description": "该出处的历法背景：中气过宫/古法躔度/超接置闰/不可考"
     },
     "doc": {
       "type": "string",
       "description": "仓库内文档路径，如 docs/毕法赋.md"
     }
-  },
-  "additionalProperties": false
+  }
 }
