@@ -310,10 +310,12 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 
 | 方法 | 路径 | 用途 |
 | --- | --- | --- |
-| GET | `/api/v1/health` | 服务及 C++ 引擎健康状态 |
+| GET | `/api/v1/health` | 服务及 C++ 引擎健康状态（含各工具校准状态） |
+| GET | `/api/v1/tools` | 平台工具注册清单（manifest、路由、引擎可用性） |
 | POST | `/api/v1/calendar/convert` | 公历/农历互转 |
 | POST | `/api/v1/calendar/true-solar-time` | 通用真太阳时计算 |
 | GET | `/api/v1/ziwei/meta` | 紫微接口能力和版本信息 |
+| GET | `/api/v1/ziwei/symbols` | 内核权威符号字典（星曜、亮度、四化、宫位、干支） |
 | POST | `/api/v1/ziwei/time-correction` | 真太阳时校正 |
 | POST | `/api/v1/ziwei/charts` | 生成紫微本命盘 |
 | POST | `/api/v1/ziwei/fortune` | 生成紫微命盘及运限 |
@@ -387,6 +389,39 @@ config/ziwei/patterns/pattern.schema.json
 - 配置内置的正向、反向与边界案例。
 
 规则引擎会校验配置字段、星曜名称、谓词、重复 ID 和清单数量，并在分析结果中返回完整条件追踪。旧 C++ `ge_ju` 字段仅为接口兼容，不是结构解读的判定权威来源。
+
+## 平台注册与治理
+
+### 工具注册清单（P0-1）
+
+每门术数在 `config/platform/tools/<id>.json` 声明一份清单：引擎 CLI 路径、
+路由、页面、校准状态与启动要求。奇门/八字/六爻/大六壬的排盘路由由清单驱动
+分发（新增同类工具 = 加一份 manifest，无需改 `server.py`）；
+`/api/v1/tools` 与 `/api/v1/health` 直接暴露注册结果。清单目录缺失时服务
+回退到 `web/tool_registry.py` 内建默认；清单存在但非法则拒绝启动（fail fast）。
+
+### API 治理（P0-2）
+
+`/api/` 请求支持最小治理层：访问日志（JSON Lines，落
+`.zhouyilab/logs/access.jsonl`，含 request_id、耗时与治理裁决）、
+`X-API-Key` 鉴权与每密钥令牌桶限流。环境变量：
+
+| 变量 | 默认 | 说明 |
+| --- | --- | --- |
+| `ZHOUYILAB_API_MODE` | `observe` | `off` 关闭；`observe` 只记录不拦截（**默认**）；`enforce` 强制密钥+限流 |
+| `ZHOUYILAB_RATE_LIMIT_RPM` | `120` | 每密钥每分钟配额 |
+| `ZHOUYILAB_API_KEYS_FILE` | `config/platform/api_keys.local.json` | `{label: key}` 映射，已被 Git 忽略；enforce 且无密钥时自动降级 observe |
+| `ZHOUYILAB_ACCESS_LOG` | `.zhouyilab/logs/access.jsonl` | 访问日志路径 |
+
+`/api/v1/health` 永远豁免。生产 enforce 推荐由反向代理为浏览器同源流量注入
+内部密钥（`proxy_set_header X-API-Key`），外部接入方发放独立密钥按标签归因。
+
+### 符号字典单源化（P0-4）
+
+`GET /api/v1/ziwei/symbols` 透传内核 `symbols` operation（紫微 CLI），输出
+可上盘星名全集（109）、亮度、四化、宫位与干支五行。回归测试强制
+`symbolism_dictionary.json` 的星名 ⊆ 内核符号集，拼错星名会在审计期暴露；
+格局引擎的星名校验以此为上游。
 
 ## AI 预评审配置
 
@@ -464,6 +499,8 @@ ZhouYiLab/
 ├── 3rdparty/                 # Git 子模块依赖
 ├── cmake/                    # C++ Modules 构建支持
 ├── config/
+│   ├── platform/
+│   │   └── tools/           # 工具注册清单（manifest + schema）
 │   └── ziwei/
 │       ├── patterns/        # 声明式格局配置
 │       ├── research/        # 盲评与 AI 预评审协议
