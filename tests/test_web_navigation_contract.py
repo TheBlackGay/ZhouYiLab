@@ -1,3 +1,4 @@
+import json
 import re
 import unittest
 from pathlib import Path
@@ -27,6 +28,16 @@ class WebNavigationContractTests(unittest.TestCase):
                 self.assertIn(current_page, current)
                 for label in secondary_tabs:
                     self.assertEqual(1, len(re.findall(rf">{label}</button>", html)))
+
+    def test_astro_frozen_and_absent_from_public_navigation(self):
+        for filename in ("index.html", "qimen.html", "bazi.html",
+                         "liu-yao.html", "da-liu-ren.html"):
+            html = (WEB_ROOT / filename).read_text(encoding="utf-8")
+            self.assertNotIn('href="/astro.html"', html,
+                             f"{filename} 不应保留西洋占星入口（D5 冻结）")
+        self.assertIn('aria-current="page"', (WEB_ROOT / "astro.html").read_text(encoding="utf-8"))
+        manifest = json.loads((PROJECT_ROOT / "config" / "platform" / "tools" / "astro.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["visibility"], "frozen")
 
     def test_shared_shell_keeps_navigation_sticky_and_scrollable(self):
         css = (WEB_ROOT / "app-shell.css").read_text(encoding="utf-8")

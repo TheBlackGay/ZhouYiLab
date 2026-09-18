@@ -57,6 +57,7 @@ class ToolManifest:
     required_at_startup: bool = True
     interface_doc: str = None
     rule_profile_version: str = None
+    visibility: str = "public"
 
     def engine_path(self, project_root: Path) -> Path:
         return project_root / self.engine_cli
@@ -164,6 +165,7 @@ def builtin_tools():
             "name": "西洋占星",
             "engine_cli": "build/examples/astro_web_cli",
             "calibration_status": "experimental",
+            "visibility": "frozen",
             "interface_doc": "docs/astro/西洋占星HTTP接口文档.md",
             "pages": ["astro.html"],
             "api_prefixes": ["/api/v1/astro/", "/api/v1/geo/"],
@@ -284,10 +286,14 @@ def _validate_manifest(raw, source_label):
             not isinstance(rule_profile_version, str) or not rule_profile_version.strip()):
         raise ToolRegistryError(f"{where}: rule_profile_version 必须是非空字符串")
 
+    visibility = raw.get("visibility", "public")
+    if visibility not in {"public", "frozen"}:
+        raise ToolRegistryError(f"{where}: visibility 只能是 public/frozen")
+
     return ToolManifest(tool_id, name, engine_cli, calibration,
                         pages, api_prefixes, tuple(routes), health_key,
                         optional_env, required_at_startup,
-                        interface_doc, rule_profile_version)
+                        interface_doc, rule_profile_version, visibility)
 
 
 class ToolRegistry:
@@ -357,6 +363,7 @@ class ToolRegistry:
                     "required_at_startup": manifest.required_at_startup,
                     "interface_doc": manifest.interface_doc,
                     "rule_profile_version": manifest.rule_profile_version,
+                    "visibility": manifest.visibility,
                     "pages": list(manifest.pages),
                     "api_prefixes": list(manifest.api_prefixes),
                     "optional_env": manifest.optional_env,

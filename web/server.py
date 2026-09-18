@@ -147,6 +147,7 @@ def platform_discovery():
                 "id": tool["id"],
                 "name": tool["name"],
                 "calibration_status": tool["calibration_status"],
+                "visibility": tool.get("visibility", "public"),
                 "rule_profile_version": tool.get("rule_profile_version"),
                 "interface_doc": tool.get("interface_doc"),
                 "pages": tool["pages"],

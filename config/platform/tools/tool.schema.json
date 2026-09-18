@@ -106,6 +106,14 @@
     "rule_profile_version": {
       "type": "string",
       "description": "引擎 meta.rule_profile.profile_version 对齐值"
+    },
+    "visibility": {
+      "enum": [
+        "public",
+        "frozen"
+      ],
+      "default": "public",
+      "description": "frozen：数据/算法保留，产品入口不开放（D5）"
     }
   }
 }
