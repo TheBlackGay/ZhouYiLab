@@ -1,4 +1,4 @@
-﻿// 大六壬实现文件
+// 大六壬实现文件
 module ZhouYi.DaLiuRen;
 
 import std;
@@ -811,8 +811,30 @@ nlohmann::json DaLiuRenResult::to_json() const {
     }
     j["shen_sha"] = shen_sha.to_json();
     j["gua_ti"] = gua_ti;
-    
+
+    // DLR-205：规则口径标识为纯新增字段，不改变任何既有字段语义。
+    j["meta"] = {{"rule_profile", get_rule_profile()}};
+
     return j;
+}
+
+nlohmann::json get_rule_profile() {
+    return {
+        {"profile_version", "da-liu-ren-rules/0.1"},
+        {"calibration_status", "pending"},
+        {"rules", {
+            {"four_pillars", "四柱由统一历法引擎生成（tyme4cpp 默认八字算法，晚子时日柱算次日）"},
+            {"time_granularity", "起课精确到时（hour），分钟不参与天地盘、三传与神将计算"},
+            {"yue_jiang", "月将按历法歌诀的 12 个定切点（节气基准日偏移+时辰+刻数，如雨水前一日卯初刻登明入卫、大寒当日酉三刻神后岁功成）切换，非中气过宫简化式"},
+            {"gui_ren", "昼夜贵人按『甲戊庚牛羊，乙己鼠猴乡，丙丁猪鸡位，壬癸蛇兔藏，六辛逢马虎』查表；卯时至申时为昼用阳贵，其余用阴贵"},
+            {"shen_jiang", "月将加正时布天盘；十二神将随贵人落宫顺逆：贵人在亥子丑寅卯辰顺布，在巳午未申酉戌逆布"},
+            {"gan_ji_gong", "日干寄宫：甲寅、乙辰、丙巳、丁未、戊巳、己未、庚申、辛戌、壬亥、癸丑；四课取干寄宫与日支的上神各成一课，其上神再叠一课"},
+            {"san_chuan", "九宗门取传顺序：伏吟课→返吟课→贼克（含比用知一、涉害见机/察微/复等细分）→遥克→昴星（含虎视、冬蛇掩目细分）→别责→八专；ke_shi 首项输出本盘九宗门名，其后为细粒度课名"},
+            {"dun_gan", "遁干以日旬首起甲子顺飞，戌、亥两位落空亡无遁干"},
+            {"liu_qin", "六亲以日干为我、三传地支五行生克关系推导"},
+            {"gua_ti", "卦体按课式结构判定（三奇、六仪、龙德、官爵、轩盖、铸印、斫轮、罗网、九丑、连茹、连珠、伏吟、返吟）；本版本只输出卦体名称，不附吉凶断语"}
+        }}
+    };
 }
 
 std::string DaLiuRenResult::to_string() const {

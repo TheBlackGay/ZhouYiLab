@@ -683,5 +683,14 @@ public:
     static DaLiuRenResult pai_pan_from_bazi(const BaZi& ba_zi, const tyme::SolarTime& solar_time);
 };
 
+    /**
+     * @brief 本实现当前生效的规则口径（DLR-205 规则口径标识）
+     *
+     * 措辞纪律：逐条对照代码实际行为提炼，只声明本实现做了什么，
+     * 不引入未经代码证实的古籍归属或门派断言。calibration_status 保持
+     * pending，与 README 算法校准状态一致；口径变更必须同步 profile_version。
+     */
+    nlohmann::json get_rule_profile();
+
 } // namespace ZhouYi::DaLiuRen
 
