@@ -107,3 +107,34 @@ a { color:inherit; } button,input,select { font:inherit; }
   .reading-guide { align-items:flex-start; flex-direction:column; gap:3px; }
 }
 .fact-card p { white-space: pre-wrap; }
+
+/* ===== 大六壬 2.0：双模式、流程卡、天地盘表与术语弹层 ===== */
+.mode-toggle { display:flex; gap:4px; margin-left:auto; padding:3px; background:#eceeeb; border-radius:4px; }
+.mode-toggle label { position:relative; margin:0; }
+.mode-toggle input { position:absolute; width:1px; height:1px; margin:0; opacity:0; }
+.mode-toggle span { min-height:32px; display:grid; place-items:center; padding:0 12px; color:var(--muted); border-radius:3px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
+.mode-toggle input:checked + span { color:var(--ink); background:var(--surface); box-shadow:0 1px 3px rgb(0 0 0 / 10%); }
+.mode-toggle input:focus-visible + span { outline:2px solid var(--jade); outline-offset:2px; }
+.quick-actions { display:flex; gap:8px; margin-top:12px; }
+.quick-actions .compact-action { flex:1; }
+.leap-row { display:flex; align-items:center; gap:8px; margin-top:10px; font-size:12px; font-weight:700; color:var(--muted); }
+.leap-row input { width:auto; }
+.question-context { margin:18px 0 0; padding:12px 16px; background:#f7f3e9; border:1px solid #dfd1ae; border-radius:4px; font-size:14px; }
+.chuan-flow { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:18px; }
+.flow-step { padding:16px; background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--jade); border-radius:4px; }
+.flow-step h3 { margin:0 0 8px; font-size:13px; color:var(--muted); }
+.flow-branch { margin:0; font:600 26px/1.2 Georgia,"Noto Serif SC",serif; color:var(--ink); }
+.pan-table { width:100%; margin-top:18px; border-collapse:collapse; background:var(--panel); }
+.pan-table caption { text-align:left; padding-bottom:10px; }
+.pan-table th,.pan-table td { padding:9px 12px; border:1px solid var(--line); text-align:center; font-size:13px; }
+.pan-table th { color:var(--muted); font-size:11px; background:#fafaf8; }
+.shen-sha-text { margin:0; font:12px/1.8 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+.dlr-term { min-width:20px; height:20px; padding:0 6px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--jade); font-size:11px; font-weight:800; cursor:pointer; vertical-align:baseline; }
+.dlr-term:hover,.dlr-term:focus-visible { border-color:var(--jade); }
+#glossary-dialog { width:min(560px,calc(100vw - 32px)); margin:auto; padding:0; border:1px solid var(--line); border-radius:4px; background:var(--surface); color:var(--ink); box-shadow:0 24px 70px rgb(20 29 25 / 24%); }
+#glossary-dialog::backdrop { background:rgb(20 29 25 / 48%); }
+#glossary-dialog .help-header { min-height:56px; }
+#glossary-dialog .help-header h2 { font-size:17px; }
+#glossary-dialog .help-header button { font-size:15px; width:auto; padding:0 12px; }
+.glossary-caliber { margin:12px 0 0; padding:12px 14px; background:#f7f3e9; border:1px solid #dfd1ae; border-radius:3px; font-size:13px; }
+@media (max-width:560px) { .chuan-flow { grid-template-columns:1fr; } .mode-toggle { margin-left:0; } .secondary-bar { flex-wrap:wrap; gap:10px; } }
