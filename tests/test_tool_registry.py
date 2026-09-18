@@ -86,6 +86,7 @@ class ToolRegistryDispatchTests(unittest.TestCase):
     def test_only_consolidated_routes_are_routable(self):
         routable = sorted(self.registry._routable)
         self.assertEqual(routable, [
+            ("GET", "/api/v1/da-liu-ren/glossary"),
             ("POST", "/api/v1/bazi/charts"),
             ("POST", "/api/v1/da-liu-ren/charts"),
             ("POST", "/api/v1/liu-yao/charts"),
@@ -94,6 +95,32 @@ class ToolRegistryDispatchTests(unittest.TestCase):
         self.assertIsNone(self.registry.resolve("POST", "/api/v1/ziwei/charts"))
         self.assertIsNone(self.registry.resolve("POST", "/api/v1/astro/charts"))
         self.assertIsNone(self.registry.resolve("GET", "/api/v1/qimen/charts"))
+        # 平台内建端点不得被清单抢占
+        self.assertIsNone(self.registry.resolve("GET", "/api/v1/health"))
+        self.assertIsNone(self.registry.resolve("GET", "/api/v1/tools"))
+
+    def test_static_config_options_validated(self):
+        base = dict(builtin_tools()[4])  # da_liu_ren
+        with tempfile.TemporaryDirectory() as tmp:
+            bad = dict(base, routes=[{
+                "method": "GET", "path": "/api/v1/da-liu-ren/glossary",
+                "handler": "static_config", "options": {"config_path": "../etc/passwd"}}])
+            write_manifest(tmp, bad)
+            with self.assertRaises(ToolRegistryError):
+                load_tool_registry(PROJECT_ROOT, directory=Path(tmp))
+            outside = dict(base, routes=[{
+                "method": "GET", "path": "/api/v1/da-liu-ren/glossary",
+                "handler": "static_config",
+                "options": {"config_path": "web/server.py"}}])
+            write_manifest(tmp, outside)
+            with self.assertRaises(ToolRegistryError):
+                load_tool_registry(PROJECT_ROOT, directory=Path(tmp))
+            missing = dict(base, routes=[{
+                "method": "GET", "path": "/api/v1/da-liu-ren/glossary",
+                "handler": "static_config", "options": {}}])
+            write_manifest(tmp, missing)
+            with self.assertRaises(ToolRegistryError):
+                load_tool_registry(PROJECT_ROOT, directory=Path(tmp))
 
     def test_engine_chart_options_preserve_timeout_messages(self):
         expected = {

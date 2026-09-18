@@ -24,7 +24,7 @@ from pathlib import Path
 TOOL_ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 CALIBRATION_STATUSES = {"calibrated", "in_progress", "pending", "experimental"}
 ALLOWED_METHODS = {"GET", "POST"}
-ROUTABLE_HANDLERS = {"engine_chart"}
+ROUTABLE_HANDLERS = {"engine_chart", "static_config"}
 METADATA_HANDLERS = {"legacy_chain", "python_service"}
 KNOWN_HANDLERS = ROUTABLE_HANDLERS | METADATA_HANDLERS
 MANIFEST_SCHEMA_VERSION = "zhouyilab-tool/1.0"
@@ -132,6 +132,9 @@ def builtin_tools():
             "routes": [
                 {"method": "POST", "path": "/api/v1/da-liu-ren/charts", "handler": "engine_chart",
                  "options": {"timeout_message": "大六壬排盘计算超时"}},
+                {"method": "GET", "path": "/api/v1/da-liu-ren/glossary", "handler": "static_config",
+                 "options": {"config_path": "config/daliuren/glossary.json",
+                             "not_found_code": "GLOSSARY_NOT_FOUND"}},
             ],
         },
         {
@@ -237,6 +240,16 @@ def _validate_manifest(raw, source_label):
         options = route_raw.get("options", {})
         if not isinstance(options, dict):
             raise ToolRegistryError(f"{where}: route options 必须是对象")
+        if handler == "engine_chart" and "operation" in options \
+                and not isinstance(options["operation"], str):
+            raise ToolRegistryError(f"{where}: engine_chart options.operation 必须是字符串")
+        if handler == "static_config":
+            config_path = options.get("config_path")
+            if not isinstance(config_path, str) or not config_path.strip():
+                raise ToolRegistryError(f"{where}: static_config 必须声明 options.config_path")
+            _validate_relative_asset(config_path, where, "options.config_path")
+            if not config_path.startswith("config/"):
+                raise ToolRegistryError(f"{where}: static_config 只允许暴露 config/ 下的 JSON")
         key = (method, path)
         if key in seen_local:
             raise ToolRegistryError(f"{where}: 路由重复 {method} {path}")

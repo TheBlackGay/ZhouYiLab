@@ -190,6 +190,11 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         if parsed.path == "/api/v1/tools":
             self.send_api_success(TOOL_REGISTRY.summary(PROJECT_ROOT))
             return
+        # GET 注册表分发放在平台内建端点之后：/api/v1/health、/api/v1/tools 不可被清单覆盖。
+        get_binding = TOOL_REGISTRY.resolve("GET", parsed.path)
+        if get_binding is not None and get_binding[1].handler == "static_config":
+            self._handle_static_config(get_binding)
+            return
         if parsed.path == "/api/v1/astro/meta":
             if not ASTRO_CLI_PATH.exists():
                 self.send_api_error(500, "ENGINE_UNAVAILABLE", "Astro 计算引擎尚未构建")
@@ -373,7 +378,7 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             return
         ai_prefix = "/api/v1/ziwei/research/ai-review"
         binding = TOOL_REGISTRY.resolve("POST", parsed.path)
-        if binding is not None:
+        if binding is not None and binding[1].handler == "engine_chart":
             self._handle_engine_chart(binding)
             return
         if parsed.path == "/api/v1/geo/place-resolve":
@@ -657,6 +662,20 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             self.send_api_error(decision["status"], decision["code"], decision["message"])
             return False
         return True
+
+    def _handle_static_config(self, binding):
+        """注册表 static_config handler：只读暴露 config/ 下的声明式 JSON（如术语库）。"""
+        manifest, route = binding
+        rel = route.options["config_path"]
+        path = (PROJECT_ROOT / rel).resolve()
+        if PROJECT_ROOT.resolve() not in path.parents or not path.is_file():
+            self.send_api_error(404, route.options.get("not_found_code", "CONFIG_NOT_FOUND"),
+                                f"{manifest.name}配置尚未收录")
+            return
+        try:
+            self.send_api_success(json.loads(path.read_text(encoding="utf-8")))
+        except (OSError, json.JSONDecodeError):
+            self.send_api_error(500, "CONFIG_ERROR", f"{manifest.name}配置加载失败")
 
     def _handle_engine_chart(self, binding):
         """注册表 engine_chart handler：清单声明即路由，无需新增 server 分支。"""
