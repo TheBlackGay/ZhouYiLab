@@ -129,6 +129,34 @@ POST_OPERATIONS = {
 }
 
 
+def platform_discovery():
+    """C3 平台发现端点：工具→路由→页面→文档的自助索引（纯注册表派生）。"""
+    summary = TOOL_REGISTRY.summary(PROJECT_ROOT)
+    return {
+        "service": "zhouyilab-platform",
+        "api_version": API_VERSION,
+        "algorithm_version": ALGORITHM_VERSION,
+        "governance_mode": GOVERNANCE.mode,
+        "endpoints": {
+            "health": "/api/v1/health",
+            "tools": "/api/v1/tools",
+            "ziwei_symbols": "/api/v1/ziwei/symbols",
+        },
+        "tools": [
+            {
+                "id": tool["id"],
+                "name": tool["name"],
+                "calibration_status": tool["calibration_status"],
+                "rule_profile_version": tool.get("rule_profile_version"),
+                "interface_doc": tool.get("interface_doc"),
+                "pages": tool["pages"],
+                "routes": tool["routes"],
+            }
+            for tool in summary["tools"]
+        ],
+    }
+
+
 def get_ai_review_service():
     global _AI_REVIEW_SERVICE, _AI_REVIEW_LOCK
     if _AI_REVIEW_LOCK is None:
@@ -186,6 +214,9 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         ai_prefix = "/api/v1/ziwei/research/ai-review"
         if parsed.path == "/api/v1/health":
             self.send_api_success(self._health_payload())
+            return
+        if parsed.path in ("/api/v1", "/api/v1/"):
+            self.send_api_success(platform_discovery())
             return
         if parsed.path == "/api/v1/tools":
             self.send_api_success(TOOL_REGISTRY.summary(PROJECT_ROOT))

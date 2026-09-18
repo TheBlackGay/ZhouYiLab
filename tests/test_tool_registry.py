@@ -163,6 +163,10 @@ class PlatformRouteContractTests(unittest.TestCase):
         self.assertNotIn('parsed.path == "/api/v1/qimen/charts"', SERVER_SOURCE)
         self.assertNotIn('parsed.path == "/api/v1/da-liu-ren/charts"', SERVER_SOURCE)
 
+    def test_platform_discovery_endpoint_registered(self):
+        self.assertIn('parsed.path in ("/api/v1", "/api/v1/")', SERVER_SOURCE)
+        self.assertIn("def platform_discovery()", SERVER_SOURCE)
+
     def test_manifest_files_exist_with_schema(self):
         for raw in builtin_tools():
             path = TOOLS_DIR / f"{raw['id']}.json"

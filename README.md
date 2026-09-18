@@ -322,6 +322,7 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 
 | 方法 | 路径 | 用途 |
 | --- | --- | --- |
+| GET | `/api/v1` | 平台发现端点：工具→路由→页面→接口文档索引 |
 | GET | `/api/v1/health` | 服务及 C++ 引擎健康状态（含各工具校准状态） |
 | GET | `/api/v1/tools` | 平台工具注册清单（manifest、路由、引擎可用性） |
 | POST | `/api/v1/calendar/convert` | 公历/农历互转 |
