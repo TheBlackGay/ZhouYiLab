@@ -34,6 +34,10 @@ python3 web/server.py --port 8765
 农历请求使用 `calendar: "lunar"`；该年存在闰月时可加 `"leap_month": true`。
 `hour` 为双小时起始值（早子=0 … 夜子=23）；分钟不参与起课。
 
+可选入参 `yuejiang_method`（D2 决策）：`"zhongqi"`（默认，中气过宫）或
+`"guifa_suicha"`（古法歌诀十二定切点，对照/旧盘复现用）。页面固定走默认口径、
+不暴露该参数；外部接入方可显式请求对照口径，未知值返回 422。
+
 成功响应 `data` 字段：
 
 - `ba_zi`：四柱（年/月/日/时各含 `stem`、`branch`）与 `xun_kong_1`、`xun_kong_2` 旬空；
@@ -44,7 +48,8 @@ python3 web/server.py --port 8765
 - `tian_di_pan`：12 项数组，`position`/`tian_pan`/`dun_gan`/`shen_jiang`；
 - `shen_sha`：按 基础/年/月/日/地支神煞 分组的结构化对象；
 - `gua_ti`：卦体名称数组（只命名，不断吉凶）；
-- `meta.rule_profile`：本盘生成所依据的规则口径标识，见下节。
+- `meta.rule_profile`：本盘生成所依据的规则口径标识，见下节；
+- `meta.yuejiang_method`：本盘实际使用的月将取法（`zhongqi` / `guifa_suicha`）。
 
 错误：输入非法返回 HTTP 422，`error.code` 为 `INVALID_ARGUMENT` 等；
 不存在的闰月由引擎拒绝（`illegal leap month`，页面已本地化为可操作提示）。
@@ -53,7 +58,7 @@ python3 web/server.py --port 8765
 
 ```json
 {
-  "profile_version": "da-liu-ren-rules/0.1",
+  "profile_version": "da-liu-ren-rules/0.2",
   "calibration_status": "pending",
   "rules": { "four_pillars": "...", "yue_jiang": "...", "gui_ren": "...",
              "shen_jiang": "...", "gan_ji_gong": "...", "san_chuan": "...",
@@ -62,7 +67,7 @@ python3 web/server.py --port 8765
 }
 ```
 
-口径措辞逐条来自代码实际实现（如月将为历法歌诀十二定切点而非中气过宫，
+口径措辞逐条来自代码实际实现（0.2 起月将默认**中气过宫**、以中气交节时刻精确到分为切点，歌诀十二定切点保留为 `guifa_suicha` 对照口径；
 九宗门顺序伏吟→返吟→贼克(含比用/涉害细分)→遥克→昴星→别责→八专）。
 `calibration_status` 在校准完成前保持 `pending`；算法口径变更必须同步
 `profile_version`。契约测试：`tests/test_da_liu_ren_engine_contract.py`。

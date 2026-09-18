@@ -813,19 +813,22 @@ nlohmann::json DaLiuRenResult::to_json() const {
     j["gua_ti"] = gua_ti;
 
     // DLR-205：规则口径标识为纯新增字段，不改变任何既有字段语义。
-    j["meta"] = {{"rule_profile", get_rule_profile()}};
+    j["meta"] = {
+        {"rule_profile", get_rule_profile()},
+        {"yuejiang_method", std::string(yuejiang_method_name(yuejiang_method))}
+    };
 
     return j;
 }
 
 nlohmann::json get_rule_profile() {
     return {
-        {"profile_version", "da-liu-ren-rules/0.1"},
+        {"profile_version", "da-liu-ren-rules/0.2"},
         {"calibration_status", "pending"},
         {"rules", {
             {"four_pillars", "四柱由统一历法引擎生成（tyme4cpp 默认八字算法，晚子时日柱算次日）"},
             {"time_granularity", "起课精确到时（hour），分钟不参与天地盘、三传与神将计算"},
-            {"yue_jiang", "月将按历法歌诀的 12 个定切点（节气基准日偏移+时辰+刻数，如雨水前一日卯初刻登明入卫、大寒当日酉三刻神后岁功成）切换，非中气过宫简化式"},
+            {"yue_jiang", "月将默认中气过宫：太阳于十二中气交节时刻（寿星历，精确到分）过宫换将（雨水登明亥、春分河魁戌……大寒神后子）；入参 yuejiang_method=guifa_suicha 取历法歌诀十二定切点口径对照；不做时辰以下天象拟合"},
             {"gui_ren", "昼夜贵人按『甲戊庚牛羊，乙己鼠猴乡，丙丁猪鸡位，壬癸蛇兔藏，六辛逢马虎』查表；卯时至申时为昼用阳贵，其余用阴贵"},
             {"shen_jiang", "月将加正时布天盘；十二神将随贵人落宫顺逆：贵人在亥子丑寅卯辰顺布，在巳午未申酉戌逆布"},
             {"gan_ji_gong", "日干寄宫：甲寅、乙辰、丙巳、丁未、戊巳、己未、庚申、辛戌、壬亥、癸丑；四课取干寄宫与日支的上神各成一课，其上神再叠一课"},
@@ -864,23 +867,23 @@ std::string DaLiuRenResult::to_string() const {
 
 // ==================== DaLiuRenEngine 实现 ====================
 
-DaLiuRenResult DaLiuRenEngine::pai_pan(int year, int month, int day, int hour) {
+DaLiuRenResult DaLiuRenEngine::pai_pan(int year, int month, int day, int hour, YueJiangMethod yuejiang) {
     auto solar_time = ZhouYi::Common::Calendar::to_solar_time(
         ZhouYi::Common::SolarDateTime{year, month, day, hour, 0, 0});
     BaZi ba_zi = BaZi::from_solar(year, month, day, hour);
-    return pai_pan_from_bazi(ba_zi, solar_time);
+    return pai_pan_from_bazi(ba_zi, solar_time, yuejiang);
 }
 
-DaLiuRenResult DaLiuRenEngine::pai_pan_lunar(int year, int month, int day, int hour) {
+DaLiuRenResult DaLiuRenEngine::pai_pan_lunar(int year, int month, int day, int hour, YueJiangMethod yuejiang) {
     auto solar_time = ZhouYi::Common::Calendar::to_solar_time(
         ZhouYi::Common::LunarDateTime{year, month, day, hour, 0, 0});
     BaZi ba_zi = BaZi::from_lunar(year, month, day, hour);
-    return pai_pan_from_bazi(ba_zi, solar_time);
+    return pai_pan_from_bazi(ba_zi, solar_time, yuejiang);
 }
 
-DaLiuRenResult DaLiuRenEngine::pai_pan_from_bazi(const BaZi& ba_zi, const tyme::SolarTime& solar_time) {
-    // 获取月将
-    DiZhi yue_jiang = get_yue_jiang(solar_time);
+DaLiuRenResult DaLiuRenEngine::pai_pan_from_bazi(const BaZi& ba_zi, const tyme::SolarTime& solar_time, YueJiangMethod yuejiang) {
+    // 获取月将（D2：默认中气过宫，可参数切换古法十二定切点）
+    DiZhi yue_jiang = get_yue_jiang(solar_time, yuejiang);
 
     // 直接从八字获取时辰地支（更准确）
     DiZhi hour_zhi = ba_zi.hour.zhi;
@@ -924,7 +927,7 @@ DaLiuRenResult DaLiuRenEngine::pai_pan_from_bazi(const BaZi& ba_zi, const tyme::
     );
     
     return DaLiuRenResult(ba_zi, yue_jiang, gui_ren, is_day, 
-                          tian_di_pan, si_ke, san_chuan, shen_sha_result, gua_ti);
+                          tian_di_pan, si_ke, san_chuan, shen_sha_result, gua_ti, yuejiang);
 }
 
 } // namespace ZhouYi::DaLiuRen

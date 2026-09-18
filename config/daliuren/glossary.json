@@ -1,7 +1,7 @@
 {
   "schema": "daliuren-glossary/1.0",
-  "glossary_version": "0.1",
-  "profile_ref": "da-liu-ren-rules/0.1",
+  "glossary_version": "0.2",
+  "profile_ref": "da-liu-ren-rules/0.2",
   "notes": "每条术语必须标注当前实现口径；口径字段与引擎 meta.rule_profile 对应项保持一致，算法未校准前不得使用确定性吉凶表述。",
   "terms": [
     {
@@ -44,7 +44,7 @@
       "term": "月将",
       "related_profile_rule": "yue_jiang",
       "definition": "太阳所在宫次的古名（登明亥、河魁戌、从魁酉、传送申、小吉未、胜光午、太乙巳、天罡辰、太冲卯、功曹寅、大吉丑、神后子），以月将加占时起天盘。",
-      "caliber": "本实现按历法歌诀的十二定切点（节气基准日偏移+时辰+刻数，如雨水前一日卯初刻登明入卫）切换，非中气过宫简化式。"
+      "caliber": "默认中气过宫：太阳于十二中气交节时刻（精确到分）换将，即雨水亥、春分戌、谷雨酉、小满申、夏至未、大暑午、处暑巳、秋分辰、霜降卯、小雪寅、冬至丑、大寒子；古法十二定切点为对照口径（参数 yuejiang_method，界面不暴露选项）。"
     },
     {
       "id": "gui_ren",
@@ -79,7 +79,7 @@
       "term": "天地盘",
       "related_profile_rule": "yue_jiang",
       "definition": "地盘十二支固定不动（寅卯辰…丑分布十二宫），天盘以月将加占时旋转一周而成；盘上每一支有上神、神将与遁干。",
-      "caliber": "天盘由『月将加正时』生成；时辰精确到时（双小时），分钟不参与。"
+      "caliber": "天盘由『月将加正时』生成；月将默认中气过宫（精确到分）；时辰精确到时（双小时），分钟不参与。"
     },
     {
       "id": "shen_jiang",

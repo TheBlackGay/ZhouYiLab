@@ -42,7 +42,8 @@ class DaLiuRenEngineContractTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue(LEGACY_TOP_LEVEL.issubset(data), "既有字段不得消失")
         profile = data["meta"]["rule_profile"]
-        self.assertEqual(profile["profile_version"], "da-liu-ren-rules/0.1")
+        self.assertEqual(profile["profile_version"], "da-liu-ren-rules/0.2")
+        self.assertEqual(data["meta"]["yuejiang_method"], "zhongqi", "默认必须为中气过宫（D2）")
         self.assertEqual(profile["calibration_status"], "pending",
                          "大六壬算法未校准前不得伪装已校准")
         self.assertEqual(set(profile["rules"]), RULE_PROFILE_KEYS)
@@ -62,6 +63,17 @@ class DaLiuRenEngineContractTests(unittest.TestCase):
             "year": 2024, "month": 4, "day": 1, "hour": 10, "leap_month": True}})
         self.assertEqual(bad_code, 1)
         self.assertEqual(bad["error"]["code"], "INVALID_ARGUMENT")
+
+    def test_yuejiang_method_boundary(self):
+        """D2：2025-02-18 05:00——古法定切已换亥、中气交节(12:13)未到仍子。"""
+        date = {"year": 2025, "month": 2, "day": 18, "hour": 5}
+        _, zh = run_cli({"calendar": "solar", "date": date})
+        self.assertEqual(zh["yue_jiang"], "子")
+        _, gf = run_cli({"calendar": "solar", "date": date, "yuejiang_method": "guifa_suicha"})
+        self.assertEqual(gf["meta"]["yuejiang_method"], "guifa_suicha")
+        self.assertEqual(gf["yue_jiang"], "亥")
+        code, bad = run_cli({"calendar": "solar", "date": date, "yuejiang_method": "bogus"})
+        self.assertEqual((code, bad["error"]["code"]), (1, "INVALID_ARGUMENT"))
 
     def test_invalid_calendar_reports_invalid_argument(self):
         code, data = run_cli({"calendar": "venus",

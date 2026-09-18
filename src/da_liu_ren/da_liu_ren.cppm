@@ -52,6 +52,69 @@ enum class YueJiang {
 };
 
 /**
+ * @brief 月将取法（D2 决策：口径参数化，默认中气过宫）
+ *
+ * 兼容性是架构能力，不是产品承诺：前台不暴露选项，数据层保留切换自由度。
+ */
+enum class YueJiangMethod {
+    Zhongqi,        // 中气过宫（正统默认）：太阳于十二中气交节时刻过宫换将
+    GuifaSuicha,    // 古法歌诀十二定切点（山畏考系口径，供对照与旧盘复现）
+};
+
+inline const char* yuejiang_method_name(YueJiangMethod method) {
+    return method == YueJiangMethod::GuifaSuicha ? "guifa_suicha" : "zhongqi";
+}
+
+inline DiZhi get_yue_jiang_guifa_suicha(const tyme::SolarTime& solar_time);
+
+/**
+ * @brief 中气过宫取月将：以十二中气交节时刻（寿星历，精确到分）为切点。
+ *
+ * 口径纪律（D2）：只取交节时刻，不做时辰以下的天象拟合——那是天文历算的
+ * 范畴，不属于术数排盘引擎的职责边界。
+ * 中气→月将即"月建合日辰为将"：雨水亥登明、春分戌河魁、谷雨酉从魁、
+ * 小满申传送、夏至未小吉、大暑午胜光、处暑巳太乙、秋分辰天罡、
+ * 霜降卯太冲、小雪寅功曹、冬至丑大吉、大寒子神后。
+ */
+inline DiZhi get_yue_jiang_zhongqi(const tyme::SolarTime& solar_time) {
+    struct ZhongQiRule { const char* qi; DiZhi jiang; };
+    static constexpr std::array<ZhongQiRule, 12> rules = {{
+        {"雨水", DiZhi::Hai}, {"春分", DiZhi::Xu}, {"谷雨", DiZhi::You},
+        {"小满", DiZhi::Shen}, {"夏至", DiZhi::Wei}, {"大暑", DiZhi::Wu},
+        {"处暑", DiZhi::Si}, {"秋分", DiZhi::Chen}, {"霜降", DiZhi::Mao},
+        {"小雪", DiZhi::Yin}, {"冬至", DiZhi::Chou}, {"大寒", DiZhi::Zi},
+    }};
+    const int base_year = solar_time.get_year();
+    std::optional<std::pair<tyme::SolarTime, DiZhi>> latest;
+    for (int year = base_year - 1; year <= base_year + 1; ++year) {
+        for (const auto& rule : rules) {
+            const auto trigger = tyme::SolarTerm::from_name(year, rule.qi)
+                                     .get_julian_day().get_solar_time();
+            if (trigger.is_after(solar_time)) {
+                continue;
+            }
+            if (!latest.has_value() || latest->first.is_before(trigger)) {
+                latest = std::make_pair(trigger, rule.jiang);
+            }
+        }
+    }
+    if (!latest.has_value()) {
+        throw std::runtime_error("无法确定中气月将");
+    }
+    return latest->second;
+}
+
+/**
+ * @brief 月将分派器：默认中气过宫（D2）
+ */
+inline DiZhi get_yue_jiang(const tyme::SolarTime& solar_time,
+                           YueJiangMethod method = YueJiangMethod::Zhongqi) {
+    return method == YueJiangMethod::GuifaSuicha
+        ? get_yue_jiang_guifa_suicha(solar_time)
+        : get_yue_jiang_zhongqi(solar_time);
+}
+
+/**
  * @brief 根据太阳黄经（气中换将）确定月将
  *
  * 算法说明：
@@ -83,7 +146,7 @@ enum class YueJiang {
  * @param solar_time 公历时刻
  * @return DiZhi 月将地支
  */
-inline DiZhi get_yue_jiang(const tyme::SolarTime& solar_time) {
+inline DiZhi get_yue_jiang_guifa_suicha(const tyme::SolarTime& solar_time) {
     /**
      * @brief 月将切换规则结构体
      * 
@@ -634,12 +697,15 @@ struct DaLiuRenResult {
     SanChuan san_chuan;                    // 三传
     ShenSha::ShenShaResult shen_sha;       // 神煞
     std::vector<std::string> gua_ti;       // 卦体
+    YueJiangMethod yuejiang_method = YueJiangMethod::Zhongqi;  // D2：本盘实际取法
     
     DaLiuRenResult(const BaZi& bz, DiZhi yj, DiZhi gr, bool id,
                    const TianDiPan& tdp, const SiKe& sk, const SanChuan& sc,
-                   const ShenSha::ShenShaResult& ss, const std::vector<std::string>& gt)
+                   const ShenSha::ShenShaResult& ss, const std::vector<std::string>& gt,
+                   YueJiangMethod yjm = YueJiangMethod::Zhongqi)
         : ba_zi(bz), yue_jiang(yj), gui_ren(gr), is_day(id),
-          tian_di_pan(tdp), si_ke(sk), san_chuan(sc), shen_sha(ss), gua_ti(gt) {}
+          tian_di_pan(tdp), si_ke(sk), san_chuan(sc), shen_sha(ss), gua_ti(gt),
+          yuejiang_method(yjm) {}
     
     /**
      * @brief 转换为 JSON
@@ -670,17 +736,20 @@ public:
      * @param hour 公历时
      * @return DaLiuRenResult 排盘结果
      */
-    static DaLiuRenResult pai_pan(int year, int month, int day, int hour);
+    static DaLiuRenResult pai_pan(int year, int month, int day, int hour,
+                                YueJiangMethod yuejiang = YueJiangMethod::Zhongqi);
     
     /**
      * @brief 从农历日期时间排盘
      */
-    static DaLiuRenResult pai_pan_lunar(int year, int month, int day, int hour);
+    static DaLiuRenResult pai_pan_lunar(int year, int month, int day, int hour,
+                                      YueJiangMethod yuejiang = YueJiangMethod::Zhongqi);
     
     /**
      * @brief 从八字与公历时刻排盘
      */
-    static DaLiuRenResult pai_pan_from_bazi(const BaZi& ba_zi, const tyme::SolarTime& solar_time);
+    static DaLiuRenResult pai_pan_from_bazi(const BaZi& ba_zi, const tyme::SolarTime& solar_time,
+                                          YueJiangMethod yuejiang = YueJiangMethod::Zhongqi);
 };
 
     /**

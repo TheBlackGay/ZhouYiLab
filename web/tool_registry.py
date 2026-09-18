@@ -133,7 +133,7 @@ def builtin_tools():
             "engine_cli": "build/examples/da_liu_ren_web_cli",
             "calibration_status": "pending",
             "interface_doc": "docs/大六壬HTTP接口文档.md",
-            "rule_profile_version": "da-liu-ren-rules/0.1",
+            "rule_profile_version": "da-liu-ren-rules/0.2",
             "pages": ["da-liu-ren.html"],
             "api_prefixes": ["/api/v1/da-liu-ren/"],
             "routes": [
