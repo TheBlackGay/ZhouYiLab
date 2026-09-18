@@ -5,6 +5,8 @@ import ZhouYi.tyme;
 import ZhouYi.ZiWei;
 import ZhouYi.ZiWei.Controller;
 import ZhouYi.ZiWei.Horoscope;
+import ZhouYi.ZiWei.Constants;
+import ZhouYi.ZiWei.StarDocument;
 import ZhouYi.Common.DateTime;
 import ZhouYi.Common.Calendar;
 import nlohmann.json;
@@ -275,6 +277,92 @@ namespace {
         };
     }
 
+    // ===== symbols: 权威符号字典（从内核模块导出） =====
+
+    // 枚举中文名数组；跳过 COUNT 哨兵值（无中文映射时 to_zh 回退为枚举英文名）
+    template <typename E>
+    std::vector<std::string> enum_zh_names() {
+        std::vector<std::string> result;
+        for (const auto name : ZhouYi::Mapper::get_all_zh_names<E>()) {
+            if (name == "COUNT") continue;
+            result.emplace_back(name);
+        }
+        return result;
+    }
+
+    json string_array(const std::vector<std::string>& names) {
+        json result = json::array();
+        for (const auto& name : names) result.push_back(name);
+        return result;
+    }
+
+    // 文档名 ∪ 枚举名并集（保序去重）：类别列表以文档模块为主，
+    // 枚举中文名补齐文档库未收录但可上盘的星名（如 截路/空亡），
+    // 保留内核侧权威符号全集的语义。
+    std::vector<std::string> merge_names(std::vector<std::string> base,
+                                         const std::vector<std::string>& extra) {
+        const std::set<std::string> seen(base.begin(), base.end());
+        for (const auto& name : extra) {
+            if (!seen.contains(name)) base.push_back(name);
+        }
+        return base;
+    }
+
+    json calculate_symbols() {
+        // 星曜类别列表 = 文档模块 vector<string> ∪ 枚举中文名
+        const auto zhu_xing = merge_names(
+            ZhouYi::ZiWei::StarDoc::get_all_zhu_xing_names(), enum_zh_names<ZhuXing>());
+        const auto fu_xing = merge_names(
+            ZhouYi::ZiWei::StarDoc::get_all_fu_xing_names(), enum_zh_names<FuXing>());
+        const auto za_yao = merge_names(
+            ZhouYi::ZiWei::StarDoc::get_all_za_yao_names(), enum_zh_names<ZaYao>());
+        const auto shen_sha = ZhouYi::ZiWei::StarDoc::get_all_shen_sha_names();
+        // 煞星无文档模块列表，取枚举中文名
+        const auto sha_xing = enum_zh_names<ShaXing>();
+
+        std::set<std::string> all_names;
+        for (const auto& names : {zhu_xing, fu_xing, za_yao, shen_sha}) {
+            all_names.insert(names.begin(), names.end());
+        }
+        all_names.insert(sha_xing.begin(), sha_xing.end());
+
+        // 干支/五行中文名来自 ZhouYi.GanZhi 的 ZhMap
+        std::vector<std::string> heavenly_stems;
+        for (int i = 0; i < 10; ++i) {
+            heavenly_stems.emplace_back(
+                ZhouYi::GanZhi::Mapper::to_zh(static_cast<TianGan>(i)));
+        }
+        std::vector<std::string> earthly_branches;
+        for (int i = 0; i < 12; ++i) {
+            earthly_branches.emplace_back(
+                ZhouYi::GanZhi::Mapper::to_zh(static_cast<DiZhi>(i)));
+        }
+        std::vector<std::string> five_elements;
+        for (int i = 1; i <= 5; ++i) {
+            five_elements.emplace_back(
+                ZhouYi::GanZhi::Mapper::to_zh(static_cast<WuXing>(i)));
+        }
+
+        return {
+            {"operation", "symbols"},
+            {"symbols_version", "ziwei-symbols/1.0"},
+            {"stars", {
+                {"zhu_xing", string_array(zhu_xing)},
+                {"fu_xing", string_array(fu_xing)},
+                {"za_yao", string_array(za_yao)},
+                {"shen_sha", string_array(shen_sha)},
+                {"sha_xing", string_array(sha_xing)}
+            }},
+            {"all_star_names", string_array({all_names.begin(), all_names.end()})},
+            {"brightness", string_array(enum_zh_names<LiangDu>())},
+            {"si_hua", string_array(enum_zh_names<SiHua>())},
+            {"palaces", string_array(enum_zh_names<GongWei>())},
+            {"heavenly_stems", string_array(heavenly_stems)},
+            {"earthly_branches", string_array(earthly_branches)},
+            {"five_elements", string_array(five_elements)}
+        };
+    }
+
     json execute(const json& request) {
         const auto operation = request.at("operation").get<std::string>();
         if (operation == "time_correction") {
@@ -283,6 +371,7 @@ namespace {
         }
         if (operation == "chart") return calculate_chart(request);
         if (operation == "fortune") return calculate_fortune(request);
+        if (operation == "symbols") return calculate_symbols();
         throw std::invalid_argument("不支持的 operation: " + operation);
     }
 
