@@ -1,0 +1,23 @@
+{
+  "schema": "zhouyilab-tool/1.0",
+  "id": "liu_yao",
+  "name": "六爻",
+  "engine_cli": "build/examples/liu_yao_web_cli",
+  "calibration_status": "pending",
+  "pages": [
+    "liu-yao.html"
+  ],
+  "api_prefixes": [
+    "/api/v1/liu-yao/"
+  ],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/v1/liu-yao/charts",
+      "handler": "engine_chart",
+      "options": {
+        "timeout_message": "六爻排盘计算超时"
+      }
+    }
+  ]
+}

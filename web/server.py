@@ -4,10 +4,15 @@ import json
 import mimetypes
 import os
 import subprocess
+import time
 import uuid
+from datetime import datetime, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
+
+from tool_registry import ToolRegistryError, load_tool_registry
+from governance import API_KEY_HEADER, Governance
 
 from ziwei_analysis import (
     AnalysisConfigError,
@@ -54,17 +59,52 @@ from astro_natal_reading import (
     analyze_and_render_natal,
     render_natal_reading,
 )
+from geo_places import (
+    DEFAULT_LIMIT as GEO_DEFAULT_LIMIT,
+    MAX_LIMIT as GEO_MAX_LIMIT,
+    GeoConfigError,
+    GeoInvalidRequest,
+    GeoNotFoundError,
+    default_index,
+    geo_meta,
+    resolve_place,
+    search_places,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEB_ROOT = PROJECT_ROOT / "web"
-CLI_PATH = PROJECT_ROOT / "build" / "examples" / "zi_wei_web_cli"
-QIMEN_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "qi_men_web_cli"
-BAZI_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "ba_zi_web_cli"
-LIU_YAO_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "liu_yao_web_cli"
-DA_LIU_REN_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "da_liu_ren_web_cli"
-CALENDAR_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "common_calendar_web_cli"
-ASTRO_CLI_PATH = PROJECT_ROOT / "build" / "examples" / "astro_web_cli"
+
+# P0-1 工具注册表：清单目录存在则严格加载（坏清单 fail fast），缺失则用内建默认。
+try:
+    TOOL_REGISTRY = load_tool_registry(PROJECT_ROOT)
+except ToolRegistryError as error:
+    raise SystemExit(f"工具注册表加载失败：{error}")
+
+_ENGINE_PATHS = TOOL_REGISTRY.engine_paths(PROJECT_ROOT)
+
+
+def _engine_path(tool_id, default_cli):
+    """注册表缺失某工具时回退到内建默认路径，保证任何清单子集都能启动。"""
+    return _ENGINE_PATHS.get(tool_id, PROJECT_ROOT / default_cli)
+
+
+CLI_PATH = _engine_path("ziwei", "build/examples/zi_wei_web_cli")
+QIMEN_CLI_PATH = _engine_path("qimen", "build/examples/qi_men_web_cli")
+BAZI_CLI_PATH = _engine_path("bazi", "build/examples/ba_zi_web_cli")
+LIU_YAO_CLI_PATH = _engine_path("liu_yao", "build/examples/liu_yao_web_cli")
+DA_LIU_REN_CLI_PATH = _engine_path("da_liu_ren", "build/examples/da_liu_ren_web_cli")
+CALENDAR_CLI_PATH = _engine_path("calendar", "build/examples/common_calendar_web_cli")
+ASTRO_CLI_PATH = _engine_path("astro", "build/examples/astro_web_cli")
+
+# P0-2 公网最小治理：默认 observe（只记录不拦截），off/observe/enforce 由环境变量控制。
+GOVERNANCE = Governance.from_env(PROJECT_ROOT)
+
+# engine_chart handler 的默认可转 422 的错误码；astro 等引擎在清单 options 里声明自己的集合。
+DEFAULT_ENGINE_BAD_REQUEST_CODES = frozenset({
+    "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
+})
+
 BAZI_SHEN_SHA_ROOT = PROJECT_ROOT / "config" / "bazi" / "shen_sha"
 BAZI_SHEN_SHA_ALIASES = {
     "zi_wu_mao_you_si_gong_hu_huan_shen_sha": "子午卯酉四宫互换神煞.json",
@@ -76,6 +116,7 @@ ALGORITHM_VERSION = "zhouyilab-core/1.4.1"
 MAX_BODY_BYTES = 256 * 1024
 _AI_REVIEW_SERVICE = None
 _AI_REVIEW_LOCK = None
+_ZIWEI_SYMBOLS_CACHE = None
 
 POST_OPERATIONS = {
     "/api/v1/ziwei/time-correction": "time_correction",
@@ -138,33 +179,67 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=str(WEB_ROOT), **kwargs)
 
     def do_GET(self):
+        self._request_started = time.monotonic()
         parsed = urlparse(self.path)
+        if not self._governance_gate(parsed):
+            return
         ai_prefix = "/api/v1/ziwei/research/ai-review"
         if parsed.path == "/api/v1/health":
-            self.send_api_success({
-                "status": "ok",
-                "service": "zhouyilab-ziwei-api",
-                "cli_available": CLI_PATH.exists(),
-                "qimen_cli_available": QIMEN_CLI_PATH.exists(),
-                "bazi_cli_available": BAZI_CLI_PATH.exists(),
-                "liu_yao_cli_available": LIU_YAO_CLI_PATH.exists(),
-                "da_liu_ren_cli_available": DA_LIU_REN_CLI_PATH.exists(),
-                "calendar_cli_available": CALENDAR_CLI_PATH.exists(),
-                "astro_cli_available": ASTRO_CLI_PATH.exists(),
-                "astro_ephemeris_available": any(
-                    path.is_file()
-                    for path in (Path(os.environ["ZHOUYILAB_EPHEMERIS_PATH"])
-                                 if os.environ.get("ZHOUYILAB_EPHEMERIS_PATH")
-                                 else PROJECT_ROOT / "data" / "ephemeris").rglob("*.se1")
-                ),
-            })
+            self.send_api_success(self._health_payload())
+            return
+        if parsed.path == "/api/v1/tools":
+            self.send_api_success(TOOL_REGISTRY.summary(PROJECT_ROOT))
             return
         if parsed.path == "/api/v1/astro/meta":
             if not ASTRO_CLI_PATH.exists():
                 self.send_api_error(500, "ENGINE_UNAVAILABLE", "Astro 计算引擎尚未构建")
                 return
             try:
-                self.send_api_success(self.run_engine(ASTRO_CLI_PATH, {"operation": "meta"}))
+                result = self.run_engine(ASTRO_CLI_PATH, {"operation": "meta"})
+                # 天文页签自洽：附带同一份中立地名/时区元数据（方案 §7）
+                result["geo"] = geo_meta()
+                self.send_api_success(result)
+            except CliError as error:
+                self.send_api_error(500, error.code, error.message)
+            return
+        if parsed.path == "/api/v1/geo/meta":
+            self.send_api_success(geo_meta())
+            return
+        if parsed.path == "/api/v1/geo/places":
+            try:
+                params = parse_qs(parsed.query, keep_blank_values=True)
+                raw_query = params.get("q", [None])[0]
+                if raw_query is None or not raw_query.strip():
+                    raise GeoInvalidRequest("缺少查询参数 q")
+                raw_limit = params.get("limit", [GEO_DEFAULT_LIMIT])[0]
+                try:
+                    limit = int(raw_limit)
+                except (TypeError, ValueError):
+                    raise GeoInvalidRequest("limit 必须是整数")
+                if not 1 <= limit <= GEO_MAX_LIMIT:
+                    raise GeoInvalidRequest(f"limit 必须在 1 到 {GEO_MAX_LIMIT} 之间")
+                country = (params.get("country", [None])[0] or "").strip() or None
+                if country and (len(country) != 2 or not country.isalpha()):
+                    raise GeoInvalidRequest("country 必须是两位国家/地区码")
+                index = default_index()
+                hits = search_places(index, raw_query, limit=limit, country=country)
+                self.send_api_success({
+                    "query": raw_query.strip(),
+                    "count": len(hits),
+                    "revision": index.revision,
+                    "results": hits,
+                })
+            except GeoNotFoundError as error:
+                self.send_api_error(404, error.code, error.user_message())
+            except GeoConfigError as error:
+                self.send_api_error(500, error.code, error.user_message())
+            except GeoInvalidRequest as error:
+                self.send_api_error(400, "INVALID_REQUEST", error.user_message())
+            return
+        if parsed.path == "/api/v1/ziwei/symbols":
+            # P0-4 内核权威符号字典：同一二进制版本内不变，进程级缓存一次即可。
+            try:
+                self.send_api_success(self._ziwei_symbols())
             except CliError as error:
                 self.send_api_error(500, error.code, error.message)
             return
@@ -287,60 +362,70 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Request-Id")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Request-Id, X-API-Key")
         self.send_header("Access-Control-Max-Age", "86400")
         self.end_headers()
 
     def do_POST(self):
+        self._request_started = time.monotonic()
         parsed = urlparse(self.path)
+        if not self._governance_gate(parsed):
+            return
         ai_prefix = "/api/v1/ziwei/research/ai-review"
-        if parsed.path == "/api/v1/qimen/charts":
-            try:
-                payload = self.read_json_body()
-                self.send_api_success(self.run_engine(QIMEN_CLI_PATH, payload))
-            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
-                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
-            except subprocess.TimeoutExpired:
-                self.send_api_error(504, "CALCULATION_TIMEOUT", "奇门排盘计算超时")
-            except CliError as error:
-                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
-                self.send_api_error(status, error.code, error.message)
+        binding = TOOL_REGISTRY.resolve("POST", parsed.path)
+        if binding is not None:
+            self._handle_engine_chart(binding)
             return
-        if parsed.path == "/api/v1/bazi/charts":
+        if parsed.path == "/api/v1/geo/place-resolve":
+            # 只读解析：不产生副作用，不改排盘契约（方案 §7）
             try:
                 payload = self.read_json_body()
-                self.send_api_success(self.run_engine(BAZI_CLI_PATH, payload))
+                place_id = payload.get("place_id")
+                query = payload.get("query")
+                latitude = payload.get("latitude")
+                longitude = payload.get("longitude")
+                supplied = sum(
+                    value is not None
+                    for value in (
+                        place_id if isinstance(place_id, str) and place_id.strip() else None,
+                        query if isinstance(query, str) and query.strip() else None,
+                        None if (latitude is None or longitude is None) else "coord",
+                    )
+                )
+                if supplied != 1:
+                    raise GeoInvalidRequest("place_id、query、latitude/longitude 必须且只能提供一种")
+                if place_id is not None and not isinstance(place_id, str):
+                    raise GeoInvalidRequest("place_id 必须是字符串")
+                if query is not None and not isinstance(query, str):
+                    raise GeoInvalidRequest("query 必须是字符串")
+                for name, value in (("latitude", latitude), ("longitude", longitude)):
+                    if value is not None and not isinstance(value, (int, float)):
+                        raise GeoInvalidRequest(f"{name} 必须是数字")
+                offset = payload.get("utc_offset_minutes")
+                if offset is not None and not isinstance(offset, int):
+                    raise GeoInvalidRequest("utc_offset_minutes 必须是整数")
+                house_system = payload.get("house_system")
+                if house_system is not None and not isinstance(house_system, str):
+                    raise GeoInvalidRequest("house_system 必须是字符串")
+                result = resolve_place(
+                    default_index(),
+                    place_id=place_id,
+                    query=query,
+                    lat=latitude,
+                    lon=longitude,
+                    birth_date=payload.get("date"),
+                    utc_offset_minutes=offset,
+                    house_system=house_system,
+                )
+                self.send_api_success(result)
+            except GeoNotFoundError as error:
+                self.send_api_error(404, error.code, error.user_message())
+            except GeoConfigError as error:
+                self.send_api_error(500, error.code, error.user_message())
+            except GeoInvalidRequest as error:
+                self.send_api_error(400, "INVALID_REQUEST", error.user_message())
             except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
                 self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
-            except subprocess.TimeoutExpired:
-                self.send_api_error(504, "CALCULATION_TIMEOUT", "八字排盘计算超时")
-            except CliError as error:
-                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
-                self.send_api_error(status, error.code, error.message)
-            return
-        if parsed.path == "/api/v1/liu-yao/charts":
-            try:
-                payload = self.read_json_body()
-                self.send_api_success(self.run_engine(LIU_YAO_CLI_PATH, payload))
-            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
-                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
-            except subprocess.TimeoutExpired:
-                self.send_api_error(504, "CALCULATION_TIMEOUT", "六爻排盘计算超时")
-            except CliError as error:
-                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
-                self.send_api_error(status, error.code, error.message)
-            return
-        if parsed.path == "/api/v1/da-liu-ren/charts":
-            try:
-                payload = self.read_json_body()
-                self.send_api_success(self.run_engine(DA_LIU_REN_CLI_PATH, payload))
-            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
-                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
-            except subprocess.TimeoutExpired:
-                self.send_api_error(504, "CALCULATION_TIMEOUT", "大六壬排盘计算超时")
-            except CliError as error:
-                status = 422 if error.code in {"INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED"} else 500
-                self.send_api_error(status, error.code, error.message)
             return
         if parsed.path == "/api/v1/astro/charts":
             try:
@@ -527,6 +612,71 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             self.send_api_error(status, error.code, error.message)
         except Exception:
             self.send_api_error(500, "INTERNAL_ERROR", "服务内部错误")
+
+    def _ziwei_symbols(self):
+        global _ZIWEI_SYMBOLS_CACHE
+        if _ZIWEI_SYMBOLS_CACHE is None:
+            _ZIWEI_SYMBOLS_CACHE = self.run_engine(CLI_PATH, {"operation": "symbols"})
+        return _ZIWEI_SYMBOLS_CACHE
+
+    def _health_payload(self):
+        # 保留既有字面量字段作为公开契约（向后兼容），并追加注册表派生的
+        # 引擎可用性与各术数校准状态。engine 常量在注册表缺失时已回退内建路径。
+        payload = {
+            "status": "ok",
+            "service": "zhouyilab-ziwei-api",
+            "cli_available": CLI_PATH.exists(),
+            "qimen_cli_available": QIMEN_CLI_PATH.exists(),
+            "bazi_cli_available": BAZI_CLI_PATH.exists(),
+            "liu_yao_cli_available": LIU_YAO_CLI_PATH.exists(),
+            "da_liu_ren_cli_available": DA_LIU_REN_CLI_PATH.exists(),
+            "calendar_cli_available": CALENDAR_CLI_PATH.exists(),
+            "astro_cli_available": ASTRO_CLI_PATH.exists(),
+            "astro_ephemeris_available": any(
+                path.is_file()
+                for path in (Path(os.environ["ZHOUYILAB_EPHEMERIS_PATH"])
+                             if os.environ.get("ZHOUYILAB_EPHEMERIS_PATH")
+                             else PROJECT_ROOT / "data" / "ephemeris").rglob("*.se1")
+            ),
+            "registry_source": TOOL_REGISTRY.source,
+            "tools": TOOL_REGISTRY.calibration_map(),
+        }
+        # 叠加注册表派生键：通过 manifest 新增的工具自动获得可用性字段
+        payload.update(TOOL_REGISTRY.health_flags(PROJECT_ROOT))
+        return payload
+
+    def _governance_gate(self, parsed):
+        """P0-2 治理关卡。返回 False 表示请求已被拦截并响应完毕。"""
+        self._gov_decision = GOVERNANCE.decide(
+            self.headers.get(API_KEY_HEADER),
+            parsed.path,
+            self.client_address[0] if self.client_address else "-",
+        )
+        decision = self._gov_decision
+        if decision.get("blocked"):
+            self.send_api_error(decision["status"], decision["code"], decision["message"])
+            return False
+        return True
+
+    def _handle_engine_chart(self, binding):
+        """注册表 engine_chart handler：清单声明即路由，无需新增 server 分支。"""
+        manifest, route = binding
+        engine = manifest.engine_path(PROJECT_ROOT)
+        timeout_message = route.options.get("timeout_message", f"{manifest.name}计算超时")
+        bad_codes = frozenset(route.options.get(
+            "bad_request_codes", DEFAULT_ENGINE_BAD_REQUEST_CODES))
+        try:
+            payload = self.read_json_body()
+            operation = route.options.get("operation")
+            request = {**payload, "operation": operation} if operation else payload
+            self.send_api_success(self.run_engine(engine, request))
+        except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+            self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+        except subprocess.TimeoutExpired:
+            self.send_api_error(504, "CALCULATION_TIMEOUT", timeout_message)
+        except CliError as error:
+            status = 422 if error.code in bad_codes else 500
+            self.send_api_error(status, error.code, error.message)
 
     def read_json_body(self):
         content_type = self.headers.get("Content-Type", "").split(";", 1)[0].strip()
@@ -758,6 +908,10 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def send_response(self, code, message=None):
+        self._last_status = code
+        super().send_response(code, message)
+
     def end_headers(self):
         if not self.path.startswith("/api/"):
             self.send_header("Cache-Control", "no-cache")
@@ -765,6 +919,37 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
 
     def log_message(self, format_string, *args):
         print(f"[web] request_id={self.request_id} {format_string % args}")
+        self._record_access(format_string, args)
+
+    def _record_access(self, format_string, args):
+        """P0-2 访问日志：只记录 log_request 的标准形态，写盘失败自动降级。"""
+        if GOVERNANCE.mode == "off" or GOVERNANCE.log is None:
+            return
+        if format_string != '"%s" %s %s' or len(args) < 2:
+            return
+        try:
+            status = int(args[1])
+        except (TypeError, ValueError):
+            status = None
+        decision = getattr(self, "_gov_decision", None) or {}
+        duration_ms = None
+        if getattr(self, "_request_started", None) is not None:
+            duration_ms = round((time.monotonic() - self._request_started) * 1000, 2)
+        GOVERNANCE.log.write({
+            "ts": datetime.now(timezone.utc).isoformat(timespec="milliseconds"),
+            "request_id": self.request_id,
+            "method": getattr(self, "command", None),
+            "path": getattr(self, "path", None),
+            "status": status,
+            "duration_ms": duration_ms,
+            "client_ip": self.client_address[0] if self.client_address else None,
+            "api": bool(getattr(self, "path", "").startswith("/api/")),
+            "governance_mode": decision.get("mode"),
+            "governance_decision": decision.get("decision"),
+            "governance_key_label": decision.get("key_label"),
+            "governance_would_block": decision.get("would_block"),
+            "governance_blocked": decision.get("blocked"),
+        })
 
 
 class CliError(Exception):
@@ -778,9 +963,8 @@ def main():
     parser = argparse.ArgumentParser(description="ZhouYiLab 紫微斗数 API 与本地页面服务")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
-    required_engines = [CLI_PATH, QIMEN_CLI_PATH, BAZI_CLI_PATH, LIU_YAO_CLI_PATH, DA_LIU_REN_CLI_PATH]
-    if os.environ.get("ZHOUYILAB_ENABLE_ASTRO", "ON") != "OFF":
-        required_engines.append(ASTRO_CLI_PATH)
+    # 启动门槛由注册表推导：required_at_startup=false 或 optional_env 关闭的引擎豁免。
+    required_engines = TOOL_REGISTRY.required_startup_engine_paths(PROJECT_ROOT, os.environ)
     missing_engines = [path for path in required_engines if not path.exists()]
     if missing_engines:
         missing = "、".join(str(path) for path in missing_engines)

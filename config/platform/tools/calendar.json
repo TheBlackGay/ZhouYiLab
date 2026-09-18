@@ -1,0 +1,24 @@
+{
+  "schema": "zhouyilab-tool/1.0",
+  "id": "calendar",
+  "name": "公共日历",
+  "engine_cli": "build/examples/common_calendar_web_cli",
+  "calibration_status": "calibrated",
+  "required_at_startup": false,
+  "pages": [],
+  "api_prefixes": [
+    "/api/v1/calendar/"
+  ],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/v1/calendar/convert",
+      "handler": "legacy_chain"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/calendar/true-solar-time",
+      "handler": "legacy_chain"
+    }
+  ]
+}

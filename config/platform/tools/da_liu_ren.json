@@ -1,0 +1,23 @@
+{
+  "schema": "zhouyilab-tool/1.0",
+  "id": "da_liu_ren",
+  "name": "大六壬",
+  "engine_cli": "build/examples/da_liu_ren_web_cli",
+  "calibration_status": "pending",
+  "pages": [
+    "da-liu-ren.html"
+  ],
+  "api_prefixes": [
+    "/api/v1/da-liu-ren/"
+  ],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/v1/da-liu-ren/charts",
+      "handler": "engine_chart",
+      "options": {
+        "timeout_message": "大六壬排盘计算超时"
+      }
+    }
+  ]
+}

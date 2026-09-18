@@ -1,0 +1,28 @@
+{
+  "schema": "zhouyilab-tool/1.0",
+  "id": "bazi",
+  "name": "八字",
+  "engine_cli": "build/examples/ba_zi_web_cli",
+  "calibration_status": "in_progress",
+  "pages": [
+    "bazi.html"
+  ],
+  "api_prefixes": [
+    "/api/v1/bazi/"
+  ],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/v1/bazi/charts",
+      "handler": "engine_chart",
+      "options": {
+        "timeout_message": "八字排盘计算超时"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bazi/shen-sha/<id>",
+      "handler": "python_service"
+    }
+  ]
+}

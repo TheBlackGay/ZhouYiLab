@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "zhouyilab-tool/1.0",
+  "title": "ZhouYiLab 工具注册清单",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "name",
+    "engine_cli",
+    "calibration_status",
+    "routes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "zhouyilab-tool/1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine_cli": {
+      "type": "string",
+      "description": "仓库相对路径，指向该工具的 JSON CLI 引擎"
+    },
+    "calibration_status": {
+      "enum": [
+        "calibrated",
+        "in_progress",
+        "pending",
+        "experimental"
+      ]
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "api_prefixes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^/api/"
+      }
+    },
+    "optional_env": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "health_key": {
+      "type": "string"
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "method",
+          "path",
+          "handler"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "enum": [
+              "GET",
+              "POST"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/api/"
+          },
+          "handler": {
+            "enum": [
+              "engine_chart",
+              "legacy_chain",
+              "python_service"
+            ]
+          },
+          "options": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "required_at_startup": {
+      "type": "boolean",
+      "default": true,
+      "description": "false 表示该引擎缺失时服务仍可启动（运行期由 health 暴露不可用）"
+    }
+  }
+}

@@ -75,7 +75,13 @@ class BaZiWebContractTests(unittest.TestCase):
 
     def test_server_and_build_register_bazi_cli(self):
         self.assertIn('BAZI_CLI_PATH', SERVER)
-        self.assertIn('parsed.path == "/api/v1/bazi/charts"', SERVER)
+        # P0-1 后 bazi/charts 由工具注册表分发；清单声明即契约权威来源。
+        bazi_manifest = json.loads(
+            (PROJECT_ROOT / "config" / "platform" / "tools" / "bazi.json").read_text(encoding="utf-8")
+        )
+        post_paths = {r["path"] for r in bazi_manifest["routes"] if r["method"] == "POST"}
+        self.assertIn("/api/v1/bazi/charts", post_paths)
+        self.assertIn('TOOL_REGISTRY.resolve("POST", parsed.path)', SERVER)
         self.assertIn('"bazi_cli_available"', SERVER)
         self.assertIn("ba_zi_web_cli", CMAKE)
         self.assertIn('BAZI_SHEN_SHA_ROOT', SERVER)
