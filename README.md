@@ -6,7 +6,7 @@
 [![CMake](https://img.shields.io/badge/CMake-3.28%2B-green.svg)](https://cmake.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-当前开发分支为 `r_1.6.0`，HTTP API 版本为 `v1`，接口返回的算法标识为 `zhouyilab-core/1.4.1`。
+当前开发分支为 `r_2.0.0`（大六壬样板工作在其特性分支 `f_2.0.0_dlr` 上推进），HTTP API 版本为 `v1`，接口返回的算法标识为 `zhouyilab-core/1.4.1`。
 
 ## 算法校准状态
 
@@ -20,7 +20,7 @@
 | 奇门遁甲 | 已校准 | 已重新校正原有起局实现，当前采用项目文档确认的拆补法时家转盘口径，并建立回归测试 |
 | 八字 | 校准中 | 已复核真太阳时、四柱基础字段、起运及首批《渊海子平》《三命通会》神煞；旺衰、喜忌与格局仍待校准 |
 | 六爻 | 待校准 | 现有 C++ 模块和示例可运行，不代表算法口径已经完成复核 |
-| 大六壬 | 待校准 | 现有 C++ 模块和示例可运行，不代表算法口径已经完成复核 |
+| 大六壬 | 待校准 | 2.0.0 已提供页面、结构化接口与逐项规则口径标识（`meta.rule_profile`）；盘面事实可追溯，算法口径仍待复核，不输出断语 |
 
 后续版本将继续校准其他算法。每项算法完成校准后，需要同步补充规则口径、边界案例、回归测试和对应文档，再将状态改为“已校准”。
 
@@ -36,7 +36,8 @@
 | AI 多模型预评审 | 实验性 | Ollama/OpenAI 兼容接口、多模型重复实验、结果统计与 SQLite 留档 |
 | 八字 | 初步可用 | 公历/农历输入、真太阳时、四柱、十神、藏干、十二长生、逐柱旬空、纳音、首批神煞、起运与十步大运 |
 | 西洋占星 | 实验性 | Swiss Ephemeris 本命盘、主要行星、四轴、十二宫、主要相位、黄道与宫位布局速读、逐点位/十二宫/相位解读卡片和 Moshier 降级提示 |
-| 六爻、大六壬 | C++ 示例 | 核心模块与示例程序 |
+| 大六壬 | 2.0.0 样板 | 快速/专业双模式、问题上下文、术语口径弹层、`meta.rule_profile` 规则口径；算法仍待校准，不断吉凶 |
+| 六爻 | C++ 示例 | 核心模块与示例程序 |
 
 ## 快速开始
 
@@ -273,6 +274,17 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 - 甲时旬首遁藏、中五寄坤二、天禽随天芮等当前算法口径。
 - 宫位学习提示和结构化 JSON 输出。
 
+### 大六壬
+
+2.0.0 把大六壬做成易用样板：
+
+- 输入支持公历/农历/闰月、一键当前时间与示例时间，时辰下拉显式标注早子/夜子换日口径；
+- 问题类型与描述只保留在页面，不发送给服务；
+- 小白模式展示四柱、月将、贵人、本课重点与 起因→发展→归结 三传流程，不给吉凶断语；
+- 专业模式提供四课、三传详情（遁干/六亲）、天地盘十二位表、神煞卦体与**规则口径**页签；
+- 术语弹层由 `config/daliuren/glossary.json` 驱动，每条注明当前实现口径；
+- 接口响应携带 `meta.rule_profile`（`calibration_status: pending`，算法校准前不伪装已完成）。
+
 ### 八字
 
 八字页面沿用独立排盘工具的交互方式，当前支持：
@@ -321,6 +333,8 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 | POST | `/api/v1/ziwei/fortune` | 生成紫微命盘及运限 |
 | POST | `/api/v1/ziwei/analysis` | 生成本命结构解读与格局结果 |
 | POST | `/api/v1/qimen/charts` | 生成奇门遁甲盘 |
+| POST | `/api/v1/da-liu-ren/charts` | 生成大六壬课盘（含 `meta.rule_profile` 口径标识） |
+| GET | `/api/v1/da-liu-ren/glossary` | 大六壬术语与当前实现口径 |
 | POST | `/api/v1/bazi/charts` | 生成八字四柱与大运 |
 | GET | `/api/v1/astro/meta` | 西洋占星能力和版本信息 |
 | POST | `/api/v1/astro/charts` | 使用 Swiss Ephemeris 生成西洋星盘 |
@@ -362,6 +376,7 @@ curl -sS \
 - [紫微斗数 HTTP 接口文档](docs/ziwei/紫微斗数HTTP接口文档.md)
 - [公共日历 API 文档](docs/common/公共日历API.md)
 - [奇门遁甲 HTTP 接口文档](docs/奇门遁甲HTTP接口文档.md)
+- [大六壬 HTTP 接口文档](docs/大六壬HTTP接口文档.md)
 - [西洋占星 HTTP 接口文档](docs/astro/西洋占星HTTP接口文档.md)
 - [统一 HTTP 接口访问地址](docs/HTTP接口访问地址.md)
 - [Swiss Ephemeris 集成设计与 Astro 接口契约](docs/astro/Swiss-Ephemeris-集成设计.md)
