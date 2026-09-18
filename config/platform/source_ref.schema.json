@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "source-ref/1.0",
+  "$id": "zhouyilab-source-ref/1.0",
   "title": "规则/术语/断语的古籍出处引用（D8 三层结构：规则条目→古籍原文→版本出处）",
   "description": "引用用于向用户展示解释依据（事后可追溯），不得作为可执行判定逻辑（事中不计算）。calendar_context 声明该出处的历法背景，与排盘口径保持一致性标注。",
   "type": "object",
