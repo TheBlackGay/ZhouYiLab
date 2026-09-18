@@ -24,15 +24,19 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3 ca-certificates libc++1 libc++abi1 \
+    && apt-get install -y --no-install-recommends python3 python3-pip ca-certificates libc++1 libc++abi1 \
     && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home --uid 10001 --shell /usr/sbin/nologin zhouyi
 
 WORKDIR /app
 COPY --from=builder /src/web ./web
+RUN pip3 install --break-system-packages --no-cache-dir -r ./web/requirements.txt
 COPY --from=builder /src/config ./config
 COPY --from=builder /src/data/ephemeris ./data/ephemeris
+COPY --from=builder /src/data/geo ./data/geo
 COPY --from=builder /src/build-docker/examples/*_web_cli ./build/examples/
+# 兜底：宿主机 umask/权限漂移（历史上 web/ 出现过 600 文件）不得阻塞非 root 运行时用户读取
+RUN chmod -R a+rX web config data build
 RUN mkdir -p /app/licenses
 COPY --from=builder /src/3rdparty/swisseph/LICENSE ./licenses/SWISSEPH-LICENSE
 RUN mkdir -p /app/.zhouyilab \
