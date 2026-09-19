@@ -180,3 +180,23 @@ button.layout-bar-seg.is-active { background: var(--gold); color: #fff; }
   .astro-wheel .planet-dot { transition: none; }
   .astro-wheel .house-sector { transition: none; }
 }
+
+/* 西洋占星：分布画像环形图（图1 元素 / 图2 阴阳 / 图3 三性质），数据源 /api/v1/astro/distribution */
+.profile-dimension { color: var(--accent); font-size: 11px; font-weight: 700; }
+.profile-basis { color: var(--muted); font-size: 11px; font-weight: 400; margin-left: 8px; }
+.profile-charts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:20px; }
+.profile-chart-card { display:grid; gap:14px; padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:4px; }
+.profile-donut { position:relative; width:132px; height:132px; margin:0 auto; border-radius:50%; }
+.profile-donut::after { content:""; position:absolute; inset:26%; background:var(--surface); border-radius:50%; box-shadow:inset 0 0 0 1px var(--line); }
+.profile-donut-core { position:absolute; inset:0; z-index:1; display:grid; place-content:center; gap:2px; text-align:center; }
+.profile-donut-core b { font:800 22px/1 Georgia,"Noto Serif SC",serif; color:var(--ink); }
+.profile-donut-core span { font-size:11px; color:var(--muted); }
+.profile-chart-main { display:grid; justify-items:center; gap:10px; text-align:center; }
+.profile-chart-main h4 { margin:0; font-size:14px; }
+.profile-legend { list-style:none; margin:0; padding:0; display:grid; gap:6px; }
+.profile-legend li { display:grid; grid-template-columns:14px 1fr auto; gap:8px; align-items:center; font-size:12px; color:var(--muted); }
+.profile-legend i { width:10px; height:10px; border-radius:3px; }
+.profile-legend b { color:var(--ink); font-variant-numeric:tabular-nums; }
+.profile-reading { margin:0; padding-top:10px; border-top:1px dashed var(--line); color:#434c47; font-size:12.5px; line-height:1.75; text-align:left; }
+.profile-fallback { margin:18px 0 0 44px; color:var(--muted); font-size:12px; }
+@media (max-width:900px) { .profile-charts { grid-template-columns:1fr; } }

@@ -178,6 +178,7 @@ def builtin_tools():
                 {"method": "POST", "path": "/api/v1/astro/transit-analysis", "handler": "python_service"},
                 {"method": "POST", "path": "/api/v1/astro/daily-reading", "handler": "python_service"},
                 {"method": "POST", "path": "/api/v1/astro/natal-analysis", "handler": "python_service"},
+                {"method": "POST", "path": "/api/v1/astro/distribution", "handler": "python_service"},
                 {"method": "POST", "path": "/api/v1/astro/natal-reading", "handler": "python_service"},
                 {"method": "POST", "path": "/api/v1/geo/place-resolve", "handler": "python_service"},
             ],

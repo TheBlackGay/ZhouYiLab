@@ -51,6 +51,11 @@
     },
     {
       "method": "POST",
+      "path": "/api/v1/astro/distribution",
+      "handler": "python_service"
+    },
+    {
+      "method": "POST",
       "path": "/api/v1/astro/natal-reading",
       "handler": "python_service"
     },

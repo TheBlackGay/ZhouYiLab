@@ -104,6 +104,10 @@
         {
           "type": "python_test",
           "target": "tests.test_astro_web_contract"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_astro_distribution"
         }
       ]
     }
