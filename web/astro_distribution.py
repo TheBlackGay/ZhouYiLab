@@ -78,6 +78,11 @@ def load_reading_config(path=DEFAULT_READING_PATH):
             raise AstroDistributionConfigError(f"{chart_id}.order 非法")
         if not chart.get("balanced_template_zh") or not chart.get("basis_zh"):
             raise AstroDistributionConfigError(f"{chart_id} 缺少 balanced_template_zh/basis_zh")
+        if not chart.get("summary_template_zh"):
+            raise AstroDistributionConfigError(f"{chart_id} 缺少 summary_template_zh")
+        if set(chart.get("summary_phrases_zh", {})) != keys | {"balanced"}:
+            raise AstroDistributionConfigError(
+                f"{chart_id}.summary_phrases_zh 必须覆盖 {sorted(keys)} 与 balanced")
         if not chart.get("title_zh"):
             raise AstroDistributionConfigError(f"{chart_id} 缺少 title_zh")
         for key in keys | {"balanced"}:
@@ -150,20 +155,32 @@ def _headline(chart_cfg, dominant_key, label):
     return f"{subject}{text}"
 
 
-def compute_distribution(chart, reading_config, label=None):
-    points = collect_points(chart)
-    total = len(points)
-    tables = {"element": SIGN_ELEMENT, "polarity": SIGN_POLARITY, "modality": SIGN_MODALITY}
+def largest_remainder_percent(counts, total):
+    """公开别名：整数百分比、和恒为 100（跨平台分布画像共用）。"""
+    return _largest_remainder_percent(counts, total)
+
+
+def build_package(points, dimensions, reading_config, label, basis, schema_version):
+    """通用分布画像构建器。
+
+    points: [{point_id, point_name, kind, attributes:{dimension_id: key}}]
+    dimensions: [(chart_id, attr_key)]；解读文案一律来自声明式配置。
+    """
     charts_out = []
-    for chart_id in DIMENSIONS:
+    phrases = []
+    global_total = len(points)
+    for chart_id, attr_key in dimensions:
         chart_cfg = reading_config["charts"][chart_id]
-        table = tables[chart_id]
+        # 每图分母 = 具备该属性的点；亮度等只覆盖主星时，各图 basis_zh 自释分母
         counts_map = {}
         for point in points:
-            key = table[point["sign"]]
+            key = point["attributes"].get(attr_key)
+            if key is None:
+                continue
             counts_map[key] = counts_map.get(key, 0) + 1
         keys = list(chart_cfg["order"])
         counts = [counts_map.get(key, 0) for key in keys]
+        total = sum(counts)
         percents = _largest_remainder_percent(counts, total)
         segments = [{
             "key": key,
@@ -172,10 +189,19 @@ def compute_distribution(chart, reading_config, label=None):
             "count": count,
             "percent": percent,
         } for key, count, percent in zip(keys, counts, percents)]
-        max_count = max(counts)
-        winners = [key for key, count in zip(keys, counts) if count == max_count]
+        max_count = max(counts) if counts else 0
+        winners = [key for key, count in zip(keys, counts) if count == max_count and count > 0]
         dominant_key = winners[0] if len(winners) == 1 else None
         reading_key = dominant_key if dominant_key is not None else "balanced"
+        if dominant_key is not None:
+            phrase = chart_cfg["summary_phrases_zh"][dominant_key].format(
+                tag=chart_cfg["tags_zh"][dominant_key],
+                label=chart_cfg["labels_zh"][dominant_key])
+        else:
+            phrase = chart_cfg["summary_phrases_zh"]["balanced"]
+        phrases.append(phrase)
+        if total <= 0:
+            raise AstroDistributionRequestError(f"分布画像无可用点位：{chart_id}")
         charts_out.append({
             "id": chart_id,
             "title_zh": chart_cfg["title_zh"],
@@ -192,15 +218,29 @@ def compute_distribution(chart, reading_config, label=None):
             "headline_zh": _headline(chart_cfg, dominant_key, label),
             "reading_zh": chart_cfg["readings_zh"][reading_key],
         })
+    summary_template = reading_config["charts"][charts_out[0]["id"]]["summary_template_zh"]
+    subject = f"「{label}」" if label else "这张盘"
     return {
-        "schema_version": SCHEMA_VERSION,
-        "point_basis": {
-            "id": "core14",
-            "description_zh": "十大行星（不含北交点）+ 上升/天顶/下降/天底四轴，三图共用同一分母",
-            "count": total,
-            "points": [{"point_id": p["point_id"], "point_name": p["point_name"],
-                        "kind": p["kind"], "sign": p["sign"]} for p in points],
-        },
+        "schema_version": schema_version,
+        "point_basis": {**basis, "count": global_total, "points": [
+            {k: point[k] for k in ("point_id", "point_name", "kind") if k in point}
+            | ({"sign": point["sign"]} if "sign" in point else {})
+            for point in points]},
         "label": label,
+        "summary_zh": summary_template.format(subject=subject, phrases="，".join(phrases)),
         "charts": charts_out,
     }
+
+
+def compute_distribution(chart, reading_config, label=None):
+    points = collect_points(chart)
+    tables = {"element": SIGN_ELEMENT, "polarity": SIGN_POLARITY, "modality": SIGN_MODALITY}
+    for point in points:
+        point["attributes"] = {dim: table[point["sign"]] for dim, table in tables.items()}
+    return build_package(
+        points,
+        [(dim, dim) for dim in DIMENSIONS],
+        reading_config, label,
+        {"id": "core14",
+         "description_zh": "十大行星（不含北交点）+ 上升/天顶/下降/天底四轴，三图共用同一分母"},
+        SCHEMA_VERSION)

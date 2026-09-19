@@ -40,7 +40,7 @@ class ZiWeiSymbolsEngineTests(unittest.TestCase):
         cls.symbols = run_symbols()
 
     def test_symbols_shape(self):
-        self.assertEqual(self.symbols["symbols_version"], "ziwei-symbols/1.0")
+        self.assertEqual(self.symbols["symbols_version"], "ziwei-symbols/1.1")
         stars = self.symbols["stars"]
         self.assertEqual(len(stars["zhu_xing"]), 14)
         self.assertEqual(len(stars["fu_xing"]), 14)
@@ -52,6 +52,19 @@ class ZiWeiSymbolsEngineTests(unittest.TestCase):
         self.assertEqual(len(self.symbols["five_elements"]), 5)
         for name in self.symbols["all_star_names"]:
             self.assertTrue(name.strip(), "符号名不得为空白")
+
+    def test_star_temperament_is_kernel_sourced(self):
+        """1.1 星性档案：主辅煞全覆盖，五行/阴阳非空，供分布画像消费。"""
+        temperament = self.symbols["star_temperament"]
+        by_name = {entry["name"]: entry for entry in temperament}
+        self.assertGreaterEqual(len(by_name), 28)
+        for star in ("紫微", "天机", "太阳", "左辅", "擎羊", "火星"):
+            entry = by_name.get(star)
+            self.assertIsNotNone(entry, f"星性档案缺 {star}")
+            self.assertIn(entry["element"], {"金", "木", "水", "火", "土"})
+            self.assertIn(entry["polarity"], {"阴", "阳"})
+        groups = {entry["group"] for entry in temperament}
+        self.assertTrue({"zhu_xing", "fu_xing", "sha_xing"} <= groups)
 
     def test_star_enums_are_covered(self):
         """枚举侧权威名必须在符号集中（历史上 ZaYao 文档库缺 截路/空亡）。"""

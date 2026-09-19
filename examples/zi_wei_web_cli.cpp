@@ -390,6 +390,28 @@ namespace {
         // 煞星无文档模块列表，取枚举中文名
         const auto sha_xing = enum_zh_names<ShaXing>();
 
+        // 星性档案（人性化画像数据源）：主星/辅星/六煞的性质五行、阴阳、辅星分类
+        // 一律取自内核星曜文档库（StarDocument.wu_xing/yin_yang/fu_xing_category），
+        // 不在配置层手编映射，保证与安星诀同源。
+        json star_temperament = json::array();
+        const std::vector<std::pair<const std::vector<std::string>*, const char*>> temperament_sources = {
+            {&zhu_xing, "zhu_xing"}, {&fu_xing, "fu_xing"}, {&sha_xing, "sha_xing"},
+        };
+        for (const auto& [names, group] : temperament_sources) {
+            for (const auto& name : *names) {
+                auto doc = ZhouYi::ZiWei::StarDoc::get_zhu_xing_document(name);
+                if (!doc.has_value()) doc = ZhouYi::ZiWei::StarDoc::get_fu_xing_document(name);
+                if (!doc.has_value()) continue;
+                json entry {{"name", name}, {"group", group}};
+                if (doc->wu_xing.has_value()) entry["element"] = string(to_zh(*doc->wu_xing));
+                if (doc->yin_yang.has_value()) entry["polarity"] = string(to_zh(*doc->yin_yang));
+                if (doc->fu_xing_category.has_value())
+                    entry["category"] = string(to_zh(*doc->fu_xing_category));
+                if (!doc->key_trait.empty()) entry["key_trait"] = doc->key_trait;
+                star_temperament.push_back(std::move(entry));
+            }
+        }
+
         std::set<std::string> all_names;
         for (const auto& names : {zhu_xing, fu_xing, za_yao, shen_sha}) {
             all_names.insert(names.begin(), names.end());
@@ -415,7 +437,7 @@ namespace {
 
         return {
             {"operation", "symbols"},
-            {"symbols_version", "ziwei-symbols/1.0"},
+            {"symbols_version", "ziwei-symbols/1.1"},
             {"stars", {
                 {"zhu_xing", string_array(zhu_xing)},
                 {"fu_xing", string_array(fu_xing)},
@@ -424,6 +446,7 @@ namespace {
                 {"sha_xing", string_array(sha_xing)}
             }},
             {"all_star_names", string_array({all_names.begin(), all_names.end()})},
+            {"star_temperament", std::move(star_temperament)},
             {"brightness", string_array(enum_zh_names<LiangDu>())},
             {"si_hua", string_array(enum_zh_names<SiHua>())},
             {"palaces", string_array(enum_zh_names<GongWei>())},

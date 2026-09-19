@@ -29,6 +29,11 @@
           "type": "python_test",
           "target": "tests.test_ziwei_da_xian_contract",
           "requires_engine": "zi_wei_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_ziwei_distribution",
+          "requires_engine": "zi_wei_web_cli"
         }
       ]
     },

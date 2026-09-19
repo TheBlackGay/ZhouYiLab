@@ -5,9 +5,24 @@
     "element": {
       "title_zh": "元素分布",
       "basis_zh": "太阳、月亮等十大行星与上升、天顶、下降、天底共 14 个点位所在星座的四元素归类",
-      "order": ["fire", "earth", "air", "water"],
-      "labels_zh": {"fire": "火象星座", "earth": "土象星座", "air": "风象星座", "water": "水象星座"},
-      "tags_zh": {"fire": "动力型", "earth": "物质型", "air": "社交型", "water": "情感型"},
+      "order": [
+        "fire",
+        "earth",
+        "air",
+        "water"
+      ],
+      "labels_zh": {
+        "fire": "火象星座",
+        "earth": "土象星座",
+        "air": "风象星座",
+        "water": "水象星座"
+      },
+      "tags_zh": {
+        "fire": "动力型",
+        "earth": "物质型",
+        "air": "社交型",
+        "water": "情感型"
+      },
       "dominant_templates_zh": {
         "fire": "是{tag}（{label}占比大）",
         "earth": "是{tag}（{label}占比大）",
@@ -21,14 +36,31 @@
         "air": "风象权重最高：信息、语言与人际连接是主引擎，思维活跃、擅长沟通与联结；落地执行与独处沉淀需要刻意安排。",
         "water": "水象权重最高：情感、共感与直觉是最强通道，对氛围与他人状态高度敏感；需要清晰的边界感来避免情绪过载。",
         "balanced": "四类元素占比接近：没有压倒性的单一气质，场景切换能力较强；建议在关键决策时主动补齐弱势元素的视角。"
+      },
+      "summary_template_zh": "{subject}的底色是{phrases}。",
+      "summary_phrases_zh": {
+        "fire": "行动如火（{tag}）",
+        "earth": "落地为根（{tag}）",
+        "air": "思绪如风（{tag}）",
+        "water": "感受如水（{tag}）",
+        "balanced": "四元素匀称"
       }
     },
     "polarity": {
       "title_zh": "阴阳分布",
       "basis_zh": "同一点位集按星座阴阳归类：阳性（主动投射）与阴性（容纳吸收）",
-      "order": ["positive", "negative"],
-      "labels_zh": {"positive": "阳性星座", "negative": "阴性星座"},
-      "tags_zh": {"positive": "主动型", "negative": "被动型"},
+      "order": [
+        "positive",
+        "negative"
+      ],
+      "labels_zh": {
+        "positive": "阳性星座",
+        "negative": "阴性星座"
+      },
+      "tags_zh": {
+        "positive": "主动型",
+        "negative": "被动型"
+      },
       "dominant_templates_zh": {
         "positive": "是{tag}（{label}占比大）",
         "negative": "是{tag}（{label}占比大）"
@@ -38,14 +70,32 @@
         "positive": "阳性点位过半：倾向先表达、先行动、向外塑造环境，能量输出快而明显；倾听与接纳是需要同步练习的另一半。",
         "negative": "阴性点位过半：倾向先感受、后回应，以容纳、观察与吸收的方式发挥作用，节奏内敛而持久；主动表达需求不宜省略。",
         "balanced": "阴阳接近各半：进退皆有依据，既能发起也能承接；不同情境下可能呈现两种截然不同的运转方式。"
+      },
+      "summary_template_zh": "{subject}的底色是{phrases}。",
+      "summary_phrases_zh": {
+        "positive": "向外发光（{tag}）",
+        "negative": "向内蓄能（{tag}）",
+        "balanced": "开合有度"
       }
     },
     "modality": {
       "title_zh": "三性质分布",
       "basis_zh": "同一点位集按星座三性质归类：基本（发起）、固定（维持）、变动（调适）",
-      "order": ["cardinal", "fixed", "mutable"],
-      "labels_zh": {"cardinal": "基本星座", "fixed": "固定星座", "mutable": "变动星座"},
-      "tags_zh": {"cardinal": "组织者", "fixed": "执行者", "mutable": "变通者"},
+      "order": [
+        "cardinal",
+        "fixed",
+        "mutable"
+      ],
+      "labels_zh": {
+        "cardinal": "基本星座",
+        "fixed": "固定星座",
+        "mutable": "变动星座"
+      },
+      "tags_zh": {
+        "cardinal": "组织者",
+        "fixed": "执行者",
+        "mutable": "变通者"
+      },
       "dominant_templates_zh": {
         "cardinal": "是{tag}（{label}占比大）",
         "fixed": "是{tag}（{label}占比大）",
@@ -57,6 +107,13 @@
         "fixed": "固定星座权重最高：认定方向后能持续投入、把事做透，是可托付的执行者；警惕路径依赖，定期安排方向复检。",
         "mutable": "变动星座权重最高：适应、协调与转向灵活，能在变化中找出口；需要人为设置专注边界，避免战线过散。",
         "balanced": "三种性质接近均衡：发起、维持、调适能力都在场，风格随情境切换；可观察自己在压力下的默认档位。"
+      },
+      "summary_template_zh": "{subject}的底色是{phrases}。",
+      "summary_phrases_zh": {
+        "cardinal": "总在开场（{tag}）",
+        "fixed": "把故事讲完的人（{tag}）",
+        "mutable": "随时换笔法（{tag}）",
+        "balanced": "三种节奏都在"
       }
     }
   }

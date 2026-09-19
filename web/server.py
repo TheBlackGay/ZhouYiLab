@@ -53,6 +53,10 @@ from astro_natal_analysis import (
     AstroNatalAnalysisRequestError,
     analyze_natal_layout,
 )
+from ziwei_distribution import (
+    compute_ziwei_distribution,
+    load_reading_config as load_ziwei_distribution_reading_config,
+)
 from astro_distribution import (
     AstroDistributionConfigError,
     AstroDistributionRequestError,
@@ -124,6 +128,14 @@ _AI_REVIEW_SERVICE = None
 _AI_REVIEW_LOCK = None
 _ZIWEI_SYMBOLS_CACHE = None
 _DISTRIBUTION_READING_CACHE = None
+_ZIWEI_DISTRIBUTION_READING_CACHE = None
+
+
+def get_ziwei_distribution_reading_config():
+    global _ZIWEI_DISTRIBUTION_READING_CACHE
+    if _ZIWEI_DISTRIBUTION_READING_CACHE is None:
+        _ZIWEI_DISTRIBUTION_READING_CACHE = load_ziwei_distribution_reading_config()
+    return _ZIWEI_DISTRIBUTION_READING_CACHE
 
 
 def get_distribution_reading_config():
@@ -541,6 +553,24 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 } else 500
                 self.send_api_error(status, error.code, error.message)
             return
+        if parsed.path == "/api/v1/ziwei/distribution":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_ziwei_distribution(payload))
+            except (AstroDistributionConfigError, AstroDistributionRequestError) as error:
+                status = 500 if isinstance(error, AstroDistributionConfigError) else 400
+                code = "ANALYSIS_CONFIG_ERROR" if status == 500 else "INVALID_REQUEST"
+                self.send_api_error(status, code, str(error))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "紫微分布画像计算超时")
+            except CliError as error:
+                status = 422 if error.code in {
+                    "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
+                } else 500
+                self.send_api_error(status, error.code, error.message)
+            return
         if parsed.path == "/api/v1/astro/distribution":
             try:
                 payload = self.read_json_body()
@@ -921,6 +951,21 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             dimensions=dimensions,
             requested_date=requested_date,
         )
+
+    def run_ziwei_distribution(self, payload):
+        chart = payload.get("chart")
+        chart_request = payload.get("chart_request")
+        if chart is not None and chart_request is not None:
+            raise AstroDistributionRequestError("chart 与 chart_request 只能提供一个")
+        if chart is None:
+            if not isinstance(chart_request, dict):
+                raise AstroDistributionRequestError("必须提供 chart 或 chart_request")
+            chart = self.run_cli({**chart_request, "operation": "chart"})
+        label = payload.get("label")
+        if label is not None and (not isinstance(label, str) or len(label) > 60):
+            raise AstroDistributionRequestError("label 必须是不超过 60 字符的字符串")
+        return compute_ziwei_distribution(chart, self._ziwei_symbols(),
+                                         get_ziwei_distribution_reading_config(), label=label)
 
     def run_astro_distribution(self, payload):
         chart = payload.get("chart")

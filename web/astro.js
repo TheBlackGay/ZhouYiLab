@@ -313,54 +313,15 @@ function renderNatalReading(reading) {
   renderHouseCards();
   renderAspects();
 }
-/* ---------- 分布画像：图1 元素 / 图2 阴阳 / 图3 三性质（conic-gradient 环形图） ---------- */
-const PROFILE_SEGMENT_COLORS = {
-  fire: '#b3402a', earth: '#6f7d54', air: '#3f6f92', water: '#4f5b8a',
-  positive: '#a45b32', negative: '#44607a',
-  cardinal: '#a67b2e', fixed: '#25634d', mutable: '#7a5c96',
-};
-function renderProfileCharts(distribution) {
-  const container = document.querySelector('#astro-profile-charts');
-  container.dataset.schema = distribution.schema_version || '';
-  container.innerHTML = (distribution.charts || []).map(chart => {
-    let cursor = 0;
-    const stops = chart.segments.map(segment => {
-      const from = cursor; cursor += segment.percent;
-      return `${PROFILE_SEGMENT_COLORS[segment.key] || '#8a8f8a'} ${from}% ${cursor}%`;
-    }).join(', ');
-    const center = chart.dominant
-      ? `<b>${chart.dominant.percent}%</b><span>${esc(chart.dominant.tag_zh)}</span>`
-      : '<b>均衡</b><span>无单一主导</span>';
-    const legend = chart.segments.map(segment =>
-      `<li><i style="background:${PROFILE_SEGMENT_COLORS[segment.key] || '#8a8f8a'}"></i><span>${esc(segment.label_zh)}（${esc(segment.tag_zh)}）</span><b>${segment.percent}%</b></li>`).join('');
-    return `<article class="profile-chart-card">
-      <div class="profile-chart-main">
-        <div class="profile-donut" style="background:conic-gradient(${stops})" role="img"
-             aria-label="${esc(chart.title_zh)}：${esc(chart.headline_zh)}"><div class="profile-donut-core">${center}</div></div>
-        <h4>${esc(chart.headline_zh)}</h4>
-      </div>
-      <ul class="profile-legend">${legend}</ul>
-      <p class="profile-reading">${esc(chart.reading_zh)}</p>
-      <small class="muted">${esc(chart.basis_zh)}</small>
-    </article>`;
-  }).join('');
-}
+/* ---------- 分布画像：委托共享组件 web/profile-charts.js ---------- */
 async function loadProfileCharts(chart) {
-  const container = document.querySelector('#astro-profile-charts');
-  const fallback = document.querySelector('#astro-profile-fallback');
-  const label = (document.querySelector('#astro-nickname')?.value || '').trim() || null;
-  try {
-    const response = await fetch('/api/v1/astro/distribution', {method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(label ? {chart, label} : {chart})});
-    const payload = await response.json();
-    if (!response.ok || !payload.success) throw new Error(payload?.error?.message || '分布画像失败');
-    fallback.hidden = true;
-    renderProfileCharts(payload.data);
-  } catch (error) {
-    container.innerHTML = '';
-    fallback.hidden = false;
-  }
+  await window.ProfileCharts.load({
+    container: '#astro-profile-charts',
+    fallback: '#astro-profile-fallback',
+    path: '/api/v1/astro/distribution',
+    chart,
+    label: (document.querySelector('#astro-nickname')?.value || '').trim() || null,
+  });
 }
 /* ---------- 本命解读：逐点位 / 十二宫 / 相位卡片（方案 N4） ---------- */
 const SIGN_SEQUENCE = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'];

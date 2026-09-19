@@ -594,6 +594,19 @@ function render(data) {
   emptyState.hidden = true;
   resultContent.hidden = false;
   if (window.innerWidth <= 900) resultContent.scrollIntoView({ block: 'start' });
+  loadZiweiProfile(data);
+}
+
+/* 分布画像（人性化数据包）：元素/阴阳/明暗三环形图，组件见 profile-charts.js */
+function loadZiweiProfile(data) {
+  if (!window.ProfileCharts || !data?.chart) return;
+  window.ProfileCharts.load({
+    container: '#ziwei-profile-charts',
+    fallback: '#ziwei-profile-fallback',
+    path: '/api/v1/ziwei/distribution',
+    chart: data.chart,
+    label: (document.querySelector('#name')?.value || document.querySelector('#person-name')?.value || '').trim() || null,
+  });
 }
 
 form.addEventListener('submit', async event => {
