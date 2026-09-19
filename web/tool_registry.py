@@ -71,7 +71,7 @@ def builtin_tools():
             "id": "ziwei",
             "name": "紫微斗数",
             "engine_cli": "build/examples/zi_wei_web_cli",
-            "calibration_status": "calibrated",
+            "calibration_status": "in_progress",
             "interface_doc": "docs/ziwei/紫微斗数HTTP接口文档.md",
             "pages": ["index.html"],
             "api_prefixes": ["/api/v1/ziwei/"],

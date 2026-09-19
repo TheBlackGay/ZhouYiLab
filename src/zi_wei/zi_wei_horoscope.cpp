@@ -100,8 +100,11 @@ namespace ZhouYi::ZiWei {
             int end_age = start_age + 9;
             
             // 计算大限天干（从甲开始，根据流转方向递增或递减）
+            // DEF-1 修复：C++ 负数取模保留符号，逆排第 12 限 gan_offset=-11 曾产生
+            // gan_idx=-1 → get_si_hua_star_names 越界崩溃。此处做真回绕。
+            // 注意：本行只修索引安全，不改动"自甲巡运"口径本身——其正统性复核见 D11/DEF-2。
             int gan_offset = shun_xing ? i : -i;
-            int gan_idx = (gan_offset + 10) % 10;
+            int gan_idx = ((gan_offset % 10) + 10) % 10;
             TianGan start_gan = static_cast<TianGan>(gan_idx);
             
             result[idx] = DaXianData{

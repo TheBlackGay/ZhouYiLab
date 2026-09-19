@@ -38,7 +38,7 @@ TOOL_CONTRACTS = {
                               "second": 0, "gender": "male"},
                     "time_correction": {"mode": "standard_time"}},
         "profile_version": "ziwei-rules/1.0",
-        "calibration_status": "calibrated",
+        "calibration_status": "in_progress",
         "rules_keys": {"true_solar_time", "ming_gong_shen_gong", "zi_wei_star_method",
                        "si_hua", "brightness", "fortune_layers", "ge_ju_note"},
         "legacy_top_level": {"birth_time", "da_xian", "ge_ju", "gender", "lunar_date",
