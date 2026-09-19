@@ -144,6 +144,7 @@ def builtin_tools():
                 {"method": "GET", "path": "/api/v1/da-liu-ren/glossary", "handler": "static_config",
                  "options": {"config_path": "config/daliuren/glossary.json",
                              "not_found_code": "GLOSSARY_NOT_FOUND"}},
+                {"method": "POST", "path": "/api/v1/da-liu-ren/distribution", "handler": "python_service"},
             ],
         },
         {

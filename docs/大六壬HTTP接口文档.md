@@ -92,3 +92,18 @@ python3 web/server.py --port 8765
 - 算法整体处于**待校准**状态（README 校准状态表），本接口只保证盘面事实与
   结构命名的可追溯性；
 - 2.0.0 不含天地盘 SVG 可视化（2.1.0）、规则解释（2.2.0）与案例校准报告（2.3.0）。
+
+## 盘面画像（人性化图表数据包）
+
+`POST /api/v1/da-liu-ren/distribution`
+
+入参：`{"chart": <课盘对象>} 或 {"chart_request": {calendar, date, yuejiang_method?}}，可选 `"label"`。
+
+返回 `dlr-distribution/1.0` 数据包，与占星/紫微画像同构：
+
+- `charts[signs]` 盘面上神五行：十二宫天盘上神地支的五行（木火土金水），课面气象叙事；
+- `charts[stems]` 天盘遁干五行：旬空两位自动不入分母（`point_total` 自释）；
+- `charts[polarity]` 上神支阴阳：阳支子寅辰午申戌 / 阴支丑卯巳未酉亥；
+- 顶层 `summary_zh` 三合一底色句；文案一律"气象描写"（升发/升腾/稳重……），**无吉凶断语**——六壬 calibration 仍为 pending。
+
+数据源全部为课盘既有字段 + 与内核一致的标准五行表（契约测试交叉锁定），零新增算法。

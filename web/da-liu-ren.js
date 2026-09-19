@@ -180,6 +180,19 @@ function render(data) {
     </article>`).join('') || '<p class="muted">无三传数据</p>';
 
   renderProfessional(data, pillars);
+  loadDlrProfile(data);
+}
+
+/* 盘面画像（人性化数据包）：上神五行 / 遁干 / 阴阳，组件见 profile-charts.js */
+function loadDlrProfile(data) {
+  if (!window.ProfileCharts || !data) return;
+  window.ProfileCharts.load({
+    container: '#dlr-profile-charts',
+    fallback: '#dlr-profile-fallback',
+    path: '/api/v1/da-liu-ren/distribution',
+    chart: data,
+    label: null,
+  });
 }
 
 function renderProfessional(data, pillars) {

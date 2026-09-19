@@ -338,6 +338,7 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 | POST | `/api/v1/qimen/charts` | 生成奇门遁甲盘 |
 | POST | `/api/v1/da-liu-ren/charts` | 生成大六壬课盘（含 `meta.rule_profile` 口径标识） |
 | GET | `/api/v1/da-liu-ren/glossary` | 大六壬术语与当前实现口径 |
+| POST | `/api/v1/da-liu-ren/distribution` | 六壬盘面画像图表数据包（上神五行/遁干/阴阳 + 气象解读） |
 | POST | `/api/v1/bazi/charts` | 生成八字四柱与大运 |
 | GET | `/api/v1/astro/meta` | 西洋占星能力和版本信息 |
 | POST | `/api/v1/astro/charts` | 使用 Swiss Ephemeris 生成西洋星盘 |
