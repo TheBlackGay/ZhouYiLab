@@ -198,7 +198,7 @@ inline void validate(const ChartRequest& request) {
         throw AstroError("INVALID_REQUEST", "经纬度超出范围");
     }
     if (request.zodiac == Zodiac::Tropical && request.ayanamsa != "none") {
-        throw AstroError("INVALID_REQUEST", "热带黄道的 ayanamsa 必须为 none");
+        throw AstroError("INVALID_REQUEST", "回归黄道的 ayanamsa 必须为 none");
     }
     if (request.zodiac == Zodiac::Sidereal && request.ayanamsa != "fagan_bradley") {
         throw AstroError("INVALID_REQUEST", "当前仅支持 fagan_bradley 岁差模型");

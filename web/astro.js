@@ -20,6 +20,8 @@ const symbols = {sun:'☉',moon:'☽',mercury:'☿',venus:'♀',mars:'♂',jupit
 const colors = ['#b14b3d','#4c7a68','#48729a','#a16207','#7c5b9e','#4c6475','#b36b3f','#557c78','#6b5d4d','#8e4f69','#3d777d','#8b6d42'];
 const ANGLE_LABELS = {ascendant:'上升点', descendant:'下降点', midheaven:'中天', imum_coeli:'天底'};
 const ANGLE_ORDER = ['ascendant', 'descendant', 'midheaven', 'imum_coeli'];
+// 结果标题用标准中文术语显示（请求体与回显值仍是 tropical/sidereal，契约不动）
+const ZODIAC_LABELS = {tropical:'回归黄道（Tropical）', sidereal:'恒星黄道（Sidereal）'};
 // 圆盘半径布局（viewBox 640，圆心 320）。约束：度数标签统一环 R=210，与最外层星体
 // (178+11) 保持 32px 径向余量，即使径向对齐也不会压到星体或符号；宫位号收到内圈 R=104，
 // 与最内层星体错开；黄道环按四元素着色，模式环为次级信号。
@@ -191,6 +193,8 @@ function buildAstroPrompt(chart, analysis) {
   const packet = {
     chart_type: chart.chart_type,
     input: chart.input,
+    // 出生地点状态原样回显（方案 §4.7）：排盘请求体不含此字段，仅提示词可回溯
+    birth_place: (window.PlacePickerState && window.PlacePickerState.summary) || null,
     calculation: chart.calculation,
     structured: chart.structured,
     analysis: analysis || null,
@@ -308,6 +312,55 @@ function renderNatalReading(reading) {
   renderPointCards();
   renderHouseCards();
   renderAspects();
+}
+/* ---------- 分布画像：图1 元素 / 图2 阴阳 / 图3 三性质（conic-gradient 环形图） ---------- */
+const PROFILE_SEGMENT_COLORS = {
+  fire: '#b3402a', earth: '#6f7d54', air: '#3f6f92', water: '#4f5b8a',
+  positive: '#a45b32', negative: '#44607a',
+  cardinal: '#a67b2e', fixed: '#25634d', mutable: '#7a5c96',
+};
+function renderProfileCharts(distribution) {
+  const container = document.querySelector('#astro-profile-charts');
+  container.dataset.schema = distribution.schema_version || '';
+  container.innerHTML = (distribution.charts || []).map(chart => {
+    let cursor = 0;
+    const stops = chart.segments.map(segment => {
+      const from = cursor; cursor += segment.percent;
+      return `${PROFILE_SEGMENT_COLORS[segment.key] || '#8a8f8a'} ${from}% ${cursor}%`;
+    }).join(', ');
+    const center = chart.dominant
+      ? `<b>${chart.dominant.percent}%</b><span>${esc(chart.dominant.tag_zh)}</span>`
+      : '<b>均衡</b><span>无单一主导</span>';
+    const legend = chart.segments.map(segment =>
+      `<li><i style="background:${PROFILE_SEGMENT_COLORS[segment.key] || '#8a8f8a'}"></i><span>${esc(segment.label_zh)}（${esc(segment.tag_zh)}）</span><b>${segment.percent}%</b></li>`).join('');
+    return `<article class="profile-chart-card">
+      <div class="profile-chart-main">
+        <div class="profile-donut" style="background:conic-gradient(${stops})" role="img"
+             aria-label="${esc(chart.title_zh)}：${esc(chart.headline_zh)}"><div class="profile-donut-core">${center}</div></div>
+        <h4>${esc(chart.headline_zh)}</h4>
+      </div>
+      <ul class="profile-legend">${legend}</ul>
+      <p class="profile-reading">${esc(chart.reading_zh)}</p>
+      <small class="muted">${esc(chart.basis_zh)}</small>
+    </article>`;
+  }).join('');
+}
+async function loadProfileCharts(chart) {
+  const container = document.querySelector('#astro-profile-charts');
+  const fallback = document.querySelector('#astro-profile-fallback');
+  const label = (document.querySelector('#astro-nickname')?.value || '').trim() || null;
+  try {
+    const response = await fetch('/api/v1/astro/distribution', {method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(label ? {chart, label} : {chart})});
+    const payload = await response.json();
+    if (!response.ok || !payload.success) throw new Error(payload?.error?.message || '分布画像失败');
+    fallback.hidden = true;
+    renderProfileCharts(payload.data);
+  } catch (error) {
+    container.innerHTML = '';
+    fallback.hidden = false;
+  }
 }
 /* ---------- 本命解读：逐点位 / 十二宫 / 相位卡片（方案 N4） ---------- */
 const SIGN_SEQUENCE = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'];
@@ -455,6 +508,7 @@ async function refreshNatalReading(chart) {
   }
   empty.hidden = true;
   renderNatalReading(reading);
+  loadProfileCharts(chart);
 }
 document.querySelector('#astro-layout-bars').addEventListener('click', event => {
   const button = event.target.closest('[data-houses]');
@@ -483,6 +537,6 @@ async function copyPrompt() {
 }
 document.querySelector('#astro-copy-prompt').addEventListener('click', copyPrompt);
 astroForm.addEventListener('submit', async event => {
-  event.preventDefault(); const error = document.querySelector('#astro-error'); error.hidden = true; const [year,month,day] = document.querySelector('#astro-date').value.split('-').map(Number); const [hour,minute,second = 0] = document.querySelector('#astro-time').value.split(':').map(Number); const zodiac = document.querySelector('#astro-zodiac').value; const request = {date:{year,month,day,hour,minute,second},utc_offset_minutes:Number(document.querySelector('#astro-offset').value),location:{latitude:Number(document.querySelector('#astro-lat').value),longitude:Number(document.querySelector('#astro-lon').value)},zodiac,ayanamsa:zodiac === 'sidereal' ? 'fagan_bradley' : 'none',house_system:document.querySelector('#astro-houses').value,include_aspects:true,allow_moshier_fallback:document.querySelector('#astro-moshier').checked}; const button = astroForm.querySelector('button'); button.disabled = true;
-  try { const response = await fetch('/api/v1/astro/charts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(request)}); const payload = await response.json(); if (!response.ok || !payload.success) throw new Error(payload.error?.message || '计算失败'); const data = payload.data; document.querySelector('#astro-empty').hidden = true; document.querySelector('#astro-output').hidden = false; document.querySelector('#astro-title').textContent = `${data.input.zodiac} · ${data.input.house_system}`; document.querySelector('#astro-meta').textContent = `JD ${fmt(data.calculation.julian_day_ut)} · ${data.calculation.precision_mode}${data.calculation.warnings.length ? ` · ${data.calculation.warnings.join('、')}` : ''}`; document.querySelector('#astro-angles').innerHTML = Object.entries(data.angles).sort((first, second) => ANGLE_ORDER.indexOf(first[0]) - ANGLE_ORDER.indexOf(second[0])).map(([key,value]) => `<div><small>${esc(ANGLE_LABELS[key] || key)}</small><strong>${fmt(value)}°</strong></div>`).join(''); wheelChart = data; renderWheel(); clearLayoutSelection(); await refreshNatalReading(data); document.querySelector('#astro-planets').innerHTML = table(['点位','黄经','星座','落宫','速度','状态'], data.planets.map(p => [p.name,`${fmt(p.longitude)}°`,p.sign_name,p.house,`${fmt(p.longitude_speed)}°/day`,p.retrograde ? '逆行' : '顺行'])); document.querySelector('#astro-houses-list').innerHTML = table(['宫位','宫头','星座'], data.houses.map(h => [h.number,`${fmt(h.cusp)}°`,h.sign_name])); document.querySelector('#astro-aspects').innerHTML = table(['点位','点位','相位','偏差'], data.aspects.map(a => [a.first,a.second,a.type,`${fmt(a.orb)}°`])); document.querySelector('#astro-prompt-text').value = buildAstroPrompt(data, await loadAstroAnalysis(data)); } catch (err) { error.textContent = err.message; error.hidden = false; } finally { button.disabled = false; }
+  event.preventDefault(); const error = document.querySelector('#astro-error'); error.hidden = true; const [year,month,day] = document.querySelector('#astro-date').value.split('-').map(Number); const [hour,minute,second = 0] = document.querySelector('#astro-time').value.split(':').map(Number); const zodiac = document.querySelector('#astro-zodiac').value; const request = {date:{year,month,day,hour,minute,second},utc_offset_minutes:Number(document.querySelector('#astro-offset').value),location:{latitude:Number(document.querySelector('#astro-lat').value),longitude:Number(document.querySelector('#astro-lon').value)},zodiac,ayanamsa:zodiac === 'sidereal' ? 'fagan_bradley' : 'none',house_system:document.querySelector('#astro-houses').value,include_aspects:true,allow_moshier_fallback:document.querySelector('#astro-moshier').checked}; const button = astroForm.querySelector('button[type="submit"]'); button.disabled = true;
+  try { const response = await fetch('/api/v1/astro/charts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(request)}); const payload = await response.json(); if (!response.ok || !payload.success) throw new Error(payload.error?.message || '计算失败'); const data = payload.data; document.querySelector('#astro-empty').hidden = true; document.querySelector('#astro-output').hidden = false; document.querySelector('#astro-title').textContent = `${ZODIAC_LABELS[data.input.zodiac] || data.input.zodiac} · ${data.input.house_system}`; document.querySelector('#astro-meta').textContent = `JD ${fmt(data.calculation.julian_day_ut)} · ${data.calculation.precision_mode}${data.calculation.warnings.length ? ` · ${data.calculation.warnings.join('、')}` : ''}`; document.querySelector('#astro-angles').innerHTML = Object.entries(data.angles).sort((first, second) => ANGLE_ORDER.indexOf(first[0]) - ANGLE_ORDER.indexOf(second[0])).map(([key,value]) => `<div><small>${esc(ANGLE_LABELS[key] || key)}</small><strong>${fmt(value)}°</strong></div>`).join(''); wheelChart = data; renderWheel(); clearLayoutSelection(); await refreshNatalReading(data); document.querySelector('#astro-planets').innerHTML = table(['点位','黄经','星座','落宫','速度','状态'], data.planets.map(p => [p.name,`${fmt(p.longitude)}°`,p.sign_name,p.house,`${fmt(p.longitude_speed)}°/day`,p.retrograde ? '逆行' : '顺行'])); document.querySelector('#astro-houses-list').innerHTML = table(['宫位','宫头','星座'], data.houses.map(h => [h.number,`${fmt(h.cusp)}°`,h.sign_name])); document.querySelector('#astro-aspects').innerHTML = table(['点位','点位','相位','偏差'], data.aspects.map(a => [a.first,a.second,a.type,`${fmt(a.orb)}°`])); document.querySelector('#astro-prompt-text').value = buildAstroPrompt(data, await loadAstroAnalysis(data)); } catch (err) { error.textContent = err.message; error.hidden = false; } finally { button.disabled = false; }
 });

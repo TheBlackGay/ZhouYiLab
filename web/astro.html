@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#f3f2ee">
   <title>ZhouYiLab 西洋占星</title>
   <link rel="stylesheet" href="/ui-foundation.css">
+  <link rel="stylesheet" href="/place-picker.css">
   <link rel="stylesheet" href="/astro.css">
   <link rel="stylesheet" href="/app-shell.css">
 </head>
@@ -44,20 +45,20 @@
       <form id="astro-form">
         <section class="form-section">
           <div class="section-heading"><span>01</span><h2>出生资料</h2></div>
+          <label for="astro-nickname">称呼（可选，仅用于画像标题，不参与计算）</label>
+          <input id="astro-nickname" type="text" maxlength="60" placeholder="例如：追风的人2812">
           <label for="astro-date">出生日期</label>
           <input id="astro-date" type="date" value="1990-05-20" required>
           <label for="astro-time">出生时间</label>
           <input id="astro-time" type="time" value="14:00" step="1" required>
         </section>
 
-        <section class="form-section">
+        <section class="form-section" id="astro-place-section">
           <div class="section-heading"><span>02</span><h2>出生地点</h2></div>
-          <label for="astro-offset">UTC 偏移（分钟）</label>
-          <input id="astro-offset" type="number" value="480" min="-720" max="840" step="30" required>
-          <div class="two-fields">
-            <div><label for="astro-lat">纬度</label><input id="astro-lat" type="number" value="31.2304" min="-90" max="90" step="0.0001" required></div>
-            <div><label for="astro-lon">经度</label><input id="astro-lon" type="number" value="121.4737" min="-180" max="180" step="0.0001" required></div>
-          </div>
+          <!-- place-picker 组件挂载于此后；输出控件沿用旧 id（§5.3），hidden 且不得带 required（§5.3 陷阱） -->
+          <input id="astro-offset" type="hidden" value="480">
+          <input id="astro-lat" type="hidden" value="31.2304">
+          <input id="astro-lon" type="hidden" value="121.4737">
         </section>
 
         <section class="form-section">
@@ -65,7 +66,7 @@
           <label for="astro-houses">宫制</label>
           <select id="astro-houses"><option value="placidus">Placidus</option><option value="whole_sign">Whole Sign</option></select>
           <label for="astro-zodiac">黄道</label>
-          <select id="astro-zodiac"><option value="tropical">热带黄道</option><option value="sidereal">恒星黄道</option></select>
+          <select id="astro-zodiac"><option value="tropical" selected>回归黄道（Tropical）</option><option value="sidereal">恒星黄道（Sidereal）</option></select>
           <label class="toggle-row" for="astro-moshier">
             <span><strong>允许星历降级</strong><small>文件缺失时使用 Moshier</small></span>
             <input id="astro-moshier" type="checkbox">
@@ -164,6 +165,11 @@
             <div id="astro-distribution" class="astro-distribution"></div>
           </section>
           <section class="astro-section">
+            <div class="board-heading"><div><span>分布画像</span><strong>元素 · 阴阳 · 三性质</strong></div><small>十大行星＋四轴（core14）· 图表数据来自 /api/v1/astro/distribution</small></div>
+            <div id="astro-profile-charts" class="profile-charts"></div>
+            <p id="astro-profile-fallback" class="profile-fallback" hidden>分布画像暂不可用，其余解读不受影响。</p>
+          </section>
+          <section class="astro-section">
             <div class="board-heading"><div><span>阅读边界</span><strong>事实与推断</strong></div><small>不判定吉凶</small></div>
             <ul id="astro-boundaries" class="astro-boundaries"></ul>
           </section>
@@ -195,6 +201,32 @@
     </section>
   </main>
   <script src="/navigation.js" defer></script>
+  <script>
+    // 出生地点组件适配器（§5.2）：本页只声明「挂载点 + 输出 id + 模式」，
+    // 输出沿用 astro-offset / astro-lat / astro-lon，astro.js 的提交逻辑零改动。
+    window.PLACE_PICKER_CONFIG = {
+      mount: '#astro-place-section',
+      dateInput: '#astro-date',
+      timeInput: '#astro-time',
+      houseInput: '#astro-houses',
+      mode: 'geo+offset',
+      outputs: { offset: '#astro-offset', lat: '#astro-lat', lon: '#astro-lon' },
+      recentKey: 'astro.recentPlaces',
+      popular: [
+        { id: 'curated:cn-shanghai', name: '上海市' },
+        { id: 'curated:cn-beijing', name: '北京市' },
+        { id: 'curated:cn-guangzhou', name: '广州市' },
+        { id: 'curated:cn-shenzhen', name: '深圳市' },
+        { id: 'curated:cn-hangzhou', name: '杭州市' },
+        { id: 'curated:cn-chengdu', name: '成都市' },
+        { id: 'curated:cn-wuhan', name: '武汉市' },
+        { id: 'curated:cn-xian', name: '西安市' },
+        { id: 'curated:hk-hongkong', name: '香港' },
+        { id: 'curated:tw-taipei', name: '台北市' },
+      ],
+    };
+  </script>
+  <script src="/place-picker.js" defer></script>
   <script src="/astro.js" defer></script>
 </body>
 </html>

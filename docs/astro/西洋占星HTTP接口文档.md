@@ -53,7 +53,7 @@
 | `location.longitude` | number | 是 | `-180` 至 `180` |
 | `location.elevation_m` | number | 否 | 海拔米数，默认 `0` |
 | `zodiac` | string | 否 | `tropical` 或 `sidereal`，默认 `tropical` |
-| `ayanamsa` | string | 否 | 热带必须为 `none`；恒星黄道当前使用 `fagan_bradley` |
+| `ayanamsa` | string | 否 | 回归黄道（tropical）必须为 `none`；恒星黄道（sidereal）当前使用 `fagan_bradley` |
 | `house_system` | string | 否 | `placidus` 或 `whole_sign`，默认 `placidus` |
 | `points` | string[] | 否 | 点位列表；省略时计算全部支持点位 |
 | `include_aspects` | boolean | 否 | 是否计算主要相位，默认 `true` |
