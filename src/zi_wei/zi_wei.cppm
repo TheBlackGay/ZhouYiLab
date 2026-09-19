@@ -257,17 +257,34 @@ export namespace ZhouYi::ZiWei {
     };
 
     /**
+     * @brief 本命闰月口径（D12 决策）
+     *
+     * FifteenBoundary（默认）：闰月十五日以前作本月、以后作下月——出自民国王裁珊
+     * 《斗数宣微》（张开卷《斗数命理新编》同），并与本库流月 effective_flow_month
+     * 规则同源，保证口径内自洽；闰十二月作次年正月（1900-2100 无闰十二，仅防御）。
+     * NextMonth：《紫微斗数全书》卷二原文"凡有闰月…要在二月内起"，一律作下月。
+     */
+    enum class LeapMonthMethod {
+        FifteenBoundary,
+        NextMonth,
+    };
+
+    /**
      * @brief 紫微斗数排盘（阳历）
      * 
      * @param birth 出生证明记录的阳历时间
      * @param is_male 性别（true为男性）
      * @param time_options 出生时间校正选项
+     * @param daxian_method 大限宫干取法（D11，默认五虎遁重排）
+     * @param leap_method 本命闰月口径（D12，默认十五分界）
      * @return 排盘结果
      */
     inline ZiWeiResult pai_pan_solar(
         const BirthDateTime& birth,
         bool is_male,
-        const BirthTimeOptions& time_options = {}
+        const BirthTimeOptions& time_options = {},
+        DaXianGanMethod daxian_method = DaXianGanMethod::Resort,
+        LeapMonthMethod leap_method = LeapMonthMethod::FifteenBoundary
     ) {
         const auto time_correction = correct_birth_time(birth, time_options);
         const auto solar_time = to_solar_time(time_correction.chart_time);
@@ -291,9 +308,18 @@ export namespace ZhouYi::ZiWei {
         Pillar day_pillar = convert_cycle(bazi.get_day());
         Pillar hour_pillar = convert_cycle(bazi.get_hour());
         
-        // 获取农历月份和日期
-        int lunar_month = lunar_day.get_month();
+        // 获取农历月份和日期（D12：闰月按所选口径归一化，正数=正常月，负数=闰月）
+        const int raw_lunar_month = lunar_day.get_month();
         int lunar_day_num = lunar_day.get_day();
+        int lunar_month;
+        if (raw_lunar_month >= 0) {
+            lunar_month = raw_lunar_month;
+        } else {
+            const int base_month = -raw_lunar_month;
+            const int next_month = base_month % 12 + 1;
+            lunar_month = (leap_method == LeapMonthMethod::FifteenBoundary && lunar_day_num <= 15)
+                ? base_month : next_month;
+        }
         
         // 获取时辰地支
         DiZhi hour_zhi = hour_pillar.zhi;
@@ -391,7 +417,7 @@ export namespace ZhouYi::ZiWei {
         auto jiang_qian_arr = arrange_jiang_qian_12(year_pillar.zhi);
         
         // ============= 安大限 =============
-        auto da_xian_arr = arrange_da_xian(ming_index, wu_xing_ju, is_male, year_pillar.zhi);
+        auto da_xian_arr = arrange_da_xian(ming_index, wu_xing_ju, is_male, year_pillar.zhi, year_pillar.gan, daxian_method);
         
         // 创建结果对象（使用聚合初始化）
         ZiWeiResult result{

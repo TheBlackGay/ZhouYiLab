@@ -168,8 +168,8 @@ namespace {
      */
     json rule_profile() {
         return {
-            {"profile_version", "ziwei-rules/1.0"},
-            {"calibration_status", "in_progress"},
+            {"profile_version", "ziwei-rules/2.0"},
+            {"calibration_status", "calibrated"},
             {"rules", {
                 {"true_solar_time",
                     "出生时间校正与八字共用 ZhouYi.Common.Calendar：标准时间=钟表时间−夏令时分钟数；"
@@ -196,14 +196,16 @@ namespace {
                     "辅星煞星杂曜神煞在本命输出中亮度为空（实现以代码为准）"},
                 {"fortune_layers",
                     "大限以五行局数为起限虚岁（水二局自2岁），每限管十年虚岁，阳男阴女顺行、阴男阳女逆行（以年支奇偶判阴阳）；"
+                    "大限宫干按五虎遁以本命年干起寅宫、取限所在宫之干，宫支取本位支（D11 正统口径，"
+                    "判据案例：丁年命宫辰→首限甲辰、逆行次限癸卯三限壬寅；甲年命宫寅→丙寅、顺行次限丁卯三限戊辰）；"
+                    "可选项 daxian_gan_method=original 复现旧巡运伪口径仅供对照，界面不暴露；"
+                    "本命闰月默认十五分界：十五日以前作本月、以后作下月（民国《斗数宣微》口径，与流月闰月规则同源；"
+                    "可选项 leap_month_method=next_month 取《全书》'一律作下月'原文口径；闰M≡12−M 旧映射已废除）；"
                     "小限按年支三合起宫（寅午戌起辰、申子辰起戌、巳酉丑起未、亥卯未起丑），男顺女逆一岁一宫；"
-                    "大限显示干支当前为自甲随限巡运的伪口径（支按宫序直转），五虎遁正统口径复核中（D11/DEF-2），" 
-                    "本命闰月按负数月模 12 处理（D12/DEF-3 待确认）；"
                     "流年太岁地支入宫；流月斗君法（太岁宫起逆数生月至宫，自该宫起子时顺数生时起斗君，斗君起正月顺数至目标月），流月干由年干五虎遁；"
                     "流月闰月换算：目标时刻为闰月且日数大于15时按下一月计（effective_flow_month，与本盘控制器流月规则同源）；"
                     "流日自流月宫起初一顺数至农历日、流时自流日宫起子时顺数至时支，日干支取实际六十甲子日、时干五鼠遁（由本接口推算）；"
-                    "边界：大限显示干支非该宫五虎遁本干支（干自甲起循环、支取宫序号），安命身与按月起诸星对闰月出生取负月数模12入算（等效闰M月按12−M月），"
-                    "此两条实现以代码为准，口径待复核"},
+                    "边界：闰月本命的人生轨迹反推案例验证为后续校准任务（D12 说明），当前默认口径已在接口与规则说明中标注"},
                 {"ge_ju_note",
                     "接口 ge_ju 字段仅为内核 C++ GeJuAnalyzer 评分结果（ji_ge/xiong_ge/total_score）的兼容导出，不作权威判定；"
                     "权威格局判定由网页端声明式规则引擎执行（web/ziwei_pattern_engine.py 加载 config/ziwei/patterns/ 规则配置），本接口不含其结论"}
@@ -211,11 +213,28 @@ namespace {
         };
     }
 
+    // D11/D12 口径参数：默认均为正统口径（五虎遁重排 / 闰月十五分界），
+    // 旧口径保留为对照选项，供复现历史盘面，前台界面不暴露。
+    DaXianGanMethod parse_daxian_method(const json& request) {
+        const auto name = request.value("daxian_gan_method", std::string("resort"));
+        if (name == "resort") return DaXianGanMethod::Resort;
+        if (name == "original") return DaXianGanMethod::Original;
+        throw std::invalid_argument("daxian_gan_method 必须是 resort 或 original");
+    }
+
+    LeapMonthMethod parse_leap_method(const json& request) {
+        const auto name = request.value("leap_month_method", std::string("fifteen"));
+        if (name == "fifteen") return LeapMonthMethod::FifteenBoundary;
+        if (name == "next_month") return LeapMonthMethod::NextMonth;
+        throw std::invalid_argument("leap_month_method 必须是 fifteen 或 next_month");
+    }
+
     json calculate_chart(const json& request) {
         const auto& birth_json = request.at("birth");
         const auto birth = parse_date_time(birth_json);
         const auto options = parse_time_options(request);
-        const auto chart = pai_pan_solar(birth, parse_gender(birth_json), options);
+        const auto chart = pai_pan_solar(birth, parse_gender(birth_json), options,
+            parse_daxian_method(request), parse_leap_method(request));
         return json::parse(export_to_json_full(chart));
     }
 
@@ -232,7 +251,8 @@ namespace {
             throw std::invalid_argument("target.age 必须在 1 到 150 之间");
         }
 
-        const auto chart = pai_pan_solar(birth, is_male, options);
+        const auto chart = pai_pan_solar(birth, is_male, options,
+            parse_daxian_method(request), parse_leap_method(request));
         const auto target_time = ZhouYi::Common::Calendar::to_solar_time(target);
         const auto solar_day = target_time.get_solar_day();
         const auto lunar_day = solar_day.get_lunar_day();

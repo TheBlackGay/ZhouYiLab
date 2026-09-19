@@ -858,6 +858,11 @@ namespace ZhouYi::ZiWei {
             dxj["start_age"] = dx.start_age;
             dxj["end_age"] = dx.end_age;
             dxj["gong_index"] = dx.gong_index;
+            // D11：导出限宫干支与大限四化（新增键，老键语义不变）
+            dxj["gan_zhi"] = string(GanZhi::Mapper::to_zh(dx.tian_gan))
+                + string(GanZhi::Mapper::to_zh(dx.di_zhi));
+            dxj["si_hua"] = json::array();
+            for (const auto& star : dx.si_hua) dxj["si_hua"].push_back(star);
             j["da_xian"].push_back(dxj);
         }
         
