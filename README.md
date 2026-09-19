@@ -35,7 +35,7 @@
 | 紫微盲评研究 | 可用 | 匿名盲评包、维度量尺、协议与一致性研究配置 |
 | AI 多模型预评审 | 实验性 | Ollama/OpenAI 兼容接口、多模型重复实验、结果统计与 SQLite 留档 |
 | 八字 | 初步可用 | 公历/农历输入、真太阳时、四柱、十神、藏干、十二长生、逐柱旬空、纳音、首批神煞、起运与十步大运 |
-| 西洋占星 | 冻结（内部研究） | Swiss Ephemeris 引擎、星盘与解析数据层完整保留（黄道系统与六壬存在数学同构，留作复用），但产品导航不开放入口（D5 决策：`visibility: frozen`） |
+| 西洋占星 | 实验性 | Swiss Ephemeris 本命盘、主要行星、四轴、十二宫、主要相位、黄道与宫位布局速读、逐点位/十二宫/相位解读卡片和 Moshier 降级提示 |
 | 大六壬 | 2.0.0 样板 | 快速/专业双模式、问题上下文、术语口径弹层、`meta.rule_profile` 规则口径；算法仍待校准，不断吉凶 |
 | 六爻 | 页面可用 | 排盘含纳甲/六神/伏神/旺衰/变卦、摇卦模拟器与 AI 素材导出；算法口径待校准 |
 
@@ -106,7 +106,7 @@ cmake --build build --target all_examples
 - 八字：[http://127.0.0.1:8768/bazi.html](http://127.0.0.1:8768/bazi.html)
 - 六爻：[http://127.0.0.1:8768/liu-yao.html](http://127.0.0.1:8768/liu-yao.html)
 - 大六壬：[http://127.0.0.1:8768/da-liu-ren.html](http://127.0.0.1:8768/da-liu-ren.html)
-- 西洋占星（冻结模块，仅直连 URL 可达）：`http://127.0.0.1:8768/astro.html`
+- 西洋占星：[http://127.0.0.1:8768/astro.html](http://127.0.0.1:8768/astro.html)
 - 人工盲评：[http://127.0.0.1:8768/blind-review.html](http://127.0.0.1:8768/blind-review.html)
 - AI 预评审：[http://127.0.0.1:8768/ai-review.html](http://127.0.0.1:8768/ai-review.html)
 

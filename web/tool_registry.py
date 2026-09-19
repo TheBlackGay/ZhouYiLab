@@ -166,7 +166,6 @@ def builtin_tools():
             "name": "西洋占星",
             "engine_cli": "build/examples/astro_web_cli",
             "calibration_status": "experimental",
-            "visibility": "frozen",
             "interface_doc": "docs/astro/西洋占星HTTP接口文档.md",
             "pages": ["astro.html"],
             "api_prefixes": ["/api/v1/astro/", "/api/v1/geo/"],

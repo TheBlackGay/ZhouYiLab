@@ -29,15 +29,15 @@ class WebNavigationContractTests(unittest.TestCase):
                 for label in secondary_tabs:
                     self.assertEqual(1, len(re.findall(rf">{label}</button>", html)))
 
-    def test_astro_frozen_and_absent_from_public_navigation(self):
+    def test_astro_entry_public_in_navigation(self):
+        # D5 于 2026-09-19 被用户推翻：西洋占星恢复公开入口
         for filename in ("index.html", "qimen.html", "bazi.html",
                          "liu-yao.html", "da-liu-ren.html"):
             html = (WEB_ROOT / filename).read_text(encoding="utf-8")
-            self.assertNotIn('href="/astro.html"', html,
-                             f"{filename} 不应保留西洋占星入口（D5 冻结）")
-        self.assertIn('aria-current="page"', (WEB_ROOT / "astro.html").read_text(encoding="utf-8"))
+            self.assertIn('href="/astro.html"', html,
+                          f"{filename} 应保留西洋占星入口（解冻后）")
         manifest = json.loads((PROJECT_ROOT / "config" / "platform" / "tools" / "astro.json").read_text(encoding="utf-8"))
-        self.assertEqual(manifest["visibility"], "frozen")
+        self.assertEqual(manifest.get("visibility", "public"), "public")
 
     def test_shared_shell_keeps_navigation_sticky_and_scrollable(self):
         css = (WEB_ROOT / "app-shell.css").read_text(encoding="utf-8")
