@@ -181,6 +181,16 @@ function render(data) {
 
   renderProfessional(data, pillars);
   loadDlrProfile(data);
+  renderDlrPlates(data);
+}
+
+/* 2.1.0 天地盘可视化：同一份课数据渲染小白/专业两处 SVG，组件见 dlr-plate.js */
+function renderDlrPlates(data) {
+  if (!window.DlrPlate || !data) return;
+  ['#dlr-plate-beginner', '#dlr-plate-pro'].forEach(selector => {
+    const container = document.querySelector(selector);
+    if (container) window.DlrPlate.render(container, data);
+  });
 }
 
 /* 盘面画像（人性化数据包）：上神五行 / 遁干 / 阴阳，组件见 profile-charts.js */

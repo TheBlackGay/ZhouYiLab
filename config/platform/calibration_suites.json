@@ -56,6 +56,11 @@
           "type": "python_test",
           "target": "tests.test_bazi_web_contract",
           "requires_engine": "ba_zi_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_bazi_distribution",
+          "requires_engine": "ba_zi_web_cli"
         }
       ]
     },
@@ -65,6 +70,29 @@
           "type": "python_test",
           "target": "tests.test_divination_web_contract",
           "requires_engine": "liu_yao_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_wang_shuai_contract",
+          "requires_engine": "liu_yao_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_liuyao_distribution",
+          "requires_engine": "liu_yao_web_cli"
+        }
+      ]
+    },
+    "mei_hua": {
+      "suites": [
+        {
+          "type": "python_test",
+          "target": "tests.test_meihua_plate_contract",
+          "requires_engine": "mei_hua_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_meihua_web_contract"
         }
       ]
     },
@@ -87,6 +115,11 @@
         {
           "type": "python_test",
           "target": "tests.test_dlr_distribution",
+          "requires_engine": "da_liu_ren_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_dlr_plate_contract",
           "requires_engine": "da_liu_ren_web_cli"
         }
       ]
