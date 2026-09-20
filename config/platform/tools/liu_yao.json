@@ -18,6 +18,11 @@
       "options": {
         "timeout_message": "六爻排盘计算超时"
       }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/liu-yao/distribution",
+      "handler": "python_service"
     }
   ]
 }

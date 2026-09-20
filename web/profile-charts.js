@@ -11,6 +11,9 @@ window.ProfileCharts = (function () {
     bright: '#c99a3f', steady: '#6f7d54', dim: '#5d6b84',
     // 八字十神五类（比肩劫财/食神伤官/财/官杀/印绶）
     bijie: '#5d6b84', shishang: '#7a5c96', cai: '#c99a3f', guan: '#4f5b8a', yin: '#3d7a4f',
+    // 六爻六亲与旺衰五态
+    '父母': '#7a5c96', '兄弟': '#6f7d54', '子孙': '#c99a3f', '妻财': '#a67b2e', '官鬼': '#4f5b8a',
+    '旺': '#b3402a', '相': '#3d7a4f', '休': '#c99a3f', '囚': '#7a5c96', '死': '#5d6b84',
   };
   const esc = value => String(value ?? '').replace(/[&<>'"]/g, c =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));

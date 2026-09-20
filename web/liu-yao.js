@@ -111,6 +111,7 @@ function render(data) {
     ['本卦与变卦', `${data.ben_gua_name || '无'} · ${data.bian_gua_name || '无变卦'}`, '本卦看现在，变卦看变化后的方向。'],
   ].map(([label, value, note]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd><small>${escapeHtml(note)}</small></div>`).join('');
   document.querySelector('#yao-list').innerHTML = yao.slice().reverse().map(renderYaoRow).join('');
+  loadLiuyaoProfile(data);
   document.querySelector('#summary-grid').innerHTML = `
     <article class="fact-card"><h3>起课四柱</h3><p>${bazi.map(escapeHtml).join('　')}</p><p>旬空 ${escapeHtml(`${data.ba_zi?.xun_kong_1 || ''}${data.ba_zi?.xun_kong_2 || ''}` || '无')}</p></article>
     <article class="fact-card"><h3>神煞</h3><dl class="shen-sha-list">${Object.entries(data.shen_sa || {}).map(([name, branches]) => `<div><dt>${escapeHtml(name)}</dt><dd>${escapeHtml(branches.join('、'))}</dd></div>`).join('')}</dl></article>`;
@@ -118,6 +119,18 @@ function render(data) {
   document.querySelector('#copy-status').textContent = '';
   document.querySelector('#empty-state').hidden = true;
   document.querySelector('#result-content').hidden = false;
+}
+
+/* 卦面画像（人性化数据包）：六亲/五行/旺衰五态，组件见 profile-charts.js */
+function loadLiuyaoProfile(data) {
+  if (!window.ProfileCharts || !data) return;
+  window.ProfileCharts.load({
+    container: '#ly-profile-charts',
+    fallback: '#ly-profile-fallback',
+    path: '/api/v1/liu-yao/distribution',
+    chart: data,
+    label: null,
+  });
 }
 
 document.querySelectorAll('[role="tab"]').forEach(tab => {

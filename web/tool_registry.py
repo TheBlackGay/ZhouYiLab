@@ -127,6 +127,7 @@ def builtin_tools():
             "routes": [
                 {"method": "POST", "path": "/api/v1/liu-yao/charts", "handler": "engine_chart",
                  "options": {"timeout_message": "六爻排盘计算超时"}},
+                {"method": "POST", "path": "/api/v1/liu-yao/distribution", "handler": "python_service"},
             ],
         },
         {
