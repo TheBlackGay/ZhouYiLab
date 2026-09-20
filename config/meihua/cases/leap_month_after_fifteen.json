@@ -1,0 +1,40 @@
+{
+  "schema": "meihua-case/1.0",
+  "id": "leap_month_after_fifteen",
+  "status": "boundary",
+  "input": {
+    "mode": "time",
+    "calendar": "lunar",
+    "date": {
+      "year": 2023,
+      "month": 2,
+      "day": 20,
+      "hour": 14,
+      "leap_month": true
+    }
+  },
+  "expected": {
+    "casting.lunar_month_input_signed": -2,
+    "casting.lunar_month_used": 3,
+    "casting.upper_sum": 27,
+    "casting.lower_sum": 35,
+    "ba_zi.month_command": "辰",
+    "trigrams.upper.number": 3,
+    "trigrams.lower.number": 3,
+    "moving_line": 5,
+    "ben_gua.code": "101101",
+    "ben_gua.name": "离为火",
+    "hu_gua.code": "011110",
+    "hu_gua.name": "泽风大过",
+    "bian_gua.code": "101111",
+    "bian_gua.name": "天火同人",
+    "ti_yong.relation": "体用比和",
+    "ti_yong.ti_wang_shuai": "休",
+    "ti_yong.yong_wang_shuai": "休"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "D13.1 十五分界下半月路径（闰二二十日作三月取数）；与 before_fifteen 同月对照，锁定分界两侧行为。辰月火生土泄，体用皆休。"
+  }
+}

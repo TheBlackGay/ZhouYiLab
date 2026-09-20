@@ -1,0 +1,39 @@
+{
+  "schema": "meihua-case/1.0",
+  "id": "leap_month_before_fifteen",
+  "status": "boundary",
+  "input": {
+    "mode": "time",
+    "calendar": "lunar",
+    "date": {
+      "year": 2023,
+      "month": 2,
+      "day": 10,
+      "hour": 14,
+      "leap_month": true
+    }
+  },
+  "expected": {
+    "casting.lunar_month_input_signed": -2,
+    "casting.lunar_month_used": 2,
+    "casting.upper_sum": 16,
+    "casting.lower_sum": 24,
+    "casting.leap_month_rule": "fifteen_boundary",
+    "ba_zi.month_command": "卯",
+    "trigrams.upper.number": 8,
+    "trigrams.lower.number": 8,
+    "moving_line": 6,
+    "ben_gua.code": "000000",
+    "ben_gua.name": "坤为地",
+    "bian_gua.code": "000001",
+    "bian_gua.name": "山地剥",
+    "ti_yong.relation": "体用比和",
+    "ti_yong.ti_wang_shuai": "死",
+    "ti_yong.yong_wang_shuai": "死"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "D13.1 十五分界上半月路径 + 余0作满数双路径（16%8=0→坤8、24%6=0→上爻动）；卯月木克土，体用皆死。本仓口径锁定例，非古籍例。"
+  }
+}

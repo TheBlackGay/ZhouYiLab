@@ -1,0 +1,45 @@
+{
+  "schema": "meihua-case/1.0",
+  "id": "book_case_ze_huo_ge",
+  "status": "pending",
+  "input": {
+    "mode": "time",
+    "calendar": "lunar",
+    "date": {
+      "year": 1916,
+      "month": 12,
+      "day": 17,
+      "hour": 16
+    }
+  },
+  "expected": {
+    "casting.year_branch_order": 5,
+    "casting.lunar_month_used": 12,
+    "casting.lunar_day": 17,
+    "casting.hour_branch_order": 9,
+    "casting.upper_sum": 34,
+    "casting.lower_sum": 43,
+    "ba_zi.year.stem": "丙",
+    "ba_zi.year.branch": "辰",
+    "ba_zi.month_command": "丑",
+    "ben_gua.code": "101110",
+    "ben_gua.name": "泽火革",
+    "hu_gua.code": "011111",
+    "hu_gua.name": "天风姤",
+    "bian_gua.code": "001110",
+    "bian_gua.name": "泽山咸",
+    "moving_line": 1,
+    "ti_yong.ti": "upper",
+    "ti_yong.yong": "lower",
+    "ti_yong.relation": "用克体",
+    "ti_yong.ti_wang_shuai": "相",
+    "ti_yong.yong_wang_shuai": "休"
+  },
+  "source_case": {
+    "origin": "classic_example",
+    "book": "梅花易数",
+    "case_ref": "卷一·辰年十二月十七日申时起卦例",
+    "verification": "pending_manual_collation",
+    "note": "通行本此例数得泽火革初爻动、体兑金用离火、变咸；本仓将'辰年'锚定为 1916 丙辰年农历映射（1976 版腊十七恰逢立春换年，干支年起数不同）。只锁取数与卦体结果，占事故事情节未转写。claim 升级讨论前需人工按所据刻本逐字校勘。"
+  }
+}

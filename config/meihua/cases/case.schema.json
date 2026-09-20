@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "meihua-case/1.0",
+  "title": "梅花易数校准案例（M3：盘面事实先行，断语押后）",
+  "description": "expected 用点分路径锁定事实盘字段（可复现性优先）；classic 例的原文转写标 pending_manual_collation，待人工校勘后方可参与 claim 升级讨论；structural 例为本仓口径回归锁，不背书古籍归属。八宫 palace 字段有意不入 expected：梅花判定不引用宫位，避免案例隐含'宫位归属经独立校勘'的错误声明。",
+  "type": "object",
+  "required": ["schema", "id", "status", "input", "expected", "source_case"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "meihua-case/1.0"},
+    "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "status": {"enum": ["pending", "calibrated", "boundary"]},
+    "input": {
+      "type": "object",
+      "required": ["date"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"enum": ["time", "numbers"]},
+        "calendar": {"enum": ["solar", "lunar"]},
+        "date": {
+          "type": "object",
+          "required": ["year", "month", "day"],
+          "properties": {
+            "year": {"type": "integer"},
+            "month": {"type": "integer"},
+            "day": {"type": "integer"},
+            "hour": {"type": "integer"},
+            "minute": {"type": "integer"},
+            "leap_month": {"type": "boolean"}
+          }
+        },
+        "numbers": {"type": "array", "minItems": 2, "maxItems": 3, "items": {"type": "integer", "minimum": 1}}
+      }
+    },
+    "expected": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z_][a-z0-9_]*(\\.[a-z_][a-z0-9_]*)*$": {"type": ["string", "integer", "boolean"]}
+      },
+      "additionalProperties": false
+    },
+    "source_case": {
+      "type": "object",
+      "required": ["origin", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "origin": {"enum": ["classic_example", "structural_regression"]},
+        "book": {"type": "string"},
+        "case_ref": {"type": "string"},
+        "verification": {"enum": ["pending_manual_collation", "self_consistent"]},
+        "note": {"type": "string"}
+      }
+    }
+  }
+}

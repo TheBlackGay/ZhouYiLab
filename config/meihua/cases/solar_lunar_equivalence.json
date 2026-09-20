@@ -1,0 +1,29 @@
+{
+  "schema": "meihua-case/1.0",
+  "id": "solar_lunar_equivalence",
+  "status": "boundary",
+  "input": {
+    "mode": "time",
+    "calendar": "solar",
+    "date": {
+      "year": 1917,
+      "month": 1,
+      "day": 10,
+      "hour": 16
+    }
+  },
+  "expected": {
+    "casting.lunar_month_used": 12,
+    "casting.lunar_day": 17,
+    "casting.year_branch_order": 5,
+    "casting.hour_branch_order": 9,
+    "ben_gua.code": "101110",
+    "ben_gua.name": "泽火革",
+    "moving_line": 1
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "与 book_case_ze_huo_ge 同一盘的公历输入（1917-01-10）：统一历法层公历→农历取数与干支年支的等价性回归。立春换年风险场景（1976 版会踩界，本例锚 1916/1917）。"
+  }
+}
