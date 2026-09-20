@@ -245,7 +245,7 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 - [2.0.0 需求规格](docs/product/ZhouYiLab-2.0.0-需求规格.md)
 - [2.0.0 产品规划头脑风暴](docs/product/ZhouYiLab-2.0.0-产品规划头脑风暴.md)
 - [西洋占星生活化解析设计方案](docs/product/西洋占星生活化解析设计方案.md)
-- [西洋占星本命盘布局解读设计方案](docs/product/西洋占星本命盘布局解读设计方案.md)
+- [西洋占星本命盘布局解读设计方案（已实现归档）](docs/product/archive/西洋占星本命盘布局解读设计方案.md)
 
 ## 页面说明
 

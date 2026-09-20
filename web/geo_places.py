@@ -2,7 +2,7 @@
 """地名解析与时区推导内核（出生地点交互优化方案 G1）。
 
 纯 Python、本地数据、不联网：地名检索、坐标解析、IANA 时区与夏令时推导、
-软校验。契约与边界见 docs/product/西洋占星出生地点交互优化方案.md §4/§6/§7。
+软校验。契约与边界见 docs/product/archive/西洋占星出生地点交互优化方案.md §4/§6/§7。
 
 - 数据目录：``data/geo/``（curated.json + index.json），启动时一次性载入内存。
 - 时区数据：Python 标准库 ``zoneinfo``；若安装了 pip 包 ``tzdata``，用
