@@ -41,7 +41,7 @@ class ToolRegistryLoadingTests(unittest.TestCase):
 
     def test_missing_directory_falls_back_to_builtin(self):
         registry = load_tool_registry(PROJECT_ROOT, directory=PROJECT_ROOT / "__missing__")
-        self.assertEqual(len(registry.tools), 7)
+        self.assertEqual(len(registry.tools), 8)  # 2026-09-20 梅花易数 M2 接入
 
     def test_empty_directory_fails_fast(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -90,6 +90,7 @@ class ToolRegistryDispatchTests(unittest.TestCase):
             ("POST", "/api/v1/bazi/charts"),
             ("POST", "/api/v1/da-liu-ren/charts"),
             ("POST", "/api/v1/liu-yao/charts"),
+            ("POST", "/api/v1/mei-hua/plates"),
             ("POST", "/api/v1/qimen/charts"),
         ])
         self.assertIsNone(self.registry.resolve("POST", "/api/v1/ziwei/charts"))
@@ -128,6 +129,7 @@ class ToolRegistryDispatchTests(unittest.TestCase):
             "/api/v1/bazi/charts": "八字排盘计算超时",
             "/api/v1/liu-yao/charts": "六爻排盘计算超时",
             "/api/v1/da-liu-ren/charts": "大六壬排盘计算超时",
+            "/api/v1/mei-hua/plates": "梅花起卦计算超时",
         }
         for path, message in expected.items():
             _, route = self.registry.resolve("POST", path)
@@ -139,6 +141,7 @@ class ToolRegistryDispatchTests(unittest.TestCase):
             "cli_available", "qimen_cli_available", "bazi_cli_available",
             "liu_yao_cli_available", "da_liu_ren_cli_available",
             "calendar_cli_available", "astro_cli_available",
+            "mei_hua_cli_available",  # 2026-09-20 梅花 M2：注册表派生键自动扩展
         })
 
     def test_startup_requirements(self):

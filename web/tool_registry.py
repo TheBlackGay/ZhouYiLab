@@ -151,6 +151,21 @@ def builtin_tools():
         },
         {
             "schema": MANIFEST_SCHEMA_VERSION,
+            "id": "mei_hua",
+            "name": "梅花易数",
+            "engine_cli": "build/examples/mei_hua_web_cli",
+            "calibration_status": "pending",
+            "interface_doc": "docs/梅花易数HTTP接口文档.md",
+            "rule_profile_version": "meihua-rules/0.1",
+            "pages": ["meihua.html"],
+            "api_prefixes": ["/api/v1/mei-hua/"],
+            "routes": [
+                {"method": "POST", "path": "/api/v1/mei-hua/plates", "handler": "engine_chart",
+                 "options": {"timeout_message": "梅花起卦计算超时"}},
+            ],
+        },
+        {
+            "schema": MANIFEST_SCHEMA_VERSION,
             "id": "calendar",
             "name": "公共日历",
             "engine_cli": "build/examples/common_calendar_web_cli",

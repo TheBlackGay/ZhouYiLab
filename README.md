@@ -21,6 +21,7 @@
 | 八字 | 校准中 | 已复核真太阳时、四柱基础字段、起运及首批《渊海子平》《三命通会》神煞；旺衰、喜忌与格局仍待校准 |
 | 六爻 | 待校准 | 页面与接口可用（纳甲/六神/伏神/旺衰/变卦），不代表算法口径已经完成复核 |
 | 大六壬 | 待校准 | 2.0.0 已提供页面、结构化接口与逐项规则口径标识（`meta.rule_profile`）；盘面事实可追溯，算法口径仍待复核，不输出断语 |
+| 梅花易数 | 待校准 | 2026-09-20 立项（D6/D13）：时间/报数起卦 + 体用互变事实盘（`meihua-plate/1.0`，`meihua-rules/0.1`）；书例"丙辰年腊十七申时→泽火革"锁测试通过；断语层待案例校准后评审接入 |
 
 后续版本将继续校准其他算法。每项算法完成校准后，需要同步补充规则口径、边界案例、回归测试和对应文档，再将状态改为“已校准”。
 
@@ -39,6 +40,7 @@
 | 西洋占星 | 实验性 | Swiss Ephemeris 本命盘、主要行星、四轴、十二宫、主要相位、黄道与宫位布局速读、逐点位/十二宫/相位解读卡片和 Moshier 降级提示 |
 | 大六壬 | 2.0.0 样板 | 快速/专业双模式、问题上下文、术语口径弹层、`meta.rule_profile` 规则口径；算法仍待校准，不断吉凶 |
 | 六爻 | 页面可用 | 排盘含纳甲/六神/伏神/旺衰/变卦、摇卦模拟器与 AI 素材导出；算法口径待校准 |
+| 梅花易数 | 页面可用 | 时间/报数起卦，本互变三卦、体用生克与月令旺衰事实盘（M1-M2，2026-09-20）；断语未上线 |
 
 ## 快速开始
 
@@ -107,6 +109,7 @@ cmake --build build --target all_examples
 - 八字：[http://127.0.0.1:8768/bazi.html](http://127.0.0.1:8768/bazi.html)
 - 六爻：[http://127.0.0.1:8768/liu-yao.html](http://127.0.0.1:8768/liu-yao.html)
 - 大六壬：[http://127.0.0.1:8768/da-liu-ren.html](http://127.0.0.1:8768/da-liu-ren.html)
+- 梅花易数：[http://127.0.0.1:8768/meihua.html](http://127.0.0.1:8768/meihua.html)
 - 西洋占星：[http://127.0.0.1:8768/astro.html](http://127.0.0.1:8768/astro.html)
 - 人工盲评：[http://127.0.0.1:8768/blind-review.html](http://127.0.0.1:8768/blind-review.html)
 - AI 预评审：[http://127.0.0.1:8768/ai-review.html](http://127.0.0.1:8768/ai-review.html)
@@ -339,6 +342,7 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 | POST | `/api/v1/da-liu-ren/charts` | 生成大六壬课盘（含 `meta.rule_profile` 口径标识） |
 | GET | `/api/v1/da-liu-ren/glossary` | 大六壬术语与当前实现口径 |
 | POST | `/api/v1/da-liu-ren/distribution` | 六壬盘面画像图表数据包（上神五行/遁干/阴阳 + 气象解读） |
+| POST | `/api/v1/mei-hua/plates` | 梅花易数起卦事实盘（时间/报数→本互变+体用+月令旺衰，含 `meta.rule_profile`） |
 | POST | `/api/v1/bazi/charts` | 生成八字四柱与大运 |
 | GET | `/api/v1/astro/meta` | 西洋占星能力和版本信息 |
 | POST | `/api/v1/astro/charts` | 使用 Swiss Ephemeris 生成西洋星盘 |
