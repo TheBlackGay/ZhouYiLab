@@ -20,6 +20,11 @@
       "options": {
         "timeout_message": "梅花起卦计算超时"
       }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/mei-hua/distribution",
+      "handler": "python_service"
     }
   ]
 }

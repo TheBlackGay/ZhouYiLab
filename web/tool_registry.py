@@ -162,6 +162,7 @@ def builtin_tools():
             "routes": [
                 {"method": "POST", "path": "/api/v1/mei-hua/plates", "handler": "engine_chart",
                  "options": {"timeout_message": "梅花起卦计算超时"}},
+                {"method": "POST", "path": "/api/v1/mei-hua/distribution", "handler": "python_service"},
             ],
         },
         {

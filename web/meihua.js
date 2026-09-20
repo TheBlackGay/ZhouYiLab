@@ -98,6 +98,19 @@ function render(data) {
 
   emptyState.hidden = true;
   resultContent.hidden = false;
+  loadMeihuaProfile(data);
+}
+
+/* 卦面画像（人性化数据包）：六卦五行/月令旺衰/本卦阴阳，组件见 profile-charts.js */
+function loadMeihuaProfile(data) {
+  if (!window.ProfileCharts || !data) return;
+  window.ProfileCharts.load({
+    container: '#mh-profile-charts',
+    fallback: '#mh-profile-fallback',
+    path: '/api/v1/mei-hua/distribution',
+    chart: data,
+    label: null,
+  });
 }
 
 form.addEventListener('submit', async event => {

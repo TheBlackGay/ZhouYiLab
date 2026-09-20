@@ -23,6 +23,10 @@ from liuyao_distribution import (
     compute_liuyao_distribution,
     load_reading_config as load_liuyao_distribution_reading_config,
 )
+from meihua_distribution import (
+    compute_meihua_distribution,
+    load_reading_config as load_meihua_distribution_reading_config,
+)
 from tool_registry import ToolRegistryError, load_tool_registry
 from governance import API_KEY_HEADER, Governance
 
@@ -116,6 +120,7 @@ QIMEN_CLI_PATH = _engine_path("qimen", "build/examples/qi_men_web_cli")
 BAZI_CLI_PATH = _engine_path("bazi", "build/examples/ba_zi_web_cli")
 LIU_YAO_CLI_PATH = _engine_path("liu_yao", "build/examples/liu_yao_web_cli")
 DA_LIU_REN_CLI_PATH = _engine_path("da_liu_ren", "build/examples/da_liu_ren_web_cli")
+MEI_HUA_CLI_PATH = _engine_path("mei_hua", "build/examples/mei_hua_web_cli")
 CALENDAR_CLI_PATH = _engine_path("calendar", "build/examples/common_calendar_web_cli")
 ASTRO_CLI_PATH = _engine_path("astro", "build/examples/astro_web_cli")
 
@@ -144,6 +149,14 @@ _ZIWEI_DISTRIBUTION_READING_CACHE = None
 _DLR_DISTRIBUTION_READING_CACHE = None
 _BAZI_DISTRIBUTION_READING_CACHE = None
 _LIUYAO_DISTRIBUTION_READING_CACHE = None
+_MEIHUA_DISTRIBUTION_READING_CACHE = None
+
+
+def get_meihua_distribution_reading_config():
+    global _MEIHUA_DISTRIBUTION_READING_CACHE
+    if _MEIHUA_DISTRIBUTION_READING_CACHE is None:
+        _MEIHUA_DISTRIBUTION_READING_CACHE = load_meihua_distribution_reading_config()
+    return _MEIHUA_DISTRIBUTION_READING_CACHE
 
 
 def get_liuyao_distribution_reading_config():
@@ -586,6 +599,24 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 status = 422 if error.code in {
                     "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
                     "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST",
+                } else 500
+                self.send_api_error(status, error.code, error.message)
+            return
+        if parsed.path == "/api/v1/mei-hua/distribution":
+            try:
+                payload = self.read_json_body()
+                self.send_api_success(self.run_meihua_distribution(payload))
+            except (AstroDistributionConfigError, AstroDistributionRequestError) as error:
+                status = 500 if isinstance(error, AstroDistributionConfigError) else 400
+                code = "ANALYSIS_CONFIG_ERROR" if status == 500 else "INVALID_REQUEST"
+                self.send_api_error(status, code, str(error))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                self.send_api_error(400, "INVALID_REQUEST", f"输入参数无效：{error}")
+            except subprocess.TimeoutExpired:
+                self.send_api_error(504, "CALCULATION_TIMEOUT", "梅花卦面画像计算超时")
+            except CliError as error:
+                status = 422 if error.code in {
+                    "INVALID_JSON", "INVALID_ARGUMENT", "CALCULATION_FAILED",
                 } else 500
                 self.send_api_error(status, error.code, error.message)
             return
@@ -1041,6 +1072,21 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
             dimensions=dimensions,
             requested_date=requested_date,
         )
+
+    def run_meihua_distribution(self, payload):
+        chart = payload.get("chart")
+        chart_request = payload.get("chart_request")
+        if chart is not None and chart_request is not None:
+            raise AstroDistributionRequestError("chart 与 chart_request 只能提供一个")
+        if chart is None:
+            if not isinstance(chart_request, dict):
+                raise AstroDistributionRequestError("必须提供 chart 或 chart_request")
+            # 梅花 CLI 无 operation 字段，chart_request 即起卦入参原样透传
+            chart = self.run_engine(MEI_HUA_CLI_PATH, chart_request)
+        label = payload.get("label")
+        if label is not None and (not isinstance(label, str) or len(label) > 60):
+            raise AstroDistributionRequestError("label 必须是不超过 60 字符的字符串")
+        return compute_meihua_distribution(chart, get_meihua_distribution_reading_config(), label=label)
 
     def run_liuyao_distribution(self, payload):
         chart = payload.get("chart")
