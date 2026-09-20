@@ -297,8 +297,21 @@ function render(data) {
   renderPillars(data);
   renderShenShaCatalog(data);
   renderFortune(data);
+  loadBaziProfile(data);
   emptyState.hidden = true;
   resultContent.hidden = false;
+}
+
+/* 命局画像（人性化数据包）：干支五行/十神五类/阴阳底色，组件见 profile-charts.js */
+function loadBaziProfile(data) {
+  if (!window.ProfileCharts || !data) return;
+  window.ProfileCharts.load({
+    container: '#bazi-profile-charts',
+    fallback: '#bazi-profile-fallback',
+    path: '/api/v1/bazi/distribution',
+    chart: data,
+    label: null,
+  });
 }
 
 function setCalendar(calendar) {

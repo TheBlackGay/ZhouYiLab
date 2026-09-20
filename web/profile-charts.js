@@ -9,6 +9,8 @@ window.ProfileCharts = (function () {
     positive: '#a45b32', negative: '#44607a',
     cardinal: '#a67b2e', fixed: '#25634d', mutable: '#7a5c96',
     bright: '#c99a3f', steady: '#6f7d54', dim: '#5d6b84',
+    // 八字十神五类（比肩劫财/食神伤官/财/官杀/印绶）
+    bijie: '#5d6b84', shishang: '#7a5c96', cai: '#c99a3f', guan: '#4f5b8a', yin: '#3d7a4f',
   };
   const esc = value => String(value ?? '').replace(/[&<>'"]/g, c =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));

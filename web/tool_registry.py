@@ -113,6 +113,7 @@ def builtin_tools():
                 {"method": "POST", "path": "/api/v1/bazi/charts", "handler": "engine_chart",
                  "options": {"timeout_message": "八字排盘计算超时"}},
                 {"method": "GET", "path": "/api/v1/bazi/shen-sha/<id>", "handler": "python_service"},
+                {"method": "POST", "path": "/api/v1/bazi/distribution", "handler": "python_service"},
             ],
         },
         {

@@ -145,8 +145,7 @@ def _largest_remainder_percent(counts, total):
     return base
 
 
-def _headline(chart_cfg, dominant_key, label):
-    subject = f"「{label}」" if label else "这张盘"
+def _headline(chart_cfg, dominant_key, subject):
     if dominant_key is None:
         return f"{subject}{chart_cfg['balanced_template_zh']}"
     template = chart_cfg["dominant_templates_zh"][dominant_key]
@@ -169,6 +168,10 @@ def build_package(points, dimensions, reading_config, label, basis, schema_versi
     charts_out = []
     phrases = []
     global_total = len(points)
+    # 可选配置（缺省行为与历史一致）：默认主语词、箴言式跨图短语连接符
+    default_subject = reading_config.get("subject_default_zh") or "这张盘"
+    subject = f"「{label}」" if label else default_subject
+    summary_join = reading_config.get("summary_join", "，")
     for chart_id, attr_key in dimensions:
         chart_cfg = reading_config["charts"][chart_id]
         # 每图分母 = 具备该属性的点；亮度等只覆盖主星时，各图 basis_zh 自释分母
@@ -215,11 +218,10 @@ def build_package(points, dimensions, reading_config, label, basis, schema_versi
                 "percent": percents[keys.index(dominant_key)],
                 "tied": False,
             },
-            "headline_zh": _headline(chart_cfg, dominant_key, label),
+            "headline_zh": _headline(chart_cfg, dominant_key, subject),
             "reading_zh": chart_cfg["readings_zh"][reading_key],
         })
     summary_template = reading_config["charts"][charts_out[0]["id"]]["summary_template_zh"]
-    subject = f"「{label}」" if label else "这张盘"
     return {
         "schema_version": schema_version,
         "point_basis": {**basis, "count": global_total, "points": [
@@ -227,7 +229,7 @@ def build_package(points, dimensions, reading_config, label, basis, schema_versi
             | ({"sign": point["sign"]} if "sign" in point else {})
             for point in points]},
         "label": label,
-        "summary_zh": summary_template.format(subject=subject, phrases="，".join(phrases)),
+        "summary_zh": summary_template.format(subject=subject, phrases=summary_join.join(phrases)),
         "charts": charts_out,
     }
 

@@ -23,6 +23,11 @@
       "method": "GET",
       "path": "/api/v1/bazi/shen-sha/<id>",
       "handler": "python_service"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/bazi/distribution",
+      "handler": "python_service"
     }
   ]
 }
