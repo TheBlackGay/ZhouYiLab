@@ -71,8 +71,8 @@ TOOL_CONTRACTS = {
     "liu_yao_web_cli": {
         "request": {"calendar": "solar", "date": {"year": 2025, "month": 4, "day": 7, "hour": 17},
                     "hexagram_code": "110001", "changing_lines": [1]},
-        "profile_version": "liu-yao-rules/0.1",
-        "calibration_status": "pending",
+        "profile_version": "liu-yao-rules/0.2",
+        "calibration_status": "in_progress",
         "rules_keys": {"input_format", "na_jia", "shi_ying", "liu_qin_basis", "six_spirits",
                        "fu_shen", "wang_shuai", "bian_gua", "state_tags_scope"},
         "legacy_top_level": {"ba_zi", "ben_gua_name", "bian_gua_name", "shen_sa", "yao"},

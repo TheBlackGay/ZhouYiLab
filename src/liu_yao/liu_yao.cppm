@@ -1,4 +1,4 @@
-﻿// C++23 Module - 六爻排盘系统
+// C++23 Module - 六爻排盘系统
 export module ZhouYi.LiuYao;
 
 // 导入第三方库模块（优先）
@@ -617,8 +617,10 @@ inline std::string branchMu(const std::string& element) {
     return maps.contains(element) ? maps.at(element) : "";
 }
 inline bool sameElementAdvance(const std::string& from, const std::string& to) {
-    static const std::unordered_map<std::string, std::string> pairs{{"寅","卯"},{"卯","辰"},{"巳","午"},{"午","未"},{"申","酉"},{"酉","戌"},{"亥","子"},{"子","丑"}};
-    return pairs.contains(from) && pairs.at(from) == to;
+    // 《增删卜易》口径（D1=A 拍板 2026-09-20）：进神只认两对——子水动化丑土（水进）、
+    // 巳火动化午火（火进）；退神为其反向：丑化子、午化巳；
+    // 他派"寅化卯、卯化辰"等邻支进神说，本书明确"……非是"，不采（原八对邻支表系 DEF-5 旧项，现收口）。
+    return (from == "子" && to == "丑") || (from == "巳" && to == "午");
 }
 inline bool sameElementRetreat(const std::string& from, const std::string& to) {
     return sameElementAdvance(to, from);
@@ -657,7 +659,7 @@ inline void calculateStateTags(std::vector<YaoDetails>& yaoList, const BaZi& baz
             if (yao.jinShen) yao.stateTags.push_back("进神");
             if (yao.tuiShen) yao.stateTags.push_back("退神");
         }
-        yao.stateNote = yao.stateTags.empty() ? "无特殊状态" : "状态按《增删卜易》《卜筮正宗》规则标记，需结合动静、日月和用神综合判断。";
+        yao.stateNote = yao.stateTags.empty() ? "无特殊状态" : "状态以《增删卜易》为主口径标记（D1=A 拍板 2026-09-20），需结合动静、日月和用神综合判断。";
         yao.hiddenStateTags.clear();
         if (!yao.hiddenRelative.empty()) {
             const auto hiddenBranch = yao.hiddenPillar.branch();

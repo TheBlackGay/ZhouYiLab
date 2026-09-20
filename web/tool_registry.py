@@ -121,7 +121,7 @@ def builtin_tools():
             "id": "liu_yao",
             "name": "六爻",
             "engine_cli": "build/examples/liu_yao_web_cli",
-            "calibration_status": "pending",
+            "calibration_status": "in_progress",
             "pages": ["liu-yao.html"],
             "api_prefixes": ["/api/v1/liu-yao/"],
             "routes": [

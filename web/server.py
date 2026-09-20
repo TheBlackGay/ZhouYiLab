@@ -139,7 +139,7 @@ BAZI_SHEN_SHA_ALIASES = {
     "chen_xu_chou_wei_si_gong_hu_huan_shen_sha": "辰戌丑未四宫互换神煞.json",
 }
 API_VERSION = "v1"
-ALGORITHM_VERSION = "zhouyilab-core/1.4.1"
+ALGORITHM_VERSION = "zhouyilab-core/2.0.0"
 MAX_BODY_BYTES = 256 * 1024
 _AI_REVIEW_SERVICE = None
 _AI_REVIEW_LOCK = None

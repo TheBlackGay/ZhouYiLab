@@ -80,6 +80,11 @@
           "type": "python_test",
           "target": "tests.test_liuyao_distribution",
           "requires_engine": "liu_yao_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_liuyao_jin_tui_contract",
+          "requires_engine": "liu_yao_web_cli"
         }
       ]
     },
