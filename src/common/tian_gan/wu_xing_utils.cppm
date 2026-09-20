@@ -159,9 +159,12 @@ inline std::string getBranchElement(const std::string& branch) {
  * @return std::string 旺衰状态（"旺"、"相"、"休"、"囚"、"死"、"未知"）
  * 
  * @example
- * getWangShuai("木", "寅") // 返回 "旺" (木临月建)
- * getWangShuai("火", "寅") // 返回 "相" (木生火)
- * getWangShuai("土", "寅") // 返回 "休" (火生土，但寅月火未当令，实为木生土)
+ * // 寅月（木当令），《翼氏大典》春季标准表"木旺、火相、水休、金囚、土死"：
+ * getWangShuai("木", "寅") // 返回 "旺" (当令临月建)
+ * getWangShuai("火", "寅") // 返回 "相" (月令生爻)
+ * getWangShuai("水", "寅") // 返回 "休" (爻生月令)
+ * getWangShuai("金", "寅") // 返回 "囚" (爻克月令)
+ * getWangShuai("土", "寅") // 返回 "死" (月令克爻)
  */
 inline std::string getWangShuai(const std::string& lineElement, const std::string& monthBranch) {
     // 验证输入有效性
@@ -185,12 +188,14 @@ inline std::string getWangShuai(const std::string& lineElement, const std::strin
     int lineIdx = fiveElementIndex.at(lineElement);
     int monthIdx = fiveElementIndex.at(monthElement);
 
-    // 五行旺衰判断（基于五行生克循环）
-    if (lineIdx == monthIdx) return "旺";           // 同我者旺 (临月建)
-    if (lineIdx == (monthIdx + 4) % 5) return "相"; // 生我者相 (月令生爻)
-    if (lineIdx == (monthIdx + 1) % 5) return "休"; // 我生者休 (爻生月令)
-    if (lineIdx == (monthIdx + 2) % 5) return "囚"; // 我克者囚 (爻克月令)
-    if (lineIdx == (monthIdx + 3) % 5) return "死"; // 克我者死 (月令克爻)
+    // 五行旺衰判断（基于五行生克循环，以爻为参照）
+    // 生序为 木0→火1→土2→金3→水4→木…，故 爻=月+1 为"月令生爻"，爻=月+4 为"爻生日令"；
+    // 克序为 X 克 X+2，故 爻=月+3 为"爻克月令"，爻=月+2 为"月令克爻"。
+    if (lineIdx == monthIdx) return "旺";           // 当令者旺 (临月建)
+    if (lineIdx == (monthIdx + 1) % 5) return "相"; // 生我者相 (月令生爻)
+    if (lineIdx == (monthIdx + 4) % 5) return "休"; // 我生者休 (爻生月令)
+    if (lineIdx == (monthIdx + 3) % 5) return "囚"; // 我克者囚 (爻克月令)
+    if (lineIdx == (monthIdx + 2) % 5) return "死"; // 克我者死 (月令克爻)
 
     return "未知";
 }
