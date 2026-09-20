@@ -65,13 +65,17 @@ function(detect_stdlib_module_paths)
             message(STATUS "  Header directory: ${STDLIB_INCLUDE_DIRS}")
 
             if(APPLE)
-                execute_process(
-                    COMMAND xcrun --show-sdk-path
-                    OUTPUT_VARIABLE MACOS_SDK_PATH
-                    OUTPUT_STRIP_TRAILING_WHITESPACE
-                )
-                if(NOT MACOS_SDK_PATH AND CMAKE_OSX_SYSROOT)
+                # SDK 稳定选择：缓存已有 CMAKE_OSX_SYSROOT 时优先沿用，避免 xcrun 漂移
+                # （如新装 Xcode beta 改变 developer dir）后重复配置注入第二个 -isysroot，
+                # 触发 libc++ std 模块对旧包不兼容 SDK 的重建失败；仅首配时查询 xcrun。
+                if(CMAKE_OSX_SYSROOT AND EXISTS "${CMAKE_OSX_SYSROOT}")
                     set(MACOS_SDK_PATH "${CMAKE_OSX_SYSROOT}")
+                else()
+                    execute_process(
+                        COMMAND xcrun --show-sdk-path
+                        OUTPUT_VARIABLE MACOS_SDK_PATH
+                        OUTPUT_STRIP_TRAILING_WHITESPACE
+                    )
                 endif()
                 message(STATUS "macOS SDK path: ${MACOS_SDK_PATH}")
 

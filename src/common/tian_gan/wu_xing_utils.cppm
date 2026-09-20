@@ -72,6 +72,37 @@ inline const std::unordered_map<std::string, std::vector<std::string>> hiddenSte
 // ==================== 辅助函数 ====================
 
 /**
+ * @brief 判断两个五行之间的关系（以第一个五行为"我"）
+ *
+ * 梅花体用生克等"以五行为直接操作数"的场景使用本函数；
+ * 地支场景见 getElementalRelationship（同一循环，先查表再转调）。
+ *
+ * @param element1 第一个五行（"金"、"木"、"水"、"火"、"土"）
+ * @param element2 第二个五行
+ * @return ElementalRelation 相对 element1 的关系（同/我生/我克/生我/克我）
+ */
+inline ElementalRelation getElementRelationship(
+    const std::string& element1,
+    const std::string& element2
+) {
+    if (!fiveElementIndex.contains(element1) ||
+        !fiveElementIndex.contains(element2)) {
+        return ElementalRelation::Error;
+    }
+
+    int idx1 = fiveElementIndex.at(element1);
+    int idx2 = fiveElementIndex.at(element2);
+
+    if (idx1 == idx2) return ElementalRelation::Same;         // 同我（比和）
+    if (idx2 == (idx1 + 1) % 5) return ElementalRelation::Generates;    // 我生
+    if (idx2 == (idx1 + 2) % 5) return ElementalRelation::Controls;     // 我克
+    if (idx1 == (idx2 + 1) % 5) return ElementalRelation::GeneratedBy;  // 生我
+    if (idx1 == (idx2 + 2) % 5) return ElementalRelation::ControlledBy; // 克我
+
+    return ElementalRelation::Error;
+}
+
+/**
  * @brief 判断两个地支的五行关系
  * 
  * @param branch1 第一个地支
@@ -86,25 +117,8 @@ inline ElementalRelation getElementalRelationship(
         !branchFiveElements.contains(branch2)) {
         return ElementalRelation::Error;
     }
-
-    const std::string& elem1 = branchFiveElements.at(branch1);
-    const std::string& elem2 = branchFiveElements.at(branch2);
-
-    if (!fiveElementIndex.contains(elem1) || 
-        !fiveElementIndex.contains(elem2)) {
-        return ElementalRelation::Error;
-    }
-
-    int idx1 = fiveElementIndex.at(elem1);
-    int idx2 = fiveElementIndex.at(elem2);
-
-    if (idx1 == idx2) return ElementalRelation::Same;         // 同我
-    if (idx2 == (idx1 + 1) % 5) return ElementalRelation::Generates;    // 我生
-    if (idx2 == (idx1 + 2) % 5) return ElementalRelation::Controls;     // 我克
-    if (idx1 == (idx2 + 1) % 5) return ElementalRelation::GeneratedBy;  // 生我
-    if (idx1 == (idx2 + 2) % 5) return ElementalRelation::ControlledBy; // 克我
-
-    return ElementalRelation::Error;
+    return getElementRelationship(branchFiveElements.at(branch1),
+                                  branchFiveElements.at(branch2));
 }
 
 /**

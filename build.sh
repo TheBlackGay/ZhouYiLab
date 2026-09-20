@@ -13,6 +13,7 @@ build_args=(
   ba_zi_web_cli
   liu_yao_web_cli
   da_liu_ren_web_cli
+  mei_hua_web_cli
   common_calendar_web_cli
 )
 if [[ "${ZHOUYILAB_ENABLE_ASTRO:-ON}" != "OFF" ]]; then
