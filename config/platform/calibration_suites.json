@@ -90,6 +90,11 @@
           "type": "python_test",
           "target": "tests.test_liuyao_hexagram_table_contract",
           "requires_engine": "liu_yao_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_liuyao_cases",
+          "requires_engine": "liu_yao_web_cli"
         }
       ]
     },

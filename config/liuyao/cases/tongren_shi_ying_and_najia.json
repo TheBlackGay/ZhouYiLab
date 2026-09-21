@@ -1,0 +1,29 @@
+{
+  "schema": "liuyao-case/1.0",
+  "id": "tongren_shi_ying_and_najia",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 2,
+      "day": 12,
+      "hour": 10
+    },
+    "hexagram_code": "101111",
+    "changing_lines": []
+  },
+  "expected": {
+    "ben_gua_name": "离宫: 天火同人",
+    "yao.1.mainPillar.branch": "卯",
+    "yao.1.mainPillar.stem": "己",
+    "yao.2.mainPillar.branch": "丑",
+    "yao.3.shiYingMark": "世",
+    "yao.6.shiYingMark": "应"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "同人（离宫归魂）：世三应六；本卦纳甲己卯/己丑起于内卦离——DEF-7 修复后本卦纳甲直接锁"
+  }
+}
