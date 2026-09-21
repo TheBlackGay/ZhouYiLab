@@ -12,14 +12,19 @@
 
 | 模块 | 主要接口 |
 | --- | --- |
+| 平台发现 | `GET /api/v1`、`GET /api/v1/tools` |
 | 公共日历 | `POST /api/v1/calendar/convert`、`POST /api/v1/calendar/true-solar-time` |
-| 紫微斗数 | `GET /api/v1/ziwei/meta`、`POST /api/v1/ziwei/charts`、`POST /api/v1/ziwei/fortune`、`POST /api/v1/ziwei/analysis` |
+| 紫微斗数 | `GET /api/v1/ziwei/meta`、`GET /api/v1/ziwei/symbols`、`POST /api/v1/ziwei/charts`、`POST /api/v1/ziwei/fortune`、`POST /api/v1/ziwei/analysis`、`POST /api/v1/ziwei/distribution` |
 | 奇门遁甲 | `POST /api/v1/qimen/charts` |
-| 八字 | `POST /api/v1/bazi/charts` |
-| 六爻 | `POST /api/v1/liu-yao/charts` |
-| 大六壬 | `POST /api/v1/da-liu-ren/charts` |
-| 西洋占星 | `GET /api/v1/astro/meta`、`POST /api/v1/astro/charts`、`POST /api/v1/astro/analysis` |
+| 八字 | `POST /api/v1/bazi/charts`、`POST /api/v1/bazi/distribution` |
+| 六爻 | `POST /api/v1/liu-yao/charts`、`POST /api/v1/liu-yao/distribution` |
+| 梅花易数 | `POST /api/v1/mei-hua/plates`、`POST /api/v1/mei-hua/distribution` |
+| 大六壬 | `POST /api/v1/da-liu-ren/charts`、`GET /api/v1/da-liu-ren/glossary`、`POST /api/v1/da-liu-ren/distribution` |
+| 西洋占星 | `GET /api/v1/astro/meta`、`POST /api/v1/astro/charts`、`POST /api/v1/astro/analysis`、`POST /api/v1/astro/distribution` |
 | 服务健康 | `GET /api/v1/health` |
+
+六平台 `distribution` 为人性化画像图表数据包（三环形图 + 暖场解读 + 底色总结），
+请求接受 `chart`（已排盘面）或 `chart_request`（服务端代排）二选一。
 
 例如八字接口的生产地址为：
 
@@ -32,4 +37,6 @@ https://zhouyilab.k8s.gold/api/v1/bazi/charts
 - [公共日历 API 文档](common/公共日历API.md)
 - [紫微斗数 HTTP 接口文档](ziwei/紫微斗数HTTP接口文档.md)
 - [奇门遁甲 HTTP 接口文档](奇门遁甲HTTP接口文档.md)
+- [大六壬 HTTP 接口文档](大六壬HTTP接口文档.md)
+- [梅花易数 HTTP 接口文档](梅花易数HTTP接口文档.md)
 - [西洋占星 HTTP 接口文档](astro/西洋占星HTTP接口文档.md)
