@@ -16,7 +16,7 @@ RUN cmake -S . -B build-docker -G Ninja \
       -DCMAKE_CXX_COMPILER=clang++ \
       -DBUILD_EXAMPLES=OFF \
     && cmake --build build-docker --parallel 2 --target \
-      zi_wei_web_cli qi_men_web_cli ba_zi_web_cli liu_yao_web_cli da_liu_ren_web_cli common_calendar_web_cli astro_web_cli
+      zi_wei_web_cli qi_men_web_cli ba_zi_web_cli liu_yao_web_cli da_liu_ren_web_cli mei_hua_web_cli common_calendar_web_cli astro_web_cli
 
 FROM ubuntu:24.04 AS runtime
 
