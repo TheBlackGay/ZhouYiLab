@@ -37,6 +37,8 @@ https://zhouyilab.k8s.gold/api/v1/bazi/charts
 - [公共日历 API 文档](common/公共日历API.md)
 - [紫微斗数 HTTP 接口文档](ziwei/紫微斗数HTTP接口文档.md)
 - [奇门遁甲 HTTP 接口文档](奇门遁甲HTTP接口文档.md)
+- [八字 HTTP 接口文档](八字HTTP接口文档.md)
+- [六爻 HTTP 接口文档](六爻HTTP接口文档.md)
 - [大六壬 HTTP 接口文档](大六壬HTTP接口文档.md)
 - [梅花易数 HTTP 接口文档](梅花易数HTTP接口文档.md)
 - [西洋占星 HTTP 接口文档](astro/西洋占星HTTP接口文档.md)
