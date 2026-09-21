@@ -1,0 +1,15 @@
+{
+  "schema": "daliuren-case-manifest/1.0",
+  "school": "daliuren",
+  "calibration_stage": "stage1_plate_facts",
+  "description": "大六壬 2.x 盘面事实案例锁（A3）：日课/旬空/贵人/三传四课/天地盘神将/月将中气过宫边界/古法随差对照/历法等价/昼夜盘。断语与课体吉凶在校勘与人工评审前一律不建条目；四课入盘可视化口径待拍板——本案列只锁引擎事实不涉画面。claim 升级由人工决策，check_calibration 只验套件可执行。",
+  "cases": [
+    "plate_bingzi_2025_11_03",
+    "yuejiang_xiaoxue_before",
+    "yuejiang_xiaoxue_after",
+    "yuejiang_dahan_zhongqi",
+    "yuejiang_dahan_guifa",
+    "solar_lunar_equivalence",
+    "night_plate_shenjiang"
+  ]
+}

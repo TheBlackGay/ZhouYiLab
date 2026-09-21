@@ -146,6 +146,11 @@
           "type": "python_test",
           "target": "tests.test_dlr_plate_contract",
           "requires_engine": "da_liu_ren_web_cli"
+        },
+        {
+          "type": "python_test",
+          "target": "tests.test_daliuren_cases",
+          "requires_engine": "da_liu_ren_web_cli"
         }
       ]
     },

@@ -1,0 +1,24 @@
+{
+  "schema": "daliuren-case/1.0",
+  "id": "night_plate_shenjiang",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 11,
+      "day": 3,
+      "hour": 22
+    }
+  },
+  "expected": {
+    "is_day": false,
+    "gui_ren": "酉",
+    "tian_di_pan[].shen_jiang": "玄武,太常,白虎,天空,青龙,勾陈,六合,朱雀,螣蛇,贵人,天后,太阴"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "昼夜盘锁：亥时 is_day=false、夜贵人起处与十二神将序列整体区别于基准昼盘（同日期对照即见昼/夜）。"
+  }
+}
