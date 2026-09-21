@@ -22,7 +22,9 @@ FROM ubuntu:24.04 AS runtime
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    ZHOUYILAB_BIND_HOST=0.0.0.0 \
+    ZHOUYILAB_EPHEMERIS_PATH=/app/data/ephemeris
 RUN apt-get update \
     && apt-get install -y --no-install-recommends python3 python3-pip ca-certificates libc++1 libc++abi1 \
     && rm -rf /var/lib/apt/lists/* \
