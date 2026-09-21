@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "dictionary_version": "1.2.0",
+  "dictionary_version": "1.3.0",
   "ruleset": "zhouyilab-ziwei-symbolism",
   "updated_at": "2026-09-21",
   "description": "紫微斗数宫位与核心星曜象义词典。先定义原始象义，再通过可追溯的场景映射生成衍生解释。",
@@ -4661,6 +4661,86 @@
           "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必然丢失财物。"
         }
       ]
+    },
+    {
+      "id": "tian_jie",
+      "name": "天解",
+      "category": "miscellaneous",
+      "system": "幸运类杂曜",
+      "entry_revision": 1,
+      "attributes": {
+        "yin_yang": "阳",
+        "element": "火",
+        "hua_qi": "解厄",
+        "traditional_roles": [
+          "解神星",
+          "化解星"
+        ],
+        "note": "安法与属性出处=内核杂曜文档库 zi_wei_star_doc_za_yao（B9 批次三：安法出处以内核反查为准）；古籍卷次待联网校勘补录"
+      },
+      "original_definitions": [
+        {
+          "id": "tian_jie.resolution",
+          "concept": "得助而解",
+          "definition": "如暗中有自上来之助，困厄之际得指引以解纷。"
+        },
+        {
+          "id": "tian_jie.insight",
+          "concept": "智慧观本质",
+          "definition": "象能察事理之本、谋化解之道，气质近于明敏而有信。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "tian_jie.relief_scope",
+          "scenario": "气质与状态",
+          "meaning": "困境中易得意外之助与转圜思路；须自身谋求化解方显其用。",
+          "derived_from": [
+            "tian_jie.resolution"
+          ],
+          "boundary": "得助不等于坐待外援，化解仍赖现实作为；不作灾厄必解之推断。"
+        }
+      ]
+    },
+    {
+      "id": "jie_kong",
+      "name": "截空",
+      "category": "miscellaneous",
+      "system": "思想类杂曜",
+      "entry_revision": 1,
+      "attributes": {
+        "yin_yang": "阴",
+        "element": "火",
+        "hua_qi": "空亡",
+        "traditional_roles": [
+          "空亡星",
+          "截断星"
+        ],
+        "note": "安法与属性出处=内核杂曜文档库 zi_wei_star_doc_za_yao（B9 批次三：安法出处以内核反查为准）；古籍卷次待联网校勘补录"
+      },
+      "original_definitions": [
+        {
+          "id": "jie_kong.cutoff",
+          "concept": "截断空亡",
+          "definition": "象事之中断与落空，同宫之力为之减损，确定性生变。"
+        },
+        {
+          "id": "jie_kong.detachment",
+          "concept": "超脱与放下",
+          "definition": "亦有不执于物、见解独出之象，如空处生思。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "jie_kong.mind_scope",
+          "scenario": "气质与状态",
+          "meaning": "计划易生变数，反促另辟思路与放下执念之智。",
+          "derived_from": [
+            "jie_kong.cutoff"
+          ],
+          "boundary": "中断之象须合盘参看，不预示具体事务结局；亦不作世俗得失之断。"
+        }
+      ]
     }
   ],
   "coverage": {
@@ -4680,9 +4760,9 @@
       "complete": true
     },
     "miscellaneous_stars": {
-      "configured": 79,
+      "configured": 81,
       "complete": true,
-      "next_step": "B9 批次2·博士/岁前/将前三系 28 条已入库（三系 36 memberships 全量 orders 交叉锁）；批次3 仅余 天解、截空（安法出处待考，宁缺毋伪）；《三命通会》卷次 source_ref 待联网校勘补录"
+      "next_step": "B9 批次1-3 全部入库（长生12+三系年煞28+天解/截空=42/42），缺收清零；《三命通会》等卷次 source_ref 仍待联网校勘补录（宁缺毋伪在册注记）"
     }
   },
   "maintenance": {

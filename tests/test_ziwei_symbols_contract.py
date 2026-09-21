@@ -194,10 +194,52 @@ class ZiWeiSymbolsEngineTests(unittest.TestCase):
             blob = json.dumps(e, ensure_ascii=False)
             for word in banned:
                 self.assertNotIn(word, blob, f"{e['name']} 释义含禁断语词 {word}")
-        self.assertEqual(dictionary["dictionary_version"], "1.2.0")
+        self.assertGreaterEqual(
+            tuple(int(x) for x in dictionary["dictionary_version"].split(".")), (1, 2),
+            "批次二入库后字典版本须 ≥1.2.0")
         self.assertEqual(
             dictionary["coverage"]["miscellaneous_stars"]["configured"],
             len(stars) - 28)
+
+    def test_full_kernel_coverage_batch3_capstone(self):
+        """B9 批次三封顶（2026-09-21）：字典星名 == 内核符号全集，缺收清零。
+
+        天解/截空属性反向锁内核杂曜文档（zi_wei_star_doc_za_yao）；
+        全典禁吉凶断语词仅对新三例执行（既有 67 条为先行审定资产不追溯改文）；
+        版本钉 1.3.0。"""
+        import re
+        dictionary = json.loads(DICTIONARY_PATH.read_text(encoding="utf-8"))
+        names = {e["name"] for e in dictionary["stars"]}
+        missing = sorted(set(self.symbols["all_star_names"]) - names)
+        self.assertEqual(missing, [], "字典必须全覆盖内核符号集（B9 DoD）")
+        self.assertEqual(dictionary["dictionary_version"], "1.3.0")
+
+        doc = (PROJECT_ROOT / "src" / "zi_wei" / "zi_wei_star_doc_za_yao.cpp"
+               ).read_text(encoding="utf-8")
+        wux = {"Huo": "火", "Mu": "木", "Shui": "水", "Jin": "金", "Tu": "土"}
+        for star in ("天解", "截空"):
+            m = re.search(rf'\{{"{star}", \{{(.*?)\}}\}},?\s*(?=\{{"|std::|$)',
+                          doc, re.S)
+            self.assertIsNotNone(m, f"内核杂曜文档缺 {star}")
+            entry = next(e for e in dictionary["stars"] if e["name"] == star)
+            self.assertEqual(entry["attributes"]["element"],
+                             wux[re.search(r'wu_xing = XingYaoWuXing::(\w+)',
+                                           m.group(1)).group(1)],
+                             f"{star} 五行与内核失锁")
+            self.assertEqual(entry["attributes"]["yin_yang"],
+                             {"Yang": "阳", "Yin": "阴"}[re.search(
+                                 r'yin_yang = XingYaoYinYang::(\w+)',
+                                 m.group(1)).group(1)],
+                             f"{star} 阴阳与内核失锁")
+            self.assertEqual(entry["attributes"]["hua_qi"],
+                             re.search(r'hua_qi = "([^"]*)"', m.group(1)).group(1),
+                             f"{star} 化气与内核失锁")
+        banned = ("主吉", "主凶", "大吉", "大凶", "富贵", "贫贱", "寿夭", "凶丧")
+        for star in ("天解", "截空"):
+            entry = next(e for e in dictionary["stars"] if e["name"] == star)
+            blob = json.dumps(entry, ensure_ascii=False)
+            for word in banned:
+                self.assertNotIn(word, blob, f"{star} 释义含禁断语词")
 
     def test_pattern_catalog_validates_against_kernel_symbols(self):
         """格局引擎用内核符号全集做 known_star_names 也能加载 → 规则库无越界星名。"""
