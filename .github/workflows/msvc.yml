@@ -1,10 +1,13 @@
 name: MSVC Build
+# ⚠ windows-2022 图像退役在即；迁 windows-2025 无实证（Linux 侧证据不适用
+# MSVC 工具集），不盲切。已补 workflow_dispatch，请择机验证后再迁移。
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build-msvc:

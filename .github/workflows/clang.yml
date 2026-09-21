@@ -1,17 +1,24 @@
 name: Clang/LLVM Build
 
+# 2026-09-21 预防性对齐（DEF-8 姊妹项）：ubuntu-22.04 托管图像已退役，钉 22.04
+# 属定时炸弹（main 合并日即爆）。切 24.04 的双重实证：python-tests 在
+# ubuntu-24.04 + llvm-19 七引擎真跑全绿（b40b94d）；Docker 构建器
+# silkeh/clang:20（noble 基座）全量含 astro 构建烟测首绿。
+# 补 workflow_dispatch：main 闸前可在任意分支按需验证。
+
 on:
   push:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   build-clang-linux:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     
     strategy:
       fail-fast: false
