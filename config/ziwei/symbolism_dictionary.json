@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "dictionary_version": "1.1.0",
+  "dictionary_version": "1.2.0",
   "ruleset": "zhouyilab-ziwei-symbolism",
   "updated_at": "2026-09-21",
   "description": "紫微斗数宫位与核心星曜象义词典。先定义原始象义，再通过可追溯的场景映射生成衍生解释。",
@@ -2127,7 +2127,10 @@
         "traditional_roles": [
           "感官吸引",
           "艺术"
-        ]
+        ],
+        "orders": {
+          "将前十二神": 10
+        }
       },
       "original_definitions": [
         {
@@ -2600,7 +2603,12 @@
           ],
           "boundary": "是否孤独需结合关系宫位和整体结构。"
         }
-      ]
+      ],
+      "attributes": {
+        "orders": {
+          "将前十二神": 5
+        }
+      }
     },
     {
       "id": "tianyue2",
@@ -2654,7 +2662,12 @@
           ],
           "boundary": "不能完全抵消煞星或现实风险。"
         }
-      ]
+      ],
+      "attributes": {
+        "orders": {
+          "岁前十二神": 10
+        }
+      }
     },
     {
       "id": "yuede",
@@ -3086,7 +3099,13 @@
           ],
           "boundary": "与流年十二神大耗分开，不直接断破产。"
         }
-      ]
+      ],
+      "attributes": {
+        "orders": {
+          "博士十二神": 10,
+          "岁前十二神": 7
+        }
+      }
     },
     {
       "id": "longde_birth",
@@ -3113,7 +3132,12 @@
           ],
           "boundary": "与流年十二神龙德分开，不保证免除所有困难。"
         }
-      ]
+      ],
+      "attributes": {
+        "orders": {
+          "岁前十二神": 8
+        }
+      }
     },
     {
       "id": "fenggao",
@@ -3153,7 +3177,10 @@
       "attributes": {
         "stage_order": 1,
         "cycle_phase": "生发",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 1
+        }
       },
       "original_definitions": [
         {
@@ -3188,7 +3215,10 @@
       "attributes": {
         "stage_order": 2,
         "cycle_phase": "成形",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 2
+        }
       },
       "original_definitions": [
         {
@@ -3223,7 +3253,10 @@
       "attributes": {
         "stage_order": 3,
         "cycle_phase": "整饰",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 3
+        }
       },
       "original_definitions": [
         {
@@ -3258,7 +3291,10 @@
       "attributes": {
         "stage_order": 4,
         "cycle_phase": "任事",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 4
+        }
       },
       "original_definitions": [
         {
@@ -3293,7 +3329,10 @@
       "attributes": {
         "stage_order": 5,
         "cycle_phase": "极盛",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 5
+        }
       },
       "original_definitions": [
         {
@@ -3328,7 +3367,10 @@
       "attributes": {
         "stage_order": 6,
         "cycle_phase": "始敛",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 6
+        }
       },
       "original_definitions": [
         {
@@ -3363,7 +3405,10 @@
       "attributes": {
         "stage_order": 7,
         "cycle_phase": "衰感",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 7
+        }
       },
       "original_definitions": [
         {
@@ -3398,7 +3443,10 @@
       "attributes": {
         "stage_order": 8,
         "cycle_phase": "沉止",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 8
+        }
       },
       "original_definitions": [
         {
@@ -3433,7 +3481,10 @@
       "attributes": {
         "stage_order": 9,
         "cycle_phase": "藏敛",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 9
+        }
       },
       "original_definitions": [
         {
@@ -3468,7 +3519,10 @@
       "attributes": {
         "stage_order": 10,
         "cycle_phase": "断续",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 10
+        }
       },
       "original_definitions": [
         {
@@ -3503,7 +3557,10 @@
       "attributes": {
         "stage_order": 11,
         "cycle_phase": "萌结",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 11
+        }
       },
       "original_definitions": [
         {
@@ -3538,7 +3595,10 @@
       "attributes": {
         "stage_order": 12,
         "cycle_phase": "涵育",
-        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref"
+        "note": "次序交叉锁定内核枚举 ChangSheng12 与 shen_sha_dictionary.chang_sheng_12（职能层）；《三命通会》卷次出处待联网校勘后补 source_ref",
+        "orders": {
+          "长生十二神": 12
+        }
       },
       "original_definitions": [
         {
@@ -3563,6 +3623,1044 @@
           "boundary": "只述生气循环所处之象，不作吉凶、际遇推断；具体显象须合宫、星、五行参看。"
         }
       ]
+    },
+    {
+      "id": "bo_shi",
+      "name": "博士",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 1
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "bo_shi.cycle",
+          "concept": "艺文图籍",
+          "definition": "掌艺文图籍之用，气质近于文墨。"
+        },
+        {
+          "id": "bo_shi.temperament",
+          "concept": "多能喜事",
+          "definition": "有酒食嬉戏之性，得时曜加之益雅。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "bo_shi.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增强学习、理解、思考和知识整理能力。",
+          "derived_from": [
+            "bo_shi.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于学历或专业资格。"
+        }
+      ]
+    },
+    {
+      "id": "li_shi",
+      "name": "力士",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 2
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "li_shi.cycle",
+          "concept": "执旗督勇",
+          "definition": "如将执旗以督敢勇，有护法威严之象。"
+        },
+        {
+          "id": "li_shi.temperament",
+          "concept": "卫财防夺",
+          "definition": "司守护所得、御侵夺之用。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "li_shi.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增强执着、勇猛、坚韧与直接行动的气质。",
+          "derived_from": [
+            "li_shi.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；需留意固执，但不能直接推断冲突。"
+        }
+      ]
+    },
+    {
+      "id": "qing_long",
+      "name": "青龙",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 3
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "qing_long.cycle",
+          "concept": "四象之长",
+          "definition": "居四方吉神之首，所至万物发生。"
+        },
+        {
+          "id": "qing_long.temperament",
+          "concept": "性禀阳和",
+          "definition": "气性开明，好升进而恶退坠。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "qing_long.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增强执行、反应与把握机会的倾向。",
+          "derived_from": [
+            "qing_long.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；机会仍需现实条件承接。"
+        }
+      ]
+    },
+    {
+      "id": "xiao_hao",
+      "name": "小耗",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 4,
+          "岁前十二神": 6
+        },
+        "nature": "natal_fixed",
+        "note": "与岁前系重名，职能层两条并存"
+      },
+      "original_definitions": [
+        {
+          "id": "xiao_hao.cycle",
+          "concept": "司小耗散",
+          "definition": "主财用细碎之耗，如漏巵渐失。"
+        },
+        {
+          "id": "xiao_hao.temperament",
+          "concept": "不喜羁守",
+          "definition": "所聚难固，性情不拘细节。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "xiao_hao.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加不拘小节和资源小幅散出的倾向。",
+          "derived_from": [
+            "xiao_hao.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必然破财。"
+        }
+      ]
+    },
+    {
+      "id": "jiang_jun",
+      "name": "将军",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 5
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "jiang_jun.cycle",
+          "concept": "统领之象",
+          "definition": "如将军统军，有威服部伍之象。"
+        },
+        {
+          "id": "jiang_jun.temperament",
+          "concept": "权重轻屈",
+          "definition": "好持权柄，难以屈服。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "jiang_jun.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增强掌控、组织与争取主导权的倾向。",
+          "derived_from": [
+            "jiang_jun.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于现实领导职位。"
+        }
+      ]
+    },
+    {
+      "id": "zou_shu",
+      "name": "奏书",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 6
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "zou_shu.cycle",
+          "concept": "执简陈书",
+          "definition": "主章奏文移之用，好献议陈情。"
+        },
+        {
+          "id": "zou_shu.temperament",
+          "concept": "温和无竞",
+          "definition": "象性平和，不喜攻害。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "zou_shu.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增强文案、理解与书面表达能力。",
+          "derived_from": [
+            "zou_shu.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；实际成果仍取决于训练。"
+        }
+      ]
+    },
+    {
+      "id": "fei_lian",
+      "name": "飞廉",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 7
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "fei_lian.cycle",
+          "concept": "风疾之性",
+          "definition": "性疾而猛，如飘风之不可按。"
+        },
+        {
+          "id": "fei_lian.temperament",
+          "concept": "附刑讼之象",
+          "definition": "古人系于讼狱之象，以为言语之警。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "fei_lian.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加好奇和表达欲，也可能带来表达摩擦。",
+          "derived_from": [
+            "fei_lian.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不能据此断定口舌是非。"
+        }
+      ]
+    },
+    {
+      "id": "xi_shen",
+      "name": "喜神",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 8
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "xi_shen.cycle",
+          "concept": "喜乐之神",
+          "definition": "象主和乐交欢，所至人事安喜。"
+        },
+        {
+          "id": "xi_shen.temperament",
+          "concept": "向喜而趋",
+          "definition": "随阳气所往而喜，观情致之转。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "xi_shen.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加轻松、喜庆和亲和感，也可能放慢决断。",
+          "derived_from": [
+            "xi_shen.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必有喜事。"
+        }
+      ]
+    },
+    {
+      "id": "bing_fu",
+      "name": "病符",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 9,
+          "岁前十二神": 12
+        },
+        "nature": "natal_fixed",
+        "note": "与岁前系重名，职能层两条并存"
+      },
+      "original_definitions": [
+        {
+          "id": "bing_fu.cycle",
+          "concept": "药医之符",
+          "definition": "象疾病医治，如节候之犯人身。"
+        },
+        {
+          "id": "bing_fu.temperament",
+          "concept": "弱地加制",
+          "definition": "所临势弱，益增忧系。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "bing_fu.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增强对身体状态与脆弱感的关注。",
+          "derived_from": [
+            "bing_fu.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不能据此诊断疾病。"
+        }
+      ]
+    },
+    {
+      "id": "fu_bing",
+      "name": "伏兵",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 11
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "fu_bing.cycle",
+          "concept": "藏锋不露",
+          "definition": "象隐伏之敌，外若欢欣而内有所执。"
+        },
+        {
+          "id": "fu_bing.temperament",
+          "concept": "谨防盗阻",
+          "definition": "司备御小人阴中之用。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "fu_bing.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加警惕、多虑和对隐藏风险的关注。",
+          "derived_from": [
+            "fu_bing.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不应解释为必有他人暗害。"
+        }
+      ]
+    },
+    {
+      "id": "guan_fu",
+      "name": "官府",
+      "category": "miscellaneous",
+      "system": "博士十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "博士十二神": 12
+        },
+        "nature": "natal_fixed",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "guan_fu.cycle",
+          "concept": "为官所制",
+          "definition": "象为法度规章所缚，如罪之待鞫。"
+        },
+        {
+          "id": "guan_fu.temperament",
+          "concept": "分讼直曲",
+          "definition": "附对庭析直之象，近于公事。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "guan_fu.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增强对规则、责任、争议与正式程序的敏感。",
+          "derived_from": [
+            "guan_fu.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必然发生官非。"
+        }
+      ]
+    },
+    {
+      "id": "sui_jian",
+      "name": "岁建",
+      "category": "miscellaneous",
+      "system": "岁前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "岁前十二神": 1
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "sui_jian.cycle",
+          "concept": "太岁为君",
+          "definition": "岁之气君，众神煞皆其指向。"
+        },
+        {
+          "id": "sui_jian.temperament",
+          "concept": "犯上迟回",
+          "definition": "所临之事迟回，古诫不宜干上。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "sui_jian.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "标记流年主题的起点与当年关注中心。",
+          "derived_from": [
+            "sui_jian.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；本命层不据此判断具体年份事件。"
+        }
+      ]
+    },
+    {
+      "id": "hui_qi",
+      "name": "晦气",
+      "category": "miscellaneous",
+      "system": "岁前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "岁前十二神": 2
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "hui_qi.cycle",
+          "concept": "气暗昧",
+          "definition": "象事如入雾，暗昧未明。"
+        },
+        {
+          "id": "hui_qi.temperament",
+          "concept": "附小失悔",
+          "definition": "系于小失懊悔之象，情志不扬。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "hui_qi.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加短期情绪波动与沟通不顺的可能。",
+          "derived_from": [
+            "hui_qi.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必然倒霉。"
+        }
+      ]
+    },
+    {
+      "id": "sang_men",
+      "name": "丧门",
+      "category": "miscellaneous",
+      "system": "岁前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "岁前十二神": 3
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "sang_men.cycle",
+          "concept": "丧纪之辰",
+          "definition": "象死生离合之属，系于殡奠之仪。"
+        },
+        {
+          "id": "sang_men.temperament",
+          "concept": "戚忧相交",
+          "definition": "哀与礼互见，观人情之戚。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "sang_men.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加短期低落、悲观或对失去的关注。",
+          "derived_from": [
+            "sang_men.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不应直接推断丧事。"
+        }
+      ]
+    },
+    {
+      "id": "guan_suo",
+      "name": "贯索",
+      "category": "miscellaneous",
+      "system": "岁前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "岁前十二神": 4
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "guan_suo.cycle",
+          "concept": "羁绊缠绕",
+          "definition": "象为索所缠，事结而难解。"
+        },
+        {
+          "id": "guan_suo.temperament",
+          "concept": "聚众成网",
+          "definition": "亦有连聚成围之象。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "guan_suo.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加受约束、被流程牵制或进展受限的感受。",
+          "derived_from": [
+            "guan_suo.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必然被拘束。"
+        }
+      ]
+    },
+    {
+      "id": "guan_fu_sui_qian",
+      "name": "官符",
+      "category": "miscellaneous",
+      "system": "岁前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "岁前十二神": 5
+        },
+        "nature": "annual_dynamic",
+        "note": "职能层 id 与博士系同名重 id，典内 id 加系统后缀消歧"
+      },
+      "original_definitions": [
+        {
+          "id": "guan_fu_sui_qian.cycle",
+          "concept": "公庭符印",
+          "definition": "系于官府文书会聚之象。"
+        },
+        {
+          "id": "guan_fu_sui_qian.temperament",
+          "concept": "干官近法",
+          "definition": "心性近于公庭律令，戒慎所生。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "guan_fu_sui_qian.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加与规则、公家事务或正式手续打交道的主题。",
+          "derived_from": [
+            "guan_fu_sui_qian.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必然发生诉讼。"
+        }
+      ]
+    },
+    {
+      "id": "bai_hu",
+      "name": "白虎",
+      "category": "miscellaneous",
+      "system": "岁前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "岁前十二神": 9
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "bai_hu.cycle",
+          "concept": "金神之烈",
+          "definition": "西方猛精之象，其锐如刃。"
+        },
+        {
+          "id": "bai_hu.temperament",
+          "concept": "血刃相属",
+          "definition": "古人系伤折惊信之象，以为检敛之警。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "bai_hu.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加冲动、急迫与煞曜被触发的可能。",
+          "derived_from": [
+            "bai_hu.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不应直接推断伤灾。"
+        }
+      ]
+    },
+    {
+      "id": "diao_ke",
+      "name": "吊客",
+      "category": "miscellaneous",
+      "system": "岁前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "岁前十二神": 11
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "diao_ke.cycle",
+          "concept": "吊问之使",
+          "definition": "象吊唁问病之仪，忧信相寻。"
+        },
+        {
+          "id": "diao_ke.temperament",
+          "concept": "聚散循环",
+          "definition": "系亲故合散之象。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "diao_ke.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加短期低落与对负面消息的敏感。",
+          "derived_from": [
+            "diao_ke.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不应直接推断丧事。"
+        }
+      ]
+    },
+    {
+      "id": "jiang_xing",
+      "name": "将星",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 1
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "jiang_xing.cycle",
+          "concept": "军旗之枢",
+          "definition": "如军之旗鼓，众精所会。"
+        },
+        {
+          "id": "jiang_xing.temperament",
+          "concept": "主权主众",
+          "definition": "有令众整肃不散之象。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "jiang_xing.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "短期增强精神、行动状态与能量表现。",
+          "derived_from": [
+            "jiang_xing.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必然获得权力。"
+        }
+      ]
+    },
+    {
+      "id": "pan_an",
+      "name": "攀鞍",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 2
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "pan_an.cycle",
+          "concept": "鞍马装备",
+          "definition": "系功名鞍马、行役将作之象。"
+        },
+        {
+          "id": "pan_an.temperament",
+          "concept": "显名之阶",
+          "definition": "观瞻望表著之机。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "pan_an.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "短期增加曝光、被看见和建立名望的机会。",
+          "derived_from": [
+            "pan_an.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；知名度仍依赖现实成果。"
+        }
+      ]
+    },
+    {
+      "id": "sui_yi",
+      "name": "岁驿",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 3
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "sui_yi.cycle",
+          "concept": "驿骑驰传",
+          "definition": "象传驿奔走，马不停行。"
+        },
+        {
+          "id": "sui_yi.temperament",
+          "concept": "迁移应机",
+          "definition": "系变动换易之象。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "sui_yi.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加改变、迁动、奔忙与转换环境的主题。",
+          "derived_from": [
+            "sui_yi.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于一定搬迁。"
+        }
+      ]
+    },
+    {
+      "id": "xi_shen_jiang_qian",
+      "name": "息神",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 4
+        },
+        "nature": "annual_dynamic",
+        "note": "职能层 id 与博士系同名重 id，典内 id 加系统后缀消歧"
+      },
+      "original_definitions": [
+        {
+          "id": "xi_shen_jiang_qian.cycle",
+          "concept": "止息之辰",
+          "definition": "象气入于止，事趋于息。"
+        },
+        {
+          "id": "xi_shen_jiang_qian.temperament",
+          "concept": "匿而不作",
+          "definition": "性好伏藏，不乐兴作。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "xi_shen_jiang_qian.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "降低短期意志与持续投入，容易产生放弃念头。",
+          "derived_from": [
+            "xi_shen_jiang_qian.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不代表事情必然失败。"
+        }
+      ]
+    },
+    {
+      "id": "jie_sha",
+      "name": "劫煞",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 6
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "jie_sha.cycle",
+          "concept": "中止之象",
+          "definition": "三合终气，如柱坏屋倾，有中止之质。"
+        },
+        {
+          "id": "jie_sha.temperament",
+          "concept": "惊觉之机",
+          "definition": "亦司警催之任，以观转圜。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "jie_sha.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加突然压力与资源被打断的感受。",
+          "derived_from": [
+            "jie_sha.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不应直接推断灾祸。"
+        }
+      ]
+    },
+    {
+      "id": "zai_sha",
+      "name": "灾煞",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 7
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "zai_sha.cycle",
+          "concept": "灾病之会",
+          "definition": "系于水火侵扰之象。"
+        },
+        {
+          "id": "zai_sha.temperament",
+          "concept": "临之知警",
+          "definition": "所以先事而豫备也。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "zai_sha.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加意外困扰与临时问题的可能。",
+          "derived_from": [
+            "zai_sha.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不应直接推断灾难。"
+        }
+      ]
+    },
+    {
+      "id": "tian_sha",
+      "name": "天煞",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 8
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "tian_sha.cycle",
+          "concept": "天谴之象",
+          "definition": "系于上位众论所非之象。"
+        },
+        {
+          "id": "tian_sha.temperament",
+          "concept": "刚直好辨",
+          "definition": "性严直，有分争之质。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "tian_sha.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加来自上位者、长辈或规则的压力。",
+          "derived_from": [
+            "tian_sha.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；需结合对应宫位辨认对象。"
+        }
+      ]
+    },
+    {
+      "id": "zhi_bei",
+      "name": "指背",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 9
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "zhi_bei.cycle",
+          "concept": "背后指目",
+          "definition": "系于讥议嫉妒之象，不见而常觉。"
+        },
+        {
+          "id": "zhi_bei.temperament",
+          "concept": "谨口护信",
+          "definition": "观交信之防也。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "zhi_bei.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加被议论、误解或沟通留痕的风险。",
+          "derived_from": [
+            "zhi_bei.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必有小人。"
+        }
+      ]
+    },
+    {
+      "id": "yue_sha",
+      "name": "月煞",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 11
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "yue_sha.cycle",
+          "concept": "六亲相攻",
+          "definition": "系于亲故财物纠缠之象。"
+        },
+        {
+          "id": "yue_sha.temperament",
+          "concept": "阴柔之扰",
+          "definition": "象从阴性阴事而来。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "yue_sha.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加来自女性关系或阴性环境的短期压力。",
+          "derived_from": [
+            "yue_sha.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不能泛化为对所有女性的不利判断。"
+        }
+      ]
+    },
+    {
+      "id": "wang_shen",
+      "name": "亡神",
+      "category": "miscellaneous",
+      "system": "将前十二神",
+      "entry_revision": 1,
+      "attributes": {
+        "orders": {
+          "将前十二神": 12
+        },
+        "nature": "annual_dynamic",
+        "note": ""
+      },
+      "original_definitions": [
+        {
+          "id": "wang_shen.cycle",
+          "concept": "沉密之神",
+          "definition": "得位则内深沉而机敏过人。"
+        },
+        {
+          "id": "wang_shen.temperament",
+          "concept": "疏忽之失",
+          "definition": "失位则心广而疏，有遗失之象。"
+        }
+      ],
+      "derived_definitions": [
+        {
+          "id": "wang_shen.temper_scope",
+          "scenario": "气质与状态",
+          "meaning": "增加疏忽、遗失与无效消费的可能。",
+          "derived_from": [
+            "wang_shen.temperament"
+          ],
+          "boundary": "只述司职与所主之象，不作吉凶、际遇推断；不等同于必然丢失财物。"
+        }
+      ]
     }
   ],
   "coverage": {
@@ -3582,9 +4680,9 @@
       "complete": true
     },
     "miscellaneous_stars": {
-      "configured": 51,
+      "configured": 79,
       "complete": true,
-      "next_step": "B9 批次1·长生十二神已入库（D4=A）；批次2·岁前将前系与批次3·杂系继续；《三命通会》卷次出处待校勘补录"
+      "next_step": "B9 批次2·博士/岁前/将前三系 28 条已入库（三系 36 memberships 全量 orders 交叉锁）；批次3 仅余 天解、截空（安法出处待考，宁缺毋伪）；《三命通会》卷次 source_ref 待联网校勘补录"
     }
   },
   "maintenance": {

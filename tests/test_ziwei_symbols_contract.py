@@ -120,10 +120,84 @@ class ZiWeiSymbolsEngineTests(unittest.TestCase):
             for word in banned:
                 self.assertNotIn(word, blob, f"{entry['name']} 释义含禁断语词 {word}")
 
-        self.assertEqual(dictionary["dictionary_version"], "1.1.0")
+        self.assertGreaterEqual(
+            tuple(int(x) for x in dictionary["dictionary_version"].split(".")), (1, 1),
+            "批次一入库后字典版本须 ≥1.1.0")
         self.assertEqual(
             dictionary["coverage"]["miscellaneous_stars"]["configured"],
             len(dictionary["stars"]) - 28, "coverage 计数须等于非本/辅核心条目数")
+
+    def test_shensha_batch2_cross_locks(self):
+        """B9 批次二（D4=A，2026-09-21）：博士/岁前/将前三系年煞全量交叉锁。
+
+        ① 三系 36 memberships（12×3）逐星逐位 == 内核枚举序（attributes.orders）；
+        ② 28 条新入典条目 id == 职能层 id（重名重 id 者按文档化后缀消歧：
+           岁前官符 guan_fu_sui_qian、将前息神 xi_shen_jiang_qian）；
+        ③ 新条目 derived 之 meaning/boundary == 职能层 key_effect/boundary 原文；
+        ④ 典内 id、星名全局唯一；禁吉凶断语词；版本钉 1.2.0。
+        """
+        import re
+        src = (PROJECT_ROOT / "src" / "zi_wei" / "zi_wei_constants.cppm").read_text(
+            encoding="utf-8")
+        enums = {}
+        for enum, label in (("BoShi12", "博士十二神"), ("SuiQian12", "岁前十二神"),
+                            ("JiangQian12", "将前十二神")):
+            block = re.search(rf"struct ZhMap<{enum}>.*?std::array\{{(.*?)\}};",
+                              src, re.S)
+            self.assertIsNotNone(block, f"内核 {enum} 中文映射未找到")
+            enums[label] = re.findall(r'"([^"]+)"sv', block.group(1))
+            self.assertEqual(len(enums[label]), 12)
+
+        dictionary = json.loads(DICTIONARY_PATH.read_text(encoding="utf-8"))
+        stars = dictionary["stars"]
+        shen_sha = json.loads(
+            (PROJECT_ROOT / "config" / "ziwei" / "shen_sha_dictionary.json")
+            .read_text(encoding="utf-8"))
+        func = {}
+        for sysid, label in (("bo_shi_12", "博士十二神"), ("sui_qian_12", "岁前十二神"),
+                             ("jiang_qian_12", "将前十二神")):
+            func[label] = shen_sha["systems"][sysid]["entries"]
+
+        # ① 36 memberships 全量序锁
+        for label, names in enums.items():
+            for idx, name in enumerate(names, start=1):
+                hits = [e for e in stars
+                        if e["name"] == name
+                        and e.get("attributes", {}).get("orders", {}).get(label) == idx]
+                self.assertEqual(len(hits), 1,
+                                 f"{label}·{name} 序位 {idx} 交叉锁失配（命中 {len(hits)} 条）")
+
+        # ②③ 28 条新入典（system 即三系标签之一）：id + 职能层文本一致
+        new_entries = [e for e in stars if e.get("system") in enums]
+        self.assertEqual(len(new_entries), 28)
+        suffix = {("官符", "岁前十二神"): "_sui_qian",
+                  ("息神", "将前十二神"): "_jiang_qian"}
+        for e in new_entries:
+            expect = func[e["system"]][e["name"]]["id"] + suffix.get(
+                (e["name"], e["system"]), "")
+            self.assertEqual(e["id"], expect, f"{e['name']} id 失锁")
+            d0 = e["derived_definitions"][0]
+            self.assertEqual(d0["meaning"],
+                             func[e["system"]][e["name"]]["key_effect"],
+                             f"{e['name']} derived meaning 与职能层失锁")
+            self.assertTrue(d0["boundary"].endswith(
+                func[e["system"]][e["name"]]["boundary"]),
+                f"{e['name']} boundary 未包含职能层原文")
+
+        # ④ 唯一性 + 禁断语 + 版本
+        ids = [e["id"] for e in stars]
+        self.assertEqual(len(ids), len(set(ids)), "典内 id 重复")
+        names = [e["name"] for e in stars]
+        self.assertEqual(len(names), len(set(names)), "典内星名重复")
+        banned = ("主吉", "主凶", "大吉", "大凶", "富贵", "贫贱", "寿夭", "凶丧")
+        for e in new_entries:
+            blob = json.dumps(e, ensure_ascii=False)
+            for word in banned:
+                self.assertNotIn(word, blob, f"{e['name']} 释义含禁断语词 {word}")
+        self.assertEqual(dictionary["dictionary_version"], "1.2.0")
+        self.assertEqual(
+            dictionary["coverage"]["miscellaneous_stars"]["configured"],
+            len(stars) - 28)
 
     def test_pattern_catalog_validates_against_kernel_symbols(self):
         """格局引擎用内核符号全集做 known_star_names 也能加载 → 规则库无越界星名。"""
