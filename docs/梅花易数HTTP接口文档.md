@@ -91,6 +91,30 @@ python3 web/server.py
 - 旺衰：体用两卦各按《翼氏大典》月令五态通行表（与六爻内核共用同一函数，
   DEF-4 修复后口径；`tests/test_meihua_plate_contract.py` 书例全锁）。
 
+## 卦面画像（人性化图表数据包，M4）
+
+`POST /api/v1/mei-hua/distribution`
+
+入参：`{"chart": <事实盘对象>}`（即 `/api/v1/mei-hua/plates` 的 data）或
+`{"chart_request": {mode, calendar, date, numbers?}}`（服务端代起卦，二选一），
+可选 `"label"`（≤60 字符）。梅花 CLI 无 operation 字段，`chart_request` 原样透传。
+
+返回 `meihua-distribution/1.0` 数据包，与其他平台画像同构（三环形图 + 底色总结，
+跨图箴言以"×"拼接）：
+
+- `charts[signs]` 三卦六体五行：本/互/变三卦上下经卦共六卦的五行归类（木火土金水），
+  六卦允许重复，看卦气的连片与呼应；
+- `charts[states]` 六卦月令旺衰：同一六卦各按月令五态（旺相休囚死）分布；
+- `charts[polarity]` 本卦阴阳爻结构：六爻阴阳计数；
+- 顶层 `summary_zh` 三合一底色句；文案只述卦气与状态，**无吉凶断语**——
+  梅花 calibration 仍为 pending，断语层待书例校勘与案例校准后评审接入。
+
+数据源全部为事实盘既有字段（`meihua-plate/1.0` 契约对象），画像侧带**运行时内核
+交叉锁**：起卦月份/体用旺衰与内核 ti/yong 字段逐位比对，任何漂移拒绝出图
+（`tests/test_meihua_distribution.py` 双锁：静态契约 + 交叉锁行为）。
+错误：入参非法 400 `INVALID_REQUEST`、配置错 500 `ANALYSIS_CONFIG_ERROR`、
+引擎异常 422、超时 504。
+
 ## 错误
 
 无效入参返回 422 + `{"error": {"code": "INVALID_ARGUMENT", "message": "..."}}`：
