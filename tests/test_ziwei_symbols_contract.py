@@ -82,6 +82,49 @@ class ZiWeiSymbolsEngineTests(unittest.TestCase):
         )
         self.assertEqual(unknown, [], "symbolism_dictionary 含内核未知星名")
 
+    def test_changsheng12_batch1_cross_locks(self):
+        """B9 批次一（D4=A，2026-09-21）：长生十二神入库三重交叉锁。
+
+        ① 典内 12 条次序 == 内核 ChangSheng12 枚举中文映射序；
+        ② 条目 id == shen_sha_dictionary.chang_sheng_12（职能层）id；
+        ③ 释义禁吉凶断语色彩词；coverage/version 联动 1.1.0。
+        """
+        import re
+        src = (PROJECT_ROOT / "src" / "zi_wei" / "zi_wei_constants.cppm").read_text(
+            encoding="utf-8")
+        block = re.search(r"struct ZhMap<ChangSheng12>.*?std::array\{(.*?)\};",
+                          src, re.S)
+        self.assertIsNotNone(block, "内核 ChangSheng12 中文映射未找到（源结构变更请同步）")
+        kernel_order = re.findall(r'"([^"]+)"sv', block.group(1))
+        self.assertEqual(len(kernel_order), 12)
+
+        dictionary = json.loads(DICTIONARY_PATH.read_text(encoding="utf-8"))
+        entries = [e for e in dictionary["stars"] if e.get("system") == "长生十二神"]
+        self.assertEqual(len(entries), 12)
+        by_order = sorted(entries, key=lambda e: e["attributes"]["stage_order"])
+        self.assertEqual([e["name"] for e in by_order], kernel_order,
+                         "stage_order 必须与内核枚举序逐位一致")
+        self.assertTrue(set(kernel_order) <= set(self.symbols["all_star_names"]))
+
+        shen_sha = json.loads(
+            (PROJECT_ROOT / "config" / "ziwei" / "shen_sha_dictionary.json")
+            .read_text(encoding="utf-8"))
+        func = shen_sha["systems"]["chang_sheng_12"]["entries"]
+        for entry in entries:
+            self.assertEqual(entry["id"], func[entry["name"]]["id"],
+                             f"{entry['name']} 与职能字典 id 失锁")
+
+        banned = ("主吉", "主凶", "大吉", "大凶", "富贵", "贫贱", "寿夭", "凶丧")
+        for entry in entries:
+            blob = json.dumps(entry, ensure_ascii=False)
+            for word in banned:
+                self.assertNotIn(word, blob, f"{entry['name']} 释义含禁断语词 {word}")
+
+        self.assertEqual(dictionary["dictionary_version"], "1.1.0")
+        self.assertEqual(
+            dictionary["coverage"]["miscellaneous_stars"]["configured"],
+            len(dictionary["stars"]) - 28, "coverage 计数须等于非本/辅核心条目数")
+
     def test_pattern_catalog_validates_against_kernel_symbols(self):
         """格局引擎用内核符号全集做 known_star_names 也能加载 → 规则库无越界星名。"""
         from ziwei_pattern_engine import load_pattern_catalog
