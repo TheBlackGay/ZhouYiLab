@@ -31,7 +31,7 @@
 | --- | --- | --- |
 | 紫微斗数 | 可用 | 本命盘、真太阳时、大限、小限、流年、流月、流日、流时、四化、神煞与亮度 |
 | 紫微结构解读 | 可用 | 十二宫结构化碎片、三方四正证据、格局归属、成格/增强/减弱/破格状态 |
-| 分布画像（人性化） | 可用 | 占星与紫微同款图表数据包 API：三环形图 + 暖场解读 + 整体底色总结，星性数据一律源自内核文档库 |
+| 分布画像（人性化） | 可用 | 六平台同款图表数据包 API（`/api/v1/<模块>/distribution`）：西洋占星/紫微/八字/六爻/梅花/大六壬，三环形图 + 暖场解读 + 整体底色总结；图示数据一律源自内核事实字段，梅花侧带运行时内核交叉锁（漂移拒出图） |
 | 紫微格局引擎 | 可用 | 39 条声明式规则配置，逐宫匹配、条件追踪、规则库清单与未命中展示 |
 | 奇门遁甲 | 可用 | 拆补法时家转盘奇门、公历/农历起局、九宫盘、直符直使与学习提示 |
 | 紫微盲评研究 | 可用 | 匿名盲评包、维度量尺、协议与一致性研究配置 |
@@ -40,7 +40,7 @@
 | 西洋占星 | 实验性 | Swiss Ephemeris 本命盘、主要行星、四轴、十二宫、主要相位、黄道与宫位布局速读、逐点位/十二宫/相位解读卡片和 Moshier 降级提示 |
 | 大六壬 | 2.1.0 开发中 | 快速/专业双模式、问题上下文、术语口径弹层、`meta.rule_profile` 规则口径；2.1.0 新增天地盘 SVG 可视化（十二宫位、上神/神将/遁干/三传徽章/旬空）；算法仍待校准，不断吉凶 |
 | 六爻 | 页面可用 | 排盘含纳甲/六神/伏神/旺衰/变卦、摇卦模拟器与 AI 素材导出；口径已定（《增删卜易》为主，D1=A），案例校准中 |
-| 梅花易数 | 页面可用 | 时间/报数起卦，本互变三卦、体用生克与月令旺衰事实盘（M1-M2，2026-09-20）；断语未上线 |
+| 梅花易数 | 页面可用 | 时间/报数起卦，本互变三卦、体用生克与月令旺衰事实盘（M1-M2）+ 体用分布画像（M4）+ 盘面事实案例库 staged（M3）；书例校勘进行中；断语未上线 |
 
 ## 快速开始
 
@@ -339,11 +339,15 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 | POST | `/api/v1/ziwei/fortune` | 生成紫微命盘及运限 |
 | POST | `/api/v1/ziwei/analysis` | 生成本命结构解读与格局结果 |
 | POST | `/api/v1/qimen/charts` | 生成奇门遁甲盘 |
+| POST | `/api/v1/liu-yao/charts` | 生成六爻卦盘（纳甲/六神/六亲/伏神/旺衰/世应/变卦，含 `meta.rule_profile`） |
+| POST | `/api/v1/liu-yao/distribution` | 六爻卦面画像（六亲重心/爻之五行/月令旺衰五态三图） |
 | POST | `/api/v1/da-liu-ren/charts` | 生成大六壬课盘（含 `meta.rule_profile` 口径标识） |
 | GET | `/api/v1/da-liu-ren/glossary` | 大六壬术语与当前实现口径 |
 | POST | `/api/v1/da-liu-ren/distribution` | 六壬盘面画像图表数据包（上神五行/遁干/阴阳 + 气象解读） |
 | POST | `/api/v1/mei-hua/plates` | 梅花易数起卦事实盘（时间/报数→本互变+体用+月令旺衰，含 `meta.rule_profile`） |
+| POST | `/api/v1/mei-hua/distribution` | 梅花体用画像（三卦六体五行/六卦旺衰/本卦阴阳结构三图；运行时内核交叉锁） |
 | POST | `/api/v1/bazi/charts` | 生成八字四柱与大运 |
+| POST | `/api/v1/bazi/distribution` | 八字画像（干支五行/十神五类/干之阴阳底色三图） |
 | GET | `/api/v1/astro/meta` | 西洋占星能力和版本信息 |
 | POST | `/api/v1/astro/charts` | 使用 Swiss Ephemeris 生成西洋星盘 |
 | POST | `/api/v1/astro/transits` | 计算指定时刻的行运事实包 |
@@ -352,6 +356,7 @@ ZHOUYILAB_PORT=9000 docker compose up -d
 | POST | `/api/v1/astro/daily-reading` | 将生活领域信号渲染为无评分日运解析包 |
 | POST | `/api/v1/astro/natal-analysis` | 将本命盘读成黄道与宫位布局统计、原始信号和规则命中 |
 | POST | `/api/v1/astro/natal-reading` | 将布局统计与规则命中渲染为无评分布局速读解析包 |
+| POST | `/api/v1/astro/distribution` | 占星分布画像（元素/阴阳/三性质三图） |
 | GET | `/api/v1/ziwei/research/blind-review/packet` | 生成匿名盲评包 |
 | GET/POST | `/api/v1/ziwei/research/ai-review/*` | AI 预评审配置、实验和结果 |
 
