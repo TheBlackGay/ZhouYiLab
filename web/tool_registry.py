@@ -107,6 +107,7 @@ def builtin_tools():
             "name": "八字",
             "engine_cli": "build/examples/ba_zi_web_cli",
             "calibration_status": "in_progress",
+            "interface_doc": "docs/八字HTTP接口文档.md",
             "pages": ["bazi.html"],
             "api_prefixes": ["/api/v1/bazi/"],
             "routes": [
@@ -122,6 +123,7 @@ def builtin_tools():
             "name": "六爻",
             "engine_cli": "build/examples/liu_yao_web_cli",
             "calibration_status": "in_progress",
+            "interface_doc": "docs/六爻HTTP接口文档.md",
             "pages": ["liu-yao.html"],
             "api_prefixes": ["/api/v1/liu-yao/"],
             "routes": [
