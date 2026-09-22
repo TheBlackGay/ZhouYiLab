@@ -325,6 +325,17 @@ public:
         nlohmann::json j = pan;
         return j;
     }
+
+    /**
+     * @brief 获取奇门盘的 ordered_json 对象（保键序）
+     *
+     * DEF-6 回退方案的通道：CLI 层直接拿对象追加 meta 等纯新增成员后
+     * 一次 dump，无需把序列化字符串再 parse 回去（历史 ordered_json::parse
+     * 段错误路径彻底绕开），也不动旧字段与键序。
+     */
+    [[nodiscard]] static auto get_pan_ordered_json(const QiMenPan& pan) -> nlohmann::ordered_json {
+        return build_ordered_json(pan);
+    }
     
     /**
      * @brief 判断两个奇门盘是否相同

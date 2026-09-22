@@ -103,18 +103,12 @@ int main() {
             return 2;
         }
 
-        // 纯增量追加 meta.rule_profile：控制器输出的字节序列原样保留，
-        // 仅在对象收尾大括号前插入 meta 成员（大六壬 DLR-205 样板，不改旧字段）。
-        std::string pan_json = ZhouYi::QiMen::QiMenController::get_pan_json_ordered(result.value());
-        const json meta_value = {{"rule_profile", rule_profile()}};
-        std::string meta_member = "\"meta\": " + meta_value.dump(2);
-        // 除首行外整体提升缩进 2 空格，匹配外层对象的成员风格。
-        for (std::size_t pos = meta_member.find('\n'); pos != std::string::npos; pos = meta_member.find('\n', pos + 3)) {
-            meta_member.insert(pos + 1, "  ");
-        }
-        pan_json.pop_back();  // 去掉收尾 '}'
-        pan_json += ",\n  " + meta_member + "\n}";
-        std::cout << pan_json;
+        // 纯增量追加 meta.rule_profile（DEF-6 回退对象方案）：控制器给出
+        // ordered_json 对象，CLI 合并 meta 后一次 dump(2)；键序由 ordered_json
+        // 保持，meta 内 json 成员为字典序——与原字符串拼接输出逐字节一致。
+        auto pan_json = ZhouYi::QiMen::QiMenController::get_pan_ordered_json(result.value());
+        pan_json["meta"] = json{{"rule_profile", rule_profile()}};
+        std::cout << pan_json.dump(2);
         return 0;
     } catch (const json::exception& error) {
         std::cout << error_response("INVALID_JSON", error.what()).dump();
