@@ -7,8 +7,9 @@
 - 本地开发 Base URL：`http://127.0.0.1:8768`
 - Content-Type：`application/json`
 - 当前生产域名由 HTTPS 反向代理转发至应用容器；调用方优先使用生产 Base URL，不要依赖容器端口。
-- 当前支持本命盘（`natal`）和指定时刻行运事实包（`transit`）
+- 当前支持本命盘（`natal`）、指定时刻行运事实包（`transit`）、分布画像与出生地检索
 - 角度单位为度（°），速度单位为度/日（°/day），距离单位为 AU
+- 引擎开关：清单声明 `ZHOUYILAB_ENABLE_ASTRO=OFF` 或 CLI 未构建时**仅豁免启动门槛**，本组端点始终注册；CLI 缺失时调用返回 500 `ENGINE_UNAVAILABLE`，可用 `GET /api/v1/health` 的 `astro_cli_available`/`astro_ephemeris_available` 预检
 
 所有接口使用统一响应封装：
 
@@ -18,11 +19,13 @@
   "data": {},
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-astro/0.2.0",
+    "algorithm_version": "zhouyilab-core/2.0.0",
     "request_id": "..."
   }
 }
 ```
+
+顶层 `meta.algorithm_version` 是**平台统一**版本串；占星模块自身版本 `zhouyilab-astro/0.2.0` 在 `GET /api/v1/astro/meta` 响应的 `data.algorithm_version` 中回显。
 
 ## 获取能力元数据
 
@@ -59,7 +62,7 @@
 | `include_aspects` | boolean | 否 | 是否计算主要相位，默认 `true` |
 | `allow_moshier_fallback` | boolean | 否 | 缺少 `.se1` 时是否允许降级，默认 `false` |
 
-省略 `points` 时，高精度 Swiss 模式默认返回 12 个点位（含 `chiron`）。若缺少 `.se1` 并显式允许 Moshier 降级，Moshier 不支持凯龙星，响应会跳过 `chiron`，并在 `calculation.warnings` 返回 `Moshier 模式不支持凯龙星，已跳过 chiron`；需要凯龙星时必须提供高精度星历文件。
+省略 `points` 时，高精度 Swiss 模式默认返回 12 个点位（含 `chiron`）。若缺少 `.se1` 并显式允许 Moshier 降级，`calculation.warnings` 会先后返回 `使用了 Moshier 降级模式` 与（请求含凯龙星时）`Moshier 模式不支持凯龙星，已跳过 chiron`，并跳过 `chiron`；需要凯龙星时必须提供高精度星历文件。两条文案与降级行为由 `tests/test_astro_web_contract.py` 锁定。
 
 请求示例：
 
@@ -79,9 +82,10 @@ curl -sS -X POST https://zhouyilab.k8s.gold/api/v1/astro/charts \
 
 成功响应的 `data` 包含：
 
-- `input`：标准化后的 UTC 时间、位置、黄道和宫制
-- `calculation`：`julian_day_ut`、星历来源、`precision_mode` 和警告
-- `angles`：上升点、中天、下降点、天底
+- `chart_type`：固定 `natal`
+- `input`：标准化后的 UTC 时间、位置、黄道和宫制（`utc_datetime`、`latitude`、`longitude`、`zodiac`、`ayanamsa`、`house_system` 等）
+- `calculation`：`julian_day_ut`、星历来源（`ephemeris`/`ephemeris_version`）、`precision_mode` 和 `warnings`
+- `angles`：英文键对象 `{ascendant, midheaven, descendant, imum_coeli}`，值为黄经度数
 - `planets`：黄经、黄纬、速度、星座、落宫、逆行状态
 - `houses`：十二宫宫头和星座
 - `aspects`：合相、六合、刑相、拱相、对冲及容许度
@@ -290,6 +294,49 @@ curl -sS -X POST https://zhouyilab.k8s.gold/api/v1/astro/charts \
 - `aspects`：按容许度升序排列的相位卡片，含 `label`、`tone`（`harmony` / `tension` / `merge` / `adjust`）、`orb`、`phase_label`（入相 / 出相）、`tight`（容许度不大于 3°）与 `blocks`。只描述顺畅 / 张力，不出现吉凶分类。
 
 模板配置位于 `config/astro/natal_reading_templates.json`，覆盖 `planet_core`、`sign_style`、`house_field`、`aspect_style`、`ascendant_sign`、`sun_sign`、`moon_sign`、`house_ruler`、`summary` 与 `overrides`。`load_templates` 会校验槽位是否覆盖全部点位、十二星座、十二宫与六种相位，以及模板里的占位符是否在白名单内；缺槽位或未知占位符直接返回 `ANALYSIS_CONFIG_ERROR`。`overrides` 支持三种精修粒度：`point_sign`（星体 × 座）、`point_house`（星体 × 宫）、`point_sign_house`（整段替换星座与宫位两段），未精修的条目继续走组合式。缺失模板时进入 `uncovered`，不用大模型补写。
+
+## 分布画像（人性化图表数据包）
+
+`POST /api/v1/astro/distribution`
+
+入参：`{"chart": <本命盘 data>}` 或 `{"chart_request": <本命盘入参>}`（二选一），可选 `"label"`（≤60 字符）。返回 `astro-distribution/1.0`，与其他平台画像同构：
+
+- `data.charts` 为 3 元素数组，每图以 `id` 区分：`element` 元素分布（fire/earth/air/water）、`polarity` 阴阳分布、`modality` 模式分布（cardinal/fixed/mutable）；
+- 每图元素键集 `{id, title_zh, basis_zh, point_total, dominant{key, label_zh, tag_zh, percent, tied}, segments[{key, label_zh, tag_zh, count, percent}], headline_zh, reading_zh}`，整数百分比和为 100；
+- `point_basis`：`{id: "core14", count: 14, points[{point_id, point_name, kind}], description_zh}`——十大行星（不含北交点）+ 上升/天顶/下降/天底四轴，三图共用同一分母；
+- 顶层 `summary_zh`、`label` 回显；文案来自 `config/astro/distribution_reading.json`，**无吉凶断语**。
+
+## 出生地检索（Geo）
+
+为占星与全平台排盘提供统一出生地数据（`data/geo/curated.json`，493 条精选城市）。三端点：
+
+### `GET /api/v1/geo/meta`
+
+数据集元信息：`revision`（如 `2026.09.22`）、`count`、`groups`（分组计数）、`source`、`tz_available`/`tz_path`/`tz_source`/`tzdata_version`。
+
+### `GET /api/v1/geo/places`
+
+检索端点。查询参数：
+
+| 参数 | 必填 | 说明 |
+|---|---|---|
+| `q` | 是 | 中文按名称精确/前缀/子串匹配；ASCII 按拼音/首字母/英文名/别名匹配 |
+| `limit` | 否 | 1–50，默认 20 |
+| `country` | 否 | 两位国家/地区码过滤（如 `CN`） |
+
+响应 `data`：`{query, count, revision, results[]}`；每条命中含 `{id, display, name_zh, name_en, admin1, country_zh, country_code, lat, lon, tz, level, approx_radius_km, population, matched_via, score}`。空 `q` → 400 `INVALID_REQUEST`。
+
+### `POST /api/v1/geo/place-resolve`
+
+出生地解析 + 历史时区换算。`place_id`、`query`、`latitude`+`longitude` **三者必须且只能提供一种**；`date`（含 `year/month/day`）必填；可选 `utc_offset_minutes`（整数）、`house_system`。响应 `data`：
+
+- `place`：命中的数据集条目（同 `/geo/places` 形状；坐标模式下 `display` 带"约："前缀，`provenance.derived_from="nearest"`）；
+- `location`：`{latitude, longitude}`；
+- `time`：`{utc_offset_minutes, std_offset_minutes, dst_minutes, dst_active, dst_transition?, confidence, tz_name, tz_available}`——按出生日在 IANA tz 库中解析，**自动处理历史夏令时**（如中国 1986–1991 年 6 月出生自动 +60 分钟）；
+- `provenance`：`{dataset, dataset_revision, derived_from, tzdata_version, tz_source, rule, birth_date, ...}`；
+- `warnings[]`：如 `{code: "offset_longitude_mismatch", level, text}`（提交的偏移与经度常识不符时提示，不拒单）。
+
+错误：互斥违规/缺 `date`/类型错 → 400 `INVALID_REQUEST`；查无此地（含县县级）→ 404 `PLACE_NOT_FOUND`。
 
 ## 健康检查
 
