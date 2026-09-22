@@ -28,16 +28,19 @@ https://zhouyilab.k8s.gold/api/v1/ziwei/charts
 |---|---|---|---|
 | 服务健康检查 | `GET` | `/api/v1/health` | 已实现 |
 | 紫微能力元数据 | `GET` | `/api/v1/ziwei/meta` | 已实现 |
+| 星曜名称与属性导出 | `GET` | `/api/v1/ziwei/symbols` | 已实现 |
 | 出生真太阳时校正 | `POST` | `/api/v1/ziwei/time-correction` | 已实现 |
 | 本命盘计算 | `POST` | `/api/v1/ziwei/charts` | 已实现 |
 | 运限计算 | `POST` | `/api/v1/ziwei/fortune` | 已实现 |
 | 本命十二宫结构化解读 | `POST` | `/api/v1/ziwei/analysis` | 已实现 |
+| 分布画像数据包 | `POST` | `/api/v1/ziwei/distribution` | 已实现 |
 | 本地研究盲评包 | `GET` | `/api/v1/ziwei/research/blind-review/packet` | 研究工具 |
 | AI 预评审元数据 | `GET` | `/api/v1/ziwei/research/ai-review/meta` | 研究工具 |
 | AI 模型连接测试 | `POST` | `/api/v1/ziwei/research/ai-review/connections/test` | 研究工具 |
 | AI 预评审实验 | `GET/POST` | `/api/v1/ziwei/research/ai-review/experiments` | 研究工具 |
 | AI 实验进度 | `GET` | `/api/v1/ziwei/research/ai-review/experiments/{id}` | 研究工具 |
 | AI 实验结果 | `GET` | `/api/v1/ziwei/research/ai-review/experiments/{id}/results` | 研究工具 |
+| AI 实验取消 | `POST` | `/api/v1/ziwei/research/ai-review/experiments/{id}/cancel` | 研究工具 |
 
 本命盘、真太阳时、运限和本命结构化解读已经通过接口提供。命盘解读必须遵守[紫微斗数命盘与运限分析准则](./紫微斗数命盘与运限分析准则.md)。`1.4.1` 完善格局结果的页面展示；解读接口仍只开放本命层，大限和流年结构化解读完成前不得返回占位性结果。
 
@@ -184,6 +187,8 @@ Content-Type: application/json
 }
 ```
 
+`data` 为平台级健康超集：除示例三键外，另含 `qimen_cli_available`、`bazi_cli_available`、`liu_yao_cli_available`、`da_liu_ren_cli_available`、`calendar_cli_available`、`astro_cli_available`、`mei_hua_cli_available`、`astro_ephemeris_available`、`registry_source` 与 `tools`（全平台工具注册表摘要）。紫微客户端只需关注 `cli_available`。
+
 ## 5. 能力元数据
 
 ### `GET /api/v1/ziwei/meta`
@@ -225,6 +230,22 @@ Content-Type: application/json
 }
 ```
 
+### `GET /api/v1/ziwei/symbols`
+
+返回内核版本化的星曜名与属性导出，供客户端对齐枚举，不要在本地维护星名表。`data` 结构：
+
+| 字段 | 说明 |
+|---|---|
+| `symbols_version` | 导出版本串，当前 `ziwei-symbols/1.1` |
+| `operation` | 固定 `symbols` |
+| `stars` | 五星组名数组：`zhu_xing`（14）、`fu_xing`（14）、`sha_xing`（6）、`za_yao`（44）、`shen_sha`（48） |
+| `all_star_names` | 全组并集去重后的 109 个星名 |
+| `brightness` | 亮度值集 `庙 旺 得 平 陷 不 利`（七等） |
+| `si_hua` | 四化值集 `化禄 化权 化科 化忌` |
+| `palaces` / `heavenly_stems` / `earthly_branches` / `five_elements` | 十二宫次、十天干、十二地支、五行表 |
+| `star_temperament` | 34 项星性条目 `{name, group, element, polarity, key_trait}`（十四主星+十四吉星+六煞星） |
+| `meta.rule_profile` | 口径自述块，与各 POST 端点 `data.meta` 同源 |
+
 ## 6. 本地研究盲评包
 
 ### `GET /api/v1/ziwei/research/blind-review/packet`
@@ -246,9 +267,13 @@ GET /api/v1/ziwei/research/blind-review/packet?seed=pilot-2026
 响应中的 `data` 包含：
 
 - `packet_id`：包版本与种子的稳定指纹。
-- `dimensions`：冻结的研究维度及定义。
-- `cases`：随机化后的匿名案例与可见事实。
+- `dimensions`：冻结的研究维度及定义（11 维，各含 `id/name/definition/positive_direction/negative_direction/includes/excludes`）。
+- `cases`：随机化后的匿名案例与可见事实，每项 `{case_code, focus, ratings, source_layer, stars, transformation_signals}`；`case_code` 为原始案例 ID 的单向哈希。
 - `submission_template`：评分提交模板。
+- `dimension_dictionary_version` / `experiment_version`：维度词典与研究协议版本（实验版本当前 `0.1.0`）。
+- `protocol`：`{id, version}`，如 `protocol.lianzhen_qisha.blind_review`。
+- `rating_scale`：`{allowed_values: [-1, -0.5, 0, 0.5, 1], anchors}`，锚点为中文量尺描述。
+- `instructions`、`fixture_boundary`：作答说明与题面边界声明。
 
 默认响应绝不包含 `answer_key`、原始实验案例 ID、预期结果或格局名称。带答案映射的包只能由研究负责人在命令行离线生成，HTTP 接口不提供该能力。
 
@@ -357,7 +382,7 @@ AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统�
 |---|---|---|
 | `solar_date` | string | 排盘使用的阳历日期 |
 | `lunar_date` | string | 农历日期 |
-| `lunar_hour` | string | 农历时辰 |
+| `lunar_hour` | string | 农历完整时间串（含年月日与时柱，如 `农历庚午年五月廿三乙未时`） |
 | `gender` | string | `男` 或 `女`，属于展示值 |
 | `birth_time` | object | 完整出生时间校正明细 |
 | `si_zhu` | object | 年、月、日、时四柱 |
@@ -365,9 +390,11 @@ AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统�
 | `ming_gong_index` | integer | 命宫索引，以寅宫为 `0` |
 | `shen_gong_index` | integer | 身宫索引，以寅宫为 `0` |
 | `palaces` | array | 十二宫数据，固定 12 项 |
-| `ge_ju` | object | 当前 C++ 格局分析结果 |
-| `si_hua` | object | 宫干四化和自化数据 |
-| `da_xian` | array | 十二个大限区间 |
+| `ge_ju` | object | `{ji_ge[], xiong_ge[], total_score}`；仅为兼容导出、非权威格局结论（口径见 `data.meta.rule_profile.ge_ju_note`） |
+| `si_hua` | object | `{gong_gan_si_hua[], zi_hua[]}`。`gong_gan_si_hua` 每项 `{gong_gan, gong_index, si_hua_list[]}`，`si_hua_list` 每项 `{star, to_gong, type}`（type ∈ `化禄/化权/化科/化忌`）；`gong_gan` 返回拼音罗马音（`Jia/Yi/Bing/Ding/Wu/Ji/Geng/Xin/Ren/Gui`），星名与 type 为中文。`zi_hua` 每项 `{gong_index, types[]}` |
+| `da_xian` | array | 十二个大限区间，每项 `{gong_index, gan_zhi, start_age, end_age, si_hua[]}`；`si_hua` 为禄权科忌四星名数组 |
+| `meta` | object | 口径自述块：`{rule_profile: {profile_version, calibration_status, rules}}`，当前 `ziwei-rules/2.0`。供调用方对齐内核口径与调试，字段键稳定 |
+| `brightness_table_version` | string | 亮度表版本，当前 `1.0.0`（值域七等见 `/api/v1/ziwei/symbols` 的 `brightness`） |
 
 ### 8.1 Palace 宫位对象
 
@@ -537,6 +564,18 @@ AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统�
 
 `fortune` 只包含请求的层级。客户端必须按字段是否存在进行渲染，不能假设六层始终全部返回。
 
+各层对象的键集（实测）：
+
+| 层 | 键 |
+|---|---|
+| `da_xian` | `age_range`（`"35-44"` 形式的字符串）、`gan_zhi`、`palace_index`、`palace`、`si_hua[]`、`transit_stars[]` |
+| `xiao_xian` | `age`、`palace_index`、`palace`（无四化与流曜） |
+| `liu_nian` | `gan_zhi`、`palace_index`、`palace`、`si_hua[]`、`transit_stars[]` |
+| `liu_yue` | 同 `liu_nian`，另含 `dou_jun_index`、`dou_jun_palace`（斗君起流月） |
+| `liu_ri` / `liu_shi` | 同 `liu_nian` |
+
+层级 `si_hua[]` 固定四条、按禄权科忌排序，每项 `{"type": "禄|权|科|忌", "star": "星名"}`。`target.requested_layers` 的回显按字母排序，不保留提交顺序。
+
 除小限外，各层的 `transit_stars` 返回魁、钺、昌、曲、禄、羊、陀、马、鸾、喜十类流曜；流年另含年解（流年 11 项、流月/流日/流时 10 项，上文示例数组为节选）。`name` 是标准星名，`display_name` 是层级简称：大限使用“大”前缀，流年、流月、流日、流时分别使用“年、月、日、时”，例如天喜显示为“大喜、年喜、月喜、日喜、时喜”。`liang_du` 按实际落宫从亮度配置补充，无资料时省略。
 
 ## 10. 状态码与错误码
@@ -694,15 +733,21 @@ POST /api/calculate
   "effect_subject": ["哺育与保护来源", "直接权威", "认可与文书", "上层传递"],
   "facts": {
     "focus_palace": "父母宫",
+    "focus_palace_index": 6,
     "physical_palace": "父母宫",
+    "physical_palace_index": 6,
     "relation": "self",
     "star": "铃星",
+    "star_category": "malefic",
+    "signal_type": "核心象义",
     "brightness": "平",
     "transformation": null
   },
   "palace_original_meanings": [],
   "star_original_meanings": [],
   "star_derived_meanings": [],
+  "meaning_formula": "焦点宫作用对象 × 星曜作用机制 × 宫位关系 × 修正因素",
+  "related_fragment_ids": [],
   "modifiers": [],
   "evidence": [],
   "confidence": {
@@ -711,6 +756,8 @@ POST /api/calculate
   }
 }
 ```
+
+逐宫视图 `palaces[]` 每项含 `{palace_index, palace, gan_zhi, layer, facts, four_directions, fragments, sections, signal_summary}`；`signal_summary` 为 `{core, supporting, tensions, coverage}`。碎片共享同一公共键集，按 `type` 另有专属键：`transformation` 增 `boundary`；`shen_sha_in_palace` 增 `boundary` 与 `summary`；`palace_symbolism` 的象义键不带 `palace_`/`star_` 前缀，名为 `original_meanings`/`derived_meanings`；`four_directions` 与 `star_in_palace` 键集相同。示例中的空数组均为示意，实际内容按命盘填充。格局（`pattern`）碎片只出现在顶层 `analysis.fragments` 扁平列表，不在 `palaces[].fragments` 内（实测键集：`{fragment_id, type, source_layer, effect_palace, effect_subject, facts, condition_trace, interpretation_template, modifiers, evidence, confidence, summary}`）。
 
 格局碎片在通用字段之外还返回规则状态、条件轨迹和修正条件：
 
@@ -938,9 +985,9 @@ curl -sS \
 
 返回 `astro-distribution` 同构数据包（schema `ziwei-distribution/1.0`）：
 
-- `charts[temperament]` 星系气质：全盘在场星（core28）按内核星性五行归类（火木土金水），整数百分比和为 100；
-- `charts[polarity]` 阴阳星性：阳性星（发射型）/ 阴性星（吸收型）；
-- `charts[light]` 星光明暗：十四主星实际亮度归组——庙旺（全光）/ 得平（恒光）/ 陷不利（烛光），分母自释；
+- `data.charts` 为 3 元素**数组**，每图以 `id` 区分：`temperament` 星系气质（全盘在场星按内核星性五行归类，火木土金水）、`polarity` 阴阳星性（阳性星发射型/阴性星吸收型）、`light` 星光明暗（十四主星实际亮度归组——庙旺（全光）/得平（恒光）/陷不利（烛光））；每图整数百分比和为 100，分母在 `basis_zh` 自释；
+- 每图元素键集 `{id, title_zh, basis_zh, point_total, dominant{key, label_zh, tag_zh, percent, tied}, segments[{key, label_zh, tag_zh, count, percent}], headline_zh, reading_zh}`；
+- `point_basis`：`{id: "presence28", description_zh, count, points[{point_id, point_name, kind}]}`；基集为十四主星+六吉+六煞+二辅按名去重（吉煞两组在文档上有重叠，去重后上限 28），`count` 为本盘实际在场数；顶层另回显 `label`；
 - 每图 `headline_zh / reading_zh` 与顶层 `summary_zh` 文案全部来自声明式配置 `config/ziwei/distribution_reading.json`（模板插值，不生成断语）；
-- 星性（五行、阴阳）与亮度数据源为内核 `symbols` 导出（ziwei-symbols/1.1 `star_temperament`），配置层无手编映射。
+- 五行与阴阳取自内核 `symbols` 导出（ziwei-symbols/1.1 `star_temperament`，34 星）；亮度分组取自本命盘各星 `liang_du` 字段按庙旺/得平/陷不利固定映射，配置层无手编映射。
 
