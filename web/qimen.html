@@ -64,6 +64,7 @@
           </div>
           <label for="qimen-time">时间</label>
           <input id="qimen-time" type="time" step="60" required>
+          <button class="secondary-action compact-action" type="button" data-current-time data-date-input="#solar-date" data-time-input="#qimen-time">当前时间</button>
           <label class="toggle-row" for="true-solar"><span><strong>启用真太阳时</strong><small>校正后时间用于起局</small></span><input id="true-solar" type="checkbox" checked></label>
           <div id="solar-options">
             <label for="longitude">出生地经度</label>
@@ -242,6 +243,7 @@
     </div>
   </dialog>
   <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
   <script src="/navigation.js" defer></script>
   <script src="/qimen_learning.js" defer></script>
   <script>

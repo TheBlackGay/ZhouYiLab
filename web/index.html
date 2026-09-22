@@ -83,6 +83,7 @@
             <div><label for="target-time">目标时间</label><input id="target-time" type="time" value="15:05" step="60" required></div>
             <div><label for="age">虚岁</label><input id="age" type="number" min="1" max="150" value="33" required></div>
           </div>
+          <button class="secondary-action compact-action" type="button" data-current-time data-date-input="#target-date" data-time-input="#target-time">当前时间</button>
         </section>
 
         <button class="primary-action" type="submit"><span class="button-label">开始排盘</span><span class="spinner" aria-hidden="true"></span></button>
@@ -191,6 +192,7 @@
   </main>
 
   <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
   <script src="/navigation.js" defer></script>
   <script>
     window.PLACE_PICKER_CONFIG = {

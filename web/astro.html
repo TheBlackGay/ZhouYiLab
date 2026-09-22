@@ -51,6 +51,7 @@
           <input id="astro-date" type="date" value="1990-05-20" required>
           <label for="astro-time">出生时间</label>
           <input id="astro-time" type="time" value="14:00" step="1" required>
+          <button class="secondary-action compact-action" type="button" data-current-time data-date-input="#astro-date" data-time-input="#astro-time">当前时间</button>
         </section>
 
         <section class="form-section" id="astro-place-section">
@@ -201,6 +202,7 @@
     </section>
   </main>
   <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
   <script src="/navigation.js" defer></script>
   <script>
     // 出生地点组件适配器（§5.2）：本页只声明「挂载点 + 输出 id + 模式」，

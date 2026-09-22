@@ -48,6 +48,7 @@
           <p class="field-help">闰月取数按十五分界：十五日前作本月，十六日起作下月。</p>
         </div>
         <label for="hour">时辰（0-23 时）</label><input id="hour" type="number" value="16" min="0" max="23" required>
+        <button class="secondary-action compact-action" type="button" data-current-time data-year-input="#year" data-month-input="#month" data-day-input="#day" data-hour-input="#hour" data-minute-input="#minute">当前时间</button>
         <p class="field-help">年支以立春为岁首；时辰由统一历法层归支。</p>
       </section>
       <section id="numbers-fields" hidden><div class="section-heading"><span>03</span><h2>报数</h2></div>
@@ -74,6 +75,7 @@
     </section>
   </main>
   <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
   <script src="/navigation.js" defer></script><script src="/profile-charts.js" defer></script><script src="/meihua.js" defer></script>
 </body>
 </html>

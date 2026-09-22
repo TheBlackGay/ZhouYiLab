@@ -63,6 +63,7 @@
           </div>
           <label for="birth-time">出生时间</label>
           <input id="birth-time" type="time" value="09:05" step="60" required>
+          <button class="secondary-action compact-action" type="button" data-current-time data-date-input="#solar-date" data-time-input="#birth-time">当前时间</button>
         </section>
 
         <section>
@@ -159,6 +160,7 @@
     <div id="shen-sha-dialog-content" class="shen-sha-dialog-content"></div>
   </dialog>
   <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
   <script src="/navigation.js" defer></script>
   <script>
     window.PLACE_PICKER_CONFIG = {
