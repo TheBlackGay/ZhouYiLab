@@ -22,7 +22,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shanghai",
@@ -47,7 +47,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-tianjin",
@@ -72,7 +72,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-chongqing",
@@ -97,7 +97,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shijiazhuang",
@@ -121,7 +121,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-taiyuan",
@@ -145,7 +145,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-hohhot",
@@ -170,7 +170,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shenyang",
@@ -194,7 +194,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-dalian",
@@ -218,7 +218,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-changchun",
@@ -242,7 +242,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-harbin",
@@ -266,7 +266,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-nanjing",
@@ -290,7 +290,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-hangzhou",
@@ -314,7 +314,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-hefei",
@@ -338,7 +338,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-fuzhou",
@@ -362,7 +362,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-nanchang",
@@ -386,7 +386,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jinan",
@@ -410,7 +410,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-qingdao",
@@ -434,7 +434,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhengzhou",
@@ -458,7 +458,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-wuhan",
@@ -482,7 +482,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-changsha",
@@ -506,7 +506,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-guangzhou",
@@ -531,7 +531,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shenzhen",
@@ -555,7 +555,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-nanning",
@@ -579,7 +579,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-haikou",
@@ -603,7 +603,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-chengdu",
@@ -628,7 +628,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-guiyang",
@@ -652,7 +652,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-kunming",
@@ -676,7 +676,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-lhasa",
@@ -700,7 +700,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-xian",
@@ -725,7 +725,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-lanzhou",
@@ -749,7 +749,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-xining",
@@ -773,7 +773,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yinchuan",
@@ -797,7 +797,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-urumqi",
@@ -822,7 +822,7 @@
   "level": "city",
   "group": "cn_core",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-tangshan",
@@ -846,7 +846,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-qinhuangdao",
@@ -870,7 +870,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-handan",
@@ -894,7 +894,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-baoding",
@@ -918,7 +918,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-cangzhou",
@@ -942,7 +942,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhangjiakou",
@@ -966,7 +966,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-langfang",
@@ -990,7 +990,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-datong",
@@ -1014,7 +1014,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-changzhi",
@@ -1038,7 +1038,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jincheng",
@@ -1062,7 +1062,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yuncheng",
@@ -1086,7 +1086,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-linfen",
@@ -1110,7 +1110,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-baotou",
@@ -1134,7 +1134,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-ordos",
@@ -1158,7 +1158,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-chifeng",
@@ -1182,7 +1182,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-tongliao",
@@ -1206,7 +1206,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-hulunbuir",
@@ -1231,7 +1231,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-anshan",
@@ -1255,7 +1255,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-dandong",
@@ -1279,7 +1279,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jinzhou",
@@ -1303,7 +1303,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jilincity",
@@ -1327,7 +1327,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-qiqihar",
@@ -1351,7 +1351,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-mudanjiang",
@@ -1375,7 +1375,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-wuxi",
@@ -1399,7 +1399,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-suzhou",
@@ -1423,7 +1423,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-nantong",
@@ -1447,7 +1447,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-xuzhou",
@@ -1471,7 +1471,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-changzhou",
@@ -1495,7 +1495,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yancheng",
@@ -1519,7 +1519,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yangzhou",
@@ -1543,7 +1543,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-taizhou",
@@ -1567,7 +1567,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhenjiang",
@@ -1591,7 +1591,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-ningbo",
@@ -1615,7 +1615,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-wenzhou",
@@ -1639,7 +1639,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shaoxing",
@@ -1663,7 +1663,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jinhua",
@@ -1687,7 +1687,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jiaxing",
@@ -1711,7 +1711,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-taizhou-zj",
@@ -1735,7 +1735,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-wuhu",
@@ -1759,7 +1759,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-anqing",
@@ -1783,7 +1783,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-fuyang",
@@ -1807,7 +1807,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-quanzhou",
@@ -1831,7 +1831,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhangzhou",
@@ -1855,7 +1855,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-xiamen",
@@ -1880,7 +1880,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-ganzhou",
@@ -1904,7 +1904,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jiujiang",
@@ -1928,7 +1928,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shangrao",
@@ -1952,7 +1952,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jingdezhen",
@@ -1976,7 +1976,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yantai",
@@ -2000,7 +2000,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-weifang",
@@ -2024,7 +2024,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jining",
@@ -2048,7 +2048,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-linyi",
@@ -2072,7 +2072,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-heze",
@@ -2096,7 +2096,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-taian",
@@ -2120,7 +2120,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zibo",
@@ -2144,7 +2144,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-luoyang",
@@ -2168,7 +2168,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-kaifeng",
@@ -2192,7 +2192,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-nanyang",
@@ -2216,7 +2216,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shangqiu",
@@ -2240,7 +2240,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhoukou",
@@ -2264,7 +2264,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-xinyang",
@@ -2288,7 +2288,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-anyang",
@@ -2312,7 +2312,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-xinxiang",
@@ -2336,7 +2336,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yichang",
@@ -2360,7 +2360,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-xiangyang",
@@ -2384,7 +2384,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shiyan",
@@ -2408,7 +2408,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-hengyang",
@@ -2432,7 +2432,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yueyang",
@@ -2456,7 +2456,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-changde",
@@ -2480,7 +2480,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shaoyang",
@@ -2504,7 +2504,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-foshan",
@@ -2528,7 +2528,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-dongguan",
@@ -2552,7 +2552,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhongshan",
@@ -2576,7 +2576,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhuhai",
@@ -2600,7 +2600,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shantou",
@@ -2624,7 +2624,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhanjiang",
@@ -2648,7 +2648,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-huizhou",
@@ -2672,7 +2672,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jiangmen",
@@ -2696,7 +2696,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-maoming",
@@ -2720,7 +2720,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-meizhou",
@@ -2744,7 +2744,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-liuzhou",
@@ -2768,7 +2768,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-guilin",
@@ -2792,7 +2792,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-beihai",
@@ -2816,7 +2816,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-sanya",
@@ -2840,7 +2840,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-mianyang",
@@ -2864,7 +2864,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yibin",
@@ -2888,7 +2888,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-nanchong",
@@ -2912,7 +2912,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-leshan",
@@ -2936,7 +2936,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zigong",
@@ -2960,7 +2960,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-panzhihua",
@@ -2984,7 +2984,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-dazhou",
@@ -3008,7 +3008,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zunyi",
@@ -3032,7 +3032,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-qujing",
@@ -3056,7 +3056,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-dali",
@@ -3080,7 +3080,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-lijiang",
@@ -3104,7 +3104,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yuxi",
@@ -3128,7 +3128,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-chamdo",
@@ -3152,7 +3152,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-nyingchi",
@@ -3176,7 +3176,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-xianyang",
@@ -3200,7 +3200,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-baoji",
@@ -3224,7 +3224,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yanan",
@@ -3248,7 +3248,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-hanzhong",
@@ -3272,7 +3272,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-tianshui",
@@ -3296,7 +3296,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jiayuguan",
@@ -3320,7 +3320,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-dunhuang",
@@ -3344,7 +3344,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-jiuquan",
@@ -3368,7 +3368,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhangye",
@@ -3392,7 +3392,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-wuwei",
@@ -3416,7 +3416,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-wuzhong",
@@ -3440,7 +3440,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-zhongwei",
@@ -3464,7 +3464,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shizuishan",
@@ -3488,7 +3488,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-golmud",
@@ -3512,7 +3512,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-kashgar",
@@ -3537,7 +3537,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-yining",
@@ -3561,7 +3561,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-korla",
@@ -3585,7 +3585,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-hami",
@@ -3609,7 +3609,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-turpan",
@@ -3633,7 +3633,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-aksu",
@@ -3657,7 +3657,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-karamay",
@@ -3681,7 +3681,7 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cn-shihezi",
@@ -3705,7 +3705,4640 @@
   "level": "city",
   "group": "cn_extra",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xingtai",
+  "name_zh": "邢台市",
+  "name_en": "Xingtai",
+  "aliases": [
+   "邢台",
+   "Xingtai",
+   "中国",
+   "xingtai",
+   "xt"
+  ],
+  "admin1": "河北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.0702,
+  "lon": 114.5044,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 7500000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-chengde",
+  "name_zh": "承德市",
+  "name_en": "Chengde",
+  "aliases": [
+   "承德",
+   "Chengde",
+   "中国",
+   "chengde",
+   "cd"
+  ],
+  "admin1": "河北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 40.9512,
+  "lon": 117.9275,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 3350000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-hengshui",
+  "name_zh": "衡水市",
+  "name_en": "Hengshui",
+  "aliases": [
+   "衡水",
+   "Hengshui",
+   "中国",
+   "hengshui",
+   "hs"
+  ],
+  "admin1": "河北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.7359,
+  "lon": 115.6705,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4210000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yangquan",
+  "name_zh": "阳泉市",
+  "name_en": "Yangquan",
+  "aliases": [
+   "阳泉",
+   "Yangquan",
+   "中国",
+   "yangquan",
+   "yq"
+  ],
+  "admin1": "山西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.8572,
+  "lon": 113.5833,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1320000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-shuozhou",
+  "name_zh": "朔州市",
+  "name_en": "Shuozhou",
+  "aliases": [
+   "朔州",
+   "Shuozhou",
+   "中国",
+   "shuozhou",
+   "sz"
+  ],
+  "admin1": "山西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 39.3312,
+  "lon": 112.4334,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 1590000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jinzhong",
+  "name_zh": "晋中市",
+  "name_en": "Jinzhong",
+  "aliases": [
+   "晋中",
+   "Jinzhong",
+   "中国",
+   "jinzhong",
+   "jz"
+  ],
+  "admin1": "山西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.6872,
+  "lon": 112.738,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 3380000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xinzhou",
+  "name_zh": "忻州市",
+  "name_en": "Xinzhou",
+  "aliases": [
+   "忻州",
+   "Xinzhou",
+   "中国",
+   "xinzhou",
+   "xz"
+  ],
+  "admin1": "山西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 38.417,
+  "lon": 112.7335,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 2690000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-luliang",
+  "name_zh": "吕梁市",
+  "name_en": "Luliang",
+  "aliases": [
+   "吕梁",
+   "Luliang",
+   "中国",
+   "lüliang",
+   "lvliang",
+   "ll"
+  ],
+  "admin1": "山西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.5183,
+  "lon": 111.143,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 3400000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-wuhai",
+  "name_zh": "乌海市",
+  "name_en": "Wuhai",
+  "aliases": [
+   "乌海",
+   "Wuhai",
+   "中国",
+   "wuhai",
+   "wh"
+  ],
+  "admin1": "内蒙古自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 39.6737,
+  "lon": 106.8256,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 560000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-bayannur",
+  "name_zh": "巴彦淖尔市",
+  "name_en": "Bayannur",
+  "aliases": [
+   "巴彦淖尔",
+   "Bayannur",
+   "中国",
+   "bayannaoer",
+   "byne"
+  ],
+  "admin1": "内蒙古自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 40.757,
+  "lon": 107.4162,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 1510000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-ulanqab",
+  "name_zh": "乌兰察布市",
+  "name_en": "Ulanqab",
+  "aliases": [
+   "乌兰察布",
+   "Ulanqab",
+   "中国",
+   "wulanchabu",
+   "wlcb"
+  ],
+  "admin1": "内蒙古自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.0225,
+  "lon": 113.1119,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 1790000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xilinhot",
+  "name_zh": "锡林浩特市(锡林郭勒盟)",
+  "name_en": "Xilinhot",
+  "aliases": [
+   "Xilinhot",
+   "中国",
+   "xilinhuote",
+   "xlht"
+  ],
+  "admin1": "内蒙古自治区锡林郭勒盟",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 43.9334,
+  "lon": 116.082,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 300000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-ulanhot",
+  "name_zh": "乌兰浩特市(兴安盟)",
+  "name_en": "Ulanhot",
+  "aliases": [
+   "Ulanhot",
+   "中国",
+   "ulanhaote",
+   "ulht"
+  ],
+  "admin1": "内蒙古自治区兴安盟",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 46.0687,
+  "lon": 122.07,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 370000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-bayanhot",
+  "name_zh": "巴彦浩特镇(阿拉善盟)",
+  "name_en": "Bayanhot",
+  "aliases": [
+   "Bayanhot",
+   "中国",
+   "bayanhaote",
+   "alashan",
+   "blht"
+  ],
+  "admin1": "内蒙古自治区阿拉善盟",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 38.8514,
+  "lon": 105.8491,
+  "approx_radius_km": 60,
+  "tz": "Asia/Shanghai",
+  "population": 130000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-fushun",
+  "name_zh": "抚顺市",
+  "name_en": "Fushun",
+  "aliases": [
+   "抚顺",
+   "Fushun",
+   "中国",
+   "fushun",
+   "fs"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.8807,
+  "lon": 123.8746,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1860000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-benxi",
+  "name_zh": "本溪市",
+  "name_en": "Benxi",
+  "aliases": [
+   "本溪",
+   "Benxi",
+   "中国",
+   "benxi",
+   "bx"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.2983,
+  "lon": 123.7604,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1380000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yingkou",
+  "name_zh": "营口市",
+  "name_en": "Yingkou",
+  "aliases": [
+   "营口",
+   "Yingkou",
+   "中国",
+   "yingkou",
+   "yk"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 40.667,
+  "lon": 122.2358,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1870000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-chaoyang",
+  "name_zh": "朝阳市",
+  "name_en": "Chaoyang",
+  "aliases": [
+   "朝阳",
+   "Chaoyang",
+   "中国",
+   "chaoyang",
+   "cy"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.5737,
+  "lon": 120.4504,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2880000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-fuxin",
+  "name_zh": "阜新市",
+  "name_en": "Fuxin",
+  "aliases": [
+   "阜新",
+   "Fuxin",
+   "中国",
+   "fuxin",
+   "fx"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 42.0215,
+  "lon": 121.668,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1650000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-liaoyang",
+  "name_zh": "辽阳市",
+  "name_en": "Liaoyang",
+  "aliases": [
+   "辽阳",
+   "Liaoyang",
+   "中国",
+   "liaoyang",
+   "liao"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.2675,
+  "lon": 123.177,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1530000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-panjin",
+  "name_zh": "盘锦市",
+  "name_en": "Panjin",
+  "aliases": [
+   "盘锦",
+   "Panjin",
+   "中国",
+   "panjin",
+   "pj"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.1195,
+  "lon": 122.0707,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1390000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huludao",
+  "name_zh": "葫芦岛市",
+  "name_en": "Huludao",
+  "aliases": [
+   "葫芦岛",
+   "Huludao",
+   "中国",
+   "huludao",
+   "hld"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 40.7135,
+  "lon": 120.8376,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2360000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-tieling",
+  "name_zh": "铁岭市",
+  "name_en": "Tieling",
+  "aliases": [
+   "铁岭",
+   "Tieling",
+   "中国",
+   "tieling",
+   "tl"
+  ],
+  "admin1": "辽宁省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 42.2873,
+  "lon": 123.848,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2390000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yanji",
+  "name_zh": "延吉市(延边州)",
+  "name_en": "Yanji",
+  "aliases": [
+   "Yanji",
+   "中国",
+   "yanbian",
+   "yanji",
+   "yj"
+  ],
+  "admin1": "吉林省延边朝鲜族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 42.8965,
+  "lon": 129.51,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 520000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-siping",
+  "name_zh": "四平市",
+  "name_en": "Siping",
+  "aliases": [
+   "四平",
+   "Siping",
+   "中国",
+   "siping",
+   "sp"
+  ],
+  "admin1": "吉林省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 43.1665,
+  "lon": 124.3507,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 1810000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-tonghua",
+  "name_zh": "通化市",
+  "name_en": "Tonghua",
+  "aliases": [
+   "通化",
+   "Tonghua",
+   "中国",
+   "tonghua",
+   "th"
+  ],
+  "admin1": "吉林省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.728,
+  "lon": 125.9403,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 1820000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-baishan",
+  "name_zh": "白山市",
+  "name_en": "Baishan",
+  "aliases": [
+   "白山",
+   "Baishan",
+   "中国",
+   "baishan",
+   "bs"
+  ],
+  "admin1": "吉林省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.9416,
+  "lon": 126.4277,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 950000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-songyuan",
+  "name_zh": "松原市",
+  "name_en": "Songyuan",
+  "aliases": [
+   "松原",
+   "Songyuan",
+   "中国",
+   "songyuan",
+   "syo"
+  ],
+  "admin1": "吉林省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 45.1418,
+  "lon": 124.8254,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 2380000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-baicheng",
+  "name_zh": "白城市",
+  "name_en": "Baicheng",
+  "aliases": [
+   "白城",
+   "Baicheng",
+   "中国",
+   "baicheng",
+   "bc"
+  ],
+  "admin1": "吉林省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 45.621,
+  "lon": 122.837,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 1550000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jiamusi",
+  "name_zh": "佳木斯市",
+  "name_en": "Jiamusi",
+  "aliases": [
+   "佳木斯",
+   "Jiamusi",
+   "中国",
+   "jiamusi",
+   "jms"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 46.8236,
+  "lon": 130.323,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2160000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-daqing",
+  "name_zh": "大庆市",
+  "name_en": "Daqing",
+  "aliases": [
+   "大庆",
+   "Daqing",
+   "中国",
+   "daqing",
+   "dq"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 46.5914,
+  "lon": 125.1036,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2780000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jixi",
+  "name_zh": "鸡西市",
+  "name_en": "Jixi",
+  "aliases": [
+   "鸡西",
+   "Jixi",
+   "中国",
+   "jixi",
+   "jx"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 45.295,
+  "lon": 130.9695,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 1500000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-hegang",
+  "name_zh": "鹤岗市",
+  "name_en": "Hegang",
+  "aliases": [
+   "鹤岗",
+   "Hegang",
+   "中国",
+   "hegang",
+   "hg"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 47.3454,
+  "lon": 130.2979,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 740000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-shuangyashan",
+  "name_zh": "双鸭山市",
+  "name_en": "Shuangyashan",
+  "aliases": [
+   "双鸭山",
+   "Shuangyashan",
+   "中国",
+   "shuangyashan",
+   "sys"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 46.6466,
+  "lon": 131.1594,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 830000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-qitaihe",
+  "name_zh": "七台河市",
+  "name_en": "Qitaihe",
+  "aliases": [
+   "七台河",
+   "Qitaihe",
+   "中国",
+   "qitaihe",
+   "qth"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 45.7713,
+  "lon": 130.8645,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 690000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-heihe",
+  "name_zh": "黑河市",
+  "name_en": "Heihe",
+  "aliases": [
+   "黑河",
+   "Heihe",
+   "中国",
+   "heihe",
+   "hh"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 50.2443,
+  "lon": 127.5299,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 1290000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-suihua",
+  "name_zh": "绥化市",
+  "name_en": "Suihua",
+  "aliases": [
+   "绥化",
+   "Suihua",
+   "中国",
+   "suihua",
+   "sui"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 46.6338,
+  "lon": 126.9745,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 3760000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yichun",
+  "name_zh": "伊春市",
+  "name_en": "Yichun",
+  "aliases": [
+   "伊春",
+   "Yichun",
+   "中国",
+   "yichun-heilongjiang",
+   "yichun",
+   "yich"
+  ],
+  "admin1": "黑龙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 47.7273,
+  "lon": 128.8911,
+  "approx_radius_km": 70,
+  "tz": "Asia/Shanghai",
+  "population": 830000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jiagedaqi",
+  "name_zh": "加格达奇(大兴安岭地区)",
+  "name_en": "Jiagedaqi",
+  "aliases": [
+   "Jiagedaqi",
+   "中国",
+   "daxinganning",
+   "jgdq"
+  ],
+  "admin1": "黑龙江省大兴安岭地区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 50.4135,
+  "lon": 124.1211,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 110000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-lianyungang",
+  "name_zh": "连云港市",
+  "name_en": "Lianyungang",
+  "aliases": [
+   "连云港",
+   "Lianyungang",
+   "中国",
+   "lianyungang",
+   "lyg"
+  ],
+  "admin1": "江苏省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 34.5967,
+  "lon": 119.1245,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4600000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huaian",
+  "name_zh": "淮安市",
+  "name_en": "Huai'an",
+  "aliases": [
+   "淮安",
+   "Huai'an",
+   "中国",
+   "huaian",
+   "ha"
+  ],
+  "admin1": "江苏省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.5006,
+  "lon": 119.0206,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4550000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-suqian",
+  "name_zh": "宿迁市",
+  "name_en": "Suqian",
+  "aliases": [
+   "宿迁",
+   "Suqian",
+   "中国",
+   "suqian",
+   "sqq"
+  ],
+  "admin1": "江苏省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.9396,
+  "lon": 118.2977,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4990000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huzhou",
+  "name_zh": "湖州市",
+  "name_en": "Huzhou",
+  "aliases": [
+   "湖州",
+   "Huzhou",
+   "中国",
+   "huzhou",
+   "hz"
+  ],
+  "admin1": "浙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.8939,
+  "lon": 120.0886,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3370000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-quzhou",
+  "name_zh": "衢州市",
+  "name_en": "Quzhou",
+  "aliases": [
+   "衢州",
+   "Quzhou",
+   "中国",
+   "quzhou",
+   "qzo"
+  ],
+  "admin1": "浙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 28.9353,
+  "lon": 118.8675,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2280000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-zhoushan",
+  "name_zh": "舟山市",
+  "name_en": "Zhoushan",
+  "aliases": [
+   "舟山",
+   "Zhoushan",
+   "中国",
+   "zhoushan",
+   "zs"
+  ],
+  "admin1": "浙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 29.9927,
+  "lon": 122.2064,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1160000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-lishui",
+  "name_zh": "丽水市",
+  "name_en": "Lishui",
+  "aliases": [
+   "丽水",
+   "Lishui",
+   "中国",
+   "lishui",
+   "ls"
+  ],
+  "admin1": "浙江省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 28.4686,
+  "lon": 119.9227,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2190000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-bengbu",
+  "name_zh": "蚌埠市",
+  "name_en": "Bengbu",
+  "aliases": [
+   "蚌埠",
+   "Bengbu",
+   "中国",
+   "bengbu",
+   "bb"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 32.9169,
+  "lon": 117.3532,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3300000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huainan",
+  "name_zh": "淮南市",
+  "name_en": "Huainan",
+  "aliases": [
+   "淮南",
+   "Huainan",
+   "中国",
+   "huainan",
+   "hnn"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 32.6267,
+  "lon": 116.8107,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3030000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-maanshan",
+  "name_zh": "马鞍山市",
+  "name_en": "Ma'anshan",
+  "aliases": [
+   "马鞍山",
+   "Ma'anshan",
+   "中国",
+   "maanshan",
+   "mas"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 31.6707,
+  "lon": 118.509,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 2160000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huaibei",
+  "name_zh": "淮北市",
+  "name_en": "Huaibei",
+  "aliases": [
+   "淮北",
+   "Huaibei",
+   "中国",
+   "huaibei",
+   "hob"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.9531,
+  "lon": 116.7979,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1970000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-tongling",
+  "name_zh": "铜陵市",
+  "name_en": "Tongling",
+  "aliases": [
+   "铜陵",
+   "Tongling",
+   "中国",
+   "tongling",
+   "tli"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.9456,
+  "lon": 117.8125,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1310000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huangshan",
+  "name_zh": "黄山市",
+  "name_en": "Huangshan",
+  "aliases": [
+   "黄山",
+   "Huangshan",
+   "中国",
+   "huangshan",
+   "hsg"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 29.7149,
+  "lon": 118.3375,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1320000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-chuzhou",
+  "name_zh": "滁州市",
+  "name_en": "Chuzhou",
+  "aliases": [
+   "滁州",
+   "Chuzhou",
+   "中国",
+   "chuzhou",
+   "czh"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 32.3022,
+  "lon": 118.3176,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 3990000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-anhuisuzhou",
+  "name_zh": "宿州市",
+  "name_en": "Suzhou",
+  "aliases": [
+   "宿州",
+   "Suzhou",
+   "中国",
+   "anhui suzhou",
+   "suzhou-ah",
+   "suzh"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.6338,
+  "lon": 116.9844,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 5300000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-luan",
+  "name_zh": "六安市",
+  "name_en": "Lu'an",
+  "aliases": [
+   "六安",
+   "Lu'an",
+   "中国",
+   "luan",
+   "la"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 31.7512,
+  "lon": 116.5076,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 4390000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-bozhou",
+  "name_zh": "亳州市",
+  "name_en": "Bozhou",
+  "aliases": [
+   "亳州",
+   "Bozhou",
+   "中国",
+   "bozhou",
+   "bz"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.8695,
+  "lon": 115.777,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4990000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-chizhou",
+  "name_zh": "池州市",
+  "name_en": "Chizhou",
+  "aliases": [
+   "池州",
+   "Chizhou",
+   "中国",
+   "chizhou",
+   "ciz"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.6594,
+  "lon": 117.4885,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1150000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xuancheng",
+  "name_zh": "宣城市",
+  "name_en": "Xuancheng",
+  "aliases": [
+   "宣城",
+   "Xuancheng",
+   "中国",
+   "xuancheng",
+   "xch"
+  ],
+  "admin1": "安徽省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.9406,
+  "lon": 118.7577,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2500000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-putian",
+  "name_zh": "莆田市",
+  "name_en": "Putian",
+  "aliases": [
+   "莆田",
+   "Putian",
+   "中国",
+   "putian",
+   "pt"
+  ],
+  "admin1": "福建省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 25.4311,
+  "lon": 119.0078,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 3210000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-sanming",
+  "name_zh": "三明市",
+  "name_en": "Sanming",
+  "aliases": [
+   "三明",
+   "Sanming",
+   "中国",
+   "sanming",
+   "smg"
+  ],
+  "admin1": "福建省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 26.2655,
+  "lon": 117.639,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2430000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-nanping",
+  "name_zh": "南平市",
+  "name_en": "Nanping",
+  "aliases": [
+   "南平",
+   "Nanping",
+   "中国",
+   "nanping",
+   "npg"
+  ],
+  "admin1": "福建省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 26.6386,
+  "lon": 118.1279,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 2640000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-ningde",
+  "name_zh": "宁德市",
+  "name_en": "Ningde",
+  "aliases": [
+   "宁德",
+   "Ningde",
+   "中国",
+   "ningde",
+   "nde"
+  ],
+  "admin1": "福建省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 26.6612,
+  "lon": 119.5271,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 3150000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-longyan",
+  "name_zh": "龙岩市",
+  "name_en": "Longyan",
+  "aliases": [
+   "龙岩",
+   "Longyan",
+   "中国",
+   "longyan",
+   "lyo"
+  ],
+  "admin1": "福建省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 25.0907,
+  "lon": 117.0288,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2730000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-pingxiang",
+  "name_zh": "萍乡市",
+  "name_en": "Pingxiang",
+  "aliases": [
+   "萍乡",
+   "Pingxiang",
+   "中国",
+   "pingxiang",
+   "pxg"
+  ],
+  "admin1": "江西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.6231,
+  "lon": 113.8549,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1800000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xinyu",
+  "name_zh": "新余市",
+  "name_en": "Xinyu",
+  "aliases": [
+   "新余",
+   "Xinyu",
+   "中国",
+   "xinyu",
+   "xyu"
+  ],
+  "admin1": "江西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.817,
+  "lon": 114.9252,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1210000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yingtan",
+  "name_zh": "鹰潭市",
+  "name_en": "Yingtan",
+  "aliases": [
+   "鹰潭",
+   "Yingtan",
+   "中国",
+   "yingtan",
+   "yta"
+  ],
+  "admin1": "江西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 28.239,
+  "lon": 117.045,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1150000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jian",
+  "name_zh": "吉安市",
+  "name_en": "Ji'an",
+  "aliases": [
+   "吉安",
+   "Ji'an",
+   "中国",
+   "jian",
+   "ja"
+  ],
+  "admin1": "江西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.1134,
+  "lon": 114.9928,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 4460000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yichun-jiangxi",
+  "name_zh": "宜春市",
+  "name_en": "Yichun",
+  "aliases": [
+   "宜春",
+   "Yichun",
+   "中国",
+   "yichun-jiangxi",
+   "yichun",
+   "yic"
+  ],
+  "admin1": "江西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.8157,
+  "lon": 114.4028,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 5000000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-fuzhou-jx",
+  "name_zh": "抚州市",
+  "name_en": "Fuzhou",
+  "aliases": [
+   "抚州",
+   "Fuzhou",
+   "中国",
+   "fuzhou-jx",
+   "jiangxi fuzhou",
+   "fzo"
+  ],
+  "admin1": "江西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.9512,
+  "lon": 116.3583,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 1770000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-zaozhuang",
+  "name_zh": "枣庄市",
+  "name_en": "Zaozhuang",
+  "aliases": [
+   "枣庄",
+   "Zaozhuang",
+   "中国",
+   "zaozhuang",
+   "zao"
+  ],
+  "admin1": "山东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 34.81,
+  "lon": 117.3238,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3860000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-dongying",
+  "name_zh": "东营市",
+  "name_en": "Dongying",
+  "aliases": [
+   "东营",
+   "Dongying",
+   "中国",
+   "dongying",
+   "dyi"
+  ],
+  "admin1": "山东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.4638,
+  "lon": 118.6108,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 2190000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-weihai",
+  "name_zh": "威海市",
+  "name_en": "Weihai",
+  "aliases": [
+   "威海",
+   "Weihai",
+   "中国",
+   "weihai",
+   "whi"
+  ],
+  "admin1": "山东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.4639,
+  "lon": 122.1204,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 2910000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-rizhao",
+  "name_zh": "日照市",
+  "name_en": "Rizhao",
+  "aliases": [
+   "日照",
+   "Rizhao",
+   "中国",
+   "rizhao",
+   "rz"
+  ],
+  "admin1": "山东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.4164,
+  "lon": 119.5271,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 2970000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-dezhou",
+  "name_zh": "德州市",
+  "name_en": "Dezhou",
+  "aliases": [
+   "德州",
+   "Dezhou",
+   "中国",
+   "dezhou",
+   "dzo"
+  ],
+  "admin1": "山东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.4357,
+  "lon": 116.3569,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 4910000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-liaocheng",
+  "name_zh": "聊城市",
+  "name_en": "Liaocheng",
+  "aliases": [
+   "聊城",
+   "Liaocheng",
+   "中国",
+   "liaocheng",
+   "lcg"
+  ],
+  "admin1": "山东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 36.4564,
+  "lon": 115.9806,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 5950000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-binzhou",
+  "name_zh": "滨州市",
+  "name_en": "Binzhou",
+  "aliases": [
+   "滨州",
+   "Binzhou",
+   "中国",
+   "binzhou",
+   "bzo"
+  ],
+  "admin1": "山东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.3824,
+  "lon": 118.026,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 3930000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-pingdingshan",
+  "name_zh": "平顶山市",
+  "name_en": "Pingdingshan",
+  "aliases": [
+   "平顶山",
+   "Pingdingshan",
+   "中国",
+   "pingdingshan",
+   "pds"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.7693,
+  "lon": 113.1929,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4990000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-hebi",
+  "name_zh": "鹤壁市",
+  "name_en": "Hebi",
+  "aliases": [
+   "鹤壁",
+   "Hebi",
+   "中国",
+   "hebi",
+   "hb2"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.7482,
+  "lon": 114.2954,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1570000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jiaozuo",
+  "name_zh": "焦作市",
+  "name_en": "Jiaozuo",
+  "aliases": [
+   "焦作",
+   "Jiaozuo",
+   "中国",
+   "jiaozuo",
+   "jzo"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.2159,
+  "lon": 113.2415,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3540000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-puyang",
+  "name_zh": "濮阳市",
+  "name_en": "Puyang",
+  "aliases": [
+   "濮阳",
+   "Puyang",
+   "中国",
+   "puyang",
+   "py"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.7616,
+  "lon": 115.0292,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3770000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xuchang",
+  "name_zh": "许昌市",
+  "name_en": "Xuchang",
+  "aliases": [
+   "许昌",
+   "Xuchang",
+   "中国",
+   "xuchang",
+   "xcg"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 34.0357,
+  "lon": 113.8518,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 4380000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-luohe",
+  "name_zh": "漯河市",
+  "name_en": "Luohe",
+  "aliases": [
+   "漯河",
+   "Luohe",
+   "中国",
+   "luohe",
+   "lh"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.5767,
+  "lon": 114.0166,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 2370000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-sanmenxia",
+  "name_zh": "三门峡市",
+  "name_en": "Sanmenxia",
+  "aliases": [
+   "三门峡",
+   "Sanmenxia",
+   "中国",
+   "sanmenxia",
+   "smx"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 34.7727,
+  "lon": 111.2003,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2030000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-zhumadian",
+  "name_zh": "驻马店市",
+  "name_en": "Zhumadian",
+  "aliases": [
+   "驻马店",
+   "Zhumadian",
+   "中国",
+   "zhumadian",
+   "zmd"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 32.9802,
+  "lon": 114.0229,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 7010000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jiyuan",
+  "name_zh": "济源市",
+  "name_en": "Jiyuan",
+  "aliases": [
+   "济源",
+   "Jiyuan",
+   "中国",
+   "jiyuan",
+   "jyu"
+  ],
+  "admin1": "河南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.0688,
+  "lon": 112.6019,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 730000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huangshi",
+  "name_zh": "黄石市",
+  "name_en": "Huangshi",
+  "aliases": [
+   "黄石",
+   "Huangshi",
+   "中国",
+   "huangshi",
+   "hsg2"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.2025,
+  "lon": 115.0389,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 2470000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-ezhou",
+  "name_zh": "鄂州市",
+  "name_en": "Ezhou",
+  "aliases": [
+   "鄂州",
+   "Ezhou",
+   "中国",
+   "ezhou",
+   "ez"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.3963,
+  "lon": 114.8944,
+  "approx_radius_km": 20,
+  "tz": "Asia/Shanghai",
+  "population": 1070000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jingmen",
+  "name_zh": "荆门市",
+  "name_en": "Jingmen",
+  "aliases": [
+   "荆门",
+   "Jingmen",
+   "中国",
+   "jingmen",
+   "jmn"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 31.0354,
+  "lon": 112.2005,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2600000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xiaogan",
+  "name_zh": "孝感市",
+  "name_en": "Xiaogan",
+  "aliases": [
+   "孝感",
+   "Xiaogan",
+   "中国",
+   "xiaogan",
+   "xg"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.9246,
+  "lon": 113.9165,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4270000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jingzhou",
+  "name_zh": "荆州市",
+  "name_en": "Jingzhou",
+  "aliases": [
+   "荆州",
+   "Jingzhou",
+   "中国",
+   "jingzhou",
+   "jog2"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.3315,
+  "lon": 112.2411,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 5240000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huanggang",
+  "name_zh": "黄冈市",
+  "name_en": "Huanggang",
+  "aliases": [
+   "黄冈",
+   "Huanggang",
+   "中国",
+   "huanggang",
+   "hgg"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.4536,
+  "lon": 114.8722,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 5880000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xianning",
+  "name_zh": "咸宁市",
+  "name_en": "Xianning",
+  "aliases": [
+   "咸宁",
+   "Xianning",
+   "中国",
+   "xianning",
+   "xin"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 29.8412,
+  "lon": 114.3224,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1940000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-suizhou",
+  "name_zh": "随州市",
+  "name_en": "Suizhou",
+  "aliases": [
+   "随州",
+   "Suizhou",
+   "中国",
+   "suizhou",
+   "szo"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 31.6958,
+  "lon": 113.3829,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2040000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-enshi",
+  "name_zh": "恩施市(恩施州)",
+  "name_en": "Enshi",
+  "aliases": [
+   "Enshi",
+   "中国",
+   "enshi",
+   "ens"
+  ],
+  "admin1": "湖北省恩施土家族苗族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.2737,
+  "lon": 109.4884,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 820000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xiantao",
+  "name_zh": "仙桃市",
+  "name_en": "Xiantao",
+  "aliases": [
+   "仙桃",
+   "Xiantao",
+   "中国",
+   "xiantao",
+   "xta"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.365,
+  "lon": 113.4431,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1130000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-qianjiang",
+  "name_zh": "潜江市",
+  "name_en": "Qianjiang",
+  "aliases": [
+   "潜江",
+   "Qianjiang",
+   "中国",
+   "qianjiang",
+   "qjo"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.4221,
+  "lon": 112.8992,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 840000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-tianmen",
+  "name_zh": "天门市",
+  "name_en": "Tianmen",
+  "aliases": [
+   "天门",
+   "Tianmen",
+   "中国",
+   "tianmen",
+   "tmm"
+  ],
+  "admin1": "湖北省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.6645,
+  "lon": 113.1657,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 1150000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-zhuzhou",
+  "name_zh": "株洲市",
+  "name_en": "Zhuzhou",
+  "aliases": [
+   "株洲",
+   "Zhuzhou",
+   "中国",
+   "zhuzhou",
+   "zho"
+  ],
+  "admin1": "湖南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.8274,
+  "lon": 113.134,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 2890000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xiangtan",
+  "name_zh": "湘潭市",
+  "name_en": "Xiangtan",
+  "aliases": [
+   "湘潭",
+   "Xiangtan",
+   "中国",
+   "xiangtan",
+   "xtan"
+  ],
+  "admin1": "湖南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.8297,
+  "lon": 112.934,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 2730000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-zhangjiajie",
+  "name_zh": "张家界市",
+  "name_en": "Zhangjiajie",
+  "aliases": [
+   "张家界",
+   "Zhangjiajie",
+   "中国",
+   "zhangjiajie",
+   "zjj"
+  ],
+  "admin1": "湖南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 29.1166,
+  "lon": 110.4789,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1510000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yiyang",
+  "name_zh": "益阳市",
+  "name_en": "Yiyang",
+  "aliases": [
+   "益阳",
+   "Yiyang",
+   "中国",
+   "yiyang",
+   "yiy"
+  ],
+  "admin1": "湖南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 28.5538,
+  "lon": 112.355,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 3850000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-chenzhou",
+  "name_zh": "郴州市",
+  "name_en": "Chenzhou",
+  "aliases": [
+   "郴州",
+   "Chenzhou",
+   "中国",
+   "chenzhou",
+   "czc"
+  ],
+  "admin1": "湖南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 25.7708,
+  "lon": 113.0311,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 4660000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yongzhou",
+  "name_zh": "永州市",
+  "name_en": "Yongzhou",
+  "aliases": [
+   "永州",
+   "Yongzhou",
+   "中国",
+   "yongzhou",
+   "yzo"
+  ],
+  "admin1": "湖南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 26.4535,
+  "lon": 111.613,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 5290000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-huaihua",
+  "name_zh": "怀化市",
+  "name_en": "Huaihua",
+  "aliases": [
+   "怀化",
+   "Huaihua",
+   "中国",
+   "huaihua",
+   "hth"
+  ],
+  "admin1": "湖南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.555,
+  "lon": 109.992,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 4590000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-loudi",
+  "name_zh": "娄底市",
+  "name_en": "Loudi",
+  "aliases": [
+   "娄底",
+   "Loudi",
+   "中国",
+   "loudi",
+   "ldi"
+  ],
+  "admin1": "湖南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.7037,
+  "lon": 111.9936,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3830000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jishou",
+  "name_zh": "吉首市(湘西州)",
+  "name_en": "Jishou",
+  "aliases": [
+   "Jishou",
+   "中国",
+   "xiangxi",
+   "jishou",
+   "jsh"
+  ],
+  "admin1": "湖南省湘西土家族苗族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 28.312,
+  "lon": 109.739,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 290000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-shaoguan",
+  "name_zh": "韶关市",
+  "name_en": "Shaoguan",
+  "aliases": [
+   "韶关",
+   "Shaoguan",
+   "中国",
+   "shaoguan",
+   "sog"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 24.81,
+  "lon": 113.5971,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2860000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-zhaoqing",
+  "name_zh": "肇庆市",
+  "name_en": "Zhaoqing",
+  "aliases": [
+   "肇庆",
+   "Zhaoqing",
+   "中国",
+   "zhaoqing",
+   "zq"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.047,
+  "lon": 112.4652,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4110000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-shanwei",
+  "name_zh": "汕尾市",
+  "name_en": "Shanwei",
+  "aliases": [
+   "汕尾",
+   "Shanwei",
+   "中国",
+   "shanwei",
+   "swi"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 22.7858,
+  "lon": 115.3642,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2670000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-heyuan",
+  "name_zh": "河源市",
+  "name_en": "Heyuan",
+  "aliases": [
+   "河源",
+   "Heyuan",
+   "中国",
+   "heyuan",
+   "hy"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.7464,
+  "lon": 114.7007,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2840000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yangjiang",
+  "name_zh": "阳江市",
+  "name_en": "Yangjiang",
+  "aliases": [
+   "阳江",
+   "Yangjiang",
+   "中国",
+   "yangjiang",
+   "yji"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 21.8596,
+  "lon": 111.9834,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2600000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-qingyuan",
+  "name_zh": "清远市",
+  "name_en": "Qingyuan",
+  "aliases": [
+   "清远",
+   "Qingyuan",
+   "中国",
+   "qingyuan",
+   "qyg"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.6818,
+  "lon": 113.0567,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 3970000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-chaozhou",
+  "name_zh": "潮州市",
+  "name_en": "Chaozhou",
+  "aliases": [
+   "潮州",
+   "Chaozhou",
+   "中国",
+   "chaozhou",
+   "chz"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.6567,
+  "lon": 116.6224,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 2530000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jieyang",
+  "name_zh": "揭阳市",
+  "name_en": "Jieyang",
+  "aliases": [
+   "揭阳",
+   "Jieyang",
+   "中国",
+   "jieyang",
+   "jy"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.55,
+  "lon": 116.3724,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 5580000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yunfu",
+  "name_zh": "云浮市",
+  "name_en": "Yunfu",
+  "aliases": [
+   "云浮",
+   "Yunfu",
+   "中国",
+   "yunfu",
+   "yfu"
+  ],
+  "admin1": "广东省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 22.9152,
+  "lon": 112.044,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2330000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-wuzhou",
+  "name_zh": "梧州市",
+  "name_en": "Wuzhou",
+  "aliases": [
+   "梧州",
+   "Wuzhou",
+   "中国",
+   "wuzhou",
+   "wzo"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.477,
+  "lon": 111.2992,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2830000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-fangchenggang",
+  "name_zh": "防城港市",
+  "name_en": "Fangchenggang",
+  "aliases": [
+   "防城港",
+   "Fangchenggang",
+   "中国",
+   "fangchenggang",
+   "fcg"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 21.6173,
+  "lon": 108.3553,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 1050000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-qinzhou",
+  "name_zh": "钦州市",
+  "name_en": "Qinzhou",
+  "aliases": [
+   "钦州",
+   "Qinzhou",
+   "中国",
+   "qinzhou",
+   "qzh"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 21.9536,
+  "lon": 108.6543,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 3310000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-guigang",
+  "name_zh": "贵港市",
+  "name_en": "Guigang",
+  "aliases": [
+   "贵港",
+   "Guigang",
+   "中国",
+   "guigang",
+   "ggu"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.1106,
+  "lon": 109.6069,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4350000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yulin",
+  "name_zh": "玉林市",
+  "name_en": "Yulin",
+  "aliases": [
+   "玉林",
+   "Yulin",
+   "中国",
+   "yulin-guangxi",
+   "yulin",
+   "yln"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 22.6321,
+  "lon": 110.1516,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 5800000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-baise",
+  "name_zh": "百色市",
+  "name_en": "Baise",
+  "aliases": [
+   "百色",
+   "Baise",
+   "中国",
+   "baise",
+   "bse"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.9026,
+  "lon": 106.6187,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 3570000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-hezhou",
+  "name_zh": "贺州市",
+  "name_en": "Hezhou",
+  "aliases": [
+   "贺州",
+   "Hezhou",
+   "中国",
+   "hezhou",
+   "hze"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 24.4136,
+  "lon": 111.5575,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 1970000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-hechi",
+  "name_zh": "河池市",
+  "name_en": "Hechi",
+  "aliases": [
+   "河池",
+   "Hechi",
+   "中国",
+   "hechi",
+   "hch"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 24.6929,
+  "lon": 108.039,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 3420000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-laibin",
+  "name_zh": "来宾市",
+  "name_en": "Laibin",
+  "aliases": [
+   "来宾",
+   "Laibin",
+   "中国",
+   "laibin",
+   "lbn"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.7472,
+  "lon": 109.2291,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2100000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-chongzuo",
+  "name_zh": "崇左市",
+  "name_en": "Chongzuo",
+  "aliases": [
+   "崇左",
+   "Chongzuo",
+   "中国",
+   "chongzuo",
+   "czu"
+  ],
+  "admin1": "广西壮族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 22.3769,
+  "lon": 107.3573,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2090000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-danzhou",
+  "name_zh": "儋州市",
+  "name_en": "Danzhou",
+  "aliases": [
+   "儋州",
+   "Danzhou",
+   "中国",
+   "danzhou",
+   "dzh"
+  ],
+  "admin1": "海南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 19.5209,
+  "lon": 109.5809,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 950000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-qionghai",
+  "name_zh": "琼海市",
+  "name_en": "Qionghai",
+  "aliases": [
+   "琼海",
+   "Qionghai",
+   "中国",
+   "qionghai",
+   "qha"
+  ],
+  "admin1": "海南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 19.254,
+  "lon": 110.474,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 490000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-wenchang",
+  "name_zh": "文昌市",
+  "name_en": "Wenchang",
+  "aliases": [
+   "文昌",
+   "Wenchang",
+   "中国",
+   "wenchang",
+   "wch"
+  ],
+  "admin1": "海南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 19.7505,
+  "lon": 110.75,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 440000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-wanning",
+  "name_zh": "万宁市",
+  "name_en": "Wanning",
+  "aliases": [
+   "万宁",
+   "Wanning",
+   "中国",
+   "wanning",
+   "wni"
+  ],
+  "admin1": "海南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 18.9203,
+  "lon": 110.3892,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 550000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-dongfang",
+  "name_zh": "东方市",
+  "name_en": "Dongfang",
+  "aliases": [
+   "东方",
+   "Dongfang",
+   "中国",
+   "dongfang",
+   "dof"
+  ],
+  "admin1": "海南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 19.1017,
+  "lon": 108.6173,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 440000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-sansha",
+  "name_zh": "三沙市",
+  "name_en": "Sansha",
+  "aliases": [
+   "三沙",
+   "Sansha",
+   "中国",
+   "sansha",
+   "sya"
+  ],
+  "admin1": "海南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 16.8339,
+  "lon": 112.3345,
+  "approx_radius_km": 20,
+  "tz": "Asia/Shanghai",
+  "population": 2000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-luzhou",
+  "name_zh": "泸州市",
+  "name_en": "Luzhou",
+  "aliases": [
+   "泸州",
+   "Luzhou",
+   "中国",
+   "luzhou",
+   "luz"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 28.8717,
+  "lon": 105.4426,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 4050000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-deyang",
+  "name_zh": "德阳市",
+  "name_en": "Deyang",
+  "aliases": [
+   "德阳",
+   "Deyang",
+   "中国",
+   "deyang",
+   "dyg"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 31.1279,
+  "lon": 104.3979,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 4270000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-guangyuan",
+  "name_zh": "广元市",
+  "name_en": "Guangyuan",
+  "aliases": [
+   "广元",
+   "Guangyuan",
+   "中国",
+   "guangyuan",
+   "gyu"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 32.4356,
+  "lon": 105.8436,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2300000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-suining",
+  "name_zh": "遂宁市",
+  "name_en": "Suining",
+  "aliases": [
+   "遂宁",
+   "Suining",
+   "中国",
+   "suining",
+   "sni"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.5328,
+  "lon": 105.5842,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 2820000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-neijiang",
+  "name_zh": "内江市",
+  "name_en": "Neijiang",
+  "aliases": [
+   "内江",
+   "Neijiang",
+   "中国",
+   "neijiang",
+   "njo"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 29.5801,
+  "lon": 105.0603,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3770000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-meishan",
+  "name_zh": "眉山市",
+  "name_en": "Meishan",
+  "aliases": [
+   "眉山",
+   "Meishan",
+   "中国",
+   "meishan",
+   "msh"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.0469,
+  "lon": 103.8391,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 2960000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-guangan",
+  "name_zh": "广安市",
+  "name_en": "Guang'an",
+  "aliases": [
+   "广安",
+   "Guang'an",
+   "中国",
+   "guangan",
+   "gan"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.4306,
+  "lon": 106.6328,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 3250000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yaan",
+  "name_zh": "雅安市",
+  "name_en": "Ya'an",
+  "aliases": [
+   "雅安",
+   "Ya'an",
+   "中国",
+   "yaan",
+   "yas"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 29.9917,
+  "lon": 103.0407,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 1510000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-bazhong",
+  "name_zh": "巴中市",
+  "name_en": "Bazhong",
+  "aliases": [
+   "巴中",
+   "Bazhong",
+   "中国",
+   "bazhong",
+   "bzh"
+  ],
+  "admin1": "四川省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 31.8588,
+  "lon": 106.7507,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2720000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-barkam",
+  "name_zh": "马尔康市(阿坝州)",
+  "name_en": "Barkam",
+  "aliases": [
+   "Barkam",
+   "中国",
+   "aba",
+   "maergang",
+   "abaz"
+  ],
+  "admin1": "四川省阿坝藏族羌族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 31.9058,
+  "lon": 102.2087,
+  "approx_radius_km": 60,
+  "tz": "Asia/Shanghai",
+  "population": 60000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-kangding",
+  "name_zh": "康定市(甘孜州)",
+  "name_en": "Kangding",
+  "aliases": [
+   "Kangding",
+   "中国",
+   "ganzi",
+   "kangding",
+   "gzz"
+  ],
+  "admin1": "四川省甘孜藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 30.046,
+  "lon": 101.96,
+  "approx_radius_km": 80,
+  "tz": "Asia/Shanghai",
+  "population": 130000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xichang",
+  "name_zh": "西昌市(凉山州)",
+  "name_en": "Xichang",
+  "aliases": [
+   "Xichang",
+   "中国",
+   "liangshan",
+   "xichang",
+   "lsz"
+  ],
+  "admin1": "四川省凉山彝族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.8854,
+  "lon": 102.2588,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 690000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-liupanshui",
+  "name_zh": "六盘水市",
+  "name_en": "Liupanshui",
+  "aliases": [
+   "六盘水",
+   "Liupanshui",
+   "中国",
+   "liupanshui",
+   "lps"
+  ],
+  "admin1": "贵州省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 26.5937,
+  "lon": 104.8317,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 3030000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-anshun",
+  "name_zh": "安顺市",
+  "name_en": "Anshun",
+  "aliases": [
+   "安顺",
+   "Anshun",
+   "中国",
+   "anshun",
+   "ash"
+  ],
+  "admin1": "贵州省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 26.2534,
+  "lon": 105.949,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 2470000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-bijie",
+  "name_zh": "毕节市",
+  "name_en": "Bijie",
+  "aliases": [
+   "毕节",
+   "Bijie",
+   "中国",
+   "bijie",
+   "bje"
+  ],
+  "admin1": "贵州省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.2895,
+  "lon": 105.2883,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 6900000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-tongren",
+  "name_zh": "铜仁市",
+  "name_en": "Tongren",
+  "aliases": [
+   "铜仁",
+   "Tongren",
+   "中国",
+   "tongren",
+   "tng"
+  ],
+  "admin1": "贵州省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.7183,
+  "lon": 109.1907,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 3300000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-kaili",
+  "name_zh": "凯里市(黔东南州)",
+  "name_en": "Kaili",
+  "aliases": [
+   "Kaili",
+   "中国",
+   "qiandongnan",
+   "kaili",
+   "qdn"
+  ],
+  "admin1": "贵州省黔东南苗族侗族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 26.5728,
+  "lon": 107.98,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 500000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-duyun",
+  "name_zh": "都匀市(黔南州)",
+  "name_en": "Duyun",
+  "aliases": [
+   "Duyun",
+   "中国",
+   "qiannan",
+   "duyun",
+   "qnn"
+  ],
+  "admin1": "贵州省黔南布依族苗族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 26.2581,
+  "lon": 107.517,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 490000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-xingyi",
+  "name_zh": "兴义市(黔西南州)",
+  "name_en": "Xingyi",
+  "aliases": [
+   "Xingyi",
+   "中国",
+   "qianxinan",
+   "xingyi",
+   "qxn"
+  ],
+  "admin1": "贵州省黔西南布依族苗族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 25.5894,
+  "lon": 104.9037,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 900000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-baoshan",
+  "name_zh": "保山市",
+  "name_en": "Baoshan",
+  "aliases": [
+   "保山",
+   "Baoshan",
+   "中国",
+   "baoshan",
+   "bso"
+  ],
+  "admin1": "云南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 25.1176,
+  "lon": 99.1669,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 930000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-zhaotong",
+  "name_zh": "昭通市",
+  "name_en": "Zhaotong",
+  "aliases": [
+   "昭通",
+   "Zhaotong",
+   "中国",
+   "zhaotong",
+   "zto"
+  ],
+  "admin1": "云南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.3392,
+  "lon": 103.7141,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 5090000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-puer",
+  "name_zh": "普洱市",
+  "name_en": "Pu'er",
+  "aliases": [
+   "普洱",
+   "Pu'er",
+   "中国",
+   "puer",
+   "pe"
+  ],
+  "admin1": "云南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 22.7818,
+  "lon": 100.9721,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 2400000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-lincang",
+  "name_zh": "临沧市",
+  "name_en": "Lincang",
+  "aliases": [
+   "临沧",
+   "Lincang",
+   "中国",
+   "lincang",
+   "lco"
+  ],
+  "admin1": "云南省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.8839,
+  "lon": 100.0879,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 2250000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-chuxiong",
+  "name_zh": "楚雄市(楚雄州)",
+  "name_en": "Chuxiong",
+  "aliases": [
+   "Chuxiong",
+   "中国",
+   "chuxiong",
+   "cx"
+  ],
+  "admin1": "云南省楚雄彝族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 25.0394,
+  "lon": 101.54,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 440000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-mengzi",
+  "name_zh": "蒙自市(红河州)",
+  "name_en": "Mengzi",
+  "aliases": [
+   "Mengzi",
+   "中国",
+   "honghe",
+   "mengzi",
+   "hhz"
+  ],
+  "admin1": "云南省红河哈尼族彝族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.3661,
+  "lon": 103.74,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 550000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-wenshan",
+  "name_zh": "文山市(文山州)",
+  "name_en": "Wenshan",
+  "aliases": [
+   "Wenshan",
+   "中国",
+   "wenshan",
+   "ws"
+  ],
+  "admin1": "云南省文山壮族苗族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 23.3695,
+  "lon": 104.28,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 350000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jinghong",
+  "name_zh": "景洪市(西双版纳州)",
+  "name_en": "Jinghong",
+  "aliases": [
+   "Jinghong",
+   "中国",
+   "banna",
+   "xishuangbanna",
+   "jh2"
+  ],
+  "admin1": "云南省西双版纳傣族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 22.0078,
+  "lon": 100.8,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 540000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-mangshi",
+  "name_zh": "芒市(德宏州)",
+  "name_en": "Mangshi",
+  "aliases": [
+   "Mangshi",
+   "中国",
+   "dehong",
+   "mangshi",
+   "dho"
+  ],
+  "admin1": "云南省德宏傣族景颇族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 24.4303,
+  "lon": 98.58,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 400000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-lushui",
+  "name_zh": "泸水市(怒江州)",
+  "name_en": "Lushui",
+  "aliases": [
+   "Lushui",
+   "中国",
+   "nujiang",
+   "lushui",
+   "njo"
+  ],
+  "admin1": "云南省怒江傈僳族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 25.851,
+  "lon": 98.87,
+  "approx_radius_km": 60,
+  "tz": "Asia/Shanghai",
+  "population": 140000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-shangri-la",
+  "name_zh": "香格里拉市(迪庆州)",
+  "name_en": "Shangri-La",
+  "aliases": [
+   "Shangri-La",
+   "中国",
+   "diqing",
+   "shangrila",
+   "dqc"
+  ],
+  "admin1": "云南省迪庆藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 27.83,
+  "lon": 99.7,
+  "approx_radius_km": 60,
+  "tz": "Asia/Shanghai",
+  "population": 80000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-shannan",
+  "name_zh": "山南市",
+  "name_en": "Shannan",
+  "aliases": [
+   "山南",
+   "Shannan",
+   "中国",
+   "shannan",
+   "snn"
+  ],
+  "admin1": "西藏自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 29.262,
+  "lon": 91.778,
+  "approx_radius_km": 80,
+  "tz": "Asia/Shanghai",
+  "population": 350000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-nagqu",
+  "name_zh": "那曲市",
+  "name_en": "Nagqu",
+  "aliases": [
+   "那曲",
+   "Nagqu",
+   "中国",
+   "nagqu",
+   "nq"
+  ],
+  "admin1": "西藏自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 31.4798,
+  "lon": 92.051,
+  "approx_radius_km": 100,
+  "tz": "Asia/Shanghai",
+  "population": 500000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yulin-shanxi",
+  "name_zh": "榆林市",
+  "name_en": "Yulin",
+  "aliases": [
+   "榆林",
+   "Yulin",
+   "中国",
+   "yulin-shanxi",
+   "yulin",
+   "yls"
+  ],
+  "admin1": "陕西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 38.2858,
+  "lon": 109.7507,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 3600000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-weinan",
+  "name_zh": "渭南市",
+  "name_en": "Weinan",
+  "aliases": [
+   "渭南",
+   "Weinan",
+   "中国",
+   "weinan",
+   "wcn"
+  ],
+  "admin1": "陕西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 34.4996,
+  "lon": 109.4946,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 4680000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-tongchuan",
+  "name_zh": "铜川市",
+  "name_en": "Tongchuan",
+  "aliases": [
+   "铜川",
+   "Tongchuan",
+   "中国",
+   "tongchuan",
+   "tch"
+  ],
+  "admin1": "陕西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 34.899,
+  "lon": 108.9503,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 700000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-ankang",
+  "name_zh": "安康市",
+  "name_en": "Ankang",
+  "aliases": [
+   "安康",
+   "Ankang",
+   "中国",
+   "ankang",
+   "ank"
+  ],
+  "admin1": "陕西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 32.6831,
+  "lon": 109.0311,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 2490000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-shangluo",
+  "name_zh": "商洛市",
+  "name_en": "Shangluo",
+  "aliases": [
+   "商洛",
+   "Shangluo",
+   "中国",
+   "shangluo",
+   "shl"
+  ],
+  "admin1": "陕西省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.8659,
+  "lon": 109.938,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 2040000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-jinchang",
+  "name_zh": "金昌市",
+  "name_en": "Jinchang",
+  "aliases": [
+   "金昌",
+   "Jinchang",
+   "中国",
+   "jinchang",
+   "jc"
+  ],
+  "admin1": "甘肃省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 38.5104,
+  "lon": 102.188,
+  "approx_radius_km": 25,
+  "tz": "Asia/Shanghai",
+  "population": 440000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-baiyin",
+  "name_zh": "白银市",
+  "name_en": "Baiyin",
+  "aliases": [
+   "白银",
+   "Baiyin",
+   "中国",
+   "baiyin",
+   "by"
+  ],
+  "admin1": "甘肃省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 36.5466,
+  "lon": 104.14,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 1510000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-pingliang",
+  "name_zh": "平凉市",
+  "name_en": "Pingliang",
+  "aliases": [
+   "平凉",
+   "Pingliang",
+   "中国",
+   "pingliang",
+   "pgl"
+  ],
+  "admin1": "甘肃省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.5428,
+  "lon": 106.679,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 1890000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-qingyang",
+  "name_zh": "庆阳市",
+  "name_en": "Qingyang",
+  "aliases": [
+   "庆阳",
+   "Qingyang",
+   "中国",
+   "qingyang",
+   "qya"
+  ],
+  "admin1": "甘肃省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.7357,
+  "lon": 107.64,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 2150000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-dingxi",
+  "name_zh": "定西市",
+  "name_en": "Dingxi",
+  "aliases": [
+   "定西",
+   "Dingxi",
+   "中国",
+   "dingxi",
+   "dgx"
+  ],
+  "admin1": "甘肃省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.5802,
+  "lon": 104.62,
+  "approx_radius_km": 45,
+  "tz": "Asia/Shanghai",
+  "population": 2550000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-longnan",
+  "name_zh": "陇南市",
+  "name_en": "Longnan",
+  "aliases": [
+   "陇南",
+   "Longnan",
+   "中国",
+   "longnan",
+   "lnn"
+  ],
+  "admin1": "甘肃省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.3953,
+  "lon": 104.92,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 2400000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-linxia",
+  "name_zh": "临夏市(临夏州)",
+  "name_en": "Linxia",
+  "aliases": [
+   "Linxia",
+   "中国",
+   "linxia",
+   "lxi"
+  ],
+  "admin1": "甘肃省临夏回族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.6015,
+  "lon": 103.2106,
+  "approx_radius_km": 30,
+  "tz": "Asia/Shanghai",
+  "population": 250000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-hezuo",
+  "name_zh": "合作市(甘南州)",
+  "name_en": "Hezuo",
+  "aliases": [
+   "Hezuo",
+   "中国",
+   "gannan",
+   "hezuo",
+   "gnz"
+  ],
+  "admin1": "甘肃省甘南藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 34.9877,
+  "lon": 102.91,
+  "approx_radius_km": 50,
+  "tz": "Asia/Shanghai",
+  "population": 80000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-haidong",
+  "name_zh": "海东市",
+  "name_en": "Haidong",
+  "aliases": [
+   "海东",
+   "Haidong",
+   "中国",
+   "haidong",
+   "hdo"
+  ],
+  "admin1": "青海省",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 36.5001,
+  "lon": 102.4017,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 1360000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-delingha",
+  "name_zh": "德令哈市(海西州)",
+  "name_en": "Delingha",
+  "aliases": [
+   "Delingha",
+   "中国",
+   "haixi",
+   "delingha",
+   "hlh"
+  ],
+  "admin1": "青海省海西蒙古族藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.3696,
+  "lon": 97.3426,
+  "approx_radius_km": 60,
+  "tz": "Asia/Shanghai",
+  "population": 80000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-qinghaitongren",
+  "name_zh": "同仁市(黄南州)",
+  "name_en": "Tongren",
+  "aliases": [
+   "Tongren",
+   "中国",
+   "qinghai tongren",
+   "tongren-qh",
+   "huangnan"
+  ],
+  "admin1": "青海省黄南藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.5143,
+  "lon": 102.02,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 90000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-gonghe",
+  "name_zh": "共和县(海南州)",
+  "name_en": "Gonghe",
+  "aliases": [
+   "Gonghe",
+   "中国",
+   "gonghe",
+   "qinghai hainan",
+   "qnz"
+  ],
+  "admin1": "青海省海南藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 36.2629,
+  "lon": 100.02,
+  "approx_radius_km": 60,
+  "tz": "Asia/Shanghai",
+  "population": 160000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-madoi",
+  "name_zh": "玛沁县(果洛州)",
+  "name_en": "Madoi",
+  "aliases": [
+   "Madoi",
+   "中国",
+   "guoluo",
+   "madoi",
+   "glz"
+  ],
+  "admin1": "青海省果洛藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 34.4778,
+  "lon": 100.24,
+  "approx_radius_km": 80,
+  "tz": "Asia/Shanghai",
+  "population": 50000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-yushu",
+  "name_zh": "玉树市(玉树州)",
+  "name_en": "Yushu",
+  "aliases": [
+   "Yushu",
+   "中国",
+   "yushu",
+   "ys"
+  ],
+  "admin1": "青海省玉树藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 33.0011,
+  "lon": 96.972,
+  "approx_radius_km": 80,
+  "tz": "Asia/Shanghai",
+  "population": 100000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-haiyan",
+  "name_zh": "海晏县(海北州)",
+  "name_en": "Haiyan",
+  "aliases": [
+   "Haiyan",
+   "中国",
+   "haibei",
+   "haiyan",
+   "hbz"
+  ],
+  "admin1": "青海省海北藏族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 36.977,
+  "lon": 100.83,
+  "approx_radius_km": 40,
+  "tz": "Asia/Shanghai",
+  "population": 30000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-guyuan",
+  "name_zh": "固原市",
+  "name_en": "Guyuan",
+  "aliases": [
+   "固原",
+   "Guyuan",
+   "中国",
+   "guyuan",
+   "gya"
+  ],
+  "admin1": "宁夏回族自治区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 35.9978,
+  "lon": 106.28,
+  "approx_radius_km": 35,
+  "tz": "Asia/Shanghai",
+  "population": 1140000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-changji",
+  "name_zh": "昌吉市",
+  "name_en": "Changji",
+  "aliases": [
+   "昌吉",
+   "Changji",
+   "中国",
+   "changji",
+   "cji"
+  ],
+  "admin1": "新疆维吾尔自治区昌吉回族自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 44.0138,
+  "lon": 87.31,
+  "approx_radius_km": 30,
+  "tz": "Asia/Urumqi",
+  "population": 470000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-bortala",
+  "name_zh": "博乐市(博州)",
+  "name_en": "Bortala",
+  "aliases": [
+   "Bortala",
+   "中国",
+   "boertala",
+   "bortala",
+   "bol"
+  ],
+  "admin1": "新疆维吾尔自治区博尔塔拉蒙古自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 44.908,
+  "lon": 82.067,
+  "approx_radius_km": 40,
+  "tz": "Asia/Urumqi",
+  "population": 100000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-artux",
+  "name_zh": "阿图什市(克州)",
+  "name_en": "Artux",
+  "aliases": [
+   "Artux",
+   "中国",
+   "kezilesu",
+   "artux",
+   "atz"
+  ],
+  "admin1": "新疆维吾尔自治区克孜勒苏柯尔克孜自治州",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 39.721,
+  "lon": 76.171,
+  "approx_radius_km": 40,
+  "tz": "Asia/Kashgar",
+  "population": 180000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-hotan",
+  "name_zh": "和田市",
+  "name_en": "Hotan",
+  "aliases": [
+   "和田",
+   "Hotan",
+   "中国",
+   "hetian",
+   "hotan",
+   "htn"
+  ],
+  "admin1": "新疆维吾尔自治区和田地区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 37.089,
+  "lon": 79.923,
+  "approx_radius_km": 40,
+  "tz": "Asia/Kashgar",
+  "population": 330000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-tacheng",
+  "name_zh": "塔城市",
+  "name_en": "Tacheng",
+  "aliases": [
+   "塔城",
+   "Tacheng",
+   "中国",
+   "tacheng",
+   "tcg"
+  ],
+  "admin1": "新疆维吾尔自治区塔城地区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 46.722,
+  "lon": 82.98,
+  "approx_radius_km": 45,
+  "tz": "Asia/Urumqi",
+  "population": 150000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-altay",
+  "name_zh": "阿勒泰市",
+  "name_en": "Altay",
+  "aliases": [
+   "阿勒泰",
+   "Altay",
+   "中国",
+   "aletai",
+   "altay",
+   "alt"
+  ],
+  "admin1": "新疆维吾尔自治区阿勒泰地区",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 47.718,
+  "lon": 88.14,
+  "approx_radius_km": 50,
+  "tz": "Asia/Urumqi",
+  "population": 140000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-aral",
+  "name_zh": "阿拉尔市",
+  "name_en": "Aral",
+  "aliases": [
+   "阿拉尔",
+   "Aral",
+   "中国",
+   "aral",
+   "alaer"
+  ],
+  "admin1": "新疆维吾尔自治区(兵团第一师)",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 40.55,
+  "lon": 81.26,
+  "approx_radius_km": 30,
+  "tz": "Asia/Urumqi",
+  "population": 280000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-tumshuk",
+  "name_zh": "图木舒克市",
+  "name_en": "Tumshuk",
+  "aliases": [
+   "图木舒克",
+   "Tumshuk",
+   "中国",
+   "tumushuke",
+   "tmsk"
+  ],
+  "admin1": "新疆维吾尔自治区(兵团第三师)",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 41.972,
+  "lon": 79.187,
+  "approx_radius_km": 30,
+  "tz": "Asia/Kashgar",
+  "population": 240000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
+ },
+ {
+  "id": "curated:cn-wujiaqu",
+  "name_zh": "五家渠市",
+  "name_en": "Wujiaqu",
+  "aliases": [
+   "五家渠",
+   "Wujiaqu",
+   "中国",
+   "wujiaqu",
+   "wjq"
+  ],
+  "admin1": "新疆维吾尔自治区(兵团第六师)",
+  "country_zh": "中国",
+  "country_code": "CN",
+  "lat": 44.168,
+  "lon": 87.986,
+  "approx_radius_km": 25,
+  "tz": "Asia/Urumqi",
+  "population": 140000,
+  "level": "city",
+  "group": "cn_more",
+  "source": "curated",
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-taipei",
@@ -3729,7 +8362,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-kaohsiung",
@@ -3753,7 +8386,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-taichung",
@@ -3777,7 +8410,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-tainan",
@@ -3801,7 +8434,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-newtaipei",
@@ -3825,7 +8458,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-taoyuan",
@@ -3849,7 +8482,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-keelung",
@@ -3873,7 +8506,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-hsinchu",
@@ -3897,7 +8530,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-chiayi",
@@ -3921,7 +8554,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-miaoli",
@@ -3945,7 +8578,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-changhua",
@@ -3969,7 +8602,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-nantou",
@@ -3993,7 +8626,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-douliu",
@@ -4018,7 +8651,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-pingtung",
@@ -4042,7 +8675,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-yilan",
@@ -4066,7 +8699,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-taitung",
@@ -4090,7 +8723,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-hualien",
@@ -4114,7 +8747,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tw-makung",
@@ -4139,7 +8772,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:hk-hongkong",
@@ -4164,7 +8797,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:mo-macau",
@@ -4189,7 +8822,7 @@
   "level": "city",
   "group": "tw_hk_mo",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:jp-tokyo",
@@ -4212,7 +8845,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:kr-seoul",
@@ -4236,7 +8869,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:kp-pyongyang",
@@ -4259,7 +8892,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:mn-ulaanbaatar",
@@ -4282,7 +8915,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:in-newdelhi",
@@ -4305,7 +8938,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:pk-islamabad",
@@ -4327,7 +8960,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:bd-dhaka",
@@ -4350,7 +8983,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:np-kathmandu",
@@ -4372,7 +9005,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:bt-thimphu",
@@ -4393,7 +9026,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:mm-naypyidaw",
@@ -4415,7 +9048,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:th-bangkok",
@@ -4438,7 +9071,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:vn-hanoi",
@@ -4461,7 +9094,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:la-vientiane",
@@ -4485,7 +9118,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:kh-phnompenh",
@@ -4508,7 +9141,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:my-kualalumpur",
@@ -4530,7 +9163,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:sg-singapore",
@@ -4552,7 +9185,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:id-jakarta",
@@ -4574,7 +9207,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ph-manila",
@@ -4596,7 +9229,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:bn-bandarseribegawan",
@@ -4619,7 +9252,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tl-dili",
@@ -4640,7 +9273,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ru-moscow",
@@ -4663,7 +9296,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ua-kyiv",
@@ -4686,7 +9319,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:by-minsk",
@@ -4707,7 +9340,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:pl-warsaw",
@@ -4730,7 +9363,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:de-berlin",
@@ -4753,7 +9386,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ch-bern",
@@ -4774,7 +9407,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:at-vienna",
@@ -4795,7 +9428,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:fr-paris",
@@ -4817,7 +9450,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:gb-london",
@@ -4840,7 +9473,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ie-dublin",
@@ -4862,7 +9495,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:is-reykjavik",
@@ -4884,7 +9517,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:pt-lisbon",
@@ -4906,7 +9539,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:es-madrid",
@@ -4928,7 +9561,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:it-rome",
@@ -4951,7 +9584,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:gr-athens",
@@ -4974,7 +9607,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:bg-sofia",
@@ -4995,7 +9628,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ro-bucharest",
@@ -5017,7 +9650,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:rs-belgrade",
@@ -5039,7 +9672,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ba-sarajevo",
@@ -5061,7 +9694,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:si-ljubljana",
@@ -5083,7 +9716,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:hr-zagreb",
@@ -5104,7 +9737,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cz-prague",
@@ -5127,7 +9760,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:hu-budapest",
@@ -5149,7 +9782,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:lt-vilnius",
@@ -5170,7 +9803,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:lv-riga",
@@ -5191,7 +9824,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ee-tallinn",
@@ -5212,7 +9845,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:no-oslo",
@@ -5233,7 +9866,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:se-stockholm",
@@ -5255,7 +9888,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:dk-copenhagen",
@@ -5277,7 +9910,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:fi-helsinki",
@@ -5299,7 +9932,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:nl-thehague",
@@ -5321,7 +9954,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:be-brussels",
@@ -5343,7 +9976,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tr-ankara",
@@ -5364,7 +9997,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ge-tbilisi",
@@ -5385,7 +10018,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:am-yerevan",
@@ -5406,7 +10039,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:az-baku",
@@ -5427,7 +10060,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:kz-astana",
@@ -5448,7 +10081,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:uz-tashkent",
@@ -5469,7 +10102,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ir-tehran",
@@ -5491,7 +10124,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:iq-baghdad",
@@ -5512,7 +10145,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:sa-riyadh",
@@ -5534,7 +10167,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ae-abudhabi",
@@ -5556,7 +10189,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:qa-doha",
@@ -5577,7 +10210,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:om-muscat",
@@ -5598,7 +10231,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:eg-cairo",
@@ -5621,7 +10254,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:dz-algiers",
@@ -5642,7 +10275,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tn-tunis",
@@ -5663,7 +10296,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ly-tripoli",
@@ -5684,7 +10317,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ma-rabat",
@@ -5705,7 +10338,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:sd-khartoum",
@@ -5726,7 +10359,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:et-addisababa",
@@ -5748,7 +10381,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ke-nairobi",
@@ -5770,7 +10403,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tz-daressalaam",
@@ -5792,7 +10425,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cd-kinshasa",
@@ -5813,7 +10446,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:zm-lusaka",
@@ -5834,7 +10467,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:zw-harare",
@@ -5855,7 +10488,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:mz-maputo",
@@ -5876,7 +10509,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:mg-antananarivo",
@@ -5897,7 +10530,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:na-windhoek",
@@ -5918,7 +10551,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:za-pretoria",
@@ -5941,7 +10574,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-washington",
@@ -5964,7 +10597,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ca-ottawa",
@@ -5986,7 +10619,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:mx-mexicocity",
@@ -6008,7 +10641,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:br-brasilia",
@@ -6029,7 +10662,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ar-buenosaires",
@@ -6050,7 +10683,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cl-santiago",
@@ -6072,7 +10705,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:pe-lima",
@@ -6093,7 +10726,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:co-bogota",
@@ -6114,7 +10747,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ec-quito",
@@ -6135,7 +10768,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ve-caracas",
@@ -6156,7 +10789,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:cu-havana",
@@ -6178,7 +10811,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:pa-panamacity",
@@ -6199,7 +10832,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:py-asuncion",
@@ -6220,7 +10853,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:uy-montevideo",
@@ -6241,7 +10874,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:au-canberra",
@@ -6263,7 +10896,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:nz-wellington",
@@ -6286,7 +10919,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:fj-suva",
@@ -6307,7 +10940,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:pg-portmoresby",
@@ -6328,7 +10961,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ws-apia",
@@ -6349,7 +10982,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ki-southtarawa",
@@ -6371,7 +11004,7 @@
   "level": "city",
   "group": "world_cap",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-newyork",
@@ -6394,7 +11027,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-losangeles",
@@ -6417,7 +11050,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-chicago",
@@ -6440,7 +11073,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-sanfrancisco",
@@ -6463,7 +11096,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-seattle",
@@ -6484,7 +11117,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-boston",
@@ -6505,7 +11138,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-houston",
@@ -6528,7 +11161,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ru-vladivostok",
@@ -6551,7 +11184,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-anchorage",
@@ -6572,7 +11205,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:us-honolulu",
@@ -6596,7 +11229,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ca-toronto",
@@ -6618,7 +11251,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ca-montreal",
@@ -6639,7 +11272,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ca-vancouver",
@@ -6661,7 +11294,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ca-calgary",
@@ -6682,7 +11315,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:au-sydney",
@@ -6705,7 +11338,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:au-melbourne",
@@ -6727,7 +11360,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:au-brisbane",
@@ -6748,7 +11381,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:au-perth",
@@ -6770,7 +11403,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:jp-osaka",
@@ -6793,7 +11426,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:jp-kyoto",
@@ -6814,7 +11447,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:jp-sapporo",
@@ -6837,7 +11470,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:jp-fukuoka",
@@ -6860,7 +11493,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:kr-busan",
@@ -6882,7 +11515,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:br-saopaulo",
@@ -6904,7 +11537,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:ae-dubai",
@@ -6926,7 +11559,7 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  },
  {
   "id": "curated:tr-istanbul",
@@ -6949,6 +11582,6 @@
   "level": "city",
   "group": "world_ext",
   "source": "curated",
-  "revision": "2026.09.18"
+  "revision": "2026.09.22"
  }
 ]

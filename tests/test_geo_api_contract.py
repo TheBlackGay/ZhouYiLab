@@ -186,7 +186,7 @@ class GeoApiContractTest(unittest.TestCase):
         status, payload = self.get("/api/v1/geo/meta")
         self.assertEqual(status, 200)
         data = payload["data"]
-        self.assertEqual(data["count"], 300)
+        self.assertEqual(data["count"], 493)
         self.assertEqual(data["revision"], geo_places.default_index().revision)
         self.assertTrue(data["tz_available"])
         self.assertTrue(str(data["tzdata_version"]))
@@ -196,7 +196,7 @@ class GeoApiContractTest(unittest.TestCase):
         status, payload = self.get("/api/v1/astro/meta")
         self.assertEqual(status, 200)
         geo_block = payload["data"]["geo"]
-        self.assertEqual(geo_block["count"], 300)
+        self.assertEqual(geo_block["count"], 493)
         self.assertTrue(geo_block["tz_available"])
 
     # ---- 降级：缺 data/geo/ 时 GEO_CONFIG_ERROR（不拖垮其它端点） -------------

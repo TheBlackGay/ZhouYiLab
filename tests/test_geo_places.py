@@ -21,11 +21,12 @@ INDEX = geo.load_places()
 class CuratedDataTests(unittest.TestCase):
     def test_count_and_groups_match_quota(self):
         meta = INDEX.meta()
-        self.assertEqual(meta["count"], 300)
+        self.assertEqual(meta["count"], 493)
         self.assertEqual(meta["revision"], INDEX.revision)
         self.assertEqual(
             meta["groups"],
-            {"cn_core": 34, "cn_extra": 120, "tw_hk_mo": 20, "world_cap": 100, "world_ext": 26},
+            {"cn_core": 34, "cn_extra": 120, "cn_more": 193,
+             "tw_hk_mo": 20, "world_cap": 100, "world_ext": 26},
         )
 
     def test_ids_are_unique_and_prefixed(self):
@@ -343,7 +344,7 @@ class IndexLoadingTests(unittest.TestCase):
 
     def test_geo_meta_shape(self):
         meta = geo.geo_meta(INDEX)
-        self.assertEqual(meta["count"], 300)
+        self.assertEqual(meta["count"], 493)
         self.assertEqual(meta["revision"], INDEX.revision)
         self.assertTrue(meta["tz_available"])
         self.assertTrue(meta["tzdata_version"])

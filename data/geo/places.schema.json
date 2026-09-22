@@ -34,7 +34,7 @@
     "population": { "type": "integer", "minimum": 0, "description": "约数人口，排序权重，可空" },
     "level": { "enum": ["city"], "description": "G1 只有 city；district/poi 属 G2" },
     "group": {
-      "enum": ["cn_core", "cn_extra", "tw_hk_mo", "world_cap", "world_ext"],
+      "enum": ["cn_core", "cn_extra", "cn_more", "tw_hk_mo", "world_cap", "world_ext"],
       "description": "选点分组，配额见 scripts/gen_curated_places.py 与 index.json"
     },
     "source": { "const": "curated" },

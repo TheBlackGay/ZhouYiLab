@@ -5,9 +5,12 @@
 约数人口、约数半径），不复制任何商业地图数据（见 docs/product/
 西洋占星出生地点交互优化方案.md §6.1 许可约束）。
 
-分组配额（合计 300，方案 §6.1）：
+分组配额（合计 493）：
   cn_core   34  直辖市、省会/首府与计划单列核心城市
   cn_extra 120  计划单列市、人口前列地级市与重要口岸/地区驻地
+  cn_more  193  其余全部地级市/自治州/盟驻地，补齐大陆 333 个地级区划
+                （日喀则、狮泉河因 §6.1 的 |经度−标准经线|≤30° 校验
+                 无法用 Asia/Shanghai 收录，暂缺，见 data/geo/README.md）
   tw_hk_mo  20  港澳台城市（含台北、香港、澳门）
   world_cap 100 全球首都
   world_ext  26 其他高频海外城市
@@ -22,11 +25,11 @@ import unicodedata
 from datetime import date
 from pathlib import Path
 
-REVISION = "2026.09.18"
+REVISION = "2026.09.22"
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "data" / "geo"
 
-QUOTA = {"cn_core": 34, "cn_extra": 120, "tw_hk_mo": 20, "world_cap": 100, "world_ext": 26, "total": 300}
+QUOTA = {"cn_core": 34, "cn_extra": 120, "cn_more": 193, "tw_hk_mo": 20, "world_cap": 100, "world_ext": 26, "total": 493}
 
 CN_CORE = [
     ("北京市", "Beijing", "北京市", "中国", "CN", 39.9042, 116.4074, "Asia/Shanghai", 21890000, 40, ["北京", "京", "beijing", "bj"]),
@@ -186,6 +189,231 @@ CN_EXTRA = [
     ("阿克苏市", "Aksu", "新疆维吾尔自治区阿克苏地区", "中国", "CN", 41.1710, 80.2600, "Asia/Kashgar", 590000, 60, ["阿克苏", "aksu", "aek"]),
     ("克拉玛依市", "Karamay", "新疆维吾尔自治区", "中国", "CN", 45.6000, 84.8700, "Asia/Urumqi", 490000, 40, ["克拉玛依", "karamay", "kly"]),
     ("石河子市", "Shihezi", "新疆维吾尔自治区", "中国", "CN", 44.3100, 86.0800, "Asia/Urumqi", 780000, 25, ["石河子", "shihezi", "shz"]),
+]
+
+# 其余地级市/自治州/盟驻地（含济源/仙桃等省辖市与兵团直辖市），补齐大陆地级行政区。
+# 州/盟驻地用「驻地名（州/盟名）」形式，保证两个名字都能被中文检索命中。
+CN_MORE = [
+    # 河北省（3）
+    ("邢台市", "Xingtai", "河北省", "中国", "CN", 37.0702, 114.5044, "Asia/Shanghai", 7500000, 35, ["xingtai", "xt"]),
+    ("承德市", "Chengde", "河北省", "中国", "CN", 40.9512, 117.9275, "Asia/Shanghai", 3350000, 40, ["chengde", "cd"]),
+    ("衡水市", "Hengshui", "河北省", "中国", "CN", 37.7359, 115.6705, "Asia/Shanghai", 4210000, 35, ["hengshui", "hs"]),
+    # 山西省（5）
+    ("阳泉市", "Yangquan", "山西省", "中国", "CN", 37.8572, 113.5833, "Asia/Shanghai", 1320000, 25, ["yangquan", "yq"]),
+    ("朔州市", "Shuozhou", "山西省", "中国", "CN", 39.3312, 112.4334, "Asia/Shanghai", 1590000, 35, ["shuozhou", "sz"]),
+    ("晋中市", "Jinzhong", "山西省", "中国", "CN", 37.6872, 112.7380, "Asia/Shanghai", 3380000, 35, ["jinzhong", "jz"]),
+    ("忻州市", "Xinzhou", "山西省", "中国", "CN", 38.4170, 112.7335, "Asia/Shanghai", 2690000, 50, ["xinzhou", "xz"]),
+    ("吕梁市", "Luliang", "山西省", "中国", "CN", 37.5183, 111.1430, "Asia/Shanghai", 3400000, 50, ["lüliang", "lvliang", "ll"]),
+    # 内蒙古自治区（6：地级市 + 盟驻地）
+    ("乌海市", "Wuhai", "内蒙古自治区", "中国", "CN", 39.6737, 106.8256, "Asia/Shanghai", 560000, 25, ["wuhai", "wh"]),
+    ("巴彦淖尔市", "Bayannur", "内蒙古自治区", "中国", "CN", 40.7570, 107.4162, "Asia/Shanghai", 1510000, 50, ["bayannaoer", "byne"]),
+    ("乌兰察布市", "Ulanqab", "内蒙古自治区", "中国", "CN", 41.0225, 113.1119, "Asia/Shanghai", 1790000, 50, ["wulanchabu", "wlcb"]),
+    ("锡林浩特市(锡林郭勒盟)", "Xilinhot", "内蒙古自治区锡林郭勒盟", "中国", "CN", 43.9334, 116.0820, "Asia/Shanghai", 300000, 40, ["xilinhuote", "xlht"]),
+    ("乌兰浩特市(兴安盟)", "Ulanhot", "内蒙古自治区兴安盟", "中国", "CN", 46.0687, 122.0700, "Asia/Shanghai", 370000, 35, ["ulanhaote", "ulht"]),
+    ("巴彦浩特镇(阿拉善盟)", "Bayanhot", "内蒙古自治区阿拉善盟", "中国", "CN", 38.8514, 105.8491, "Asia/Shanghai", 130000, 60, ["bayanhaote", "alashan", "blht"]),
+    # 辽宁省（9）
+    ("抚顺市", "Fushun", "辽宁省", "中国", "CN", 41.8807, 123.8746, "Asia/Shanghai", 1860000, 30, ["fushun", "fs"]),
+    ("本溪市", "Benxi", "辽宁省", "中国", "CN", 41.2983, 123.7604, "Asia/Shanghai", 1380000, 30, ["benxi", "bx"]),
+    ("营口市", "Yingkou", "辽宁省", "中国", "CN", 40.6670, 122.2358, "Asia/Shanghai", 1870000, 30, ["yingkou", "yk"]),
+    ("朝阳市", "Chaoyang", "辽宁省", "中国", "CN", 41.5737, 120.4504, "Asia/Shanghai", 2880000, 40, ["chaoyang", "cy"]),
+    ("阜新市", "Fuxin", "辽宁省", "中国", "CN", 42.0215, 121.6680, "Asia/Shanghai", 1650000, 30, ["fuxin", "fx"]),
+    ("辽阳市", "Liaoyang", "辽宁省", "中国", "CN", 41.2675, 123.1770, "Asia/Shanghai", 1530000, 25, ["liaoyang", "liao"]),
+    ("盘锦市", "Panjin", "辽宁省", "中国", "CN", 41.1195, 122.0707, "Asia/Shanghai", 1390000, 30, ["panjin", "pj"]),
+    ("葫芦岛市", "Huludao", "辽宁省", "中国", "CN", 40.7135, 120.8376, "Asia/Shanghai", 2360000, 40, ["huludao", "hld"]),
+    ("铁岭市", "Tieling", "辽宁省", "中国", "CN", 42.2873, 123.8480, "Asia/Shanghai", 2390000, 35, ["tieling", "tl"]),
+    # 吉林省（5 地级市 + 延边州驻地）
+    ("延吉市(延边州)", "Yanji", "吉林省延边朝鲜族自治州", "中国", "CN", 42.8965, 129.5100, "Asia/Shanghai", 520000, 30, ["yanbian", "yanji", "yj"]),
+    ("四平市", "Siping", "吉林省", "中国", "CN", 43.1665, 124.3507, "Asia/Shanghai", 1810000, 40, ["siping", "sp"]),
+    ("通化市", "Tonghua", "吉林省", "中国", "CN", 41.7280, 125.9403, "Asia/Shanghai", 1820000, 35, ["tonghua", "th"]),
+    ("白山市", "Baishan", "吉林省", "中国", "CN", 41.9416, 126.4277, "Asia/Shanghai", 950000, 40, ["baishan", "bs"]),
+    ("松原市", "Songyuan", "吉林省", "中国", "CN", 45.1418, 124.8254, "Asia/Shanghai", 2380000, 45, ["songyuan", "syo"]),
+    ("白城市", "Baicheng", "吉林省", "中国", "CN", 45.6210, 122.8370, "Asia/Shanghai", 1550000, 45, ["baicheng", "bc"]),
+    # 黑龙江省（9 地级市 + 大兴安岭地区驻地）
+    ("佳木斯市", "Jiamusi", "黑龙江省", "中国", "CN", 46.8236, 130.3230, "Asia/Shanghai", 2160000, 40, ["jiamusi", "jms"]),
+    ("大庆市", "Daqing", "黑龙江省", "中国", "CN", 46.5914, 125.1036, "Asia/Shanghai", 2780000, 35, ["daqing", "dq"]),
+    ("鸡西市", "Jixi", "黑龙江省", "中国", "CN", 45.2950, 130.9695, "Asia/Shanghai", 1500000, 35, ["jixi", "jx"]),
+    ("鹤岗市", "Hegang", "黑龙江省", "中国", "CN", 47.3454, 130.2979, "Asia/Shanghai", 740000, 30, ["hegang", "hg"]),
+    ("双鸭山市", "Shuangyashan", "黑龙江省", "中国", "CN", 46.6466, 131.1594, "Asia/Shanghai", 830000, 35, ["shuangyashan", "sys"]),
+    ("七台河市", "Qitaihe", "黑龙江省", "中国", "CN", 45.7713, 130.8645, "Asia/Shanghai", 690000, 25, ["qitaihe", "qth"]),
+    ("黑河市", "Heihe", "黑龙江省", "中国", "CN", 50.2443, 127.5299, "Asia/Shanghai", 1290000, 50, ["heihe", "hh"]),
+    ("绥化市", "Suihua", "黑龙江省", "中国", "CN", 46.6338, 126.9745, "Asia/Shanghai", 3760000, 45, ["suihua", "sui"]),
+    ("伊春市", "Yichun", "黑龙江省", "中国", "CN", 47.7273, 128.8911, "Asia/Shanghai", 830000, 70, ["yichun-heilongjiang", "yichun", "yich"]),
+    ("加格达奇(大兴安岭地区)", "Jiagedaqi", "黑龙江省大兴安岭地区", "中国", "CN", 50.4135, 124.1211, "Asia/Shanghai", 110000, 40, ["daxinganning", "jgdq"]),
+    # 江苏省（3）
+    ("连云港市", "Lianyungang", "江苏省", "中国", "CN", 34.5967, 119.1245, "Asia/Shanghai", 4600000, 35, ["lianyungang", "lyg"]),
+    ("淮安市", "Huai'an", "江苏省", "中国", "CN", 33.5006, 119.0206, "Asia/Shanghai", 4550000, 35, ["huaian", "ha"]),
+    ("宿迁市", "Suqian", "江苏省", "中国", "CN", 33.9396, 118.2977, "Asia/Shanghai", 4990000, 35, ["suqian", "sqq"]),
+    # 浙江省（4）
+    ("湖州市", "Huzhou", "浙江省", "中国", "CN", 30.8939, 120.0886, "Asia/Shanghai", 3370000, 30, ["huzhou", "hz"]),
+    ("衢州市", "Quzhou", "浙江省", "中国", "CN", 28.9353, 118.8675, "Asia/Shanghai", 2280000, 35, ["quzhou", "qzo"]),
+    ("舟山市", "Zhoushan", "浙江省", "中国", "CN", 29.9927, 122.2064, "Asia/Shanghai", 1160000, 25, ["zhoushan", "zs"]),
+    ("丽水市", "Lishui", "浙江省", "中国", "CN", 28.4686, 119.9227, "Asia/Shanghai", 2190000, 35, ["lishui", "ls"]),
+    # 安徽省（12）
+    ("蚌埠市", "Bengbu", "安徽省", "中国", "CN", 32.9169, 117.3532, "Asia/Shanghai", 3300000, 30, ["bengbu", "bb"]),
+    ("淮南市", "Huainan", "安徽省", "中国", "CN", 32.6267, 116.8107, "Asia/Shanghai", 3030000, 30, ["huainan", "hnn"]),
+    ("马鞍山市", "Ma'anshan", "安徽省", "中国", "CN", 31.6707, 118.5090, "Asia/Shanghai", 2160000, 25, ["maanshan", "mas"]),
+    ("淮北市", "Huaibei", "安徽省", "中国", "CN", 33.9531, 116.7979, "Asia/Shanghai", 1970000, 30, ["huaibei", "hob"]),
+    ("铜陵市", "Tongling", "安徽省", "中国", "CN", 30.9456, 117.8125, "Asia/Shanghai", 1310000, 25, ["tongling", "tli"]),
+    ("黄山市", "Huangshan", "安徽省", "中国", "CN", 29.7149, 118.3375, "Asia/Shanghai", 1320000, 30, ["huangshan", "hsg"]),
+    ("滁州市", "Chuzhou", "安徽省", "中国", "CN", 32.3022, 118.3176, "Asia/Shanghai", 3990000, 40, ["chuzhou", "czh"]),
+    ("宿州市", "Suzhou", "安徽省", "中国", "CN", 33.6338, 116.9844, "Asia/Shanghai", 5300000, 40, ["anhui suzhou", "suzhou-ah", "suzh"]),
+    ("六安市", "Lu'an", "安徽省", "中国", "CN", 31.7512, 116.5076, "Asia/Shanghai", 4390000, 40, ["luan", "la"]),
+    ("亳州市", "Bozhou", "安徽省", "中国", "CN", 33.8695, 115.7770, "Asia/Shanghai", 4990000, 35, ["bozhou", "bz"]),
+    ("池州市", "Chizhou", "安徽省", "中国", "CN", 30.6594, 117.4885, "Asia/Shanghai", 1150000, 30, ["chizhou", "ciz"]),
+    ("宣城市", "Xuancheng", "安徽省", "中国", "CN", 30.9406, 118.7577, "Asia/Shanghai", 2500000, 35, ["xuancheng", "xch"]),
+    # 福建省（5）
+    ("莆田市", "Putian", "福建省", "中国", "CN", 25.4311, 119.0078, "Asia/Shanghai", 3210000, 25, ["putian", "pt"]),
+    ("三明市", "Sanming", "福建省", "中国", "CN", 26.2655, 117.6390, "Asia/Shanghai", 2430000, 40, ["sanming", "smg"]),
+    ("南平市", "Nanping", "福建省", "中国", "CN", 26.6386, 118.1279, "Asia/Shanghai", 2640000, 45, ["nanping", "npg"]),
+    ("宁德市", "Ningde", "福建省", "中国", "CN", 26.6612, 119.5271, "Asia/Shanghai", 3150000, 40, ["ningde", "nde"]),
+    ("龙岩市", "Longyan", "福建省", "中国", "CN", 25.0907, 117.0288, "Asia/Shanghai", 2730000, 40, ["longyan", "lyo"]),
+    # 江西省（6）
+    ("萍乡市", "Pingxiang", "江西省", "中国", "CN", 27.6231, 113.8549, "Asia/Shanghai", 1800000, 30, ["pingxiang", "pxg"]),
+    ("新余市", "Xinyu", "江西省", "中国", "CN", 27.8170, 114.9252, "Asia/Shanghai", 1210000, 25, ["xinyu", "xyu"]),
+    ("鹰潭市", "Yingtan", "江西省", "中国", "CN", 28.2390, 117.0450, "Asia/Shanghai", 1150000, 25, ["yingtan", "yta"]),
+    ("吉安市", "Ji'an", "江西省", "中国", "CN", 27.1134, 114.9928, "Asia/Shanghai", 4460000, 45, ["jian", "ja"]),
+    ("宜春市", "Yichun", "江西省", "中国", "CN", 27.8157, 114.4028, "Asia/Shanghai", 5000000, 40, ["yichun-jiangxi", "yichun", "yic"]),
+    ("抚州市", "Fuzhou", "江西省", "中国", "CN", 27.9512, 116.3583, "Asia/Shanghai", 1770000, 35, ["fuzhou-jx", "jiangxi fuzhou", "fzo"]),
+    # 山东省（7）
+    ("枣庄市", "Zaozhuang", "山东省", "中国", "CN", 34.8100, 117.3238, "Asia/Shanghai", 3860000, 30, ["zaozhuang", "zao"]),
+    ("东营市", "Dongying", "山东省", "中国", "CN", 37.4638, 118.6108, "Asia/Shanghai", 2190000, 30, ["dongying", "dyi"]),
+    ("威海市", "Weihai", "山东省", "中国", "CN", 37.4639, 122.1204, "Asia/Shanghai", 2910000, 30, ["weihai", "whi"]),
+    ("日照市", "Rizhao", "山东省", "中国", "CN", 35.4164, 119.5271, "Asia/Shanghai", 2970000, 30, ["rizhao", "rz"]),
+    ("德州市", "Dezhou", "山东省", "中国", "CN", 37.4357, 116.3569, "Asia/Shanghai", 4910000, 40, ["dezhou", "dzo"]),
+    ("聊城市", "Liaocheng", "山东省", "中国", "CN", 36.4564, 115.9806, "Asia/Shanghai", 5950000, 40, ["liaocheng", "lcg"]),
+    ("滨州市", "Binzhou", "山东省", "中国", "CN", 37.3824, 118.0260, "Asia/Shanghai", 3930000, 35, ["binzhou", "bzo"]),
+    # 河南省（8 地级市 + 省辖济源）
+    ("平顶山市", "Pingdingshan", "河南省", "中国", "CN", 33.7693, 113.1929, "Asia/Shanghai", 4990000, 35, ["pingdingshan", "pds"]),
+    ("鹤壁市", "Hebi", "河南省", "中国", "CN", 35.7482, 114.2954, "Asia/Shanghai", 1570000, 25, ["hebi", "hb2"]),
+    ("焦作市", "Jiaozuo", "河南省", "中国", "CN", 35.2159, 113.2415, "Asia/Shanghai", 3540000, 30, ["jiaozuo", "jzo"]),
+    ("濮阳市", "Puyang", "河南省", "中国", "CN", 35.7616, 115.0292, "Asia/Shanghai", 3770000, 30, ["puyang", "py"]),
+    ("许昌市", "Xuchang", "河南省", "中国", "CN", 34.0357, 113.8518, "Asia/Shanghai", 4380000, 30, ["xuchang", "xcg"]),
+    ("漯河市", "Luohe", "河南省", "中国", "CN", 33.5767, 114.0166, "Asia/Shanghai", 2370000, 25, ["luohe", "lh"]),
+    ("三门峡市", "Sanmenxia", "河南省", "中国", "CN", 34.7727, 111.2003, "Asia/Shanghai", 2030000, 35, ["sanmenxia", "smx"]),
+    ("驻马店市", "Zhumadian", "河南省", "中国", "CN", 32.9802, 114.0229, "Asia/Shanghai", 7010000, 40, ["zhumadian", "zmd"]),
+    ("济源市", "Jiyuan", "河南省", "中国", "CN", 35.0688, 112.6019, "Asia/Shanghai", 730000, 25, ["jiyuan", "jyu"]),
+    # 湖北省（8 地级市 + 恩施州驻地 + 3 省辖市）
+    ("黄石市", "Huangshi", "湖北省", "中国", "CN", 30.2025, 115.0389, "Asia/Shanghai", 2470000, 25, ["huangshi", "hsg2"]),
+    ("鄂州市", "Ezhou", "湖北省", "中国", "CN", 30.3963, 114.8944, "Asia/Shanghai", 1070000, 20, ["ezhou", "ez"]),
+    ("荆门市", "Jingmen", "湖北省", "中国", "CN", 31.0354, 112.2005, "Asia/Shanghai", 2600000, 35, ["jingmen", "jmn"]),
+    ("孝感市", "Xiaogan", "湖北省", "中国", "CN", 30.9246, 113.9165, "Asia/Shanghai", 4270000, 35, ["xiaogan", "xg"]),
+    ("荆州市", "Jingzhou", "湖北省", "中国", "CN", 30.3315, 112.2411, "Asia/Shanghai", 5240000, 35, ["jingzhou", "jog2"]),
+    ("黄冈市", "Huanggang", "湖北省", "中国", "CN", 30.4536, 114.8722, "Asia/Shanghai", 5880000, 40, ["huanggang", "hgg"]),
+    ("咸宁市", "Xianning", "湖北省", "中国", "CN", 29.8412, 114.3224, "Asia/Shanghai", 1940000, 30, ["xianning", "xin"]),
+    ("随州市", "Suizhou", "湖北省", "中国", "CN", 31.6958, 113.3829, "Asia/Shanghai", 2040000, 35, ["suizhou", "szo"]),
+    ("恩施市(恩施州)", "Enshi", "湖北省恩施土家族苗族自治州", "中国", "CN", 30.2737, 109.4884, "Asia/Shanghai", 820000, 45, ["enshi", "ens"]),
+    ("仙桃市", "Xiantao", "湖北省", "中国", "CN", 30.3650, 113.4431, "Asia/Shanghai", 1130000, 25, ["xiantao", "xta"]),
+    ("潜江市", "Qianjiang", "湖北省", "中国", "CN", 30.4221, 112.8992, "Asia/Shanghai", 840000, 25, ["qianjiang", "qjo"]),
+    ("天门市", "Tianmen", "湖北省", "中国", "CN", 30.6645, 113.1657, "Asia/Shanghai", 1150000, 25, ["tianmen", "tmm"]),
+    # 湖南省（7 地级市 + 湘西州驻地）
+    ("株洲市", "Zhuzhou", "湖南省", "中国", "CN", 27.8274, 113.1340, "Asia/Shanghai", 2890000, 30, ["zhuzhou", "zho"]),
+    ("湘潭市", "Xiangtan", "湖南省", "中国", "CN", 27.8297, 112.9340, "Asia/Shanghai", 2730000, 25, ["xiangtan", "xtan"]),
+    ("张家界市", "Zhangjiajie", "湖南省", "中国", "CN", 29.1166, 110.4789, "Asia/Shanghai", 1510000, 30, ["zhangjiajie", "zjj"]),
+    ("益阳市", "Yiyang", "湖南省", "中国", "CN", 28.5538, 112.3550, "Asia/Shanghai", 3850000, 35, ["yiyang", "yiy"]),
+    ("郴州市", "Chenzhou", "湖南省", "中国", "CN", 25.7708, 113.0311, "Asia/Shanghai", 4660000, 40, ["chenzhou", "czc"]),
+    ("永州市", "Yongzhou", "湖南省", "中国", "CN", 26.4535, 111.6130, "Asia/Shanghai", 5290000, 40, ["yongzhou", "yzo"]),
+    ("怀化市", "Huaihua", "湖南省", "中国", "CN", 27.5550, 109.9920, "Asia/Shanghai", 4590000, 45, ["huaihua", "hth"]),
+    ("娄底市", "Loudi", "湖南省", "中国", "CN", 27.7037, 111.9936, "Asia/Shanghai", 3830000, 30, ["loudi", "ldi"]),
+    ("吉首市(湘西州)", "Jishou", "湖南省湘西土家族苗族自治州", "中国", "CN", 28.3120, 109.7390, "Asia/Shanghai", 290000, 30, ["xiangxi", "jishou", "jsh"]),
+    # 广东省（9）
+    ("韶关市", "Shaoguan", "广东省", "中国", "CN", 24.8100, 113.5971, "Asia/Shanghai", 2860000, 40, ["shaoguan", "sog"]),
+    ("肇庆市", "Zhaoqing", "广东省", "中国", "CN", 23.0470, 112.4652, "Asia/Shanghai", 4110000, 35, ["zhaoqing", "zq"]),
+    ("汕尾市", "Shanwei", "广东省", "中国", "CN", 22.7858, 115.3642, "Asia/Shanghai", 2670000, 35, ["shanwei", "swi"]),
+    ("河源市", "Heyuan", "广东省", "中国", "CN", 23.7464, 114.7007, "Asia/Shanghai", 2840000, 35, ["heyuan", "hy"]),
+    ("阳江市", "Yangjiang", "广东省", "中国", "CN", 21.8596, 111.9834, "Asia/Shanghai", 2600000, 35, ["yangjiang", "yji"]),
+    ("清远市", "Qingyuan", "广东省", "中国", "CN", 23.6818, 113.0567, "Asia/Shanghai", 3970000, 40, ["qingyuan", "qyg"]),
+    ("潮州市", "Chaozhou", "广东省", "中国", "CN", 23.6567, 116.6224, "Asia/Shanghai", 2530000, 25, ["chaozhou", "chz"]),
+    ("揭阳市", "Jieyang", "广东省", "中国", "CN", 23.5500, 116.3724, "Asia/Shanghai", 5580000, 30, ["jieyang", "jy"]),
+    ("云浮市", "Yunfu", "广东省", "中国", "CN", 22.9152, 112.0440, "Asia/Shanghai", 2330000, 35, ["yunfu", "yfu"]),
+    # 广西壮族自治区（10）
+    ("梧州市", "Wuzhou", "广西壮族自治区", "中国", "CN", 23.4770, 111.2992, "Asia/Shanghai", 2830000, 35, ["wuzhou", "wzo"]),
+    ("防城港市", "Fangchenggang", "广西壮族自治区", "中国", "CN", 21.6173, 108.3553, "Asia/Shanghai", 1050000, 30, ["fangchenggang", "fcg"]),
+    ("钦州市", "Qinzhou", "广西壮族自治区", "中国", "CN", 21.9536, 108.6543, "Asia/Shanghai", 3310000, 35, ["qinzhou", "qzh"]),
+    ("贵港市", "Guigang", "广西壮族自治区", "中国", "CN", 23.1106, 109.6069, "Asia/Shanghai", 4350000, 35, ["guigang", "ggu"]),
+    ("玉林市", "Yulin", "广西壮族自治区", "中国", "CN", 22.6321, 110.1516, "Asia/Shanghai", 5800000, 35, ["yulin-guangxi", "yulin", "yln"]),
+    ("百色市", "Baise", "广西壮族自治区", "中国", "CN", 23.9026, 106.6187, "Asia/Shanghai", 3570000, 45, ["baise", "bse"]),
+    ("贺州市", "Hezhou", "广西壮族自治区", "中国", "CN", 24.4136, 111.5575, "Asia/Shanghai", 1970000, 35, ["hezhou", "hze"]),
+    ("河池市", "Hechi", "广西壮族自治区", "中国", "CN", 24.6929, 108.0390, "Asia/Shanghai", 3420000, 45, ["hechi", "hch"]),
+    ("来宾市", "Laibin", "广西壮族自治区", "中国", "CN", 23.7472, 109.2291, "Asia/Shanghai", 2100000, 40, ["laibin", "lbn"]),
+    ("崇左市", "Chongzuo", "广西壮族自治区", "中国", "CN", 22.3769, 107.3573, "Asia/Shanghai", 2090000, 40, ["chongzuo", "czu"]),
+    # 海南省（4 省辖地级市 + 4 省辖县，不含远海岛礁）
+    ("儋州市", "Danzhou", "海南省", "中国", "CN", 19.5209, 109.5809, "Asia/Shanghai", 950000, 35, ["danzhou", "dzh"]),
+    ("琼海市", "Qionghai", "海南省", "中国", "CN", 19.2540, 110.4740, "Asia/Shanghai", 490000, 25, ["qionghai", "qha"]),
+    ("文昌市", "Wenchang", "海南省", "中国", "CN", 19.7505, 110.7500, "Asia/Shanghai", 440000, 30, ["wenchang", "wch"]),
+    ("万宁市", "Wanning", "海南省", "中国", "CN", 18.9203, 110.3892, "Asia/Shanghai", 550000, 30, ["wanning", "wni"]),
+    ("东方市", "Dongfang", "海南省", "中国", "CN", 19.1017, 108.6173, "Asia/Shanghai", 440000, 30, ["dongfang", "dof"]),
+    ("三沙市", "Sansha", "海南省", "中国", "CN", 16.8339, 112.3345, "Asia/Shanghai", 2000, 20, ["sansha", "sya"]),
+    # 四川省（8 地级市 + 3 州驻地）
+    ("泸州市", "Luzhou", "四川省", "中国", "CN", 28.8717, 105.4426, "Asia/Shanghai", 4050000, 35, ["luzhou", "luz"]),
+    ("德阳市", "Deyang", "四川省", "中国", "CN", 31.1279, 104.3979, "Asia/Shanghai", 4270000, 30, ["deyang", "dyg"]),
+    ("广元市", "Guangyuan", "四川省", "中国", "CN", 32.4356, 105.8436, "Asia/Shanghai", 2300000, 35, ["guangyuan", "gyu"]),
+    ("遂宁市", "Suining", "四川省", "中国", "CN", 30.5328, 105.5842, "Asia/Shanghai", 2820000, 30, ["suining", "sni"]),
+    ("内江市", "Neijiang", "四川省", "中国", "CN", 29.5801, 105.0603, "Asia/Shanghai", 3770000, 30, ["neijiang", "njo"]),
+    ("眉山市", "Meishan", "四川省", "中国", "CN", 30.0469, 103.8391, "Asia/Shanghai", 2960000, 30, ["meishan", "msh"]),
+    ("广安市", "Guang'an", "四川省", "中国", "CN", 30.4306, 106.6328, "Asia/Shanghai", 3250000, 30, ["guangan", "gan"]),
+    ("雅安市", "Ya'an", "四川省", "中国", "CN", 29.9917, 103.0407, "Asia/Shanghai", 1510000, 40, ["yaan", "yas"]),
+    ("巴中市", "Bazhong", "四川省", "中国", "CN", 31.8588, 106.7507, "Asia/Shanghai", 2720000, 35, ["bazhong", "bzh"]),
+    ("马尔康市(阿坝州)", "Barkam", "四川省阿坝藏族羌族自治州", "中国", "CN", 31.9058, 102.2087, "Asia/Shanghai", 60000, 60, ["aba", "maergang", "abaz"]),
+    ("康定市(甘孜州)", "Kangding", "四川省甘孜藏族自治州", "中国", "CN", 30.0460, 101.9600, "Asia/Shanghai", 130000, 80, ["ganzi", "kangding", "gzz"]),
+    ("西昌市(凉山州)", "Xichang", "四川省凉山彝族自治州", "中国", "CN", 27.8854, 102.2588, "Asia/Shanghai", 690000, 50, ["liangshan", "xichang", "lsz"]),
+    # 贵州省（4 地级市 + 3 州驻地）
+    ("六盘水市", "Liupanshui", "贵州省", "中国", "CN", 26.5937, 104.8317, "Asia/Shanghai", 3030000, 35, ["liupanshui", "lps"]),
+    ("安顺市", "Anshun", "贵州省", "中国", "CN", 26.2534, 105.9490, "Asia/Shanghai", 2470000, 35, ["anshun", "ash"]),
+    ("毕节市", "Bijie", "贵州省", "中国", "CN", 27.2895, 105.2883, "Asia/Shanghai", 6900000, 45, ["bijie", "bje"]),
+    ("铜仁市", "Tongren", "贵州省", "中国", "CN", 27.7183, 109.1907, "Asia/Shanghai", 3300000, 40, ["tongren", "tng"]),
+    ("凯里市(黔东南州)", "Kaili", "贵州省黔东南苗族侗族自治州", "中国", "CN", 26.5728, 107.9800, "Asia/Shanghai", 500000, 30, ["qiandongnan", "kaili", "qdn"]),
+    ("都匀市(黔南州)", "Duyun", "贵州省黔南布依族苗族自治州", "中国", "CN", 26.2581, 107.5170, "Asia/Shanghai", 490000, 35, ["qiannan", "duyun", "qnn"]),
+    ("兴义市(黔西南州)", "Xingyi", "贵州省黔西南布依族苗族自治州", "中国", "CN", 25.5894, 104.9037, "Asia/Shanghai", 900000, 40, ["qianxinan", "xingyi", "qxn"]),
+    # 云南省（4 地级市 + 6 州驻地 + 保山）
+    ("保山市", "Baoshan", "云南省", "中国", "CN", 25.1176, 99.1669, "Asia/Shanghai", 930000, 45, ["baoshan", "bso"]),
+    ("昭通市", "Zhaotong", "云南省", "中国", "CN", 27.3392, 103.7141, "Asia/Shanghai", 5090000, 45, ["zhaotong", "zto"]),
+    ("普洱市", "Pu'er", "云南省", "中国", "CN", 22.7818, 100.9721, "Asia/Shanghai", 2400000, 50, ["puer", "pe"]),
+    ("临沧市", "Lincang", "云南省", "中国", "CN", 23.8839, 100.0879, "Asia/Shanghai", 2250000, 50, ["lincang", "lco"]),
+    ("楚雄市(楚雄州)", "Chuxiong", "云南省楚雄彝族自治州", "中国", "CN", 25.0394, 101.5400, "Asia/Shanghai", 440000, 40, ["chuxiong", "cx"]),
+    ("蒙自市(红河州)", "Mengzi", "云南省红河哈尼族彝族自治州", "中国", "CN", 23.3661, 103.7400, "Asia/Shanghai", 550000, 30, ["honghe", "mengzi", "hhz"]),
+    ("文山市(文山州)", "Wenshan", "云南省文山壮族苗族自治州", "中国", "CN", 23.3695, 104.2800, "Asia/Shanghai", 350000, 35, ["wenshan", "ws"]),
+    ("景洪市(西双版纳州)", "Jinghong", "云南省西双版纳傣族自治州", "中国", "CN", 22.0078, 100.8000, "Asia/Shanghai", 540000, 35, ["banna", "xishuangbanna", "jh2"]),
+    ("芒市(德宏州)", "Mangshi", "云南省德宏傣族景颇族自治州", "中国", "CN", 24.4303, 98.5800, "Asia/Shanghai", 400000, 30, ["dehong", "mangshi", "dho"]),
+    ("泸水市(怒江州)", "Lushui", "云南省怒江傈僳族自治州", "中国", "CN", 25.8510, 98.8700, "Asia/Shanghai", 140000, 60, ["nujiang", "lushui", "njo"]),
+    ("香格里拉市(迪庆州)", "Shangri-La", "云南省迪庆藏族自治州", "中国", "CN", 27.8300, 99.7000, "Asia/Shanghai", 80000, 60, ["diqing", "shangrila", "dqc"]),
+    # 西藏自治区（2；日喀则/阿里因经度-时区校验暂缺）
+    ("山南市", "Shannan", "西藏自治区", "中国", "CN", 29.2620, 91.7780, "Asia/Shanghai", 350000, 80, ["shannan", "snn"]),
+    ("那曲市", "Nagqu", "西藏自治区", "中国", "CN", 31.4798, 92.0510, "Asia/Shanghai", 500000, 100, ["nagqu", "nq"]),
+    # 陕西省（5）
+    ("榆林市", "Yulin", "陕西省", "中国", "CN", 38.2858, 109.7507, "Asia/Shanghai", 3600000, 45, ["yulin-shanxi", "yulin", "yls"]),
+    ("渭南市", "Weinan", "陕西省", "中国", "CN", 34.4996, 109.4946, "Asia/Shanghai", 4680000, 40, ["weinan", "wcn"]),
+    ("铜川市", "Tongchuan", "陕西省", "中国", "CN", 34.8990, 108.9503, "Asia/Shanghai", 700000, 25, ["tongchuan", "tch"]),
+    ("安康市", "Ankang", "陕西省", "中国", "CN", 32.6831, 109.0311, "Asia/Shanghai", 2490000, 40, ["ankang", "ank"]),
+    ("商洛市", "Shangluo", "陕西省", "中国", "CN", 33.8659, 109.9380, "Asia/Shanghai", 2040000, 45, ["shangluo", "shl"]),
+    # 甘肃省（5 地级市 + 2 州驻地）
+    ("金昌市", "Jinchang", "甘肃省", "中国", "CN", 38.5104, 102.1880, "Asia/Shanghai", 440000, 25, ["jinchang", "jc"]),
+    ("白银市", "Baiyin", "甘肃省", "中国", "CN", 36.5466, 104.1400, "Asia/Shanghai", 1510000, 35, ["baiyin", "by"]),
+    ("平凉市", "Pingliang", "甘肃省", "中国", "CN", 35.5428, 106.6790, "Asia/Shanghai", 1890000, 40, ["pingliang", "pgl"]),
+    ("庆阳市", "Qingyang", "甘肃省", "中国", "CN", 35.7357, 107.6400, "Asia/Shanghai", 2150000, 45, ["qingyang", "qya"]),
+    ("定西市", "Dingxi", "甘肃省", "中国", "CN", 35.5802, 104.6200, "Asia/Shanghai", 2550000, 45, ["dingxi", "dgx"]),
+    ("陇南市", "Longnan", "甘肃省", "中国", "CN", 33.3953, 104.9200, "Asia/Shanghai", 2400000, 50, ["longnan", "lnn"]),
+    ("临夏市(临夏州)", "Linxia", "甘肃省临夏回族自治州", "中国", "CN", 35.6015, 103.2106, "Asia/Shanghai", 250000, 30, ["linxia", "lxi"]),
+    ("合作市(甘南州)", "Hezuo", "甘肃省甘南藏族自治州", "中国", "CN", 34.9877, 102.9100, "Asia/Shanghai", 80000, 50, ["gannan", "hezuo", "gnz"]),
+    # 青海省（1 地级市 + 5 州驻地）
+    ("海东市", "Haidong", "青海省", "中国", "CN", 36.5001, 102.4017, "Asia/Shanghai", 1360000, 35, ["haidong", "hdo"]),
+    ("德令哈市(海西州)", "Delingha", "青海省海西蒙古族藏族自治州", "中国", "CN", 37.3696, 97.3426, "Asia/Shanghai", 80000, 60, ["haixi", "delingha", "hlh"]),
+    ("同仁市(黄南州)", "Tongren", "青海省黄南藏族自治州", "中国", "CN", 35.5143, 102.0200, "Asia/Shanghai", 90000, 40, ["qinghai tongren", "tongren-qh", "huangnan"]),
+    ("共和县(海南州)", "Gonghe", "青海省海南藏族自治州", "中国", "CN", 36.2629, 100.0200, "Asia/Shanghai", 160000, 60, ["gonghe", "qinghai hainan", "qnz"]),
+    ("玛沁县(果洛州)", "Madoi", "青海省果洛藏族自治州", "中国", "CN", 34.4778, 100.2400, "Asia/Shanghai", 50000, 80, ["guoluo", "madoi", "glz"]),
+    ("玉树市(玉树州)", "Yushu", "青海省玉树藏族自治州", "中国", "CN", 33.0011, 96.9720, "Asia/Shanghai", 100000, 80, ["yushu", "ys"]),
+    ("海晏县(海北州)", "Haiyan", "青海省海北藏族自治州", "中国", "CN", 36.9770, 100.8300, "Asia/Shanghai", 30000, 40, ["haibei", "haiyan", "hbz"]),
+    # 宁夏回族自治区（1）
+    ("固原市", "Guyuan", "宁夏回族自治区", "中国", "CN", 35.9978, 106.2800, "Asia/Shanghai", 1140000, 35, ["guyuan", "gya"]),
+    # 新疆维吾尔自治区（6 地级/州驻地 + 3 兵团直辖市级；全部用 UTC+6 口径时区）
+    ("昌吉市", "Changji", "新疆维吾尔自治区昌吉回族自治州", "中国", "CN", 44.0138, 87.3100, "Asia/Urumqi", 470000, 30, ["changji", "cji"]),
+    ("博乐市(博州)", "Bortala", "新疆维吾尔自治区博尔塔拉蒙古自治州", "中国", "CN", 44.9080, 82.0670, "Asia/Urumqi", 100000, 40, ["boertala", "bortala", "bol"]),
+    ("阿图什市(克州)", "Artux", "新疆维吾尔自治区克孜勒苏柯尔克孜自治州", "中国", "CN", 39.7210, 76.1710, "Asia/Kashgar", 180000, 40, ["kezilesu", "artux", "atz"]),
+    ("和田市", "Hotan", "新疆维吾尔自治区和田地区", "中国", "CN", 37.0890, 79.9230, "Asia/Kashgar", 330000, 40, ["hetian", "hotan", "htn"]),
+    ("塔城市", "Tacheng", "新疆维吾尔自治区塔城地区", "中国", "CN", 46.7220, 82.9800, "Asia/Urumqi", 150000, 45, ["tacheng", "tcg"]),
+    ("阿勒泰市", "Altay", "新疆维吾尔自治区阿勒泰地区", "中国", "CN", 47.7180, 88.1400, "Asia/Urumqi", 140000, 50, ["aletai", "altay", "alt"]),
+    ("阿拉尔市", "Aral", "新疆维吾尔自治区(兵团第一师)", "中国", "CN", 40.5500, 81.2600, "Asia/Urumqi", 280000, 30, ["aral", "alaer"]),
+    ("图木舒克市", "Tumshuk", "新疆维吾尔自治区(兵团第三师)", "中国", "CN", 41.9720, 79.1870, "Asia/Kashgar", 240000, 30, ["tumushuke", "tmsk"]),
+    ("五家渠市", "Wujiaqu", "新疆维吾尔自治区(兵团第六师)", "中国", "CN", 44.1680, 87.9860, "Asia/Urumqi", 140000, 25, ["wujiaqu", "wjq"]),
 ]
 
 TW_HK_MO = [
@@ -399,6 +627,7 @@ def build():
 
     add("cn_core", CN_CORE)
     add("cn_extra", CN_EXTRA)
+    add("cn_more", CN_MORE)
     add("tw_hk_mo", TW_HK_MO)
     add("world_cap", WORLD_CAP)
     add("world_ext", WORLD_EXT)
