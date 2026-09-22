@@ -35,15 +35,18 @@ LiuYaoPaiPanResult calculate_liu_yao(
         }
     }
     
-    // 验证动爻位置
+    // 验证并规范化动爻位置，避免重复位置导致同一爻被翻转两次
+    std::set<int> uniqueChangingLines;
     for (int pos : changing_line_indices) {
         if (pos < 1 || pos > 6) {
             throw std::invalid_argument("动爻位置必须在 1-6 之间");
         }
+        uniqueChangingLines.insert(pos);
     }
+    const std::vector<int> normalizedChangingLines(uniqueChangingLines.begin(), uniqueChangingLines.end());
     
     // 调用内部排盘函数
-    auto [yao_list, json_data] = sixYaoDivination(main_hexagram_code, bazi, changing_line_indices);
+    auto [yao_list, json_data] = sixYaoDivination(main_hexagram_code, bazi, normalizedChangingLines);
     
     // 生成 AI 可读的 JSON（如果需要）
     nlohmann::json ai_read_json_data;

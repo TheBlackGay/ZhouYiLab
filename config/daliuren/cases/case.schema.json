@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "daliuren-case/1.0",
+  "title": "大六壬校准案例（A3：盘面事实先行，断语押后）",
+  "description": "expected 用点分路径锁定引擎盘面事实；数组段可加 '[]' 后缀（如 san_chuan.details[].liu_qin、tian_di_pan[].tian_pan）按序提取字段并以逗号连接串锁定；yao 式 position 数字寻址同样可用。月将口径默认中气过宫（zhongqi），古法随差（guifa_suicha）仅作接口对照并存。凡古籍课例转写必须 origin=classic_example + pending_manual_collation；课体吉凶、断语类判断在校勘与人工评审前一律不建 expected 条目。四课入盘属可视化口径议题（台账待拍板），案例只锁引擎事实。",
+  "type": "object",
+  "required": ["schema", "id", "status", "input", "expected", "source_case"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "daliuren-case/1.0"},
+    "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "status": {"enum": ["pending", "calibrated", "boundary"]},
+    "input": {
+      "type": "object",
+      "required": ["date"],
+      "additionalProperties": false,
+      "properties": {
+        "calendar": {"enum": ["solar", "lunar"]},
+        "date": {
+          "type": "object",
+          "required": ["year", "month", "day"],
+          "additionalProperties": false,
+          "properties": {
+            "year": {"type": "integer"},
+            "month": {"type": "integer"},
+            "day": {"type": "integer"},
+            "hour": {"type": "integer"},
+            "minute": {"type": "integer"},
+            "leap_month": {"type": "boolean"}
+          }
+        },
+        "yuejiang_method": {"enum": ["zhongqi", "guifa_suicha"]}
+      }
+    },
+    "expected": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z_][A-Za-z0-9_]*(\\[\\])?(\\.[A-Za-z_0-9][A-Za-z0-9_]*(\\[\\])?)*$": {
+          "type": ["string", "integer", "boolean"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_case": {
+      "type": "object",
+      "required": ["origin", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "origin": {"enum": ["classic_example", "structural_regression"]},
+        "book": {"type": "string"},
+        "case_ref": {"type": "string"},
+        "verification": {"enum": ["pending_manual_collation", "self_consistent"]},
+        "note": {"type": "string"}
+      }
+    }
+  }
+}

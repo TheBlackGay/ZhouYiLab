@@ -5,23 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f3f2ee">
   <title>ZhouYiLab 奇门遁甲排盘</title>
+  <link rel="stylesheet" href="/ui-foundation.css">
   <link rel="stylesheet" href="/qimen.css">
+  <link rel="stylesheet" href="/app-shell.css">
+  <link rel="stylesheet" href="/place-picker.css">
 </head>
 <body>
-  <header class="app-header">
-    <a class="brand" href="/" aria-label="返回紫微斗数排盘">
-      <span class="brand-mark" aria-hidden="true">周</span>
-      <span><strong>ZhouYiLab</strong><small>奇门遁甲 · 时家转盘</small></span>
-    </a>
-    <nav aria-label="术数工具">
-      <a href="/">紫微斗数</a>
-      <a href="/qimen.html" aria-current="page">奇门遁甲</a>
-    </nav>
-    <button id="open-help" class="header-help" type="button">帮助</button>
-    <div class="engine-status"><span></span>C++ 本地算法</div>
-  </header>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 奇门遁甲排盘">
+        <span class="brand-mark" aria-hidden="true">周</span>
+        <span><strong>ZhouYiLab</strong><small>奇门遁甲 · 时家转盘</small></span>
+      </a>
+      <nav class="primary-tabs" aria-label="命理类型">
+        <a href="/">紫微斗数</a>
+        <a href="/qimen.html" aria-current="page">奇门遁甲</a>
+        <a href="/bazi.html">八字</a>
+        <a href="/liu-yao.html">六爻</a>
+        <a href="/da-liu-ren.html">大六壬</a><a href="/meihua.html">梅花易数</a><a href="/astro.html">西洋占星</a>
+        
+      </nav>
+      <div class="header-tools"><button id="open-help" class="header-help" type="button">帮助</button><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">奇门遁甲<strong>内容</strong></span>
+      <div class="result-tabs secondary-tabs" role="tablist" aria-label="奇门遁甲内容">
+        <button id="board-tab" type="button" role="tab" aria-selected="true" aria-controls="board-panel">九宫盘</button>
+        <button id="clues-tab" type="button" role="tab" aria-selected="false" aria-controls="clues-panel" tabindex="-1">断盘线索</button>
+        <button id="reading-tab" type="button" role="tab" aria-selected="false" aria-controls="reading-panel" tabindex="-1">解读素材</button>
+      </div>
+    </div>
+  </div>
 
-  <main class="workspace">
+  <main id="main-content" class="workspace">
     <aside class="input-panel" aria-label="奇门排盘参数">
       <form id="qimen-form">
         <section>
@@ -47,6 +64,16 @@
           </div>
           <label for="qimen-time">时间</label>
           <input id="qimen-time" type="time" step="60" required>
+          <button class="secondary-action compact-action" type="button" data-current-time data-date-input="#solar-date" data-time-input="#qimen-time">当前时间</button>
+          <label class="toggle-row" for="true-solar"><span><strong>启用真太阳时</strong><small>校正后时间用于起局</small></span><input id="true-solar" type="checkbox" checked></label>
+          <div id="solar-options">
+            <label for="longitude">出生地经度</label>
+            <div class="unit-input"><input id="longitude" type="number" min="-180" max="180" step="0.000001" value="120.300000"><span>°</span></div>
+            <div class="two-fields">
+              <div><label for="meridian">标准经线</label><div class="unit-input"><input id="meridian" type="number" step="0.1" value="120"><span>°</span></div></div>
+              <div><label for="dst">夏令时</label><select id="dst"><option value="0">无</option><option value="60">+60 分钟</option><option value="30">+30 分钟</option></select></div>
+            </div>
+          </div>
         </section>
 
         <section class="question-fields">
@@ -90,7 +117,7 @@
       </form>
     </aside>
 
-    <section class="results" aria-live="polite">
+    <section class="results">
       <div id="empty-state" class="empty-state">
         <div class="empty-symbol" aria-hidden="true">局</div>
         <h2>等待起局</h2>
@@ -107,12 +134,6 @@
             <div><dt>日旬空</dt><dd id="metric-void">--</dd></div>
           </dl>
         </header>
-
-        <div class="result-tabs" role="tablist" aria-label="排盘结果视图">
-          <button id="board-tab" type="button" role="tab" aria-selected="true" aria-controls="board-panel">九宫盘</button>
-          <button id="clues-tab" type="button" role="tab" aria-selected="false" aria-controls="clues-panel" tabindex="-1">断盘线索</button>
-          <button id="reading-tab" type="button" role="tab" aria-selected="false" aria-controls="reading-panel" tabindex="-1">解读素材</button>
-        </div>
 
         <div id="board-panel" role="tabpanel" aria-labelledby="board-tab">
           <div class="board-heading">
@@ -221,7 +242,29 @@
       </section>
     </div>
   </dialog>
+  <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
+  <script src="/navigation.js" defer></script>
   <script src="/qimen_learning.js" defer></script>
+  <script>
+    window.PLACE_PICKER_CONFIG = {
+      mount: '#solar-fields',
+      dateInput: '#solar-date',
+      timeInput: '#qimen-time',
+      mode: 'geo+offset',
+      outputs: { offset: '#qimen-utc-offset', meridian: '#meridian', dst: '#dst', lat: '#qimen-lat', lon: '#longitude' },
+      recentKey: 'qimen.recentPlaces',
+      popular: [
+        { id: 'curated:cn-shanghai', name: '上海市' },
+        { id: 'curated:cn-beijing', name: '北京市' },
+        { id: 'curated:cn-guangzhou', name: '广州市' },
+        { id: 'curated:cn-chengdu', name: '成都市' },
+      ],
+    };
+  </script>
+  <input id="qimen-utc-offset" type="hidden">
+  <input id="qimen-lat" type="hidden">
+  <script src="/place-picker.js" defer></script>
   <script src="/qimen.js" defer></script>
 </body>
 </html>

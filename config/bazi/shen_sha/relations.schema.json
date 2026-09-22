@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "id": "bazi_relations",
+  "description": "八字四柱关系模块输出契约",
+  "branch_relations": {
+    "scope": "四柱地支两两组合，三刑和三合局使用多柱数组",
+    "types": ["chong", "xing", "po", "he", "zhandou", "fujiang"],
+    "fields": ["type", "pillars", "branches", "detail"]
+  },
+  "stem_relations": {
+    "scope": "四柱天干两两组合",
+    "types": ["wuhe"],
+    "fields": ["type", "pillars", "stems", "combine_element", "hua_success"],
+    "hua_success": "null，交由格局层判定"
+  },
+  "interchanges": {
+    "scope": "四柱两两互换",
+    "types": ["hulu", "hugui", "huma"],
+    "fields": ["type", "pillars", "detail"]
+  },
+  "sanhe_ju": {
+    "scope": "三支齐全时输出",
+    "fields": ["pillars", "branches", "element"]
+  },
+  "wangshuai_info": {
+    "status": "reserved",
+    "value": null,
+    "note": "启用战斗/伏降前填入月令旺衰依据；当前不输出 zhandou/fujiang"
+  }
+}

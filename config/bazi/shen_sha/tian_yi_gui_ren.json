@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "id": "tian_yi_gui_ren",
+  "name": "天乙贵人",
+  "catalog_number": 5,
+  "system": "子平八字",
+  "source": "《图解三命通会（第1部）：八字神煞》（万民英）",
+  "calibration_status": "calibrated",
+  "source_document": "docs/bazi/天乙贵人.md",
+  "source_references": [
+    {
+      "work": "《图解三命通会（第1部）：八字神煞》",
+      "author": "万民英",
+      "printed_pages": "383-391",
+      "pdf_pages": "387-395",
+      "image_directory": "docs/bazi/img/san_ming_tong_hui"
+    }
+  ],
+  "source_images": [
+    "docs/bazi/img/san_ming_tong_hui/page-387.png",
+    "docs/bazi/img/san_ming_tong_hui/page-388.png",
+    "docs/bazi/img/san_ming_tong_hui/page-389.png",
+    "docs/bazi/img/san_ming_tong_hui/page-390.png",
+    "docs/bazi/img/san_ming_tong_hui/page-391.png",
+    "docs/bazi/img/san_ming_tong_hui/page-392.png",
+    "docs/bazi/img/san_ming_tong_hui/page-393.png",
+    "docs/bazi/img/san_ming_tong_hui/page-394.png",
+    "docs/bazi/img/san_ming_tong_hui/page-395.png"
+  ],
+  "calculation": {
+    "illustrated_rule": "以日干起贵人，地支见者即是",
+    "common_method": {
+      "甲": ["丑", "未"], "戊": ["丑", "未"],
+      "乙": ["子", "申"], "己": ["子", "申"],
+      "丙": ["酉", "亥"], "丁": ["酉", "亥"],
+      "庚": ["寅", "午"], "辛": ["寅", "午"],
+      "壬": ["卯", "巳"], "癸": ["卯", "巳"]
+    },
+    "guang_lu_method": {
+      "甲": ["丑", "未"], "戊": ["丑", "未"], "庚": ["丑", "未"],
+      "乙": ["子", "申"], "己": ["子", "申"],
+      "丙": ["酉", "亥"], "丁": ["酉", "亥"],
+      "壬": ["卯", "巳"], "癸": ["卯", "巳"],
+      "辛": ["寅", "午"]
+    }
+  },
+  "boundaries": "通行法与广录古诀并行计算并标记来源；昼夜贵、旺衰、纳音及贵合贵食属于附加判断，不改变基础命中。",
+  "editorial_notes": [
+    "PDF 页码与书内印刷页码相差 4 页。",
+    "原书章节包含图解、原文和白话提要，均在知识文档中分节保留。",
+    "未完成自动测试和实现校准前保持 draft 状态。"
+  ]
+}

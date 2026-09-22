@@ -1,0 +1,41 @@
+{
+  "schema": "meihua-case/1.0",
+  "id": "numbers_case_huo_shan_liu",
+  "status": "pending",
+  "input": {
+    "mode": "numbers",
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 2,
+      "day": 12,
+      "hour": 10
+    },
+    "numbers": [
+      3,
+      7
+    ]
+  },
+  "expected": {
+    "casting.method": "numbers",
+    "casting.reported": "3,7",
+    "ba_zi.month_command": "寅",
+    "ben_gua.code": "001101",
+    "ben_gua.name": "火山旅",
+    "hu_gua.code": "011110",
+    "hu_gua.name": "泽风大过",
+    "bian_gua.code": "001001",
+    "bian_gua.name": "艮为山",
+    "moving_line": 4,
+    "ti_yong.ti": "lower",
+    "ti_yong.yong": "upper",
+    "ti_yong.relation": "用生体",
+    "ti_yong.ti_wang_shuai": "死",
+    "ti_yong.yong_wang_shuai": "相"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "D13.3 报数两数式回归锁（与 M1 锁测试同源）：3离上、7艮下、(3+7)%6=4 动；报数模式下时间仅提供月令。"
+  }
+}

@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f2ee">
+  <title>ZhouYiLab 西洋占星</title>
+  <link rel="stylesheet" href="/ui-foundation.css">
+  <link rel="stylesheet" href="/place-picker.css">
+  <link rel="stylesheet" href="/astro.css">
+  <link rel="stylesheet" href="/app-shell.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 西洋占星">
+        <span class="brand-mark" aria-hidden="true">周</span>
+        <span><strong>ZhouYiLab</strong><small>西洋占星 · Swiss Ephemeris</small></span>
+      </a>
+      <nav class="primary-tabs" aria-label="命理类型">
+        <a href="/">紫微斗数</a>
+        <a href="/qimen.html">奇门遁甲</a>
+        <a href="/bazi.html">八字</a>
+        <a href="/liu-yao.html">六爻</a>
+        <a href="/da-liu-ren.html">大六壬</a>
+        <a href="/meihua.html">梅花易数</a><a href="/astro.html" aria-current="page">西洋占星</a>
+      </nav>
+      <div class="header-tools"><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">西洋占星<strong>内容</strong></span>
+      <div class="result-tabs secondary-tabs" role="tablist" aria-label="西洋占星内容">
+        <button id="astro-chart-tab" type="button" role="tab" aria-selected="true" aria-controls="astro-chart-panel">本命盘</button>
+        <button id="astro-reading-tab" type="button" role="tab" aria-selected="false" aria-controls="astro-reading-panel" tabindex="-1">本命解读</button>
+        <button id="astro-facts-tab" type="button" role="tab" aria-selected="false" aria-controls="astro-facts-panel" tabindex="-1">结构事实</button>
+        <button id="astro-prompt-tab" type="button" role="tab" aria-selected="false" aria-controls="astro-prompt-panel" tabindex="-1">解析提示词</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" class="workspace astro-workspace">
+    <h1 class="sr-only">西洋占星本命盘</h1>
+    <aside class="input-panel" aria-label="西洋占星排盘参数">
+      <form id="astro-form">
+        <section class="form-section">
+          <div class="section-heading"><span>01</span><h2>出生资料</h2></div>
+          <label for="astro-nickname">称呼（可选，仅用于画像标题，不参与计算）</label>
+          <input id="astro-nickname" type="text" maxlength="60" placeholder="例如：追风的人2812">
+          <label for="astro-date">出生日期</label>
+          <input id="astro-date" type="date" value="1990-05-20" required>
+          <label for="astro-time">出生时间</label>
+          <input id="astro-time" type="time" value="14:00" step="1" required>
+          <button class="secondary-action compact-action" type="button" data-current-time data-date-input="#astro-date" data-time-input="#astro-time">当前时间</button>
+        </section>
+
+        <section class="form-section" id="astro-place-section">
+          <div class="section-heading"><span>02</span><h2>出生地点</h2></div>
+          <!-- place-picker 组件挂载于此后；输出控件沿用旧 id（§5.3），hidden 且不得带 required（§5.3 陷阱） -->
+          <input id="astro-offset" type="hidden" value="480">
+          <input id="astro-lat" type="hidden" value="31.2304">
+          <input id="astro-lon" type="hidden" value="121.4737">
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading"><span>03</span><h2>计算口径</h2></div>
+          <label for="astro-houses">宫制</label>
+          <select id="astro-houses"><option value="placidus">Placidus</option><option value="whole_sign">Whole Sign</option></select>
+          <label for="astro-zodiac">黄道</label>
+          <select id="astro-zodiac"><option value="tropical" selected>回归黄道（Tropical）</option><option value="sidereal">恒星黄道（Sidereal）</option></select>
+          <label class="toggle-row" for="astro-moshier">
+            <span><strong>允许星历降级</strong><small>文件缺失时使用 Moshier</small></span>
+            <input id="astro-moshier" type="checkbox">
+          </label>
+        </section>
+
+        <section class="form-section method-note">
+          <div class="section-heading"><span>04</span><h2>当前输出</h2></div>
+          <dl>
+            <div><dt>盘面</dt><dd>行星 · 宫位 · 相位</dd></div>
+            <div><dt>圆盘</dt><dd>黄道十二宫与宫轴</dd></div>
+            <div><dt>解析</dt><dd>结构事实 · AI 提示词</dd></div>
+          </dl>
+        </section>
+
+        <button class="primary-action" type="submit"><span class="button-label">计算本命盘</span><span class="spinner" aria-hidden="true"></span></button>
+        <p id="astro-error" class="error-message" role="alert" hidden></p>
+      </form>
+    </aside>
+
+    <section class="results">
+      <div id="astro-empty" class="empty-state">
+        <div class="empty-symbol" aria-hidden="true">星</div>
+        <h2>等待排盘</h2>
+        <p>填写出生资料和计算口径，生成星体、宫位和相位。</p>
+      </div>
+
+      <div id="astro-output" hidden>
+        <header class="result-summary">
+          <div><span>西洋占星本命盘</span><strong id="astro-title">--</strong><small id="astro-meta">--</small></div>
+          <dl id="astro-angles" class="astro-summary-metrics"></dl>
+        </header>
+
+        <div id="astro-chart-panel" class="astro-tab-panel" role="tabpanel" aria-labelledby="astro-chart-tab">
+          <div class="board-heading">
+            <div><span>本命盘</span><strong>黄道与宫位布局</strong></div>
+            <div class="wheel-orientation" role="group" aria-label="圆盘朝向">
+              <button id="wheel-ascendant" type="button" data-orientation="ascendant" aria-pressed="true">上升点在左</button>
+              <button id="wheel-aries" type="button" data-orientation="aries" aria-pressed="false">白羊在顶</button>
+            </div>
+          </div>
+          <p class="wheel-note"><strong>阅读方式</strong> 黄道按地心视黄经逆时针排列；外环按火、土、风、水四元素着色，内环为基本、固定、变动三模式；宫位号、四轴标注与星体度数为计算事实，逆行以 R 标记。</p>
+          <div class="astro-wheel-wrap"><svg id="astro-wheel" class="astro-wheel" viewBox="0 0 640 640" role="img" aria-label="本命盘圆盘图，上升点在左侧，黄道逆时针排列"></svg></div>
+          <div id="astro-wheel-legend" class="wheel-legend" aria-label="圆盘图例">
+            <span class="legend-item"><i class="legend-fire"></i>火</span>
+            <span class="legend-item"><i class="legend-earth"></i>土</span>
+            <span class="legend-item"><i class="legend-air"></i>风</span>
+            <span class="legend-item"><i class="legend-water"></i>水</span>
+            <span class="legend-sep" aria-hidden="true"></span>
+            <span class="legend-item"><i class="legend-cardinal"></i>基本</span>
+            <span class="legend-item"><i class="legend-fixed"></i>固定</span>
+            <span class="legend-item"><i class="legend-mutable"></i>变动</span>
+            <span class="legend-sep" aria-hidden="true"></span>
+            <span class="legend-item"><i class="legend-aspect"></i>主要相位</span>
+            <span class="legend-item"><b class="legend-retro">R</b>逆行</span>
+          </div>
+          <p id="astro-wheel-highlight" class="wheel-highlight-note" role="status" aria-live="polite" hidden></p>
+        </div>
+
+        <div id="astro-reading-panel" class="astro-tab-panel" role="tabpanel" aria-labelledby="astro-reading-tab" hidden>
+          <section class="astro-section">
+            <div class="board-heading">
+              <div><span>布局速读</span><strong>黄道与宫位布局</strong></div>
+              <small id="astro-layout-meta">--</small>
+            </div>
+            <div id="astro-core-row" class="astro-core-row"></div>
+            <div id="astro-layout-bars" class="astro-layout-bars"></div>
+            <ul id="astro-layout-notes" class="astro-layout-notes"></ul>
+            <details id="astro-layout-defs" class="astro-layout-defs">
+              <summary>统计口径（可核对）</summary>
+              <dl id="astro-layout-defs-body"></dl>
+            </details>
+            <p id="astro-reading-empty" class="reading-empty" hidden></p>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading">
+              <div><span>行星</span><strong>逐点位解读</strong></div>
+              <div class="card-sort" role="group" aria-label="行星卡片排序">
+                <button type="button" data-sort="point" aria-pressed="true">按星体</button>
+                <button type="button" data-sort="house" aria-pressed="false">按宫位</button>
+                <button type="button" data-sort="sign" aria-pressed="false">按星座</button>
+              </div>
+            </div>
+            <div id="astro-point-cards" class="natal-cards"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>十二宫</span><strong>宫位与宫内点位</strong></div><small>宫头星座 · 宫内点位 · 宫主星</small></div>
+            <div id="astro-house-cards" class="natal-cards"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>相位</span><strong>按容许度排序</strong></div><small>顺畅 / 张力 / 合并 / 调整</small></div>
+            <div id="astro-aspect-list" class="natal-aspects"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>分布</span><strong>元素与模式</strong></div><small>十大行星口径</small></div>
+            <div id="astro-distribution" class="astro-distribution"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>分布画像</span><strong>元素 · 阴阳 · 三性质</strong></div><small>十大行星＋四轴（core14）· 图表数据来自 /api/v1/astro/distribution</small></div>
+            <div id="astro-profile-charts" class="profile-charts"></div>
+            <p id="astro-profile-fallback" class="profile-fallback" hidden>分布画像暂不可用，其余解读不受影响。</p>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>阅读边界</span><strong>事实与推断</strong></div><small>不判定吉凶</small></div>
+            <ul id="astro-boundaries" class="astro-boundaries"></ul>
+          </section>
+        </div>
+
+        <div id="astro-facts-panel" class="astro-tab-panel" role="tabpanel" aria-labelledby="astro-facts-tab" hidden>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>行星</span><strong>点位与运动</strong></div><small>黄经、星座、落宫与速度</small></div>
+            <div id="astro-planets" class="astro-table"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>十二宫</span><strong>宫头与星座</strong></div><small>采用当前宫制</small></div>
+            <div id="astro-houses-list" class="astro-table"></div>
+          </section>
+          <section class="astro-section">
+            <div class="board-heading"><div><span>主要相位</span><strong>点位连接</strong></div><small>保留计算偏差</small></div>
+            <div id="astro-aspects" class="astro-table"></div>
+          </section>
+        </div>
+
+        <div id="astro-prompt-panel" class="astro-tab-panel" role="tabpanel" aria-labelledby="astro-prompt-tab" hidden>
+          <section class="astro-prompt" aria-labelledby="astro-prompt-title">
+            <div class="reading-toolbar"><div><span>AI 结构化解析提示词</span><strong id="astro-prompt-title">只基于结构化事实进行分析</strong></div><button id="astro-copy-prompt" type="button">复制提示词</button></div>
+            <textarea id="astro-prompt-text" readonly spellcheck="false" aria-label="AI 结构化解析提示词"></textarea>
+            <p id="astro-copy-status" class="copy-status" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
+  <script src="/navigation.js" defer></script>
+  <script>
+    // 出生地点组件适配器（§5.2）：本页只声明「挂载点 + 输出 id + 模式」，
+    // 输出沿用 astro-offset / astro-lat / astro-lon，astro.js 的提交逻辑零改动。
+    window.PLACE_PICKER_CONFIG = {
+      mount: '#astro-place-section',
+      dateInput: '#astro-date',
+      timeInput: '#astro-time',
+      houseInput: '#astro-houses',
+      mode: 'geo+offset',
+      outputs: { offset: '#astro-offset', lat: '#astro-lat', lon: '#astro-lon' },
+      recentKey: 'astro.recentPlaces',
+      popular: [
+        { id: 'curated:cn-shanghai', name: '上海市' },
+        { id: 'curated:cn-beijing', name: '北京市' },
+        { id: 'curated:cn-guangzhou', name: '广州市' },
+        { id: 'curated:cn-shenzhen', name: '深圳市' },
+        { id: 'curated:cn-hangzhou', name: '杭州市' },
+        { id: 'curated:cn-chengdu', name: '成都市' },
+        { id: 'curated:cn-wuhan', name: '武汉市' },
+        { id: 'curated:cn-xian', name: '西安市' },
+        { id: 'curated:hk-hongkong', name: '香港' },
+        { id: 'curated:tw-taipei', name: '台北市' },
+      ],
+    };
+  </script>
+  <script src="/place-picker.js" defer></script>
+  <script src="/profile-charts.js" defer></script><script src="/astro.js" defer></script>
+</body>
+</html>

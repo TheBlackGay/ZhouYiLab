@@ -1,0 +1,23 @@
+{
+  "schema": "daliuren-case/1.0",
+  "id": "yuejiang_xiaoxue_before",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 11,
+      "day": 21,
+      "hour": 10
+    }
+  },
+  "expected": {
+    "yue_jiang": "卯",
+    "meta.yuejiang_method": "zhongqi"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "中气过宫边界锁·2025 小雪(11-22)之前：月将卯。"
+  }
+}

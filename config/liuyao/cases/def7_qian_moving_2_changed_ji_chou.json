@@ -1,0 +1,33 @@
+{
+  "schema": "liuyao-case/1.0",
+  "id": "def7_qian_moving_2_changed_ji_chou",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 2,
+      "day": 12,
+      "hour": 10
+    },
+    "hexagram_code": "111111",
+    "changing_lines": [
+      2
+    ]
+  },
+  "expected": {
+    "bian_gua_name": "离宫: 天火同人",
+    "yao.2.mainPillar.branch": "寅",
+    "yao.2.mainPillar.stem": "甲",
+    "yao.2.changedPillar.branch": "丑",
+    "yao.2.changedPillar.stem": "己",
+    "yao.2.changedRelative": "父母",
+    "yao.2.jin_shen": false,
+    "yao.2.tui_shen": false
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "DEF-7 行为锁：乾二爻动变同人，变爻须己丑父母（修复前误显寅→寅）；进退以同人卦内卦离纳丑出象"
+  }
+}

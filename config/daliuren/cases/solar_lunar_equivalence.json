@@ -1,0 +1,28 @@
+{
+  "schema": "daliuren-case/1.0",
+  "id": "solar_lunar_equivalence",
+  "status": "boundary",
+  "input": {
+    "calendar": "lunar",
+    "date": {
+      "year": 2025,
+      "month": 9,
+      "day": 14,
+      "hour": 16
+    }
+  },
+  "expected": {
+    "ba_zi.day.stem": "丙",
+    "ba_zi.day.branch": "子",
+    "san_chuan.chu_chuan": "子",
+    "san_chuan.zhong_chuan": "未",
+    "san_chuan.mo_chuan": "寅",
+    "san_chuan.ke_shi": "涉害,见机卦",
+    "si_ke.first": "丙子"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "历法等价锁：农历九月十四酉时=公历 2025-11-03（丙子日），三传四课与基准盘全同；农历映射由引擎 brute-force 寻见证而非记忆。"
+  }
+}

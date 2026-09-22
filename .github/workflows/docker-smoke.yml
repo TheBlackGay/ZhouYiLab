@@ -1,0 +1,116 @@
+name: Docker Smoke
+
+# P0-3 发布事故防线：镜像能构建、容器能启动、健康检查与核心 API 能应答。
+# 历史上出现过 web/ 文件 600 权限导致非 root 运行时用户读不到的隐患，
+# 本 workflow 用真实容器路径（COPY → 非 root 用户）兜底验证。
+
+on:
+  push:
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - "web/**"
+      - "config/**"
+      - "examples/**"
+      - "src/**"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - "3rdparty/**"
+      - "data/**"
+      - ".github/workflows/docker-smoke.yml"
+  pull_request:
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - "web/**"
+      - "config/**"
+      - "examples/**"
+      - "src/**"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - "3rdparty/**"
+      - "data/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build image
+        run: docker build -t zhouyilab:smoke .
+
+      - name: Start container
+        run: docker run -d --name zhouyilab-smoke -p 127.0.0.1:18768:8768 zhouyilab:smoke
+
+      - name: Wait for health
+        run: |
+          for i in $(seq 1 40); do
+            if curl -sf http://127.0.0.1:18768/api/v1/health >/dev/null 2>&1; then
+              echo "health OK after ${i} attempts"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::/api/v1/health 未在期限内通过"
+          docker logs --tail 80 zhouyilab-smoke
+          exit 1
+
+      - name: Smoke core APIs
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request
+
+          BASE = "http://127.0.0.1:18768"
+
+          def get(path):
+              with urllib.request.urlopen(BASE + path, timeout=30) as response:
+                  body = json.load(response)
+              assert body["success"] is True, path
+              return body["data"]
+
+          def post(path, payload):
+              request = urllib.request.Request(
+                  BASE + path,
+                  data=json.dumps(payload).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+                  method="POST",
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  body = json.load(response)
+              assert body["success"] is True, (path, body.get("error"))
+              return body["data"]
+
+          health = get("/api/v1/health")
+          assert health["cli_available"], "ziwei 引擎缺失"
+          assert health["bazi_cli_available"], "bazi 引擎缺失"
+          assert health["astro_ephemeris_available"], "星历数据缺失"
+
+          tools = get("/api/v1/tools")
+          ids = {tool["id"] for tool in tools["tools"]}
+          assert {"ziwei", "qimen", "bazi", "astro"} <= ids, ids
+
+          symbols = get("/api/v1/ziwei/symbols")
+          assert len(symbols["stars"]["zhu_xing"]) == 14, "主星数量异常"
+
+          chart = post("/api/v1/ziwei/charts", {
+              "birth": {"year": 1994, "month": 12, "day": 8, "hour": 9,
+                        "minute": 5, "second": 0, "gender": "male"},
+              "time_correction": {"mode": "standard_time"},
+          })
+          assert len(chart.get("palaces", [])) == 12, "紫微十二宫缺失"
+          print("docker smoke 全部通过")
+          PY
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f zhouyilab-smoke || true

@@ -23,6 +23,18 @@ export namespace ZhouYi::ZiWei {
     };
 
     /**
+     * @brief 大限宫干取法（D11 决策）
+     *
+     * Resort（默认，正统）：大限宫干 = 五虎遁（以本命年干起寅宫）取该宫天干，
+     * 宫支 = 该宫本位地支。大限四化随宫干，判据：丁年命宫甲辰案例与甲年丙寅案例。
+     * Original：保留旧实现的"自甲巡运 + 支按宫序直转"伪口径，仅供旧盘对照复现。
+     */
+    enum class DaXianGanMethod {
+        Resort,
+        Original,
+    };
+
+    /**
      * @brief 大限数据结构（10年一大限）
      */
     struct DaXianData {
@@ -125,7 +137,9 @@ export namespace ZhouYi::ZiWei {
         int ming_index,
         WuXingJu wu_xing_ju,
         bool is_male,
-        DiZhi year_zhi
+        DiZhi year_zhi,
+        TianGan year_gan,
+        DaXianGanMethod method = DaXianGanMethod::Resort
     );
 
     /**

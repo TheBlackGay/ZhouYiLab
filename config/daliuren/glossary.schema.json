@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "daliuren-glossary/1.0",
+  "title": "大六壬术语帮助词典（DLR-204）",
+  "description": "每条术语必须带当前实现口径（caliber），并与引擎 meta.rule_profile 的对应规则项（related_profile_rule）交叉一致。",
+  "type": "object",
+  "required": [
+    "schema",
+    "glossary_version",
+    "terms"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "daliuren-glossary/1.0"
+    },
+    "glossary_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_ref": {
+      "type": "string",
+      "description": "对齐的引擎规则口径版本"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "terms": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "term",
+          "definition",
+          "caliber"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "term": {
+            "type": "string",
+            "minLength": 1
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 8
+          },
+          "caliber": {
+            "type": "string",
+            "minLength": 4
+          },
+          "related_profile_rule": {
+            "type": "string"
+          },
+          "source": {
+            "type": "object",
+            "description": "口径的古籍出处引用（source-ref/1.0），基础设施先行，具体绑定待人工核对",
+            "$comment": "见 config/platform/source_ref.schema.json"
+          }
+        }
+      }
+    }
+  }
+}

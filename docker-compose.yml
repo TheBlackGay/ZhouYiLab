@@ -1,0 +1,23 @@
+services:
+  zhouyilab:
+    image: ${ZHOUYILAB_IMAGE:-crpi-ip3van137b8rcj4d.cn-hangzhou.personal.cr.aliyuncs.com/zhuifengderen/zhouyilab:3.0.0}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ZHOUYILAB_EPHEMERIS_PATH: /app/data/ephemeris
+      ZHOUYILAB_BIND_HOST: 0.0.0.0
+    ports:
+      - "${ZHOUYILAB_PORT:-8768}:8768"
+    volumes:
+      - zhouyilab-data:/app/.zhouyilab
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8768/api/v1/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  zhouyilab-data:

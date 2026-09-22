@@ -1,0 +1,15 @@
+{
+  "schema": "liuyao-case-manifest/1.0",
+  "school": "liuyao-zengshan",
+  "calibration_stage": "stage1_plate_facts",
+  "description": "D1=A 盘面事实案例锁：纳甲/世应/六亲/进退神四对/暗动/伏神事实层。断语类（吉凶应期、伏神可用结论）在《增删卜易》伏神章等原文人工校勘前一律不建条目；古籍例（classic_example）槽位空置，claim 升级只由人工决策。",
+  "cases": [
+    "jin_shen_zi_hua_chou",
+    "tui_shen_chou_hua_zi",
+    "def7_qian_moving_2_changed_ji_chou",
+    "an_dong_xiang_not_rest",
+    "kun_moving_2_bian_shi_regression",
+    "sun_fu_shen_facts",
+    "tongren_shi_ying_and_najia"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "liuyao-case/1.0",
+  "title": "六爻校准案例（D1=A：盘面事实先行，断语押后）",
+  "description": "expected 用点分路径锁定引擎盘面事实字段；纯数字段按 yao 数组的 position 寻址（如 yao.3.hiddenPillar.branch），列表值（state_tags 等）以逗号连接串锁定。structural_regression 例为本仓口径回归锁，不背书古籍归属；凡《增删卜易》等古籍书例必须 origin=classic_example 且 verification=pending_manual_collation，人工逐字校勘前不得参与 claim 讨论。伏神'可用/不可用'、吉凶应期类判断在伏神章校勘（DEF-5）前一律不建 expected 条目。",
+  "type": "object",
+  "required": ["schema", "id", "status", "input", "expected", "source_case"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "liuyao-case/1.0"},
+    "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "status": {"enum": ["pending", "calibrated", "boundary"]},
+    "input": {
+      "type": "object",
+      "required": ["hexagram_code"],
+      "additionalProperties": false,
+      "properties": {
+        "calendar": {"enum": ["solar", "lunar"]},
+        "date": {
+          "type": "object",
+          "required": ["year", "month", "day"],
+          "additionalProperties": false,
+          "properties": {
+            "year": {"type": "integer"},
+            "month": {"type": "integer"},
+            "day": {"type": "integer"},
+            "hour": {"type": "integer"},
+            "minute": {"type": "integer"}
+          }
+        },
+        "hexagram_code": {
+          "type": "string",
+          "pattern": "^[01]{6}$",
+          "description": "自初爻至上爻六位，1 阳 0 阴"
+        },
+        "changing_lines": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1, "maximum": 6},
+          "uniqueItems": true
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z_][A-Za-z0-9_]*(\\.[a-zA-Z_0-9][A-Za-z0-9_]*)*$": {"type": ["string", "integer", "boolean"]}
+      },
+      "additionalProperties": false
+    },
+    "source_case": {
+      "type": "object",
+      "required": ["origin", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "origin": {"enum": ["classic_example", "structural_regression"]},
+        "book": {"type": "string"},
+        "case_ref": {"type": "string"},
+        "verification": {"enum": ["pending_manual_collation", "self_consistent"]},
+        "note": {"type": "string"}
+      }
+    }
+  }
+}

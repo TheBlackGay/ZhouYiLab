@@ -1,0 +1,146 @@
+{
+  "schema_version": "astro-natal-rules/1.0",
+  "rules": [
+    {
+      "rule_id": "natal.hemisphere_left_majority",
+      "revision": 1,
+      "signal_type": "hemisphere_stat",
+      "match": {"hemisphere": "left"},
+      "min_ratio": 0.6,
+      "dimension": "layout",
+      "observation_code": "planets_concentrated_in_left_hemisphere",
+      "boundary": "只表示十大行星中较多落在 1、2、3、10、11、12 宫，不断言性格、能力或现实结果。"
+    },
+    {
+      "rule_id": "natal.hemisphere_right_majority",
+      "revision": 1,
+      "signal_type": "hemisphere_stat",
+      "match": {"hemisphere": "right"},
+      "min_ratio": 0.6,
+      "dimension": "layout",
+      "observation_code": "planets_concentrated_in_right_hemisphere",
+      "boundary": "只表示十大行星中较多落在 4、5、6、7、8、9 宫，不断言性格、能力或现实结果。"
+    },
+    {
+      "rule_id": "natal.hemisphere_above_majority",
+      "revision": 1,
+      "signal_type": "hemisphere_stat",
+      "match": {"hemisphere": "above"},
+      "min_ratio": 0.6,
+      "dimension": "layout",
+      "observation_code": "planets_concentrated_in_upper_hemisphere",
+      "boundary": "只表示十大行星中较多落在 7 至 12 宫，不断言社会活跃度或现实结果。"
+    },
+    {
+      "rule_id": "natal.hemisphere_below_majority",
+      "revision": 1,
+      "signal_type": "hemisphere_stat",
+      "match": {"hemisphere": "below"},
+      "min_ratio": 0.6,
+      "dimension": "layout",
+      "observation_code": "planets_concentrated_in_lower_hemisphere",
+      "boundary": "只表示十大行星中较多落在 1 至 6 宫，不断言隐私偏好或现实结果。"
+    },
+    {
+      "rule_id": "natal.quadrant_emphasis",
+      "revision": 1,
+      "signal_type": "quadrant_stat",
+      "min_count": 4,
+      "dimension": "layout",
+      "observation_code": "planets_concentrated_in_quadrant",
+      "boundary": "只表示星体在某一象限的集中度，不代表该象限对应领域的结果好坏。"
+    },
+    {
+      "rule_id": "natal.empty_house",
+      "revision": 1,
+      "signal_type": "empty_house",
+      "dimension": "layout",
+      "observation_code": "house_without_planet",
+      "boundary": "空宫只表示该宫没有十大行星落入，不代表该领域缺失、空白或不需要关注。"
+    },
+    {
+      "rule_id": "natal.aspect_harmony_majority",
+      "revision": 1,
+      "signal_type": "aspect_network_stat",
+      "match": {"dominant": "harmony"},
+      "min_ratio": 0.5,
+      "dimension": "aspect",
+      "observation_code": "harmony_aspects_majority",
+      "boundary": "只表示拱相与六合在已计算相位中的占比更高，不判定吉凶，也不表示现实顺利。"
+    },
+    {
+      "rule_id": "natal.aspect_tension_majority",
+      "revision": 1,
+      "signal_type": "aspect_network_stat",
+      "match": {"dominant": "tension"},
+      "min_ratio": 0.5,
+      "dimension": "aspect",
+      "observation_code": "tension_aspects_majority",
+      "boundary": "只表示刑相与对冲在已计算相位中的占比更高，不判定吉凶，也不表示现实阻碍。"
+    },
+    {
+      "rule_id": "natal.chart_ruler_placement",
+      "revision": 1,
+      "signal_type": "chart_ruler_placement",
+      "dimension": "core",
+      "observation_code": "chart_ruler_placed_in_house",
+      "boundary": "只表示按当前主星体系定位的命主星落点，不代表人生重心或结果。"
+    },
+    {
+      "rule_id": "natal.angular_planet",
+      "revision": 1,
+      "signal_type": "angular_planet",
+      "dimension": "angularity",
+      "observation_code": "planet_in_angular_house",
+      "boundary": "只表示行星落在第 1、4、7、10 宫，靠近四轴，不代表事件强度或结果。"
+    },
+    {
+      "rule_id": "natal.retrograde_point",
+      "revision": 1,
+      "signal_type": "retrograde_point",
+      "dimension": "motion",
+      "observation_code": "point_retrograde",
+      "boundary": "逆行只表示视运动方向，表达上偏向向内、回看与重做，不是负面事件。"
+    },
+    {
+      "rule_id": "natal.element_emphasis",
+      "revision": 1,
+      "signal_type": "element_emphasis",
+      "dimension": "distribution",
+      "observation_code": "element_count_reaches_threshold",
+      "boundary": "只表示某元素点位数量达到阈值，是结构集中度，不代表能力或结果。"
+    },
+    {
+      "rule_id": "natal.modality_emphasis",
+      "revision": 1,
+      "signal_type": "modality_emphasis",
+      "dimension": "distribution",
+      "observation_code": "modality_count_reaches_threshold",
+      "boundary": "只表示某模式点位数量达到阈值，是结构集中度，不代表能力或结果。"
+    },
+    {
+      "rule_id": "natal.house_stellium",
+      "revision": 1,
+      "signal_type": "house_stellium",
+      "dimension": "concentration",
+      "observation_code": "multiple_points_in_house",
+      "boundary": "只表示同一宫位的点位数量，不代表该领域必然活跃或出现事件。"
+    },
+    {
+      "rule_id": "natal.sign_stellium",
+      "revision": 1,
+      "signal_type": "sign_stellium",
+      "dimension": "concentration",
+      "observation_code": "multiple_points_in_sign",
+      "boundary": "只表示同一星座的点位数量，不代表该星座特质的强弱或结果。"
+    },
+    {
+      "rule_id": "natal.tight_aspect",
+      "revision": 1,
+      "signal_type": "tight_aspect",
+      "dimension": "aspect",
+      "observation_code": "aspect_within_orb_threshold",
+      "boundary": "只表示相位容许度较小，连接更紧密，不判定吉凶。"
+    }
+  ]
+}

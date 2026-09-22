@@ -1,0 +1,24 @@
+{
+  "schema": "daliuren-case/1.0",
+  "id": "yuejiang_dahan_guifa",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 1,
+      "day": 20,
+      "hour": 12
+    },
+    "yuejiang_method": "guifa_suicha"
+  },
+  "expected": {
+    "yue_jiang": "丑",
+    "meta.yuejiang_method": "guifa_suicha"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "口径对照·同日古法歌诀随差：月将丑——两口径并存互不覆盖（D2），接口可回退对照。"
+  }
+}

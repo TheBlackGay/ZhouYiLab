@@ -1,0 +1,32 @@
+{
+  "schema": "liuyao-case/1.0",
+  "id": "an_dong_xiang_not_rest",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 2,
+      "day": 12,
+      "hour": 10
+    },
+    "hexagram_code": "111111",
+    "changing_lines": []
+  },
+  "expected": {
+    "ben_gua_name": "乾宫: 乾为天",
+    "yao.4.wangShuai": "相",
+    "yao.4.an_dong": true,
+    "yao.4.isChanging": false,
+    "yao.1.an_dong": false,
+    "yao.5.an_dong": false,
+    "yao.2.an_dong": false,
+    "yao.3.an_dong": false,
+    "yao.6.an_dong": false
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "DEF-4 口径锁：壬子日寅月，乾四爻午火得月令相、受日冲→暗动；余五爻无日冲不应（子爻与日比和非冲、申辰与子不冲）。旺衰标签本身由 test_wang_shuai_contract 五表全量锁定"
+  }
+}

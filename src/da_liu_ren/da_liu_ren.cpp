@@ -1,9 +1,10 @@
-﻿// 大六壬实现文件
+// 大六壬实现文件
 module ZhouYi.DaLiuRen;
 
 import std;
 import fmt;
 import ZhouYi.DaLiuRen.GuaTi;
+import ZhouYi.Common.Calendar;
 
 namespace ZhouYi::DaLiuRen {
 
@@ -750,6 +751,34 @@ nlohmann::json DaLiuRenResult::to_json() const {
     j["yue_jiang"] = std::string(Mapper::to_zh(yue_jiang));
     j["gui_ren"] = std::string(Mapper::to_zh(gui_ren));
     j["is_day"] = is_day;
+
+    const auto day_gan = ba_zi.day.gan;
+    const auto day_zhi = ba_zi.day.zhi;
+    nlohmann::json pan = nlohmann::json::array();
+    const auto& di_pan = tian_di_pan.get_di_pan();
+    const auto& tian_pan = tian_di_pan.get_tian_pan();
+    const auto& shen_jiang = tian_di_pan.get_shen_jiang();
+    static constexpr std::array<std::string_view, 12> shen_jiang_names = {
+        "贵人", "螣蛇", "朱雀", "六合", "勾陈", "青龙",
+        "天空", "白虎", "太常", "玄武", "太阴", "天后"
+    };
+    for (int i = 0; i < 12; ++i) {
+        const auto dun_gan = ZhouYi::GanZhi::get_dun_gan(tian_pan[i], day_gan, day_zhi);
+        std::string shen_jiang_name;
+        for (int k = 0; k < 12; ++k) {
+            if (shen_jiang[k] == di_pan[i]) {
+                shen_jiang_name = std::string(shen_jiang_names[k]);
+                break;
+            }
+        }
+        pan.push_back({
+            {"position", std::string(Mapper::to_zh(di_pan[i]))},
+            {"tian_pan", std::string(Mapper::to_zh(tian_pan[i]))},
+            {"dun_gan", dun_gan ? std::string(Mapper::to_zh(*dun_gan)) : ""},
+            {"shen_jiang", shen_jiang_name}
+        });
+    }
+    j["tian_di_pan"] = pan;
     
     j["si_ke"] = {
         {"first", si_ke.first.to_string()},
@@ -764,8 +793,51 @@ nlohmann::json DaLiuRenResult::to_json() const {
         {"mo_chuan", std::string(Mapper::to_zh(san_chuan.get_mo_chuan()))},
         {"ke_shi", san_chuan.get_ke_shi()}
     };
-    
+    const auto san_chuan_dun_gan = san_chuan.get_dun_gan(day_gan, day_zhi);
+    const auto san_chuan_liu_qin = san_chuan.get_liu_qin(day_gan);
+    auto& san_chuan_json = j["san_chuan"];
+    san_chuan_json["details"] = nlohmann::json::array();
+    const std::array<std::string, 3> san_chuan_names = {"chu_chuan", "zhong_chuan", "mo_chuan"};
+    const std::array<DiZhi, 3> san_chuan_zhi = {
+        san_chuan.get_chu_chuan(), san_chuan.get_zhong_chuan(), san_chuan.get_mo_chuan()
+    };
+    for (int i = 0; i < 3; ++i) {
+        san_chuan_json["details"].push_back({
+            {"stage", san_chuan_names[i]},
+            {"branch", std::string(Mapper::to_zh(san_chuan_zhi[i]))},
+            {"dun_gan", san_chuan_dun_gan[i] ? std::string(Mapper::to_zh(*san_chuan_dun_gan[i])) : ""},
+            {"liu_qin", std::string(san_chuan_liu_qin[i])}
+        });
+    }
+    j["shen_sha"] = shen_sha.to_json();
+    j["gua_ti"] = gua_ti;
+
+    // DLR-205：规则口径标识为纯新增字段，不改变任何既有字段语义。
+    j["meta"] = {
+        {"rule_profile", get_rule_profile()},
+        {"yuejiang_method", std::string(yuejiang_method_name(yuejiang_method))}
+    };
+
     return j;
+}
+
+nlohmann::json get_rule_profile() {
+    return {
+        {"profile_version", "da-liu-ren-rules/0.2"},
+        {"calibration_status", "pending"},
+        {"rules", {
+            {"four_pillars", "四柱由统一历法引擎生成（tyme4cpp 默认八字算法，晚子时日柱算次日）"},
+            {"time_granularity", "起课精确到时（hour），分钟不参与天地盘、三传与神将计算"},
+            {"yue_jiang", "月将默认中气过宫：太阳于十二中气交节时刻（寿星历，精确到分）过宫换将（雨水登明亥、春分河魁戌……大寒神后子）；入参 yuejiang_method=guifa_suicha 取历法歌诀十二定切点口径对照；不做时辰以下天象拟合"},
+            {"gui_ren", "昼夜贵人按『甲戊庚牛羊，乙己鼠猴乡，丙丁猪鸡位，壬癸蛇兔藏，六辛逢马虎』查表；卯时至申时为昼用阳贵，其余用阴贵"},
+            {"shen_jiang", "月将加正时布天盘；十二神将随贵人落宫顺逆：贵人在亥子丑寅卯辰顺布，在巳午未申酉戌逆布"},
+            {"gan_ji_gong", "日干寄宫：甲寅、乙辰、丙巳、丁未、戊巳、己未、庚申、辛戌、壬亥、癸丑；四课取干寄宫与日支的上神各成一课，其上神再叠一课"},
+            {"san_chuan", "九宗门取传顺序：伏吟课→返吟课→贼克（含比用知一、涉害见机/察微/复等细分）→遥克→昴星（含虎视、冬蛇掩目细分）→别责→八专；ke_shi 首项输出本盘九宗门名，其后为细粒度课名"},
+            {"dun_gan", "遁干以日旬首起甲子顺飞，戌、亥两位落空亡无遁干"},
+            {"liu_qin", "六亲以日干为我、三传地支五行生克关系推导"},
+            {"gua_ti", "卦体按课式结构判定（三奇、六仪、龙德、官爵、轩盖、铸印、斫轮、罗网、九丑、连茹、连珠、伏吟、返吟）；本版本只输出卦体名称，不附吉凶断语"}
+        }}
+    };
 }
 
 std::string DaLiuRenResult::to_string() const {
@@ -795,22 +867,23 @@ std::string DaLiuRenResult::to_string() const {
 
 // ==================== DaLiuRenEngine 实现 ====================
 
-DaLiuRenResult DaLiuRenEngine::pai_pan(int year, int month, int day, int hour) {
-    auto solar_time = tyme::SolarTime::from_ymd_hms(year, month, day, hour, 0, 0);
+DaLiuRenResult DaLiuRenEngine::pai_pan(int year, int month, int day, int hour, YueJiangMethod yuejiang) {
+    auto solar_time = ZhouYi::Common::Calendar::to_solar_time(
+        ZhouYi::Common::SolarDateTime{year, month, day, hour, 0, 0});
     BaZi ba_zi = BaZi::from_solar(year, month, day, hour);
-    return pai_pan_from_bazi(ba_zi, solar_time);
+    return pai_pan_from_bazi(ba_zi, solar_time, yuejiang);
 }
 
-DaLiuRenResult DaLiuRenEngine::pai_pan_lunar(int year, int month, int day, int hour) {
-    auto lunar_hour = tyme::LunarHour::from_ymd_hms(year, month, day, hour, 0, 0);
-    auto solar_time = lunar_hour.get_solar_time();
+DaLiuRenResult DaLiuRenEngine::pai_pan_lunar(int year, int month, int day, int hour, YueJiangMethod yuejiang) {
+    auto solar_time = ZhouYi::Common::Calendar::to_solar_time(
+        ZhouYi::Common::LunarDateTime{year, month, day, hour, 0, 0});
     BaZi ba_zi = BaZi::from_lunar(year, month, day, hour);
-    return pai_pan_from_bazi(ba_zi, solar_time);
+    return pai_pan_from_bazi(ba_zi, solar_time, yuejiang);
 }
 
-DaLiuRenResult DaLiuRenEngine::pai_pan_from_bazi(const BaZi& ba_zi, const tyme::SolarTime& solar_time) {
-    // 获取月将
-    DiZhi yue_jiang = get_yue_jiang(solar_time);
+DaLiuRenResult DaLiuRenEngine::pai_pan_from_bazi(const BaZi& ba_zi, const tyme::SolarTime& solar_time, YueJiangMethod yuejiang) {
+    // 获取月将（D2：默认中气过宫，可参数切换古法十二定切点）
+    DiZhi yue_jiang = get_yue_jiang(solar_time, yuejiang);
 
     // 直接从八字获取时辰地支（更准确）
     DiZhi hour_zhi = ba_zi.hour.zhi;
@@ -854,7 +927,7 @@ DaLiuRenResult DaLiuRenEngine::pai_pan_from_bazi(const BaZi& ba_zi, const tyme::
     );
     
     return DaLiuRenResult(ba_zi, yue_jiang, gui_ren, is_day, 
-                          tian_di_pan, si_ke, san_chuan, shen_sha_result, gua_ti);
+                          tian_di_pan, si_ke, san_chuan, shen_sha_result, gua_ti, yuejiang);
 }
 
 } // namespace ZhouYi::DaLiuRen

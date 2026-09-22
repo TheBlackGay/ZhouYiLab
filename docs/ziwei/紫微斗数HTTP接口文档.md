@@ -6,6 +6,20 @@
 > 字符编码：UTF-8
 > 当前服务：本地 Python HTTP 适配层 + C++ 紫微斗数计算核心
 
+## 对外访问地址
+
+- 生产 Base URL：`https://zhouyilab.k8s.gold`
+- 内网直连 Base URL：`http://192.168.31.183:8768`
+- 本地开发 Base URL：`http://127.0.0.1:8765`
+
+其他项目接入时请优先使用生产地址。例如紫微本命盘接口：
+
+```text
+https://zhouyilab.k8s.gold/api/v1/ziwei/charts
+```
+
+生产域名由 HTTPS 反向代理转发至应用容器；接口路径保持 `/api/v1` 不变。
+
 ## 1. 接口范围
 
 当前 API 提供以下能力：
@@ -894,3 +908,18 @@ curl -sS \
   }' \
   http://127.0.0.1:8765/api/v1/ziwei/fortune
 ```
+
+## 分布画像（人性化图表数据包）
+
+`POST /api/v1/ziwei/distribution`
+
+入参：`{"chart": <本命盘对象>} 或 {"chart_request": {birth, time_correction}}，可选 "label"（≤60 字，仅用于标题插值）。
+
+返回 `astro-distribution` 同构数据包（schema `ziwei-distribution/1.0`）：
+
+- `charts[temperament]` 星系气质：全盘在场星（core28）按内核星性五行归类（火木土金水），整数百分比和为 100；
+- `charts[polarity]` 阴阳星性：阳性星（发射型）/ 阴性星（吸收型）；
+- `charts[light]` 星光明暗：十四主星实际亮度归组——庙旺（全光）/ 得平（恒光）/ 陷不利（烛光），分母自释；
+- 每图 `headline_zh / reading_zh` 与顶层 `summary_zh` 文案全部来自声明式配置 `config/ziwei/distribution_reading.json`（模板插值，不生成断语）；
+- 星性（五行、阴阳）与亮度数据源为内核 `symbols` 导出（ziwei-symbols/1.1 `star_temperament`），配置层无手编映射。
+

@@ -1,0 +1,114 @@
+name: Python Tests
+
+# A4：Web 服务层、格局引擎、治理与注册表的 400+ 项行为测试此前只在本机运行，
+# 与 C++ 编译矩阵（clang.yml/msvc.yml）互补，这里守住 Python 面契约。
+#
+# 2026-09-21 修复（r_3.0.0 单主干制，用户拍板分支归并后）：
+# ① 触发加分支 r_*——此前只认 main/master，而 main 停更于 1.5.0，
+#    开发主干推送实际从未过此闸；
+# ② 作业内构建 7 个网页 CLI 引擎（clang.yml 同工具链：llvm-19 + libc++，Release 单
+#    配置；但图像用 ubuntu-24.04——GitHub 托管 runner 已退役 22.04，clang.yml 的
+#    22.04 属历史遗留，仅在 main 触发故未暴露）。server.py 的启动门槛要求核心引擎
+#    在场（生产 fail-fast，合理保留），没有引擎时本闸会跳过约百项契约测试且
+#    test_governance 必红；建好后契约/案例套件真跑不降级。
+# astro 引擎不建（星历数据依赖另议），相关测试按既有设计自动跳过。
+
+on:
+  push:
+    branches: [ "main", "master", "r_*" ]
+  pull_request:
+    branches: [ "main", "master", "r_*" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install python deps (tzdata pin)
+        run: pip install -r web/requirements.txt
+
+      - name: Add Ubuntu mirrors
+        run: |
+          # 与 clang.yml 同源兜底：Actions 缓存代理偶发不稳
+          mirrors=/etc/apt/mirrors.txt
+          printf 'http://azure.archive.ubuntu.com/ubuntu\tpriority:1\n' | \
+            sudo tee $mirrors
+          curl http://mirrors.ubuntu.com/mirrors.txt | sudo tee --append $mirrors
+          sudo sed -i \
+            "s~http://azure.archive.ubuntu.com/ubuntu/~mirror+file:$mirrors~" \
+            /etc/apt/sources.list
+
+      - name: Install base dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget ninja-build
+
+      - name: Install Clang 19
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 19 all
+          sudo apt-get install -y libc++-19-dev libc++abi-19-dev
+          clang++-19 --version
+
+      - name: Install CMake 4.0+
+        run: |
+          wget https://github.com/Kitware/CMake/releases/download/v4.1.2/cmake-4.1.2-linux-x86_64.sh
+          chmod +x cmake-4.1.2-linux-x86_64.sh
+          sudo ./cmake-4.1.2-linux-x86_64.sh --skip-license --prefix=/usr/local
+          cmake --version
+
+      - name: Configure CMake (Release, single config)
+        run: |
+          cmake -B ${{ github.workspace }}/build \
+            -G "Ninja" \
+            -DCMAKE_CXX_COMPILER=clang++-19 \
+            -DCMAKE_C_COMPILER=clang-19 \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_FLAGS="-stdlib=libc++" \
+            -DCMAKE_EXE_LINKER_FLAGS="-lc++abi" \
+            -DLIBCXX_MODULE_DIRS=/usr/lib/llvm-19/share/libc++/v1 \
+            -DLIBCXX_INCLUDE_DIRS=/usr/lib/llvm-19/include/c++/v1 \
+            -S ${{ github.workspace }}
+        env:
+          CC: clang-19
+          CXX: clang++-19
+
+      - name: Build web CLI engines (astro excluded)
+        run: >
+          cmake --build ${{ github.workspace }}/build --parallel 3
+          --target zi_wei_web_cli qi_men_web_cli ba_zi_web_cli
+          liu_yao_web_cli da_liu_ren_web_cli mei_hua_web_cli
+          common_calendar_web_cli
+
+      - name: Syntax gates
+        run: |
+          python3 -m py_compile web/*.py
+          for f in web/*.js; do node --check "$f"; done
+          git diff --check
+
+      - name: Unit and contract tests (engines built -> contract cases really run)
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Calibration claim consistency (permissive; pre-release 在完整构建树上跑 --strict)
+        run: python3 scripts/check_calibration.py

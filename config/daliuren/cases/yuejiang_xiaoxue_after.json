@@ -1,0 +1,23 @@
+{
+  "schema": "daliuren-case/1.0",
+  "id": "yuejiang_xiaoxue_after",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 11,
+      "day": 23,
+      "hour": 10
+    }
+  },
+  "expected": {
+    "yue_jiang": "寅",
+    "meta.yuejiang_method": "zhongqi"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "中气过宫边界锁·小雪之后：月将寅（与上一例并读=过宫跳变判据；避开节气当日时刻歧义）。"
+  }
+}

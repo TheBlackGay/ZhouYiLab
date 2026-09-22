@@ -1,0 +1,39 @@
+{
+  "schema": "zhouyilab-tool/1.0",
+  "id": "da_liu_ren",
+  "name": "大六壬",
+  "engine_cli": "build/examples/da_liu_ren_web_cli",
+  "calibration_status": "pending",
+  "interface_doc": "docs/大六壬HTTP接口文档.md",
+  "rule_profile_version": "da-liu-ren-rules/0.2",
+  "pages": [
+    "da-liu-ren.html"
+  ],
+  "api_prefixes": [
+    "/api/v1/da-liu-ren/"
+  ],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/v1/da-liu-ren/charts",
+      "handler": "engine_chart",
+      "options": {
+        "timeout_message": "大六壬排盘计算超时"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/da-liu-ren/glossary",
+      "handler": "static_config",
+      "options": {
+        "config_path": "config/daliuren/glossary.json",
+        "not_found_code": "GLOSSARY_NOT_FOUND"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/da-liu-ren/distribution",
+      "handler": "python_service"
+    }
+  ]
+}

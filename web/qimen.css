@@ -1,41 +1,6 @@
-:root {
-  --paper: #f3f2ee;
-  --surface: #fff;
-  --ink: #1d2421;
-  --muted: #68716c;
-  --line: #d8dcd8;
-  --jade: #25634d;
-  --jade-soft: #e6efe9;
-  --cinnabar: #a43b32;
-  --gold: #a67b2e;
-  color-scheme: light;
-  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-synthesis: none;
-}
-
-* { box-sizing: border-box; }
-body { min-width: 320px; margin: 0; color: var(--ink); background: var(--paper); font-size: 15px; }
-button, input, select, textarea { font: inherit; }
-button, a, label:has(input) { cursor: pointer; }
-a { color: inherit; text-decoration: none; }
-[hidden] { display: none !important; }
-
-.app-header { min-height: 70px; display: flex; align-items: center; gap: 28px; padding: 10px 28px; background: var(--surface); border-bottom: 1px solid var(--line); }
-.brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
-.brand-mark { width: 42px; height: 42px; display: grid; place-items: center; color: #fff; background: var(--ink); font: 600 22px/1 "Noto Serif SC", serif; }
-.brand > span:last-child { display: grid; gap: 2px; }
-.brand strong { font-size: 17px; }
-.brand small { color: var(--muted); font-size: 11px; }
-nav { display: flex; align-items: center; gap: 6px; }
-nav a { min-height: 44px; display: grid; place-items: center; padding: 0 12px; color: var(--muted); border-bottom: 2px solid transparent; }
-nav a:hover, nav a:focus-visible { color: var(--ink); }
-nav a[aria-current="page"] { color: var(--jade); border-bottom-color: var(--jade); font-weight: 700; }
-.engine-status { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 12px; }
-.engine-status span { width: 8px; height: 8px; border-radius: 50%; background: #2f8b58; box-shadow: 0 0 0 3px #e3f1e8; }
-.header-help { min-width: 52px; min-height: 44px; padding: 0 11px; color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 3px; font-weight: 700; }
-.header-help:hover { color: var(--jade); border-color: var(--jade); }
-
-.workspace { min-height: calc(100vh - 70px); display: grid; grid-template-columns: 310px minmax(0, 1fr); }
+/* 令牌与页头 shell 统一由 ui-foundation.css / app-shell.css 提供；
+ * 本文件是奇门/八字/占星共用的工作区基础样式。 */
+.workspace { min-height: calc(100vh - 116px); display: grid; grid-template-columns: 310px minmax(0, 1fr); }
 .input-panel { padding: 24px; background: var(--surface); border-right: 1px solid var(--line); }
 form { display: grid; gap: 26px; }
 form section { display: grid; gap: 11px; }
@@ -55,7 +20,7 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .lunar-date-fields { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 8px; }
 .stem-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .field-help { margin-top: -4px; color: var(--muted); font-size: 11px; line-height: 1.5; }
-.life-status { display: block; min-height: 32px; padding-top: 5px; color: var(--jade); font-size: 10px; line-height: 1.4; }
+.life-status { display: block; min-height: 32px; padding-top: 5px; color: var(--jade); font-size: 11px; line-height: 1.4; }
 .toggle-row { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--line); }
 .toggle-row > span { display: grid; gap: 3px; }
 .toggle-row strong { color: var(--ink); font-size: 13px; }
@@ -105,10 +70,10 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .qimen-palace.focus-palace { background: #fbf8ef; }
 .qimen-palace header { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
 .qimen-palace header > span:first-child { display: grid; gap: 2px; }
-.qimen-palace header small { color: var(--muted); font-size: 9px; font-weight: 400; }
+.qimen-palace header small { color: var(--muted); font-size: 10px; font-weight: 400; }
 .qimen-palace header b { color: var(--gold); font-size: 14px; }
 .palace-flags { display: flex; align-items: flex-start; justify-content: flex-end; gap: 4px; flex-wrap: wrap; }
-.palace-flags em { padding: 2px 4px; color: var(--cinnabar); border: 1px solid #d9aaa5; border-radius: 2px; font-size: 8px; font-style: normal; font-weight: 800; }
+.palace-flags em { padding: 2px 4px; color: var(--cinnabar); border: 1px solid #d9aaa5; border-radius: 2px; font-size: 9px; font-style: normal; font-weight: 800; }
 .palace-flags .flag-focus { color: var(--jade); background: var(--jade-soft); border-color: #b9d1c3; }
 .palace-flags .flag-void { color: #765b20; background: #f7f1df; border-color: #d8c58d; }
 .palace-flags .flag-horse { color: #315c78; background: #e8f1f6; border-color: #b9ceda; }
@@ -119,15 +84,15 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .palace-core { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; }
 .palace-core > span { display: grid; gap: 3px; font-size: clamp(11px, 1.4vw, 14px); }
 .palace-core strong { color: var(--ink); font: 600 clamp(18px, 2.2vw, 28px)/1.2 "Noto Serif SC", serif; white-space: nowrap; }
-.palace-core strong .lodged { display: block; margin-top: 4px; color: var(--gold); font: 700 9px/1.2 sans-serif; text-align: center; }
+.palace-core strong .lodged { display: block; margin-top: 4px; color: var(--gold); font: 700 10px/1.2 sans-serif; text-align: center; }
 .spirit { color: var(--jade); }
 .gate { justify-items: end; color: var(--cinnabar); }
 .gate.chief-gate { font-weight: 800; }
-.palace-core small { color: var(--gold); font-size: 9px; font-weight: 700; }
+.palace-core small { color: var(--gold); font-size: 10px; font-weight: 700; }
 .qimen-palace footer { display: flex; justify-content: center; gap: 24px; padding-top: 7px; border-top: 1px solid var(--line); }
 .qimen-palace footer span { display: flex; align-items: baseline; gap: 5px; color: var(--cinnabar); font: 700 18px/1 serif; }
 .qimen-palace footer span:last-child { color: var(--jade); }
-.qimen-palace footer small { color: var(--muted); font: 400 9px/1 sans-serif; }
+.qimen-palace footer small { color: var(--muted); font: 400 10px/1 sans-serif; }
 .result-note { margin: 12px 0 0; color: var(--muted); text-align: center; font-size: 11px; }
 .reading-toolbar { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .reading-toolbar > div { display: grid; gap: 4px; }
@@ -161,7 +126,7 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .pattern-item { min-width: 0; display: grid; align-content: start; gap: 7px; padding: 14px; background: var(--surface); }
 .pattern-item header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .pattern-item header strong { color: var(--cinnabar); font-size: 13px; }
-.pattern-item header span { color: var(--muted); font-size: 10px; text-align: right; }
+.pattern-item header span { color: var(--muted); font-size: 11px; text-align: right; }
 .pattern-item p { margin: 0; color: var(--ink); font-size: 12px; line-height: 1.6; }
 .pattern-item small { color: var(--muted); font-size: 11px; line-height: 1.55; }
 
@@ -195,8 +160,6 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
 @media (max-width: 900px) {
-  .app-header { padding: 10px 16px; }
-  .engine-status { display: none; }
   .workspace { grid-template-columns: 1fr; }
   .input-panel { border-right: 0; border-bottom: 1px solid var(--line); }
   form { grid-template-columns: 1fr 1fr; align-items: start; }
@@ -206,11 +169,6 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
   .result-summary dl { width: 100%; }
 }
 @media (max-width: 620px) {
-  .app-header { align-items: flex-start; flex-wrap: wrap; gap: 8px 16px; }
-  .brand { width: 100%; }
-  nav { width: 100%; }
-  nav a { flex: 1; }
-  .header-help { position: absolute; top: 9px; right: 16px; }
   form { grid-template-columns: 1fr; }
   .stem-fields { grid-template-columns: 1fr; }
   .results { padding-inline: 10px; }
@@ -227,13 +185,13 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
   .help-content { padding-inline: 16px; }
   .usage-list > div { grid-template-columns: 1fr; gap: 5px; }
   .qimen-palace { padding: 6px; }
-  .qimen-palace header { font-size: 9px; }
-  .qimen-palace header small { font-size: 8px; }
+  .qimen-palace header { font-size: 10px; }
+  .qimen-palace header small { font-size: 9px; }
   .palace-flags { gap: 2px; }
   .palace-flags em { padding: 1px 2px; font-size: 0; }
-  .palace-flags em::after { content: attr(data-short); font-size: 7px; }
+  .palace-flags em::after { content: attr(data-short); font-size: 8px; }
   .palace-core { grid-template-columns: 1fr; place-items: center; gap: 2px; }
-  .palace-core > span { display: flex; gap: 4px; font-size: 10px; }
+  .palace-core > span { display: flex; gap: 4px; font-size: 11px; }
   .gate { justify-items: center; }
   .qimen-palace footer { gap: 10px; padding-top: 4px; }
   .qimen-palace footer span { font-size: 14px; }

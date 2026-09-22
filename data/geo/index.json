@@ -1,0 +1,28 @@
+{
+  "revision": "2026.09.22",
+  "generated_on": "2026-09-22",
+  "shards": {
+    "curated": {
+      "file": "curated.json",
+      "count": 493,
+      "sha256": "182d3a9bc510ca498198c0e2adfc63c13237533555e1ca12ace61dab6ec67950",
+      "groups": {
+        "cn_core": 34,
+        "cn_extra": 120,
+        "cn_more": 193,
+        "tw_hk_mo": 20,
+        "world_cap": 100,
+        "world_ext": 26
+      }
+    }
+  },
+  "quota": {
+    "cn_core": 34,
+    "cn_extra": 120,
+    "cn_more": 193,
+    "tw_hk_mo": 20,
+    "world_cap": 100,
+    "world_ext": 26,
+    "total": 493
+  }
+}

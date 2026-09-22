@@ -1,4 +1,4 @@
-﻿// C++23 Module - 六爻排盘系统
+// C++23 Module - 六爻排盘系统
 export module ZhouYi.LiuYao;
 
 // 导入第三方库模块（优先）
@@ -51,6 +51,14 @@ struct YaoDetails
     std::string shiYingMark; // 世/应标记 ("世", "应", " ")
     char mainYaoType; // 本卦爻阴阳 ('0'或'1')
     std::string changeMark = " "; // 动爻标记 ('X' 阴变, 'O' 阳变, " ")
+    std::string riShengKe;
+    std::string riYueHeChong;
+    bool yuePo = false, xunKong = false, ruMu = false, anDong = false;
+    bool heBan = false, huaPo = false, huaMu = false, jinShen = false, tuiShen = false;
+    std::vector<std::string> stateTags;
+    std::string stateNote;
+    std::vector<std::string> hiddenStateTags;
+    std::string hiddenStateNote;
 
     // JSON 序列化（手动定义，因为 NLOHMANN_DEFINE_TYPE_INTRUSIVE 在模块中不工作）
     friend void to_json(nlohmann::json& j, const YaoDetails& y) {
@@ -69,8 +77,12 @@ struct YaoDetails
             {"spirit", y.spirit},
             {"wangShuai", y.wangShuai},
             {"shiYingMark", y.shiYingMark},
-            {"mainYaoType", y.mainYaoType},
-            {"changeMark", y.changeMark}
+            {"mainYaoType", std::string(1, y.mainYaoType)},
+            {"changeMark", y.changeMark}, {"yue_po", y.yuePo}, {"ri_shengke", y.riShengKe},
+            {"xun_kong", y.xunKong}, {"ru_mu", y.ruMu}, {"ri_yue_hechong", y.riYueHeChong},
+            {"an_dong", y.anDong}, {"he_ban", y.heBan}, {"hua_po", y.huaPo}, {"hua_mu", y.huaMu},
+            {"jin_shen", y.jinShen}, {"tui_shen", y.tuiShen}, {"state_tags", y.stateTags}, {"state_note", y.stateNote},
+            {"hidden_state_tags", y.hiddenStateTags}, {"hidden_state_note", y.hiddenStateNote}
         };
     }
 
@@ -104,7 +116,8 @@ struct YaoDetails
                 std::string myt = j["mainYaoType"];
                 y.mainYaoType = myt.empty() ? '0' : myt[0];
             } else if (j["mainYaoType"].is_number()) {
-                y.mainYaoType = static_cast<char>(j["mainYaoType"].get<int>() + '0');
+                const int value = j["mainYaoType"].get<int>();
+                y.mainYaoType = value == 48 ? '0' : value == 49 ? '1' : static_cast<char>(value + '0');
             }
         }
         std::string cm = j["changeMark"];
@@ -158,7 +171,7 @@ const std::unordered_map<std::string, HexagramInfo> hexagramMap = {
     {"101110", {"泽火革", "变革创新", "水", 4, 1, true, "坎", "离", "兑", ""}},
     {"101100", {"雷火丰", "盛大光明", "水", 5, 2, true, "坎", "离", "震", ""}},
     {"101000", {"地火明夷", "光明受伤", "水", 4, 1, true, "坎", "离", "坤", "游魂"}},
-    {"010000", {"地水师", "兴师动众", "水", 3, 6, true, "坎", "坤", "坎", "归魂"}},
+    {"010000", {"地水师", "兴师动众", "水", 3, 6, true, "坎", "坎", "坤", "归魂"}},
 
     // 艮宫（土）系列
     {"001001", {"艮为山", "静止不动", "土", 6, 3, true, "艮", "艮", "艮", "本宫"}},
@@ -185,7 +198,7 @@ const std::unordered_map<std::string, HexagramInfo> hexagramMap = {
     {"111011", {"风天小畜", "积蓄力量", "木", 1, 4, false, "巽", "乾", "巽", ""}},
     {"101011", {"风火家人", "家庭伦理", "木", 2, 5, false, "巽", "离", "巽", ""}},
     {"100011", {"风雷益", "增益之道", "木", 3, 6, false, "巽", "震", "巽", ""}},
-    {"100111", {"天雷无妄", "不可妄为", "木", 4, 1, false, "巽", "乾", "震", ""}},
+    {"100111", {"天雷无妄", "不可妄为", "木", 4, 1, false, "巽", "震", "乾", ""}},
     {"100101", {"火雷噬嗑", "排除障碍", "木", 5, 2, false, "巽", "震", "离", ""}},
     {"100001", {"山雷颐", "颐养之道", "木", 4, 1, false, "巽", "震", "艮", "游魂"}},
     {"011001", {"山风蛊", "整治腐败", "木", 3, 6, false, "巽", "巽", "艮", "归魂"}},
@@ -196,9 +209,9 @@ const std::unordered_map<std::string, HexagramInfo> hexagramMap = {
     {"011101", {"火风鼎", "稳重图新", "火", 2, 5, false, "离", "巽", "离", ""}},
     {"010101", {"火水未济", "事未完成", "火", 3, 6, false, "离", "坎", "离", ""}},
     {"010001", {"山水蒙", "启蒙教育", "火", 4, 1, false, "离", "坎", "艮", ""}},
-    {"010011", {"风水涣", "涣散分离", "火", 5, 2, false, "离", "巽", "坎", ""}},
-    {"010111", {"天水讼", "争讼纠纷", "火", 4, 1, false, "离", "乾", "坎", "游魂"}},
-    {"101111", {"天火同人", "同心协力", "火", 3, 6, false, "离", "乾", "离", "归魂"}},
+    {"010011", {"风水涣", "涣散分离", "火", 5, 2, false, "离", "坎", "巽", ""}},
+    {"010111", {"天水讼", "争讼纠纷", "火", 4, 1, false, "离", "坎", "乾", "游魂"}},
+    {"101111", {"天火同人", "同心协力", "火", 3, 6, false, "离", "离", "乾", "归魂"}},
 
     // 坤宫（土）系列
     {"000000", {"坤为地", "厚德载物", "土", 6, 3, false, "坤", "坤", "坤", "本宫"}},
@@ -218,7 +231,7 @@ const std::unordered_map<std::string, HexagramInfo> hexagramMap = {
     {"001010", {"水山蹇", "艰难险阻", "金", 4, 1, false, "兑", "艮", "坎", ""}},
     {"001000", {"地山谦", "谦虚美德", "金", 5, 2, false, "兑", "艮", "坤", ""}},
     {"001100", {"雷山小过", "小有过失", "金", 4, 1, false, "兑", "艮", "震", "游魂"}},
-    {"110100", {"雷泽归妹", "婚嫁之道", "金", 3, 6, false, "兑", "震", "兑", "归魂"}}};
+    {"110100", {"雷泽归妹", "婚嫁之道", "金", 3, 6, false, "兑", "兑", "震", "归魂"}}};
 
 // 地支序列（修正后）
 const std::map<std::string, std::array<std::string, 6>> palaceBranchPatterns = {
@@ -566,22 +579,102 @@ inline void calculateHiddenGods(const HexagramInfo &pBasePalaceInfo, // 指向�
                                 std::vector<YaoDetails> &yaoList // (输入/输出) 要填充的爻列表
 )
 {
-    generateTianGanAndDiZhi(yaoList, pBasePalaceInfo, 2);
+    std::vector<YaoDetails> hiddenList(6);
+    generateTianGanAndDiZhi(hiddenList, pBasePalaceInfo, 2);
+    std::set<std::string> visibleRelatives;
+    for (const auto &yao : yaoList) visibleRelatives.insert(yao.mainRelative);
 
     for (int i = 0; i < 6; ++i)
     {
-        const std::string hiddenBranch = yaoList[i].hiddenPillar.branch();  // 调用 branch() 方法
+        const std::string hiddenBranch = hiddenList[i].hiddenPillar.branch();
         if (branchFiveElements.contains(hiddenBranch))
         {
-            yaoList[i].hiddenElement = branchFiveElements.at(hiddenBranch); // 存储变爻五行
-            // *** 关键：变爻六亲相对于【本卦】宫位五行 ***
-            yaoList[i].hiddenRelative = getRelative(mainPalaceElement, yaoList[i].hiddenElement);
+            const std::string hiddenElement = branchFiveElements.at(hiddenBranch);
+            const std::string hiddenRelative = getRelative(mainPalaceElement, hiddenElement);
+            if (!visibleRelatives.contains(hiddenRelative)) {
+                yaoList[i].hiddenPillar = hiddenList[i].hiddenPillar;
+                yaoList[i].hiddenElement = hiddenElement;
+                yaoList[i].hiddenRelative = hiddenRelative;
+            }
         }
         else
         {
-            yaoList[i].changedElement = "未知";
-            yaoList[i].changedRelative = "错误";
-            std::print(std::cerr, "警告: 无法找到变爻地支 '{}' 的五行属性。\n", hiddenBranch);
+            std::print(std::cerr, "警告: 无法找到伏神地支 '{}' 的五行属性。\n", hiddenBranch);
+        }
+    }
+}
+
+inline bool branchChong(const std::string& a, const std::string& b) {
+    static const std::unordered_set<std::string> pairs{"子午","午子","丑未","未丑","寅申","申寅","卯酉","酉卯","辰戌","戌辰","巳亥","亥巳"};
+    return pairs.contains(a + b);
+}
+inline bool branchHe(const std::string& a, const std::string& b) {
+    static const std::unordered_set<std::string> pairs{"子丑","丑子","寅亥","亥寅","卯戌","戌卯","辰酉","酉辰","巳申","申巳","午未","未午"};
+    return pairs.contains(a + b);
+}
+inline std::string branchMu(const std::string& element) {
+    static const std::unordered_map<std::string, std::string> maps{{"水","辰"},{"木","未"},{"火","戌"},{"金","丑"}};
+    return maps.contains(element) ? maps.at(element) : "";
+}
+inline bool sameElementAdvance(const std::string& from, const std::string& to) {
+    // 《增删卜易》口径（D1=A 拍板 2026-09-20）：进神只认两对——子水动化丑土（水进）、
+    // 巳火动化午火（火进）；退神为其反向：丑化子、午化巳；
+    // 他派"寅化卯、卯化辰"等邻支进神说，本书明确"……非是"，不采（原八对邻支表系 DEF-5 旧项，现收口）。
+    return (from == "子" && to == "丑") || (from == "巳" && to == "午");
+}
+inline bool sameElementRetreat(const std::string& from, const std::string& to) {
+    return sameElementAdvance(to, from);
+}
+inline void calculateStateTags(std::vector<YaoDetails>& yaoList, const BaZi& bazi) {
+    const auto month = bazi.month.branch(), day = bazi.day.branch();
+    const std::string empty1 = bazi.xun_kong_1, empty2 = bazi.xun_kong_2;
+    for (auto& yao : yaoList) {
+        yao.stateTags.clear();
+        const auto branch = yao.mainPillar.branch();
+        yao.yuePo = branchChong(branch, month);
+        yao.xunKong = branch == empty1 || branch == empty2;
+        yao.ruMu = branchMu(yao.mainElement) == day;
+        yao.riYueHeChong = branchHe(branch, day) ? "日合" : branchChong(branch, day) ? "日冲" : branchHe(branch, month) ? "月合" : branchChong(branch, month) ? "月冲" : "";
+        if (yao.mainElement == branchFiveElements.at(day)) yao.riShengKe = "日同";
+        else {
+            const auto relation = getRelative(branchFiveElements.at(day), yao.mainElement);
+            yao.riShengKe = relation == "子孙" ? "日生" : relation == "妻财" ? "日克" : relation == "父母" ? "日受生" : "日受克";
+        }
+        yao.anDong = !yao.isChanging && branchChong(branch, day) && (yao.wangShuai == "旺" || yao.wangShuai == "相");
+        yao.heBan = yao.isChanging && branchHe(branch, day);
+        yao.stateTags = {};
+        if (yao.yuePo) yao.stateTags.push_back("月破");
+        if (yao.riYueHeChong == "日合") yao.stateTags.push_back(yao.isChanging ? "合绊" : "日合");
+        if (yao.riYueHeChong == "日冲") yao.stateTags.push_back(yao.anDong ? "暗动" : "日冲");
+        if (yao.xunKong) yao.stateTags.push_back("旬空");
+        if (yao.ruMu) yao.stateTags.push_back("入墓");
+        if (yao.isChanging && !yao.changedElement.empty()) {
+            const auto changedBranch = yao.changedPillar.branch();
+            yao.huaPo = branchChong(changedBranch, month);
+            yao.huaMu = branchMu(yao.mainElement) == changedBranch;
+            yao.jinShen = sameElementAdvance(yao.mainPillar.branch(), changedBranch);
+            yao.tuiShen = sameElementRetreat(yao.mainPillar.branch(), changedBranch);
+            if (yao.huaPo) yao.stateTags.push_back("化破");
+            if (yao.huaMu) yao.stateTags.push_back("化墓");
+            if (yao.jinShen) yao.stateTags.push_back("进神");
+            if (yao.tuiShen) yao.stateTags.push_back("退神");
+        }
+        yao.stateNote = yao.stateTags.empty() ? "无特殊状态" : "状态以《增删卜易》为主口径标记（D1=A 拍板 2026-09-20），需结合动静、日月和用神综合判断。";
+        yao.hiddenStateTags.clear();
+        if (!yao.hiddenRelative.empty()) {
+            const auto hiddenBranch = yao.hiddenPillar.branch();
+            if (branchChong(hiddenBranch, month)) yao.hiddenStateTags.push_back("月破");
+            if (hiddenBranch == empty1 || hiddenBranch == empty2) yao.hiddenStateTags.push_back("旬空");
+            if (branchHe(hiddenBranch, day)) yao.hiddenStateTags.push_back("日合");
+            if (branchChong(hiddenBranch, day)) yao.hiddenStateTags.push_back("日冲");
+            if (branchMu(yao.hiddenElement) == day) yao.hiddenStateTags.push_back("入日墓");
+            if (branchMu(yao.hiddenElement) == month) yao.hiddenStateTags.push_back("入月墓");
+            const bool flyIsStatic = !yao.isChanging;
+            const bool flyIsReal = !yao.yuePo && !yao.xunKong;
+            if (flyIsStatic && flyIsReal && branchMu(yao.hiddenElement) == yao.mainPillar.branch()) yao.hiddenStateTags.push_back("入飞神墓");
+            yao.hiddenStateNote = yao.hiddenStateTags.empty() ? "伏神无特殊状态" : "伏神独立按日月、旬空和墓库规则标记；入飞神墓要求飞神静且不空不破。";
+        } else {
+            yao.hiddenStateNote.clear();
         }
     }
 }
@@ -677,11 +770,20 @@ inline std::pair<std::vector<YaoDetails>, nlohmann::json> sixYaoDivination(const
 
         // 获取变卦信息并生成纳甲
         const HexagramInfo &changedInfo = hexagramMap.at(changedHexagramCode);
-        generateTianGanAndDiZhi(LIU_YAO, changedInfo, 1);
+        std::vector<YaoDetails> changedDetails(6);
+        generateTianGanAndDiZhi(changedDetails, changedInfo, 1);
         json["bian_gua_name"] = changedInfo.palaceType + "宫: " + changedInfo.name;
 
         // 计算变卦五行和六亲（注意：变爻六亲相对于本卦宫位五行）
-        fillElementAndRelative(LIU_YAO, mainPalaceElement, false);
+        fillElementAndRelative(changedDetails, mainPalaceElement, false);
+        for (int idx : changingLineIndices) {
+            if (idx >= 1 && idx <= 6) {
+                const int yaoIndex = idx - 1;
+                LIU_YAO[yaoIndex].changedPillar = changedDetails[yaoIndex].changedPillar;
+                LIU_YAO[yaoIndex].changedElement = changedDetails[yaoIndex].changedElement;
+                LIU_YAO[yaoIndex].changedRelative = changedDetails[yaoIndex].changedRelative;
+            }
+        }
     }
 
 #ifdef debug
@@ -727,6 +829,7 @@ inline std::pair<std::vector<YaoDetails>, nlohmann::json> sixYaoDivination(const
     for (int i = 0; i < 6; ++i) {
         LIU_YAO[i].wangShuai = getWangShuai(LIU_YAO[i].mainElement, monthBranch);
     }
+    calculateStateTags(LIU_YAO, bazi);
 
     // ===== 第9步：计算神煞 =====
     std::map<std::string, std::vector<std::string>> shenShaMap = buildShenShaMap(bazi);
@@ -901,7 +1004,7 @@ inline nlohmann::json aiSetSixYaoDivination(
         yao_cn["本卦"] = ben_gua_cn;
         
         // 伏神信息（完整翻译，如果存在）
-        if (not yao.hiddenPillar.to_string().empty()) {
+        if (not yao.hiddenRelative.empty()) {
             nlohmann::json fu_shen_cn;
             fu_shen_cn["干支"] = yao.hiddenPillar.to_string();
             fu_shen_cn["天干"] = std::string{yao.hiddenPillar.stem()};
@@ -915,15 +1018,17 @@ inline nlohmann::json aiSetSixYaoDivination(
         yao_cn["是否动爻"] = yao.isChanging;
         //yao_cn["动爻标记"] = yao.changeMark;
         
-        // 变卦信息（完整翻译，始终包含）
-        nlohmann::json bian_gua_cn;
-        bian_gua_cn["干支"] = yao.changedPillar.to_string();
-        bian_gua_cn["天干"] = std::string{yao.changedPillar.stem()};
-        bian_gua_cn["地支"] = std::string{yao.changedPillar.branch()};
-        bian_gua_cn["五行"] = yao.changedElement;
-        bian_gua_cn["六亲"] = yao.changedRelative;
-        bian_gua_cn["爻性"] = (yao.mainYaoType == '0' || yao.mainYaoType == 48 ? "阳爻" : "阴爻");  // 变卦爻性相反
-        yao_cn["变卦"] = bian_gua_cn;
+        // 变卦信息只记录动爻，静爻没有变卦对应信息
+        if (yao.isChanging) {
+            nlohmann::json bian_gua_cn;
+            bian_gua_cn["干支"] = yao.changedPillar.to_string();
+            bian_gua_cn["天干"] = std::string{yao.changedPillar.stem()};
+            bian_gua_cn["地支"] = std::string{yao.changedPillar.branch()};
+            bian_gua_cn["五行"] = yao.changedElement;
+            bian_gua_cn["六亲"] = yao.changedRelative;
+            bian_gua_cn["爻性"] = (yao.mainYaoType == '0' || yao.mainYaoType == 48 ? "阳爻" : "阴爻");
+            yao_cn["变卦"] = bian_gua_cn;
+        }
         
         // 使用 "1爻"、"2爻" 等格式作为 key
         auto yao_key = fmt::format("{}爻", yao.position);

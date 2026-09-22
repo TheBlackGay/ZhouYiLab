@@ -8,6 +8,7 @@ import ZhouYi.ZiWei.SanFang;
 import ZhouYi.ZiWei.GeJu;
 import ZhouYi.ZiWei.StarDocument;
 import ZhouYi.ZiWei.Horoscope;
+import ZhouYi.Common.DateTime;
 import ZhouYi.ZhMapper;
 import ZhouYi.tyme;
 import fmt;
@@ -102,17 +103,12 @@ namespace ZhouYi::ZiWei {
         j["lunar_hour"] = result.lunar_hour.to_string();
         j["gender"] = result.is_male ? "男" : "女";
 
-        const auto format_date_time = [](const BirthDateTime& value) {
-            return fmt::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
-                value.year, value.month, value.day,
-                value.hour, value.minute, value.second);
-        };
         const auto& correction = result.time_correction;
         j["birth_time"]["mode"] = correction.mode == BirthTimeMode::TrueSolarTime
             ? "true_solar_time" : "standard_time";
-        j["birth_time"]["recorded_time"] = format_date_time(correction.recorded_time);
-        j["birth_time"]["standard_time"] = format_date_time(correction.standard_time);
-        j["birth_time"]["chart_time"] = format_date_time(correction.chart_time);
+        j["birth_time"]["recorded_time"] = ZhouYi::Common::DateTime::format(correction.recorded_time);
+        j["birth_time"]["standard_time"] = ZhouYi::Common::DateTime::format(correction.standard_time);
+        j["birth_time"]["chart_time"] = ZhouYi::Common::DateTime::format(correction.chart_time);
         j["birth_time"]["longitude"] = correction.longitude;
         j["birth_time"]["standard_meridian"] = correction.standard_meridian;
         j["birth_time"]["daylight_saving_minutes"] = correction.daylight_saving_minutes;
@@ -862,6 +858,11 @@ namespace ZhouYi::ZiWei {
             dxj["start_age"] = dx.start_age;
             dxj["end_age"] = dx.end_age;
             dxj["gong_index"] = dx.gong_index;
+            // D11：导出限宫干支与大限四化（新增键，老键语义不变）
+            dxj["gan_zhi"] = string(GanZhi::Mapper::to_zh(dx.tian_gan))
+                + string(GanZhi::Mapper::to_zh(dx.di_zhi));
+            dxj["si_hua"] = json::array();
+            for (const auto& star : dx.si_hua) dxj["si_hua"].push_back(star);
             j["da_xian"].push_back(dxj);
         }
         

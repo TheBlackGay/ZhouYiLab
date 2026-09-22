@@ -1,0 +1,28 @@
+{
+  "schema": "liuyao-case/1.0",
+  "id": "sun_fu_shen_facts",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 2,
+      "day": 12,
+      "hour": 10
+    },
+    "hexagram_code": "110001",
+    "changing_lines": []
+  },
+  "expected": {
+    "ben_gua_name": "艮宫: 山泽损",
+    "yao.3.hiddenPillar.stem": "丙",
+    "yao.3.hiddenPillar.branch": "申",
+    "yao.3.hiddenRelative": "子孙",
+    "yao.3.hidden_state_tags": "月破,入飞神墓"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "伏神事实层锁（DEF-5 边界）：艮宫子孙申金伏三爻甲丑下；月破（寅月冲申）、入飞神墓（申墓于丑，飞神静不空不破）；只录状态标签，不出'可用/不可用'结论"
+  }
+}

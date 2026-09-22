@@ -1,0 +1,5 @@
+# ZhouYiLab 网页服务 Python 依赖
+# tzdata：把 zoneinfo 数据目录固定到本包，让开发机/CI/容器读到同一份 IANA 版本，
+# 并在 /api/v1/geo/meta 与解析结果 provenance 中报告版本号
+# （见 docs/product/西洋占星出生地点交互优化方案.md §6.4）。
+tzdata==2026.4

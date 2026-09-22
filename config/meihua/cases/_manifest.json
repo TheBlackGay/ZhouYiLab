@@ -1,0 +1,13 @@
+{
+  "schema": "meihua-case-manifest/1.0",
+  "school": "meihua-tiyong",
+  "calibration_stage": "stage1_plate_facts",
+  "description": "M3 第一步：盘面事实（起卦取数/本互变/体用/月令旺衰）案例锁；断语类判断（吉凶、应期、事类）在人工校勘与评审前一律不建条目（D6 立项书边界）。claim 升级由人工决策，check_calibration 只验套件可执行。",
+  "cases": [
+    "book_case_ze_huo_ge",
+    "leap_month_before_fifteen",
+    "leap_month_after_fifteen",
+    "numbers_case_huo_shan_liu",
+    "solar_lunar_equivalence"
+  ]
+}

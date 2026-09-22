@@ -1,0 +1,31 @@
+{
+  "schema": "liuyao-case/1.0",
+  "id": "tui_shen_chou_hua_zi",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 2,
+      "day": 12,
+      "hour": 10
+    },
+    "hexagram_code": "011111",
+    "changing_lines": [
+      1
+    ]
+  },
+  "expected": {
+    "ben_gua_name": "乾宫: 天风姤",
+    "bian_gua_name": "乾宫: 乾为天",
+    "yao.1.mainPillar.branch": "丑",
+    "yao.1.changedPillar.branch": "子",
+    "yao.1.jin_shen": false,
+    "yao.1.tui_shen": true
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "退神四对之·丑土动化子水（D1=A）；姤初爻动变乾"
+  }
+}

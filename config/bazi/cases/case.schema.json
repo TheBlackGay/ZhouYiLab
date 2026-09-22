@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bazi-case/1.0",
+  "title": "八字校准命例（D3：子平格局主线三步走）",
+  "description": "第一步校准定性判断边界（月令/根气/天干之势/刑冲合会）；第二步校准用神取用（扶抑 vs 调候优先级）；第三步才允许引入旺衰量化。定性未稳禁止量化。",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "status",
+    "input",
+    "source_case"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "bazi-case/1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "calibrated",
+        "boundary"
+      ],
+      "description": "boundary=已知争议边界案例，不参与门禁"
+    },
+    "input": {
+      "type": "object",
+      "required": [
+        "calendar",
+        "date"
+      ],
+      "properties": {
+        "calendar": {
+          "enum": [
+            "solar",
+            "lunar"
+          ]
+        },
+        "date": {
+          "type": "object"
+        },
+        "gender": {
+          "enum": [
+            "male",
+            "female"
+          ]
+        },
+        "time_correction": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "properties": {
+        "pillars": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "四柱定盘事实"
+        },
+        "yue_ling": {
+          "type": "string",
+          "description": "月令司事定性"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "子平格局名（成/破/变）"
+        },
+        "root_strength": {
+          "type": "string",
+          "enum": [
+            "强根",
+            "中根",
+            "微根",
+            "无根"
+          ]
+        },
+        "quality_boundary": {
+          "type": "string",
+          "description": "第一步校准的定性边界结论，如 偏强而非中和"
+        },
+        "favorable": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "第二步：用神（含扶抑/调候依据标注）"
+        },
+        "day_master_index": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "第三步才启用：日主强度指数（辅助维度，非独立判断）"
+        }
+      }
+    },
+    "source_case": {
+      "type": "object",
+      "required": [
+        "book"
+      ],
+      "properties": {
+        "book": {
+          "type": "string"
+        },
+        "case_ref": {
+          "type": "string"
+        },
+        "annotator": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string",
+          "description": "盲派直断类命例一律不收：平台不做盲派模拟"
+        }
+      }
+    }
+  }
+}

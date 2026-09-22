@@ -47,6 +47,30 @@ class QiMenRegressionTests(unittest.TestCase):
             chart["zhi_fu_palace"], chart["zhi_shi_palace"],
         ))
 
+    def test_time_correction_is_returned_and_changes_chart_time(self):
+        completed = subprocess.run(
+            [str(CLI_PATH)],
+            input=json.dumps({
+                "calendar": "solar",
+                "date": {"year": 2026, "month": 9, "day": 2, "hour": 20, "minute": 20},
+                "time_correction": {
+                    "mode": "true_solar_time",
+                    "longitude": 0,
+                    "standard_meridian": 120,
+                },
+            }),
+            cwd=PROJECT_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=True,
+        )
+        chart = json.loads(completed.stdout)
+        self.assertEqual("true_solar_time", chart["birth_time"]["mode"])
+        self.assertEqual("2026-09-02 20:20:00", chart["birth_time"]["recorded_time"])
+        self.assertEqual("2026-09-02 12:20:05", chart["birth_time"]["chart_time"])
+        self.assertEqual(12, chart["solar_date"]["hour"])
+
     def test_yin_one_earth_plate_and_center_are_stable(self):
         chart = self.chart(2026, 9, 2, 20, 20)
         palaces = {item["palace_num"]: item for item in chart["palaces"]}

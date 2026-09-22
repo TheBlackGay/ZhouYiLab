@@ -1,0 +1,32 @@
+{
+  "schema": "liuyao-case/1.0",
+  "id": "jin_shen_zi_hua_chou",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 2,
+      "day": 12,
+      "hour": 10
+    },
+    "hexagram_code": "111111",
+    "changing_lines": [
+      1
+    ]
+  },
+  "expected": {
+    "ben_gua_name": "乾宫: 乾为天",
+    "bian_gua_name": "乾宫: 天风姤",
+    "yao.1.mainPillar.branch": "子",
+    "yao.1.changedPillar.branch": "丑",
+    "yao.1.changedPillar.stem": "辛",
+    "yao.1.jin_shen": true,
+    "yao.1.tui_shen": false
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "《增删卜易》进神四对之·子水动化丑土（D1=A）；乾初爻动变姤"
+  }
+}

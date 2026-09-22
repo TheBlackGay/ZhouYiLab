@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ZhouYiLab 梅花易数</title>
+  <link rel="stylesheet" href="/ui-foundation.css">
+  <link rel="stylesheet" href="/divination.css">
+  <link rel="stylesheet" href="/app-shell.css">
+  <style>
+    .yao-row { display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:15px; letter-spacing:1px; padding:2px 0; }
+    .yao-row small { color:var(--muted); font-family:inherit; letter-spacing:0; }
+    .yao-row .moving { color:var(--gold); font-weight:700; }
+    .gua-card h3 { margin:0 0 4px; }
+    .gua-card .palace { color:var(--muted); font-size:12.5px; margin:0 0 10px; }
+    .tiyong-flow { display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
+    .tiyong-flow b { font-size:15px; }
+    .tiyong-flow .rel { padding:4px 12px; border:1px solid var(--line); border-radius:14px; background:#f7f3e9; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 梅花易数起卦"><span class="brand-mark">周</span><span><strong>ZhouYiLab</strong><small>梅花易数 · 时间报数起卦</small></span></a>
+      <nav class="primary-tabs" aria-label="命理类型">
+        <a href="/">紫微斗数</a><a href="/qimen.html">奇门遁甲</a><a href="/bazi.html">八字</a><a href="/liu-yao.html">六爻</a><a href="/da-liu-ren.html">大六壬</a><a href="/meihua.html" aria-current="page">梅花易数</a><a href="/astro.html">西洋占星</a>
+      </nav>
+      <div class="header-tools"><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+  </div>
+
+  <main id="main-content" class="workspace">
+    <aside class="input-panel"><form id="meihua-form">
+      <section><div class="section-heading"><span>01</span><h1>起卦方式</h1></div>
+        <fieldset><legend>方法</legend><div class="segmented"><label><input type="radio" name="mode" value="time" checked><span>时间起卦</span></label><label><input type="radio" name="mode" value="numbers"><span>报数起卦</span></label></div></fieldset>
+        <p class="field-help">时间起卦以年月日时取数；报数以所报之数取上、下卦，时间仅提供月令。</p>
+      </section>
+      <section><div class="section-heading"><span>02</span><h2>时间（取数与月令）</h2></div>
+        <fieldset><legend>历法</legend><div class="segmented"><label><input type="radio" name="calendar" value="solar" checked><span>公历</span></label><label><input type="radio" name="calendar" value="lunar"><span>农历</span></label></div></fieldset>
+        <div id="solar-fields">
+          <div class="two-fields"><div><label for="year">年</label><input id="year" type="number" value="2026" min="1" max="9999" required></div><div><label for="month">月</label><input id="month" type="number" value="9" min="1" max="12" required></div></div>
+          <div class="two-fields"><div><label for="day">日</label><input id="day" type="number" value="20" min="1" max="31" required></div><div><label for="minute">分</label><input id="minute" type="number" value="0" min="0" max="59"></div></div>
+        </div>
+        <div id="lunar-fields" hidden>
+          <div class="two-fields"><div><label for="lunar-year">年</label><input id="lunar-year" type="number" value="2026" min="1" max="9999" required></div><div><label for="lunar-month">月</label><input id="lunar-month" type="number" value="8" min="1" max="12" required></div></div>
+          <div class="two-fields"><div><label for="lunar-day">日</label><input id="lunar-day" type="number" value="10" min="1" max="30" required></div><div><label class="checkbox-label"><input id="leap-month" type="checkbox"><span>闰月</span></label></div></div>
+          <p class="field-help">闰月取数按十五分界：十五日前作本月，十六日起作下月。</p>
+        </div>
+        <label for="hour">时辰（0-23 时）</label><input id="hour" type="number" value="16" min="0" max="23" required>
+        <button class="secondary-action compact-action" type="button" data-current-time data-year-input="#year" data-month-input="#month" data-day-input="#day" data-hour-input="#hour" data-minute-input="#minute">当前时间</button>
+        <p class="field-help">年支以立春为岁首；时辰由统一历法层归支。</p>
+      </section>
+      <section id="numbers-fields" hidden><div class="section-heading"><span>03</span><h2>报数</h2></div>
+        <div class="two-fields"><div><label for="num-1">第一个数</label><input id="num-1" type="number" min="1" value="3"></div><div><label for="num-2">第二个数</label><input id="num-2" type="number" min="1" value="7"></div></div>
+        <label for="num-3">第三个数（可选）</label><input id="num-3" type="number" min="1">
+        <p class="field-help">两数：n₁ 定上卦、n₂ 定下卦、和定动爻；三数：动爻用三数之和。</p>
+      </section>
+      <button class="primary-action" type="submit">起卦</button><p id="form-error" class="error-message" role="alert" hidden></p>
+    </form></aside>
+
+    <section class="results">
+      <div id="empty-state" class="empty-state"><div class="empty-symbol" aria-hidden="true">卦</div><h2>等待起卦</h2><p>选择时间或报数方式，生成体用互变事实盘。</p></div>
+      <div id="result-content" hidden>
+        <header class="result-summary"><div><span>梅花易数</span><strong id="summary-title">--</strong><small id="summary-date" class="muted">--</small></div><dl id="metrics" class="metrics"></dl></header>
+        <p class="fact-boundary"><strong>阅读提示</strong> 卦码、体用与月令旺衰是盘面计算事实；体用生克判词为结构关系描述，不构成吉凶断语。本模块算法口径校核中（pending）。</p>
+        <div id="plate-grid" class="result-grid"></div>
+        <div class="profile-zone">
+          <div id="mh-profile-charts"></div>
+          <p id="mh-profile-fallback" hidden>卦面画像暂不可用，不影响事实盘与其他功能。</p>
+        </div>
+        <div id="tiyong-card" class="reading-guide" style="margin-top:16px"></div>
+        <dl id="casting-summary" class="time-correction-summary"></dl>
+      </div>
+    </section>
+  </main>
+  <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
+  <script src="/navigation.js" defer></script><script src="/profile-charts.js" defer></script><script src="/meihua.js" defer></script>
+</body>
+</html>

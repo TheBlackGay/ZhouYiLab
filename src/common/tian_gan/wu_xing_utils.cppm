@@ -72,6 +72,37 @@ inline const std::unordered_map<std::string, std::vector<std::string>> hiddenSte
 // ==================== 辅助函数 ====================
 
 /**
+ * @brief 判断两个五行之间的关系（以第一个五行为"我"）
+ *
+ * 梅花体用生克等"以五行为直接操作数"的场景使用本函数；
+ * 地支场景见 getElementalRelationship（同一循环，先查表再转调）。
+ *
+ * @param element1 第一个五行（"金"、"木"、"水"、"火"、"土"）
+ * @param element2 第二个五行
+ * @return ElementalRelation 相对 element1 的关系（同/我生/我克/生我/克我）
+ */
+inline ElementalRelation getElementRelationship(
+    const std::string& element1,
+    const std::string& element2
+) {
+    if (!fiveElementIndex.contains(element1) ||
+        !fiveElementIndex.contains(element2)) {
+        return ElementalRelation::Error;
+    }
+
+    int idx1 = fiveElementIndex.at(element1);
+    int idx2 = fiveElementIndex.at(element2);
+
+    if (idx1 == idx2) return ElementalRelation::Same;         // 同我（比和）
+    if (idx2 == (idx1 + 1) % 5) return ElementalRelation::Generates;    // 我生
+    if (idx2 == (idx1 + 2) % 5) return ElementalRelation::Controls;     // 我克
+    if (idx1 == (idx2 + 1) % 5) return ElementalRelation::GeneratedBy;  // 生我
+    if (idx1 == (idx2 + 2) % 5) return ElementalRelation::ControlledBy; // 克我
+
+    return ElementalRelation::Error;
+}
+
+/**
  * @brief 判断两个地支的五行关系
  * 
  * @param branch1 第一个地支
@@ -86,25 +117,8 @@ inline ElementalRelation getElementalRelationship(
         !branchFiveElements.contains(branch2)) {
         return ElementalRelation::Error;
     }
-
-    const std::string& elem1 = branchFiveElements.at(branch1);
-    const std::string& elem2 = branchFiveElements.at(branch2);
-
-    if (!fiveElementIndex.contains(elem1) || 
-        !fiveElementIndex.contains(elem2)) {
-        return ElementalRelation::Error;
-    }
-
-    int idx1 = fiveElementIndex.at(elem1);
-    int idx2 = fiveElementIndex.at(elem2);
-
-    if (idx1 == idx2) return ElementalRelation::Same;         // 同我
-    if (idx2 == (idx1 + 1) % 5) return ElementalRelation::Generates;    // 我生
-    if (idx2 == (idx1 + 2) % 5) return ElementalRelation::Controls;     // 我克
-    if (idx1 == (idx2 + 1) % 5) return ElementalRelation::GeneratedBy;  // 生我
-    if (idx1 == (idx2 + 2) % 5) return ElementalRelation::ControlledBy; // 克我
-
-    return ElementalRelation::Error;
+    return getElementRelationship(branchFiveElements.at(branch1),
+                                  branchFiveElements.at(branch2));
 }
 
 /**
@@ -159,9 +173,12 @@ inline std::string getBranchElement(const std::string& branch) {
  * @return std::string 旺衰状态（"旺"、"相"、"休"、"囚"、"死"、"未知"）
  * 
  * @example
- * getWangShuai("木", "寅") // 返回 "旺" (木临月建)
- * getWangShuai("火", "寅") // 返回 "相" (木生火)
- * getWangShuai("土", "寅") // 返回 "休" (火生土，但寅月火未当令，实为木生土)
+ * // 寅月（木当令），《翼氏大典》春季标准表"木旺、火相、水休、金囚、土死"：
+ * getWangShuai("木", "寅") // 返回 "旺" (当令临月建)
+ * getWangShuai("火", "寅") // 返回 "相" (月令生爻)
+ * getWangShuai("水", "寅") // 返回 "休" (爻生月令)
+ * getWangShuai("金", "寅") // 返回 "囚" (爻克月令)
+ * getWangShuai("土", "寅") // 返回 "死" (月令克爻)
  */
 inline std::string getWangShuai(const std::string& lineElement, const std::string& monthBranch) {
     // 验证输入有效性
@@ -185,12 +202,14 @@ inline std::string getWangShuai(const std::string& lineElement, const std::strin
     int lineIdx = fiveElementIndex.at(lineElement);
     int monthIdx = fiveElementIndex.at(monthElement);
 
-    // 五行旺衰判断（基于五行生克循环）
-    if (lineIdx == monthIdx) return "旺";           // 同我者旺 (临月建)
-    if (lineIdx == (monthIdx + 4) % 5) return "相"; // 生我者相 (月令生爻)
-    if (lineIdx == (monthIdx + 1) % 5) return "休"; // 我生者休 (爻生月令)
-    if (lineIdx == (monthIdx + 2) % 5) return "囚"; // 我克者囚 (爻克月令)
-    if (lineIdx == (monthIdx + 3) % 5) return "死"; // 克我者死 (月令克爻)
+    // 五行旺衰判断（基于五行生克循环，以爻为参照）
+    // 生序为 木0→火1→土2→金3→水4→木…，故 爻=月+1 为"月令生爻"，爻=月+4 为"爻生日令"；
+    // 克序为 X 克 X+2，故 爻=月+3 为"爻克月令"，爻=月+2 为"月令克爻"。
+    if (lineIdx == monthIdx) return "旺";           // 当令者旺 (临月建)
+    if (lineIdx == (monthIdx + 1) % 5) return "相"; // 生我者相 (月令生爻)
+    if (lineIdx == (monthIdx + 4) % 5) return "休"; // 我生者休 (爻生月令)
+    if (lineIdx == (monthIdx + 3) % 5) return "囚"; // 我克者囚 (爻克月令)
+    if (lineIdx == (monthIdx + 2) % 5) return "死"; // 克我者死 (月令克爻)
 
     return "未知";
 }

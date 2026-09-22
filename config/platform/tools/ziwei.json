@@ -1,0 +1,57 @@
+{
+  "schema": "zhouyilab-tool/1.0",
+  "id": "ziwei",
+  "name": "紫微斗数",
+  "engine_cli": "build/examples/zi_wei_web_cli",
+  "calibration_status": "calibrated",
+  "rule_profile_version": "ziwei-rules/2.0",
+  "interface_doc": "docs/ziwei/紫微斗数HTTP接口文档.md",
+  "pages": [
+    "index.html"
+  ],
+  "api_prefixes": [
+    "/api/v1/ziwei/"
+  ],
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/v1/ziwei/time-correction",
+      "handler": "legacy_chain"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/ziwei/charts",
+      "handler": "legacy_chain"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/ziwei/fortune",
+      "handler": "legacy_chain"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/ziwei/analysis",
+      "handler": "legacy_chain"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/ziwei/meta",
+      "handler": "python_service"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/ziwei/symbols",
+      "handler": "python_service"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/ziwei/distribution",
+      "handler": "python_service"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/ziwei/research/blind-review/packet",
+      "handler": "python_service"
+    }
+  ]
+}

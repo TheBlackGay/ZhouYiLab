@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ZhouYiLab 六爻排盘</title>
+  <link rel="stylesheet" href="/ui-foundation.css">
+  <link rel="stylesheet" href="/divination.css">
+  <link rel="stylesheet" href="/app-shell.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 六爻排盘"><span class="brand-mark">周</span><span><strong>ZhouYiLab</strong><small>六爻 · 纳甲排盘</small></span></a>
+      <nav class="primary-tabs" aria-label="命理类型">
+        <a href="/">紫微斗数</a><a href="/qimen.html">奇门遁甲</a><a href="/bazi.html">八字</a><a href="/liu-yao.html" aria-current="page">六爻</a><a href="/da-liu-ren.html">大六壬</a><a href="/meihua.html">梅花易数</a><a href="/astro.html">西洋占星</a>
+      </nav>
+      <div class="header-tools"><button id="open-help" class="header-help" type="button">帮助</button><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+    <div class="secondary-bar"><span class="secondary-context">六爻<strong>内容</strong></span><div class="result-tabs" role="tablist" aria-label="六爻内容"><button id="chart-tab" role="tab" aria-selected="true" aria-controls="chart-panel">六爻盘</button><button id="summary-tab" role="tab" aria-selected="false" aria-controls="summary-panel">卦象摘要</button><button id="ai-tab" role="tab" aria-selected="false" aria-controls="ai-panel">AI 分析</button></div></div>
+  </div>
+
+  <main id="main-content" class="workspace">
+    <aside class="input-panel"><form id="liu-yao-form">
+      <section><div class="section-heading"><span>01</span><h1>先说你要问的事</h1></div>
+        <label for="question-type">问题类型</label>
+        <select id="question-type">
+          <option value="general">综合观察</option>
+          <option value="relationship">感情与关系</option>
+          <option value="career">工作与事业</option>
+          <option value="wealth">财运与经营</option>
+          <option value="study">考试与学习</option>
+          <option value="travel">出行与选择</option>
+        </select>
+        <label for="question-detail">具体问题（可选）</label>
+        <textarea id="question-detail" rows="3" maxlength="300" placeholder="例如：未来三个月是否适合更换工作"></textarea>
+        <p class="field-help">问题越具体，后面的用神和解读重点越清楚。</p>
+      </section>
+      <section><div class="section-heading"><span>02</span><h2>起卦时间</h2></div>
+        <fieldset><legend>历法</legend><div class="segmented"><label><input type="radio" name="calendar" value="solar" checked><span>公历</span></label><label><input type="radio" name="calendar" value="lunar"><span>农历</span></label></div></fieldset>
+        <div class="two-fields"><div><label for="year">年</label><input id="year" type="number" value="2025" min="1" max="9999" required></div><div><label for="month">月</label><input id="month" type="number" value="4" min="1" max="12" required></div></div>
+        <div class="two-fields"><div><label for="day">日</label><input id="day" type="number" value="7" min="1" max="31" required></div><div><label for="hour">时</label><input id="hour" type="number" value="17" min="0" max="23" required></div></div>
+        <label for="minute">分</label><input id="minute" type="number" value="3" min="0" max="59"><button id="set-current-time" class="secondary-action" type="button">当前时间</button>
+      </section>
+      <section><div class="section-heading"><span>03</span><h2>卦象输入</h2></div>
+        <label for="hexagram-code">主卦代码（初爻到上爻）</label><input id="hexagram-code" value="110001" pattern="[01]{6}" maxlength="6" required>
+        <label for="changing-lines">动爻位置（逗号分隔）</label><input id="changing-lines" value="1" placeholder="例如：1,3,6"><p class="muted">0 为阴爻，1 为阳爻；动爻可留空。</p><button id="open-coin-simulator" class="secondary-action" type="button">模拟投币起卦</button>
+      </section>
+      <button class="primary-action" type="submit">开始排盘</button><p id="form-error" class="error-message" role="alert" hidden></p>
+    </form></aside>
+    <section class="results"><div id="empty-state" class="empty-state"><div class="empty-symbol" aria-hidden="true">爻</div><h2>等待起卦</h2><p>输入起卦时间与六位卦码，生成纳甲、六亲和动爻信息。</p></div>
+      <div id="result-content" hidden><header class="result-summary"><div><span>六爻排盘</span><strong id="summary-title">--</strong><small id="summary-date" class="muted">--</small></div><dl id="metrics" class="metrics"></dl></header>
+        <div id="chart-panel" role="tabpanel" aria-labelledby="chart-tab"><div class="beginner-summary" aria-label="入门摘要"><div class="beginner-summary-heading"><span>先看这三点</span><small>先看事实，再看解释</small></div><div id="beginner-summary-list" class="beginner-summary-list"></div></div><div class="board-heading"><div><span>六爻明细</span><strong>从上爻到初爻</strong></div><button id="toggle-advanced" class="secondary-action compact-action" type="button" aria-expanded="false">显示辅助信息</button></div><div id="yao-list" class="yao-list advanced-collapsed"></div><div class="profile-zone"><div id="ly-profile-charts"></div><p id="ly-profile-fallback" hidden>卦面画像暂不可用，不影响盘面事实与其他功能。</p></div></div>
+        <div id="summary-panel" role="tabpanel" aria-labelledby="summary-tab" hidden><div class="reading-guide"><strong>建议顺序</strong><span>先看世应，再找用神，最后看动爻和变卦。</span></div><div id="summary-grid" class="result-grid"></div><details class="term-help"><summary>术语速查</summary><dl><div><dt>世爻</dt><dd>通常代表求测者或事情主体。</dd></div><div><dt>应爻</dt><dd>通常代表对方、环境或所问对象。</dd></div><div><dt>用神</dt><dd>针对具体问题选择的观察对象，需结合问题类型判断。</dd></div><div><dt>旺衰</dt><dd>爻在当前月令下的状态，不等于直接的吉凶结论。</dd></div></dl></details><p class="fact-boundary"><strong>阅读提示</strong> 页面中的干支、六亲、旺衰和动爻是计算出的盘面事实；吉凶和趋势属于结合问题后的参考判断。</p></div>
+        <div id="ai-panel" role="tabpanel" aria-labelledby="ai-tab" hidden><div class="ai-toolbar"><div><h2>复制给 AI 分析</h2><p>以下是当前排盘的结构化信息。复制后粘贴到你使用的 AI，并补充具体问题。</p></div><button id="copy-ai-text" class="secondary-action" type="button">复制内容</button></div><textarea id="ai-text" class="ai-text" readonly placeholder="完成排盘后，这里会生成可复制的盘面信息。" aria-label="可复制的 AI 分析内容"></textarea><p id="copy-status" class="copy-status" role="status" aria-live="polite"></p></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="help-header"><div><span>基础知识</span><h2 id="help-title">六爻入门与看盘顺序</h2></div><button id="close-help" type="button" aria-label="关闭帮助" title="关闭">×</button></div>
+    <div class="help-content">
+      <section><h3>先看懂这张页面</h3><p>六爻盘从下往上编号：1爻是初爻，6爻是上爻。每一行是一爻，页面按上爻到初爻显示；黑色实线代表阳爻，中间断开的线代表阴爻。</p></section>
+      <section><h3>主卦代码怎么填</h3><p>主卦代码必须是 6 位 0/1 数字，并且顺序是初爻到上爻。<strong>1</strong> 表示阳爻，<strong>0</strong> 表示阴爻。例如 110001 表示初爻为阳、二爻为阳、三至五爻为阴、上爻为阳。</p><p class="help-note">如果你使用硬币或报数起卦，请先把结果换成六位代码再填写。</p></section>
+      <section><h3>时间和卦象输入怎么确定</h3><dl class="usage-list"><div><dt>起卦时间</dt><dd>填写你实际完成起卦的当地时间，而不是随意选择一个时间。年、月、日、时、分应与手机或电脑时钟一致；人在中国大陆通常选择公历，农历起卦则切换“农历”并按对应日期填写。跨时区时以起卦地点的当地时间为准。</dd></div><div><dt>三枚硬币</dt><dd>连续摇六次，每次结果从第 1 次记为初爻，依次记录到第 6 次上爻。采用“正面=3、反面=2”的记法：总数 6 是老阴（阴、动），7 是少阳（阳、静），8 是少阴（阴、静），9 是老阳（阳、动）。</dd></div><div><dt>换成页面输入</dt><dd>先把六次结果按初爻到上爻转换为主卦代码：6 或 8 填 <strong>0</strong>，7 或 9 填 <strong>1</strong>；再把总数为 6 或 9 的爻位填入“动爻位置”，多个位置用逗号分隔。例如六次为 7、8、9、8、7、6，则主卦代码填 <strong>101010</strong>，动爻填 <strong>3,6</strong>。</dd></div></dl><p class="help-note">不同软件可能把硬币正反面、数字顺序写法相反。关键是六次结果始终按同一规则记录，并确认第 1 次对应初爻。</p></section>
+      <section><h3>什么是动爻</h3><p>动爻是起卦时发生变化的爻，填写 1 到 6 的位置，多个位置用逗号分隔，例如 <strong>1,3,6</strong>。动爻会生成变卦；没有动爻时，变卦显示为“无变卦”。</p></section>
+      <section><h3>每一列代表什么</h3><dl class="usage-list"><div><dt>六神</dt><dd>按日干排出的青龙、朱雀、勾陈、螣蛇、白虎、玄武，用来辅助描述爻的象。</dd></div><div><dt>伏神</dt><dd>本卦中没有直接出现的六亲，系统会列出对应的隐藏干支，作为辅助信息。</dd></div><div><dt>本卦</dt><dd>当前主卦的纳甲干支、五行和六亲；右侧的“旺、相、休、囚、死”是按月令计算的旺衰。</dd></div><div><dt>世与应</dt><dd>“世”通常代表求测者或主体，“应”通常代表对方、环境或所问对象，具体还要结合问题判断。</dd></div><div><dt>变卦</dt><dd>只有动爻才会有变卦对应爻，静爻显示“静爻”。</dd></div></dl></section>
+      <section><h3>如何解盘（入门版）</h3><ol class="reading-steps"><li><strong>先定问题和用神：</strong>用神就是要观察的核心对象。问财运通常看妻财，问工作或职位常看官鬼，问考试和文书常看父母，问子女或计划成果常看子孙；具体仍要结合问题取用。</li><li><strong>找世爻和应爻：</strong>世爻看自己或主体，应爻看对方、环境或事情的另一端。先比较两者的五行和旺衰，判断双方状态。</li><li><strong>看用神旺衰：</strong>观察用神所在爻的“旺、相、休、囚、死”，再看它是否受到日月生扶、冲克。旺不等于一定吉，关键是和所问目标是否匹配。</li><li><strong>看动爻与变卦：</strong>动爻表示变化重点；看动爻对世爻、应爻和用神是生扶还是冲克，再参考变卦显示的后续趋势。</li><li><strong>最后看辅助信息：</strong>六神、伏神和神煞用于补充事情的表现方式和细节，不能替代用神、世应与旺衰的判断。</li></ol><p class="help-note">六爻解盘常用“生、克、冲、合”等关系。初学时先把盘面事实记下来，再形成“对象状态—变化因素—可能结果”的判断链，避免只看到一个吉凶词就下结论。</p></section>
+      <section><h3>小白建议的看盘顺序</h3><ol class="reading-steps"><li>先明确你问的具体事情和时间范围。</li><li>看本卦名称、世爻和应爻，确认主体与对象。</li><li>在本卦列观察六亲、五行和旺衰，先记录盘面事实。</li><li>再看动爻及变卦，观察事情的变化方向。</li><li>最后结合六神、伏神和神煞补充信息，不要只凭一个符号下结论。</li></ol></section>
+      <section class="help-caution"><h3>口径说明</h3><p>六爻不同门派在起卦、纳甲、六亲、旺衰和断法上可能存在差异。本页面展示的是当前 C++ 模块计算出的排盘事实，不把单一爻或单一神煞直接当作确定的现实结论。</p></section>
+    </div>
+  </dialog>
+  <dialog id="coin-dialog" aria-labelledby="coin-title">
+    <div class="coin-header"><div><span>六爻起卦</span><h2 id="coin-title">模拟投币起卦</h2></div><button id="close-coin" type="button" aria-label="关闭模拟投币" title="关闭">×</button></div>
+    <div class="coin-content"><p id="coin-status" class="coin-status">每次点击一次，投掷三枚硬币，共投六次。第一次记录为初爻。</p><div class="coin-stage" aria-live="polite"><div class="coin" data-coin="1">?</div><div class="coin" data-coin="2">?</div><div class="coin" data-coin="3">?</div></div><div id="coin-history" class="coin-history" aria-label="投币记录"></div><div class="coin-actions"><button id="start-coin" class="primary-action" type="button">投第 1 次</button><button id="reset-coin" class="secondary-action" type="button">重置进度</button></div><p class="coin-note">采用正面=3、反面=2：6 老阴、7 少阳、8 少阴、9 老阳。完成后会自动填入左侧表单。</p></div>
+  </dialog>
+  <script src="/state-sync.js"></script>
+  <script src="/navigation.js" defer></script><script src="/profile-charts.js" defer></script><script src="/liu-yao.js" defer></script>
+</body>
+</html>

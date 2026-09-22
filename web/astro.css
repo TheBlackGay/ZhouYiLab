@@ -1,0 +1,202 @@
+@import url('/qimen.css');
+
+.astro-workspace { min-height: calc(100vh - 116px); }
+#astro-output { max-width: 1040px; margin: 0 auto; }
+#astro-output .result-summary { margin-bottom: 0; }
+.astro-summary-metrics { min-width: 0; }
+.astro-summary-metrics dd { overflow-wrap: anywhere; }
+.astro-tab-panel { min-width: 0; }
+.astro-tab-panel[hidden] { display: none; }
+.astro-section { padding: 10px 0 24px; border-bottom: 1px solid var(--line); }
+.astro-section:last-child { border-bottom: 0; }
+.astro-section .board-heading { min-height: 64px; }
+.astro-section .board-heading > div { display: grid; gap: 4px; }
+.board-heading > small { color: var(--muted); font-size: 11px; }
+.astro-table { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+.astro-table table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 12px; }
+.astro-table th,
+.astro-table td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+.astro-table thead th { color: var(--muted); background: var(--paper); font-size: 11px; font-weight: 700; }
+.astro-table tbody tr:last-child td { border-bottom: 0; }
+.astro-prompt { padding: 18px 0 0; }
+.astro-prompt .reading-toolbar { min-height: 64px; }
+.astro-prompt textarea { display: block; width: 100%; min-height: 300px; margin-top: 14px; padding: 14px; resize: vertical; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 3px; font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.copy-status { min-height: 22px; margin: 8px 0 0; color: var(--jade); font-size: 12px; text-align: right; }
+#astro-error { margin-top: -12px; }
+.wheel-orientation { display: flex; flex-wrap: wrap; gap: 4px; padding: 3px; background: var(--paper); border: 1px solid var(--line); border-radius: 4px; }
+.wheel-orientation button { min-height: 38px; padding: 0 12px; color: var(--muted); background: transparent; border: 0; border-radius: 3px; font-size: 12px; font-weight: 700; }
+.wheel-orientation button[aria-pressed="true"] { color: var(--ink); background: var(--surface); box-shadow: 0 1px 3px rgb(0 0 0 / 10%); }
+.wheel-note { margin: 0 0 14px; padding: 10px 12px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--gold); font-size: 11px; line-height: 1.7; }
+.wheel-note strong { color: var(--ink); }
+.wheel-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--line); background: var(--surface); font-size: 11px; }
+.legend-item { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); }
+.legend-item i { width: 10px; height: 10px; border: 1px solid rgb(0 0 0 / 12%); border-radius: 2px; }
+.legend-fire { background: #b14b3d; }
+.legend-earth { background: #a67b2e; }
+.legend-air { background: #4c6475; }
+.legend-water { background: #3d777d; }
+.legend-cardinal { background: #c2703f; }
+.legend-fixed { background: #6f7f74; }
+.legend-mutable { background: #7b8fa6; }
+.legend-aspect { background: var(--gold); }
+.legend-sep { width: 1px; height: 14px; background: var(--line); }
+.legend-retro { color: var(--cinnabar); font-weight: 800; }
+.astro-wheel-wrap { display: grid; place-items: center; padding: clamp(12px, 2vw, 22px); background: var(--surface); border: 1px solid var(--line); }
+.astro-wheel { width: min(100%, 620px); height: auto; overflow: visible; }
+.astro-wheel .ring { fill: none; stroke: var(--ink); stroke-width: 2; }
+.astro-wheel .inner-ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.astro-wheel .sign-sector { stroke: var(--line); stroke-width: 1; }
+.astro-wheel .sign-sector.element-fire { fill: #f7e9e5; }
+.astro-wheel .sign-sector.element-earth { fill: #f4efe2; }
+.astro-wheel .sign-sector.element-air { fill: #eaf0f5; }
+.astro-wheel .sign-sector.element-water { fill: #e6f0ef; }
+.astro-wheel .mode-sector { stroke: none; }
+.astro-wheel .mode-sector.mode-cardinal { fill: #e8c9b4; }
+.astro-wheel .mode-sector.mode-fixed { fill: #ccd6cf; }
+.astro-wheel .mode-sector.mode-mutable { fill: #d2dae4; }
+.astro-wheel .sign-label { fill: var(--ink); font-size: 13px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
+.astro-wheel .house-line { stroke: #aeb8b0; stroke-width: 1; }
+.astro-wheel .house-line.major { stroke: var(--ink); stroke-width: 1.6; }
+.astro-wheel .house-label { fill: var(--muted); font-size: 11px; text-anchor: middle; dominant-baseline: middle; }
+.astro-wheel .axis-label { fill: var(--ink); font-size: 12px; font-weight: 800; letter-spacing: .04em; text-anchor: middle; dominant-baseline: middle; }
+.astro-wheel .axis-ascendant { fill: var(--cinnabar); }
+.astro-wheel .axis-descendant { fill: var(--jade); }
+.astro-wheel .aspect-line { stroke: var(--gold); stroke-width: 1; opacity: .3; }
+.astro-wheel .aspect-line.aspect-square,
+.astro-wheel .aspect-line.aspect-opposition { stroke: var(--cinnabar); stroke-width: 1.2; opacity: .42; }
+.astro-wheel .aspect-line.aspect-quincunx { opacity: .2; }
+.astro-wheel .planet-leader { fill: none; stroke: #b4bcb6; stroke-width: 1; }
+.astro-wheel .planet { cursor: pointer; }
+.astro-wheel .planet-dot { stroke: var(--surface); stroke-width: 1.5; transition: transform 180ms ease, stroke 160ms ease; transform-box: fill-box; transform-origin: center; }
+.astro-wheel .planet:hover .planet-dot,
+.astro-wheel .planet:focus-visible .planet-dot { transform: scale(1.25); }
+.astro-wheel .planet:focus-visible .planet-dot { stroke: var(--jade); stroke-width: 3; }
+.astro-wheel .planet-glyph { fill: #fff; font-size: 11px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
+.astro-wheel .planet-degree { fill: var(--ink); font-size: 10.5px; text-anchor: middle; dominant-baseline: middle; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.astro-wheel .house-sector { fill: none; stroke: none; transition: fill 160ms ease; }
+.astro-wheel .house-sector.on { fill: var(--gold); opacity: .22; }
+.wheel-highlight-note { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 0; padding: 9px 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-left: 2px solid var(--gold); font-size: 11px; }
+.wheel-highlight-note strong { color: var(--ink); }
+.wheel-highlight-note button { min-height: 30px; padding: 0 10px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 3px; font-size: 11px; font-weight: 700; }
+
+/* 本命解读：布局速读 */
+.astro-core-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.core-card { display: grid; gap: 4px; padding: 12px; background: var(--surface); border: 1px solid var(--line); border-top: 2px solid var(--gold); }
+.core-card small { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; }
+.core-card strong { color: var(--ink); font-size: 14px; }
+.core-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.astro-layout-bars { display: grid; gap: 8px; }
+.layout-bar { display: grid; grid-template-columns: 72px 1fr auto; align-items: center; gap: 10px; }
+.layout-bar-label { color: var(--muted); font-size: 11px; font-weight: 700; }
+.layout-bar-total { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.layout-bar-track { display: flex; min-height: 34px; overflow: hidden; background: var(--paper); border: 1px solid var(--line); border-radius: 3px; }
+.layout-bar-seg { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 8px; min-width: 0; color: var(--ink); background: var(--surface); border: 0; border-right: 1px solid var(--line); font: inherit; font-size: 11px; }
+.layout-bar-seg:last-child { border-right: 0; }
+.layout-bar-seg span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.layout-bar-seg b { font-size: 12px; }
+.layout-bar-seg.tone-fire { background: #f7e9e5; }
+.layout-bar-seg.tone-earth { background: #f4efe2; }
+.layout-bar-seg.tone-air { background: #eaf0f5; }
+.layout-bar-seg.tone-water { background: #e6f0ef; }
+.layout-bar-seg.tone-jade { background: #e8f0ec; }
+.layout-bar-seg.tone-cinnabar { background: #f8ebe7; }
+.layout-bar-seg.tone-muted { background: #f0f0ee; }
+button.layout-bar-seg { cursor: pointer; }
+button.layout-bar-seg:hover { background: #f1efe6; }
+button.layout-bar-seg:focus-visible { outline: 2px solid var(--jade); outline-offset: -2px; }
+button.layout-bar-seg.is-active { background: var(--gold); color: #fff; }
+.astro-layout-notes { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
+.layout-note-group h3 { margin: 0 0 6px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; }
+.layout-note-group > ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.layout-note-group > ul > li { display: grid; gap: 3px; padding: 9px 11px; background: var(--surface); border: 1px solid var(--line); }
+.layout-note-group p { margin: 0; font-size: 12.5px; line-height: 1.7; }
+.layout-note-meta { color: var(--muted); font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.astro-layout-defs { margin-top: 14px; border: 1px solid var(--line); background: var(--surface); }
+.astro-layout-defs summary { padding: 10px 12px; color: var(--ink); font-size: 12px; font-weight: 700; cursor: pointer; }
+.astro-layout-defs dl { display: grid; gap: 8px; margin: 0; padding: 0 12px 12px; }
+.astro-layout-defs dt { color: var(--muted); font-size: 11px; font-weight: 700; }
+.astro-layout-defs dd { margin: 2px 0 0; font-size: 12px; line-height: 1.7; }
+.astro-distribution { display: grid; gap: 8px; }
+.astro-boundaries { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.astro-boundaries li { padding: 9px 11px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--line); font-size: 11.5px; line-height: 1.7; }
+.reading-empty { margin: 14px 0 0; padding: 12px; color: var(--muted); background: #fbfbfa; border-left: 2px solid var(--cinnabar); font-size: 12px; }
+
+/* 本命解读：逐点位 / 十二宫 / 相位卡片 */
+.card-sort { display: flex; flex-wrap: wrap; gap: 4px; padding: 3px; background: var(--paper); border: 1px solid var(--line); border-radius: 4px; }
+.card-sort button { min-height: 34px; padding: 0 11px; color: var(--muted); background: transparent; border: 0; border-radius: 3px; font-size: 11px; font-weight: 700; }
+.card-sort button[aria-pressed="true"] { color: var(--ink); background: var(--surface); box-shadow: 0 1px 3px rgb(0 0 0 / 10%); }
+.natal-cards { display: grid; gap: 6px; }
+.natal-card { background: var(--surface); border: 1px solid var(--line); }
+.natal-card[open] { border-color: #c9cdc6; }
+.natal-card > summary { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; padding: 11px 13px; cursor: pointer; list-style: none; }
+.natal-card > summary::-webkit-details-marker { display: none; }
+.natal-card > summary:focus-visible { outline: 2px solid var(--jade); outline-offset: -2px; }
+.natal-card-title { display: grid; gap: 3px; min-width: 0; }
+.natal-card-title strong { color: var(--ink); font-size: 13.5px; }
+.natal-card-title small { color: var(--muted); font-size: 11.5px; line-height: 1.6; }
+.natal-card-tags { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 5px; }
+.natal-marker { padding: 2px 7px; color: #6b5a1f; background: #f6efdc; border: 1px solid #e6dcc0; border-radius: 999px; font-size: 10.5px; white-space: nowrap; }
+.natal-retro { padding: 1px 6px; color: var(--cinnabar); border: 1px solid currentcolor; border-radius: 3px; font-size: 10.5px; font-weight: 800; }
+.natal-chip { padding: 2px 8px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 999px; font-size: 11px; }
+.natal-chip.is-virtual { color: var(--muted); border-style: dashed; }
+.natal-chip.is-muted { color: var(--muted); }
+.natal-chip.is-empty { color: var(--muted); border-style: dashed; }
+.natal-card-body { padding: 2px 13px 14px; border-top: 1px solid var(--line); }
+.natal-chips { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0 0; }
+.natal-blocks { display: grid; gap: 9px; margin: 12px 0 0; }
+.natal-blocks dt { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; }
+.natal-blocks dd { margin: 3px 0 0; font-size: 12.5px; line-height: 1.75; }
+.natal-evidence, .natal-rule { margin: 12px 0 0; color: var(--muted); font: 10.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
+.natal-locate { min-height: 34px; margin-top: 12px; padding: 0 12px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 3px; font-size: 11px; font-weight: 700; }
+.natal-locate:hover { background: #f1efe6; }
+.natal-aspects { display: grid; gap: 5px; }
+.natal-aspect { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--line); }
+.natal-aspect.tone-harmony { border-left-color: var(--jade); }
+.natal-aspect.tone-tension { border-left-color: var(--cinnabar); }
+.natal-aspect.tone-merge { border-left-color: var(--gold); }
+.natal-aspect.tone-adjust { border-left-color: #9aa3ad; }
+.natal-aspect.is-tight { background: #fdfcf7; }
+.natal-aspect-title { display: grid; gap: 3px; min-width: 0; }
+.natal-aspect-title strong { color: var(--ink); font-size: 12.5px; }
+.natal-aspect-title small { color: var(--muted); font-size: 11.5px; line-height: 1.6; }
+.natal-aspect-meta { color: var(--muted); font-size: 10.5px; white-space: nowrap; }
+.astro-wheel .planet.is-focused .planet-dot { stroke: var(--gold); stroke-width: 3; transform: scale(1.35); }
+
+@media (max-width: 620px) {
+  /* 圆盘信息密度高，窄屏保持最小可读尺寸，只在容器内横向滚动。 */
+  .astro-wheel-wrap { place-items: start; overflow-x: auto; }
+  .astro-wheel { width: 560px; max-width: none; }
+  /* 布局条在窄屏改为纵向堆叠，避免出现整页横向滚动。 */
+  .layout-bar { grid-template-columns: 1fr; gap: 4px; }
+  .layout-bar-label, .layout-bar-total { font-size: 11px; }
+  .astro-core-row { grid-template-columns: 1fr; }
+  /* 卡片标题行在窄屏改为纵向堆叠，证据行自带换行不撑破容器。 */
+  .natal-card > summary { grid-template-columns: 1fr; }
+  .natal-card-tags { justify-content: flex-start; }
+  .natal-aspect { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .astro-wheel .planet-dot { transition: none; }
+  .astro-wheel .house-sector { transition: none; }
+}
+
+/* 西洋占星：分布画像环形图（图1 元素 / 图2 阴阳 / 图3 三性质），数据源 /api/v1/astro/distribution */
+.profile-dimension { color: var(--accent); font-size: 11px; font-weight: 700; }
+.profile-basis { color: var(--muted); font-size: 11px; font-weight: 400; margin-left: 8px; }
+.profile-charts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:20px; }
+.profile-chart-card { display:grid; gap:14px; padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:4px; }
+.profile-donut { position:relative; width:132px; height:132px; margin:0 auto; border-radius:50%; }
+.profile-donut::after { content:""; position:absolute; inset:26%; background:var(--surface); border-radius:50%; box-shadow:inset 0 0 0 1px var(--line); }
+.profile-donut-core { position:absolute; inset:0; z-index:1; display:grid; place-content:center; gap:2px; text-align:center; }
+.profile-donut-core b { font:800 22px/1 Georgia,"Noto Serif SC",serif; color:var(--ink); }
+.profile-donut-core span { font-size:11px; color:var(--muted); }
+.profile-chart-main { display:grid; justify-items:center; gap:10px; text-align:center; }
+.profile-chart-main h4 { margin:0; font-size:14px; }
+.profile-legend { list-style:none; margin:0; padding:0; display:grid; gap:6px; }
+.profile-legend li { display:grid; grid-template-columns:14px 1fr auto; gap:8px; align-items:center; font-size:12px; color:var(--muted); }
+.profile-legend i { width:10px; height:10px; border-radius:3px; }
+.profile-legend b { color:var(--ink); font-variant-numeric:tabular-nums; }
+.profile-reading { margin:0; padding-top:10px; border-top:1px dashed var(--line); color:#434c47; font-size:12.5px; line-height:1.75; text-align:left; }
+.profile-fallback { margin:18px 0 0 44px; color:var(--muted); font-size:12px; }
+@media (max-width:900px) { .profile-charts { grid-template-columns:1fr; } }

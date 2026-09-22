@@ -1,0 +1,68 @@
+{
+  "schema": "zhouyilab-tool/1.0",
+  "id": "astro",
+  "name": "西洋占星",
+  "engine_cli": "build/examples/astro_web_cli",
+  "calibration_status": "experimental",
+  "interface_doc": "docs/astro/西洋占星HTTP接口文档.md",
+  "pages": [
+    "astro.html"
+  ],
+  "api_prefixes": [
+    "/api/v1/astro/",
+    "/api/v1/geo/"
+  ],
+  "optional_env": "ZHOUYILAB_ENABLE_ASTRO",
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/v1/astro/charts",
+      "handler": "legacy_chain"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/astro/transits",
+      "handler": "legacy_chain"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/astro/meta",
+      "handler": "python_service"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/astro/analysis",
+      "handler": "legacy_chain"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/astro/transit-analysis",
+      "handler": "python_service"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/astro/daily-reading",
+      "handler": "python_service"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/astro/natal-analysis",
+      "handler": "python_service"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/astro/distribution",
+      "handler": "python_service"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/astro/natal-reading",
+      "handler": "python_service"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/geo/place-resolve",
+      "handler": "python_service"
+    }
+  ]
+}

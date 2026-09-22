@@ -1,0 +1,116 @@
+/* 出生地点选择组件样式（G1b）。跨页共用，因此不写进任何单页 CSS；
+ * 复用 ui-foundation.css 的 --paper/--surface/--ink/--muted/--line/--jade/--cinnabar/--gold token，
+ * 并自带 .unit-input/.two-fields 的最小实现（页面级 CSS 不保证加载）。
+ * 见 docs/product/西洋占星出生地点交互优化方案.md §8。 */
+
+.place-picker { display: grid; gap: 8px; min-width: 0; }
+
+/* ---------- combobox ---------- */
+.place-combobox { position: relative; min-width: 0; }
+.place-search {
+  width: 100%; padding: 10px 12px; font: inherit; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  min-height: 44px;
+}
+.place-search-status { position: absolute; right: 10px; top: 12px; font-size: 12px; color: var(--muted); }
+.place-list {
+  list-style: none; margin: 4px 0 0; padding: 0; max-height: 302px; overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(29 36 33 / 12%); z-index: 30;
+}
+.place-option {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 4px 10px;
+  min-height: 44px; padding: 8px 12px; cursor: pointer; color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+.place-option:last-child { border-bottom: 0; }
+.place-option[aria-selected="true"], .place-option:hover { background: rgb(37 99 77 / 8%); }
+.place-option-name { font-weight: 700; }
+.place-option-admin { color: var(--muted); font-size: 12px; }
+.place-option-geo { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.place-option-tz { grid-column: 3; color: var(--jade); font-size: 12px; white-space: nowrap; }
+
+/* ---------- 快捷项 / 无匹配 ---------- */
+.place-quick { display: flex; flex-wrap: wrap; gap: 6px; }
+.place-chip {
+  min-height: 32px; padding: 4px 12px; font: inherit; font-size: 13px; color: var(--jade);
+  background: var(--surface); border: 1px solid var(--jade); border-radius: 999px;
+}
+.place-chip:hover { background: rgb(37 99 77 / 8%); }
+.place-nomatch { display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
+.place-nomatch-action {
+  justify-self: start; min-height: 36px; padding: 6px 12px; font: inherit; font-size: 13px;
+  color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+}
+.place-nomatch-action:hover { border-color: var(--jade); color: var(--jade); }
+
+/* ---------- 地点卡 ---------- */
+.place-card {
+  display: grid; gap: 6px; padding: 10px 12px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+}
+.place-card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.place-card-head strong { font-size: 15px; color: var(--ink); }
+.place-card-actions { display: flex; gap: 6px; margin-left: auto; }
+.place-card-actions button, .place-notice-action, .place-restore {
+  min-height: 32px; padding: 4px 10px; font: inherit; font-size: 12px;
+  color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+}
+.place-card-actions button:hover, .place-notice-action:hover, .place-restore:hover {
+  border-color: var(--jade); color: var(--jade);
+}
+/* 状态徽标：文字优先，不靠颜色单独传达（§8） */
+.place-status {
+  font-size: 12px; padding: 2px 8px; border: 1px solid currentColor; border-radius: 999px;
+  color: var(--jade); white-space: nowrap;
+}
+.place-status[data-state="manual"] { color: var(--gold); }
+.place-status[data-state="unresolved"] { color: var(--muted); }
+.place-card-coord, .place-card-tz { font-size: 13px; color: var(--ink); }
+.place-card-tz strong { color: var(--cinnabar); }
+
+/* 证据行（必显） */
+.place-evidence { font-size: 12px; color: var(--muted); display: grid; gap: 4px; }
+.place-why summary { justify-self: start; font-size: 12px; color: var(--jade); cursor: pointer; padding: 2px 0; }
+.place-why ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 2px; }
+
+/* 警告区（§4.6，不阻断） */
+.place-warnings { display: grid; gap: 4px; }
+.place-warning { margin: 0; font-size: 12px; color: var(--cinnabar); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.place-warning:first-child { font-weight: 700; }
+
+/* ---------- 微调面板 ---------- */
+.place-open-tune {
+  justify-self: start; min-height: 36px; padding: 6px 12px; font: inherit; font-size: 13px;
+  color: var(--muted); background: none; border: 1px dashed var(--line); border-radius: 8px;
+}
+.place-open-tune:hover { color: var(--jade); border-color: var(--jade); }
+.place-tune {
+  display: grid; gap: 8px; padding: 10px 12px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+}
+.place-tune-head { display: flex; align-items: center; gap: 8px; }
+.place-tune-head strong { font-size: 13px; }
+.place-restore { margin-left: auto; }
+.place-tune-note { margin: 0; font-size: 12px; color: var(--muted); }
+
+/* 单位后缀与双列输入：页面若已加载 bazi/divination 样式则同名类兼容，这里自带兜底 */
+.place-tune .unit-input { display: flex; align-items: stretch; min-width: 0; }
+.place-tune .unit-input input,
+.place-tune .unit-input select {
+  width: 100%; min-width: 0; font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px 0 0 8px; min-height: 40px; padding: 6px 10px;
+}
+.place-tune .unit-input select { border-radius: 0 8px 8px 0; border-left: 0; width: auto; flex: 0 0 auto; }
+.place-tune .unit-input span {
+  display: inline-flex; align-items: center; padding: 0 10px; color: var(--muted);
+  border: 1px solid var(--line); border-left: 0; border-radius: 0 8px 8px 0; background: var(--paper);
+}
+.place-tune .two-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; min-width: 0; }
+.place-tune .two-fields label { font-size: 12px; color: var(--muted); }
+
+/* ---------- 移动端（候选全宽、微调如抽屉占满输入面板） ---------- */
+@media (max-width: 760px) {
+  .place-list { max-height: 240px; }
+  .place-tune .two-fields { grid-template-columns: 1fr; }
+}

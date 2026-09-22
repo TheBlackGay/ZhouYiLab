@@ -1,0 +1,33 @@
+{
+  "schema": "liuyao-case/1.0",
+  "id": "kun_moving_2_bian_shi_regression",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 2,
+      "day": 12,
+      "hour": 10
+    },
+    "hexagram_code": "000000",
+    "changing_lines": [
+      2
+    ]
+  },
+  "expected": {
+    "ben_gua_name": "坤宫: 坤为地",
+    "bian_gua_name": "坎宫: 地水师",
+    "yao.2.mainPillar.branch": "巳",
+    "yao.2.mainPillar.stem": "乙",
+    "yao.2.mainRelative": "父母",
+    "yao.2.changedPillar.branch": "辰",
+    "yao.2.changedPillar.stem": "戊",
+    "yao.2.changedRelative": "兄弟"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "二爻动使内卦坤(000)变坎(010)、变卦地水师（坎宫归魂）；本爻乙巳父母、变爻戊辰兄弟（六亲按本卦宫土）——变卦纳甲/化六亲链锁"
+  }
+}

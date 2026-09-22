@@ -4,6 +4,7 @@ export module ZhouYi.ZiWei;
 import std;
 import ZhouYi.GanZhi;
 import ZhouYi.BaZiBase;
+import ZhouYi.Common.Calendar;
 import ZhouYi.ZiWei.Constants;
 export import ZhouYi.ZiWei.SolarTime;
 import ZhouYi.ZiWei.Palace;
@@ -204,19 +205,13 @@ export namespace ZhouYi::ZiWei {
             result += "           紫微斗数命盘\n";
             result += "\n\n";
 
-            const auto format_date_time = [](const BirthDateTime& value) {
-                return fmt::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
-                    value.year, value.month, value.day,
-                    value.hour, value.minute, value.second);
-            };
-
             result += fmt::format("记录时间：{}\n",
-                format_date_time(time_correction.recorded_time));
+                ZhouYi::Common::DateTime::format(time_correction.recorded_time));
             if (time_correction.mode == BirthTimeMode::TrueSolarTime) {
                 result += fmt::format("标准时间：{}\n",
-                    format_date_time(time_correction.standard_time));
+                    ZhouYi::Common::DateTime::format(time_correction.standard_time));
                 result += fmt::format("真太阳时：{}{}\n",
-                    format_date_time(time_correction.chart_time),
+                    ZhouYi::Common::DateTime::format(time_correction.chart_time),
                     time_correction.crossed_date_boundary ? "（已跨日）" : "");
                 result += fmt::format("校正参数：经度{:.6f}°，标准经线{:.6f}°，夏令时{}分钟\n",
                     time_correction.longitude,
@@ -262,17 +257,34 @@ export namespace ZhouYi::ZiWei {
     };
 
     /**
+     * @brief 本命闰月口径（D12 决策）
+     *
+     * FifteenBoundary（默认）：闰月十五日以前作本月、以后作下月——出自民国王裁珊
+     * 《斗数宣微》（张开卷《斗数命理新编》同），并与本库流月 effective_flow_month
+     * 规则同源，保证口径内自洽；闰十二月作次年正月（1900-2100 无闰十二，仅防御）。
+     * NextMonth：《紫微斗数全书》卷二原文"凡有闰月…要在二月内起"，一律作下月。
+     */
+    enum class LeapMonthMethod {
+        FifteenBoundary,
+        NextMonth,
+    };
+
+    /**
      * @brief 紫微斗数排盘（阳历）
      * 
      * @param birth 出生证明记录的阳历时间
      * @param is_male 性别（true为男性）
      * @param time_options 出生时间校正选项
+     * @param daxian_method 大限宫干取法（D11，默认五虎遁重排）
+     * @param leap_method 本命闰月口径（D12，默认十五分界）
      * @return 排盘结果
      */
     inline ZiWeiResult pai_pan_solar(
         const BirthDateTime& birth,
         bool is_male,
-        const BirthTimeOptions& time_options = {}
+        const BirthTimeOptions& time_options = {},
+        DaXianGanMethod daxian_method = DaXianGanMethod::Resort,
+        LeapMonthMethod leap_method = LeapMonthMethod::FifteenBoundary
     ) {
         const auto time_correction = correct_birth_time(birth, time_options);
         const auto solar_time = to_solar_time(time_correction.chart_time);
@@ -281,7 +293,7 @@ export namespace ZhouYi::ZiWei {
         // 使用最终排盘时间统一转换农历日期和四柱
         tyme::LunarDay lunar_day = solar_day.get_lunar_day();
         tyme::LunarHour lunar_hour = solar_time.get_lunar_hour();
-        tyme::EightChar bazi = lunar_hour.get_eight_char();
+        tyme::EightChar bazi = ZhouYi::Common::Calendar::eight_char_from_lunar_time(lunar_hour);
          
         // 转换为我们的 Pillar 类型
         auto convert_cycle = [](const tyme::SixtyCycle& cycle) -> Pillar {
@@ -296,9 +308,18 @@ export namespace ZhouYi::ZiWei {
         Pillar day_pillar = convert_cycle(bazi.get_day());
         Pillar hour_pillar = convert_cycle(bazi.get_hour());
         
-        // 获取农历月份和日期
-        int lunar_month = lunar_day.get_month();
+        // 获取农历月份和日期（D12：闰月按所选口径归一化，正数=正常月，负数=闰月）
+        const int raw_lunar_month = lunar_day.get_month();
         int lunar_day_num = lunar_day.get_day();
+        int lunar_month;
+        if (raw_lunar_month >= 0) {
+            lunar_month = raw_lunar_month;
+        } else {
+            const int base_month = -raw_lunar_month;
+            const int next_month = base_month % 12 + 1;
+            lunar_month = (leap_method == LeapMonthMethod::FifteenBoundary && lunar_day_num <= 15)
+                ? base_month : next_month;
+        }
         
         // 获取时辰地支
         DiZhi hour_zhi = hour_pillar.zhi;
@@ -381,7 +402,6 @@ export namespace ZhouYi::ZiWei {
         int tian_kong2_idx = get_tian_kong_index(year_pillar.zhi);
         auto [tian_ku_idx, tian_xu_idx] = get_tian_ku_tian_xu_index(year_pillar.zhi);
         auto [tian_shi_idx, tian_shang_idx] = get_tian_shi_tian_shang_index(ming_index, is_male, year_pillar.zhi);
-        int nian_jie_idx = get_nian_jie_index(year_pillar.zhi);
         auto [xun_kong1_idx, xun_kong2_idx] = get_xun_kong_index(year_pillar.gan, year_pillar.zhi);
         auto [jie_lu_idx, kong_wang_idx] = get_jie_lu_kong_wang_index(year_pillar.gan);
         auto [da_hao_idx, long_de2_idx] = get_da_hao_long_de_index(year_pillar.zhi);
@@ -397,7 +417,7 @@ export namespace ZhouYi::ZiWei {
         auto jiang_qian_arr = arrange_jiang_qian_12(year_pillar.zhi);
         
         // ============= 安大限 =============
-        auto da_xian_arr = arrange_da_xian(ming_index, wu_xing_ju, is_male, year_pillar.zhi);
+        auto da_xian_arr = arrange_da_xian(ming_index, wu_xing_ju, is_male, year_pillar.zhi, year_pillar.gan, daxian_method);
         
         // 创建结果对象（使用聚合初始化）
         ZiWeiResult result{
@@ -785,13 +805,6 @@ export namespace ZhouYi::ZiWei {
             if (i == tian_shang_idx) {
                 palace_info.za_yao.push_back(StarData{
                     .name = string(to_zh(ZaYao::TianShang)),
-                    .liang_du = nullopt,
-                    .gong_index = i
-                });
-            }
-            if (i == nian_jie_idx) {
-                palace_info.za_yao.push_back(StarData{
-                    .name = string(to_zh(ZaYao::NianJie)),
                     .liang_du = nullopt,
                     .gong_index = i
                 });

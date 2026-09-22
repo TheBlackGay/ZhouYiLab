@@ -1,0 +1,39 @@
+{
+  "schema": "daliuren-case/1.0",
+  "id": "plate_bingzi_2025_11_03",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 11,
+      "day": 3,
+      "hour": 16
+    }
+  },
+  "expected": {
+    "ba_zi.day.stem": "丙",
+    "ba_zi.day.branch": "子",
+    "ba_zi.xun_kong_1": "申",
+    "ba_zi.xun_kong_2": "酉",
+    "gui_ren": "亥",
+    "yue_jiang": "卯",
+    "is_day": true,
+    "san_chuan.chu_chuan": "子",
+    "san_chuan.zhong_chuan": "未",
+    "san_chuan.mo_chuan": "寅",
+    "san_chuan.ke_shi": "涉害,见机卦",
+    "si_ke.first": "丙子",
+    "si_ke.second": "子未",
+    "si_ke.third": "子未",
+    "si_ke.fourth": "未寅",
+    "san_chuan.details[].liu_qin": "官鬼,子孙,父母",
+    "tian_di_pan[].tian_pan": "未,申,酉,戌,亥,子,丑,寅,卯,辰,巳,午",
+    "meta.yuejiang_method": "zhongqi"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "基准盘全量快照（丙子日·中气月将卯·贵人亥·旬空申酉；涉害课三传子未寅；天盘十二位布列）：引擎即权威。"
+  }
+}

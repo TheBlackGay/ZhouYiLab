@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f2ee">
+  <title>ZhouYiLab 大六壬排盘</title>
+  <link rel="stylesheet" href="/ui-foundation.css">
+  <link rel="stylesheet" href="/divination.css">
+  <link rel="stylesheet" href="/app-shell.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 大六壬排盘"><span class="brand-mark" aria-hidden="true">周</span><span><strong>ZhouYiLab</strong><small>大六壬 · 四课三传</small></span></a>
+      <nav class="primary-tabs" aria-label="命理类型"><a href="/">紫微斗数</a><a href="/qimen.html">奇门遁甲</a><a href="/bazi.html">八字</a><a href="/liu-yao.html">六爻</a><a href="/da-liu-ren.html" aria-current="page">大六壬</a><a href="/meihua.html">梅花易数</a><a href="/astro.html">西洋占星</a></nav>
+      <div class="header-tools"><div class="engine-status"><span></span>C++ 本地算法</div><button id="caliber-open" class="header-help" type="button">口径说明</button></div>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">大六壬<strong id="mode-context">内容</strong></span>
+      <div class="segmented mode-toggle" role="radiogroup" aria-label="结果模式">
+        <label><input type="radio" name="result-mode" value="beginner" checked><span>小白模式</span></label>
+        <label><input type="radio" name="result-mode" value="pro"><span>专业模式</span></label>
+      </div>
+      <div class="result-tabs secondary-tabs" role="tablist" aria-label="大六壬内容" hidden id="pro-tabs">
+        <button id="sike-tab" type="button" role="tab" aria-selected="true" aria-controls="sike-panel">四课三传</button>
+        <button id="pan-tab" type="button" role="tab" aria-selected="false" aria-controls="pan-panel" tabindex="-1">天地盘</button>
+        <button id="extra-tab" type="button" role="tab" aria-selected="false" aria-controls="extra-panel" tabindex="-1">神煞卦体</button>
+        <button id="rule-tab" type="button" role="tab" aria-selected="false" aria-controls="rule-panel" tabindex="-1">规则口径</button>
+      </div>
+    </div>
+  </div>
+  <main id="main-content" class="workspace">
+    <aside class="input-panel" aria-label="大六壬起课参数"><form id="da-liu-ren-form">
+      <section><div class="section-heading"><span>01</span><h1>所问之事</h1></div>
+        <label for="question-type">问题类型</label>
+        <select id="question-type">
+          <option value="general" selected>泛论本课</option>
+          <option value="love">感情</option>
+          <option value="career">工作</option>
+          <option value="wealth">财运</option>
+          <option value="travel">出行</option>
+          <option value="health">健康</option>
+          <option value="other">其他</option>
+        </select>
+        <label for="question-notes">问题描述（可选，只留在本页面，不发送给服务）</label>
+        <textarea id="question-notes" rows="3" maxlength="200" placeholder="例如：想问近期换工作的时机"></textarea>
+      </section>
+      <section><div class="section-heading"><span>02</span><h1>起课时间</h1></div>
+        <fieldset><legend>历法</legend><div class="segmented"><label><input type="radio" name="calendar" value="solar" checked><span>公历</span></label><label><input type="radio" name="calendar" value="lunar"><span>农历</span></label></div></fieldset>
+        <div class="two-fields"><div><label for="year">年</label><input id="year" type="number" value="2025" min="1" max="9999" required></div><div><label for="month">月</label><input id="month" type="number" value="11" min="1" max="12" required></div></div>
+        <div class="two-fields"><div><label for="day">日</label><input id="day" type="number" value="3" min="1" max="31" required></div><div><label for="hour">时辰</label><select id="hour"></select></div></div>
+        <label class="leap-row" id="leap-row" hidden><input type="checkbox" id="leap-month"> 闰月（仅当该农历月确实有闰时勾选）</label>
+        <div class="quick-actions"><button type="button" id="fill-now" class="compact-action">用当前时间</button><button type="button" id="fill-sample" class="compact-action">示例时间</button></div>
+        <p class="field-help" id="time-caliber-note">按本地钟面输入；分钟不参与起课；23:00–23:59 为夜子时（日柱算次日）。<button type="button" class="dlr-term" data-term="yue_jiang">月将口径</button></p>
+      </section>
+      <button class="primary-action" id="submit-btn" type="submit">开始起课</button>
+      <p id="form-status" class="field-help" role="status" hidden></p>
+      <p id="form-error" class="error-message" role="alert" hidden></p>
+    </form></aside>
+    <section class="results"><div id="empty-state" class="empty-state"><div class="empty-symbol" aria-hidden="true">壬</div><h2>等待起课</h2><p>选择所问之事与起课时间，生成月将、贵人、四课和三传。</p></div>
+      <div id="result-content" hidden>
+        <header class="result-summary">
+          <div><span>大六壬排盘</span><strong id="summary-title">--</strong><small id="summary-date" class="muted">--</small></div>
+          <dl id="metrics" class="metrics"></dl>
+        </header>
+        <p id="question-context" class="question-context" hidden></p>
+        <p class="fact-boundary" id="boundary-note">本课算法口径仍在校准中：页面只展示盘面事实与结构命名，不提供吉凶断语。</p>
+        <div class="profile-zone">
+          <div id="dlr-profile-charts"></div>
+          <p id="dlr-profile-fallback" hidden>盘面画像暂不可用，其余功能不受影响。</p>
+        </div>
+        <div id="beginner-view">
+          <div class="board-heading"><span>本课重点</span><strong id="focus-title">--</strong></div>
+          <div id="focus-grid" class="result-grid"></div>
+          <div class="board-heading"><span>三传流程</span><strong>起因 → 发展 → 归结</strong></div>
+          <div id="chuan-flow" class="chuan-flow"></div>
+          <p class="reading-guide">初传看事情的起因与切入点，中传看推进过程，末传看收束落点；<button type="button" class="dlr-term" data-term="san_chuan">三传怎么用</button>。切到专业模式可核对四课、天地盘与每一项的取法口径。</p>
+          <div class="board-heading"><span>天地盘</span><strong>月将加占时，贵人参顺逆</strong></div>
+          <div id="dlr-plate-beginner"></div>
+        </div>
+        <div id="pro-view" hidden>
+          <div id="sike-panel" role="tabpanel" aria-labelledby="sike-tab"><div class="board-heading"><span>四课三传</span><strong>先看起课结构，再看取传</strong></div><div id="chart-grid" class="result-grid"></div></div>
+          <div id="pan-panel" role="tabpanel" aria-labelledby="pan-tab" hidden><div class="board-heading"><span>天地盘</span><strong>月将加占时，贵人参顺逆</strong></div><div id="dlr-plate-pro"></div><div id="pan-table-wrap"></div></div>
+          <div id="extra-panel" role="tabpanel" aria-labelledby="extra-tab" hidden><div class="board-heading"><span>神煞与卦体</span><strong>课外参考，未逐条校准</strong></div><div id="extra-grid" class="result-grid"></div></div>
+          <div id="rule-panel" role="tabpanel" aria-labelledby="rule-tab" hidden><div class="board-heading"><span>规则口径</span><strong>本课盘面按以下口径生成</strong></div><div id="rule-grid" class="result-grid"></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <dialog id="glossary-dialog" aria-labelledby="glossary-dialog-title">
+    <div class="help-header"><h2 id="glossary-dialog-title">术语解释</h2><button id="glossary-close" type="button" class="compact-action">关闭</button></div>
+    <div id="glossary-body" class="help-content"></div>
+  </dialog>
+  <script src="/state-sync.js"></script>
+  <script src="/navigation.js" defer></script><script src="/profile-charts.js" defer></script><script src="/dlr-plate.js" defer></script><script src="/da-liu-ren.js" defer></script>
+</body>
+</html>

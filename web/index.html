@@ -3,24 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f4f5f2">
+  <meta name="theme-color" content="#f3f2ee">
   <title>ZhouYiLab 紫微斗数排盘</title>
+  <link rel="stylesheet" href="/ui-foundation.css">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/app-shell.css">
+  <link rel="stylesheet" href="/place-picker.css">
 </head>
 <body>
-  <header class="app-header">
-    <div class="brand-mark" aria-hidden="true">周</div>
-    <div>
-      <h1>ZhouYiLab</h1>
-      <p>紫微斗数 · 中州三合排盘</p>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-navigation">
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="ZhouYiLab 紫微斗数排盘">
+        <span class="brand-mark" aria-hidden="true">周</span>
+        <span><strong>ZhouYiLab</strong><small>紫微斗数 · 中州三合排盘</small></span>
+      </a>
+      <nav class="primary-tabs" aria-label="命理类型">
+        <a href="/" aria-current="page">紫微斗数</a>
+        <a href="/qimen.html">奇门遁甲</a>
+        <a href="/bazi.html">八字</a>
+        <a href="/liu-yao.html">六爻</a>
+        <a href="/da-liu-ren.html">大六壬</a><a href="/meihua.html">梅花易数</a><a href="/astro.html">西洋占星</a>
+        
+      </nav>
+      <div class="header-tools"><div class="engine-status"><span></span>C++ 本地算法</div></div>
+    </header>
+    <div class="secondary-bar">
+      <span class="secondary-context">紫微斗数<strong>内容</strong></span>
+      <div class="tabs secondary-tabs" role="tablist" aria-label="紫微斗数内容">
+        <button id="tab-btn-chart" type="button" role="tab" aria-selected="true" aria-controls="tab-chart" tabindex="0" data-tab="chart">十二宫</button>
+        <button id="tab-btn-analysis" type="button" role="tab" aria-selected="false" aria-controls="tab-analysis" tabindex="-1" data-tab="analysis">结构解读</button>
+        <button id="tab-btn-fortune" type="button" role="tab" aria-selected="false" aria-controls="tab-fortune" tabindex="-1" data-tab="fortune">运限</button>
+        <button id="tab-btn-correction" type="button" role="tab" aria-selected="false" aria-controls="tab-correction" tabindex="-1" data-tab="correction">时间校正</button>
+      </div>
     </div>
-    <a class="research-link" href="/qimen.html">奇门遁甲</a>
-    <a class="research-link" href="/blind-review.html">人工盲评</a>
-    <a class="research-link" href="/ai-review.html">AI 预评审</a>
-    <div class="engine-status"><span></span>C++ 本地算法</div>
-  </header>
+  </div>
 
-  <main class="workspace">
+  <main id="main-content" class="workspace">
+    <h1 class="sr-only">紫微斗数排盘</h1>
     <aside class="input-panel" aria-label="排盘参数">
       <form id="chart-form">
         <section class="form-section">
@@ -40,6 +60,7 @@
 
         <section class="form-section">
           <div class="section-heading"><span>02</span><h2>时间校正</h2></div>
+          <div id="ziwei-place-section"></div>
           <label class="toggle-row" for="true-solar">
             <span><strong>启用真太阳时</strong><small>校正出生时刻</small></span>
             <input id="true-solar" type="checkbox" checked>
@@ -62,6 +83,7 @@
             <div><label for="target-time">目标时间</label><input id="target-time" type="time" value="15:05" step="60" required></div>
             <div><label for="age">虚岁</label><input id="age" type="number" min="1" max="150" value="33" required></div>
           </div>
+          <button class="secondary-action compact-action" type="button" data-current-time data-date-input="#target-date" data-time-input="#target-time">当前时间</button>
         </section>
 
         <button class="primary-action" type="submit"><span class="button-label">开始排盘</span><span class="spinner" aria-hidden="true"></span></button>
@@ -69,7 +91,7 @@
       </form>
     </aside>
 
-    <section class="results" aria-live="polite">
+    <section class="results">
       <div id="empty-state" class="empty-state">
         <div class="empty-symbol" aria-hidden="true">命</div>
         <h2>等待排盘</h2>
@@ -87,17 +109,16 @@
           </dl>
         </div>
 
-        <div class="tabs" role="tablist" aria-label="排盘结果视图">
-          <button type="button" role="tab" aria-selected="true" data-tab="chart">十二宫</button>
-          <button type="button" role="tab" aria-selected="false" data-tab="analysis">结构解读</button>
-          <button type="button" role="tab" aria-selected="false" data-tab="fortune">运限</button>
-          <button type="button" role="tab" aria-selected="false" data-tab="correction">时间校正</button>
+        <div class="profile-zone">
+          <div id="ziwei-profile-charts"></div>
+          <p id="ziwei-profile-fallback" hidden>分布画像暂不可用，本命盘解读不受影响。</p>
         </div>
 
-        <div id="tab-chart" class="tab-panel" role="tabpanel">
+        <div id="tab-chart" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-chart">
           <div class="chart-toolbar">
             <div class="layer-filter" role="toolbar" aria-label="盘层显示">
-              <button type="button" data-layer="all" aria-pressed="true">全盘</button>
+              <button type="button" data-layer="natal" aria-pressed="false">本命盘</button>
+              <button type="button" data-layer="all" aria-pressed="true">叠加</button>
               <button type="button" data-layer="da_xian" aria-pressed="false">大限</button>
               <button type="button" data-layer="liu_nian" aria-pressed="false">流年</button>
               <button type="button" data-layer="liu_yue" aria-pressed="false">流月</button>
@@ -124,33 +145,43 @@
           <div id="flow-track" class="flow-track" aria-label="当前运限层级"></div>
         </div>
 
-        <div id="tab-analysis" class="tab-panel" role="tabpanel" hidden>
+        <div id="tab-analysis" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-analysis" hidden>
           <div class="analysis-header">
-            <div><span>本命分析</span><strong id="analysis-title">正在生成结构化碎片</strong></div>
-            <dl><div><dt>宫位</dt><dd id="analysis-palace-count">--</dd></div><div><dt>碎片</dt><dd id="analysis-fragment-count">--</dd></div><div><dt>命中格局</dt><dd id="analysis-pattern-count">--</dd></div><div><dt>规则库</dt><dd id="analysis-config-version">--</dd></div></dl>
+            <div><span>本命 · 结构解读</span><strong id="analysis-title">正在生成结构信号</strong></div>
+            <dl><div><dt>宫位</dt><dd id="analysis-palace-count">--</dd></div><div><dt>结构信号</dt><dd id="analysis-fragment-count">--</dd></div><div><dt>命中格局</dt><dd id="analysis-pattern-count">--</dd></div><div><dt>规则数</dt><dd id="analysis-config-version">--</dd></div></dl>
           </div>
+          <section id="analysis-natal-summary" class="analysis-natal-summary" aria-labelledby="analysis-natal-summary-title" hidden>
+            <header><div><span>本命盘</span><strong id="analysis-natal-summary-title">本命摘要</strong></div><small>只描述原始天盘结构，不叠加运限</small></header>
+            <div id="analysis-natal-summary-body"></div>
+          </section>
           <p id="analysis-error" class="error-message" role="alert" hidden></p>
-          <div id="analysis-loading" class="analysis-loading" aria-live="polite"><span class="spinner"></span>正在匹配宫位、星曜与格局规则</div>
+          <div id="analysis-loading" class="analysis-loading" role="status">
+            <p class="analysis-loading-note"><span class="spinner"></span>正在匹配宫位、星曜与格局规则</p>
+            <div class="skeleton-stack" aria-hidden="true"><i class="skeleton"></i><i class="skeleton"></i><i class="skeleton"></i></div>
+          </div>
           <section id="analysis-pattern-overview" class="analysis-pattern-overview" aria-labelledby="analysis-pattern-overview-title" hidden>
             <header><div><span>全盘匹配</span><strong id="analysis-pattern-overview-title">本命格局总览</strong></div><small id="analysis-pattern-overview-summary"></small></header>
             <div id="analysis-pattern-list" class="analysis-pattern-list"></div>
           </section>
+          <details id="analysis-pattern-library-detail" class="analysis-advanced">
+            <summary>高级详情：规则库核对</summary>
           <section id="analysis-pattern-library" class="analysis-pattern-library" aria-labelledby="analysis-pattern-library-title" hidden>
             <header><div><span>规则库核对</span><strong id="analysis-pattern-library-title">已加载格局规则</strong></div><small id="analysis-pattern-library-summary"></small></header>
             <div id="analysis-pattern-library-list" class="analysis-pattern-library-list"></div>
           </section>
+          </details>
           <div id="analysis-workspace" class="analysis-workspace" hidden>
             <nav id="analysis-palace-tabs" class="analysis-palace-tabs" aria-label="选择解读宫位"></nav>
-            <section id="analysis-content" class="analysis-content" aria-live="polite"></section>
+            <section id="analysis-content" class="analysis-content"></section>
           </div>
         </div>
 
-        <div id="tab-fortune" class="tab-panel" role="tabpanel" hidden>
+        <div id="tab-fortune" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-fortune" hidden>
           <div class="fortune-header"><div><span>目标时刻</span><strong id="fortune-target">--</strong></div><div><span>农历</span><strong id="fortune-lunar">--</strong></div></div>
           <div id="fortune-grid" class="fortune-grid"></div>
         </div>
 
-        <div id="tab-correction" class="tab-panel" role="tabpanel" hidden>
+        <div id="tab-correction" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-correction" hidden>
           <div class="correction-layout">
             <dl id="correction-list" class="detail-list"></dl>
             <div class="offset-visual"><div class="offset-track"><span id="offset-marker"></span></div><strong id="offset-total">--</strong><small>相对出生证明时间</small></div>
@@ -160,6 +191,29 @@
     </section>
   </main>
 
+  <script src="/state-sync.js"></script>
+  <script src="/current-time.js"></script>
+  <script src="/navigation.js" defer></script>
+  <script>
+    window.PLACE_PICKER_CONFIG = {
+      mount: '#ziwei-place-section',
+      dateInput: '#birth-date',
+      timeInput: '#birth-time',
+      mode: 'geo+offset',
+      outputs: { offset: '#ziwei-utc-offset', meridian: '#meridian', dst: '#dst', lat: '#ziwei-lat', lon: '#longitude' },
+      recentKey: 'ziwei.recentPlaces',
+      popular: [
+        { id: 'curated:cn-shanghai', name: '上海市' },
+        { id: 'curated:cn-beijing', name: '北京市' },
+        { id: 'curated:cn-guangzhou', name: '广州市' },
+        { id: 'curated:cn-chengdu', name: '成都市' },
+      ],
+    };
+  </script>
+  <input id="ziwei-utc-offset" type="hidden">
+  <input id="ziwei-lat" type="hidden">
+  <script src="/place-picker.js" defer></script>
+  <script src="/profile-charts.js" defer></script>
   <script src="/app.js" defer></script>
 </body>
 </html>

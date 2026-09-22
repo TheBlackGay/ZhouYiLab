@@ -82,8 +82,15 @@ namespace ZhouYi::ZiWei {
         int ming_index,
         WuXingJu wu_xing_ju,
         bool is_male,
-        DiZhi year_zhi
+        DiZhi year_zhi,
+        TianGan year_gan,
+        DaXianGanMethod method
     ) {
+        // 五虎遁：甲己丙寅头，乙庚戊寅头，丙辛庚寅头，丁壬壬寅头，戊癸甲寅头（D11）
+        static constexpr std::array<TianGan, 10> yin_gan_table = {
+            TianGan::Bing, TianGan::Wu, TianGan::Geng, TianGan::Ren, TianGan::Jia,
+            TianGan::Bing, TianGan::Wu, TianGan::Geng, TianGan::Ren, TianGan::Jia,
+        };
         array<DaXianData, 12> result{};
         
         // 起运年龄（五行局数）
@@ -99,17 +106,25 @@ namespace ZhouYi::ZiWei {
             int start_age = qi_yun_age + 10 * i;
             int end_age = start_age + 9;
             
-            // 计算大限天干（从甲开始，根据流转方向递增或递减）
-            int gan_offset = shun_xing ? i : -i;
-            int gan_idx = (gan_offset + 10) % 10;
-            TianGan start_gan = static_cast<TianGan>(gan_idx);
-            
+            // D11：默认五虎遁限宫干 + 宫本位支；original 保留旧巡运伪口径（含 DEF-1 回绕）对照。
+            TianGan start_gan;
+            DiZhi start_zhi;
+            if (method == DaXianGanMethod::Resort) {
+                const int yin_gan = static_cast<int>(yin_gan_table[static_cast<int>(year_gan)]);
+                start_gan = static_cast<TianGan>((yin_gan + idx) % 10);
+                start_zhi = static_cast<DiZhi>((idx + 2) % 12);  // 寅宫索引0 = 地支寅(2)
+            } else {
+                const int gan_offset = shun_xing ? i : -i;
+                start_gan = static_cast<TianGan>(((gan_offset % 10) + 10) % 10);
+                start_zhi = static_cast<DiZhi>(idx);
+            }
+
             result[idx] = DaXianData{
                 .start_age = start_age,
                 .end_age = end_age,
                 .gong_index = idx,
                 .tian_gan = start_gan,
-                .di_zhi = static_cast<DiZhi>(idx),
+                .di_zhi = start_zhi,
                 .si_hua = {}  // 需要根据大限天干获取四化
             };
             

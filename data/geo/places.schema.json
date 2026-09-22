@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "zhouyilab:geo/places.schema.json",
+  "title": "ZhouYiLab 精选地名条目（G1 curated）",
+  "description": "data/geo/curated.json 中单个地名条目的契约。见 docs/product/西洋占星出生地点交互优化方案.md §6.1。G1 只有 level=city；district/poi 属 G2；elevation_m 属 G3。",
+  "type": "object",
+  "required": [
+    "id", "name_zh", "name_en", "aliases", "admin1", "country_zh",
+    "country_code", "lat", "lon", "approx_radius_km", "tz",
+    "population", "level", "group", "source", "revision"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "全局唯一、可回溯，形如 curated:cn-shanghai",
+      "pattern": "^curated:[a-z]{2}-[a-z0-9-]+$"
+    },
+    "name_zh": { "type": "string", "description": "规范中文名" },
+    "name_en": { "type": "string", "description": "规范英文名/罗马字" },
+    "aliases": {
+      "type": "array",
+      "description": "历史名/简称/拼音全拼/拼音首字母/英文名，供搜索归一化匹配",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "admin1": { "type": "string", "description": "上级行政区（省/州/国名）" },
+    "country_zh": { "type": "string", "description": "国家或地区中文名（港澳台标注中国）" },
+    "country_code": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "lat": { "type": "number", "minimum": -90, "maximum": 90, "description": "城市代表点纬度，北正南负" },
+    "lon": { "type": "number", "minimum": -180, "maximum": 180, "description": "城市代表点经度，东正西负" },
+    "approx_radius_km": { "type": "number", "exclusiveMinimum": 0, "description": "代表点覆盖半径，>50 时前端提示微调（方案 §4.5）" },
+    "tz": { "type": "string", "description": "IANA 时区名，必须能被 zoneinfo 加载" },
+    "population": { "type": "integer", "minimum": 0, "description": "约数人口，排序权重，可空" },
+    "level": { "enum": ["city"], "description": "G1 只有 city；district/poi 属 G2" },
+    "group": {
+      "enum": ["cn_core", "cn_extra", "cn_more", "tw_hk_mo", "world_cap", "world_ext"],
+      "description": "选点分组，配额见 scripts/gen_curated_places.py 与 index.json"
+    },
+    "source": { "const": "curated" },
+    "revision": { "type": "string", "description": "数据集版本" }
+  }
+}

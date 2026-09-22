@@ -7,6 +7,7 @@ import nlohmann.json;
 
 // 导入自定义通用模块
 import ZhouYi.BaZiBase;      // 八字基础数据结构（Pillar, BaZi）
+import ZhouYi.Common.Calendar; // 公共历法适配
 import ZhouYi.GanZhi;        // 干支系统（包含十神）
 import ZhouYi.WuXingUtils;   // 五行工具
 import ZhouYi.tyme;          // 时间模块
@@ -457,8 +458,7 @@ inline std::vector<LiuYue> get_liu_yue_of_year(int year, TianGan day_gan) {
         
         // 使用节气后的某一天获取该月的八字月柱
         auto month_time = term_time.next(10); // 节气后10天
-        auto lunar_hour = month_time.get_lunar_hour();
-        auto eight_char = lunar_hour.get_eight_char();
+        auto eight_char = ZhouYi::Common::Calendar::eight_char_from_solar_time(month_time);
         auto month_cycle = eight_char.get_month();
         
         // 获取节气月的干支

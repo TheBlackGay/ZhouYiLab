@@ -12,6 +12,7 @@
 build/
 .zhouyilab/
 config/ziwei/research/ai_model_providers.local.json
+config/platform/api_keys.local.json
 cmake-build-*/
 out/
 bin/

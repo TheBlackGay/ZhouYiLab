@@ -1,0 +1,23 @@
+{
+  "schema": "daliuren-case/1.0",
+  "id": "yuejiang_dahan_zhongqi",
+  "status": "boundary",
+  "input": {
+    "calendar": "solar",
+    "date": {
+      "year": 2025,
+      "month": 1,
+      "day": 20,
+      "hour": 12
+    }
+  },
+  "expected": {
+    "yue_jiang": "子",
+    "ba_zi.day.branch": "丑"
+  },
+  "source_case": {
+    "origin": "structural_regression",
+    "verification": "self_consistent",
+    "note": "口径对照·2025-01-20（大寒当日）默认中气过宫：月将子（全年首个古今分歧日，brute-force 检得）。"
+  }
+}

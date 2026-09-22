@@ -1,0 +1,133 @@
+{
+  "schema_version": "astro-transit-rules/1.0",
+  "rules": [
+    {
+      "rule_id": "love.venus_in_houses_5_7_8",
+      "revision": 1,
+      "rule_type": "transit_planet_in_natal_house",
+      "dimension": "love",
+      "direction": "attention",
+      "intensity": "medium",
+      "transit_points": ["venus"],
+      "natal_houses": [5, 7, 8],
+      "observation_code": "venus_activates_romance_and_partnership",
+      "boundary": "仅表示感情表达、伴侣关系和亲密边界主题被激活，不代表关系结果。"
+    },
+    {
+      "rule_id": "love.mars_hard_aspect_natal_venus",
+      "revision": 1,
+      "rule_type": "transit_aspect_to_natal_point",
+      "dimension": "love",
+      "direction": "tension",
+      "intensity": "high",
+      "transit_points": ["mars"],
+      "natal_points": ["venus"],
+      "aspect_types": ["square", "opposition"],
+      "max_orb": 6,
+      "observation_code": "mars_tension_with_natal_venus",
+      "boundary": "仅表示关系互动中的张力需要关注，不断言争吵、分手或其他结果。"
+    },
+    {
+      "rule_id": "wealth.venus_in_houses_2_8",
+      "revision": 1,
+      "rule_type": "transit_planet_in_natal_house",
+      "dimension": "wealth",
+      "direction": "attention",
+      "intensity": "medium",
+      "transit_points": ["venus"],
+      "natal_houses": [2, 8],
+      "observation_code": "venus_activates_personal_resources",
+      "boundary": "仅表示消费、个人资源和共享资源主题被激活，不提供投资、借贷或金额建议。"
+    },
+    {
+      "rule_id": "wealth.mars_in_houses_2_8",
+      "revision": 1,
+      "rule_type": "transit_planet_in_natal_house",
+      "dimension": "wealth",
+      "direction": "tension",
+      "intensity": "medium",
+      "transit_points": ["mars"],
+      "natal_houses": [2, 8],
+      "observation_code": "mars_activates_resource_pressure",
+      "boundary": "仅表示资源使用、冲动消费和共享财务边界主题需要关注，不提供投资、借贷或金额建议。"
+    },
+    {
+      "rule_id": "career.sun_or_mars_in_house_6_or_10",
+      "revision": 1,
+      "rule_type": "transit_planet_in_natal_house",
+      "dimension": "career",
+      "direction": "attention",
+      "intensity": "medium",
+      "transit_points": ["sun", "mars"],
+      "natal_houses": [6, 10],
+      "observation_code": "personal_drive_activates_work_house",
+      "boundary": "仅表示工作任务、执行和责任主题被激活，不代表晋升、录用或工作结果。"
+    },
+    {
+      "rule_id": "career.mars_hard_aspect_natal_mercury",
+      "revision": 1,
+      "rule_type": "transit_aspect_to_natal_point",
+      "dimension": "career",
+      "direction": "tension",
+      "intensity": "high",
+      "transit_points": ["mars"],
+      "natal_points": ["mercury"],
+      "aspect_types": ["square", "opposition"],
+      "max_orb": 6,
+      "observation_code": "mars_tension_with_natal_mercury",
+      "boundary": "仅表示沟通和执行节奏中的张力需要关注，不断言冲突或职业结果。"
+    },
+    {
+      "rule_id": "learning.mercury_in_house_3_or_9",
+      "revision": 1,
+      "rule_type": "transit_planet_in_natal_house",
+      "dimension": "learning",
+      "direction": "attention",
+      "intensity": "medium",
+      "transit_points": ["mercury"],
+      "natal_houses": [3, 9],
+      "observation_code": "mercury_activates_learning_house",
+      "boundary": "仅表示学习、信息处理或复习主题被激活，不代表考试或学习结果。"
+    },
+    {
+      "rule_id": "learning.mercury_hard_aspect_natal_mercury",
+      "revision": 1,
+      "rule_type": "transit_aspect_to_natal_point",
+      "dimension": "learning",
+      "direction": "tension",
+      "intensity": "medium",
+      "transit_points": ["mercury"],
+      "natal_points": ["mercury"],
+      "aspect_types": ["square", "opposition"],
+      "max_orb": 6,
+      "observation_code": "mercury_tension_with_natal_mercury",
+      "boundary": "仅表示注意力和信息处理中的张力需要关注，不断言考试或学习结果。"
+    },
+    {
+      "rule_id": "social.moon_or_venus_in_house_7_or_11",
+      "revision": 1,
+      "rule_type": "transit_planet_in_natal_house",
+      "dimension": "social",
+      "direction": "attention",
+      "intensity": "medium",
+      "transit_points": ["moon", "venus"],
+      "natal_houses": [7, 11],
+      "observation_code": "social_points_activate_connection_house",
+      "boundary": "仅表示协作、社交和关系距离主题被激活，不代表社交事件结果。"
+    },
+    {
+      "rule_id": "social.mars_hard_aspect_natal_moon",
+      "revision": 1,
+      "rule_type": "transit_aspect_to_natal_point",
+      "dimension": "social",
+      "direction": "tension",
+      "intensity": "medium",
+      "transit_points": ["mars"],
+      "natal_points": ["moon"],
+      "aspect_types": ["square", "opposition"],
+      "max_orb": 6,
+      "observation_code": "mars_tension_with_natal_moon",
+      "boundary": "仅表示情绪反应和互动边界中的张力需要关注，不断言冲突或关系结果。"
+    }
+  ]
+}

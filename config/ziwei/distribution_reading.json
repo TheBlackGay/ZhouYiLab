@@ -1,0 +1,74 @@
+{
+  "schema": "ziwei-distribution-reading/1.0",
+  "dictionary_version": "0.1",
+  "charts": {
+    "temperament": {
+      "title_zh": "星系气质",
+      "basis_zh": "全盘十四主星与辅煞（星性五行、阴阳取自安星诀文档库）",
+      "order": ["火", "木", "土", "金", "水"],
+      "labels_zh": {"火": "火星", "木": "木星", "土": "土星", "金": "金星", "水": "水星"},
+      "tags_zh": {"火": "热烈型", "木": "生发型", "土": "承载型", "金": "果决型", "水": "流转型"},
+      "dominant_templates_zh": {
+        "火": "是{tag}（{label}占比大）", "木": "是{tag}（{label}占比大）",
+        "土": "是{tag}（{label}占比大）", "金": "是{tag}（{label}占比大）",
+        "水": "是{tag}（{label}占比大）"
+      },
+      "balanced_template_zh": "五行气质匀称，没有单一主调",
+      "summary_template_zh": "{subject}的底色是{phrases}。",
+      "summary_phrases_zh": {
+        "火": "热烈燃烧（{tag}）", "木": "向上生长（{tag}）", "土": "踏实承载（{tag}）",
+        "金": "果断收敛（{tag}）", "水": "灵活流动（{tag}）", "balanced": "五行匀停"
+      },
+      "readings_zh": {
+        "火": "火星气质占先：做事带温度、有冲劲，容易被点燃也容易照亮别人；火的另一面是急，留半拍冷却时间给重要决定。",
+        "木": "木星气质占先：像树一样要生长、要伸展，适合学习、规划与长期主义；修剪与取舍，是你一生的必修课。",
+        "土": "土星气质占先：可信、可托付，把事情落到日程和资源上；提醒自己偶尔从责任里抬起头，看看路上的风景。",
+        "金": "金星气质占先：决断利落、界限清晰，说一不二自带秩序感；柔软不是弱点，是给重要的人留的门。",
+        "水": "水位气质占先：感受灵、应变快，能绕开障碍抵达目标；记得给流动的心找一个可以停靠的容器。",
+        "balanced": "五行分布接近：热烈、生长、承载、果断、流动都在场，场景切换从容；观察压力下你默认落在哪一种。"
+      }
+    },
+    "polarity": {
+      "title_zh": "阴阳星性",
+      "basis_zh": "同一点位集按星性阴阳归类：阳性星向外发射，阴性星向内吸收",
+      "order": ["positive", "negative"],
+      "labels_zh": {"positive": "阳性星", "negative": "阴性星"},
+      "tags_zh": {"positive": "发射型", "negative": "吸收型"},
+      "dominant_templates_zh": {
+        "positive": "是{tag}（{label}占比大）", "negative": "是{tag}（{label}占比大）"
+      },
+      "balanced_template_zh": "阴阳匀停（发射与吸收各半）",
+      "summary_template_zh": "{subject}的底色是{phrases}。",
+      "summary_phrases_zh": {
+        "positive": "向外发射（{tag}）", "negative": "向内吸收（{tag}）", "balanced": "开合有度"
+      },
+      "readings_zh": {
+        "positive": "阳性星居多：能量先向外——主张、行动、改变环境是你的默认动作；独处充电不是矫情，是给发射台加油。",
+        "negative": "阴性星居多：能量先向内——感受、吸收、消化世界，慢半拍但记得深；重要的声音，值得你主动开口表达一次。",
+        "balanced": "阴阳各半：既能发起也能承接，两种模式随场切换；不必强迫自己永远外向或永远内敛。"
+      }
+    },
+    "light": {
+      "title_zh": "星光明暗",
+      "basis_zh": "十四主星实际落宫的亮度归类：庙旺（全光）、得平（恒光）、陷不利（烛光）",
+      "order": ["bright", "steady", "dim"],
+      "labels_zh": {"bright": "庙旺星", "steady": "得平星", "dim": "陷不利星"},
+      "tags_zh": {"bright": "得时得地", "steady": "常态输出", "dim": "烛光型"},
+      "dominant_templates_zh": {
+        "bright": "{label}多——{tag}", "steady": "{label}为主——{tag}", "dim": "{label}不少——{tag}"
+      },
+      "balanced_template_zh": "明暗分布均衡，没有单一主导",
+      "summary_template_zh": "{subject}的底色是{phrases}。",
+      "summary_phrases_zh": {
+        "bright": "庙旺多、光芒盛（{tag}）", "steady": "亮度平正（{tag}）",
+        "dim": "微光也认真走路（{tag}）", "balanced": "明暗相间"
+      },
+      "readings_zh": {
+        "bright": "庙旺星占比高：多数能量在优势位上运行，顺起来是乘风；顺的时候记得储能，逆的时候才有余粮。",
+        "steady": "得平星为主：不靠天时靠日常的稳定输出，是团队里最可预期的那束光；重要的事，值得再加一点亮度——多学一分、多问一句。",
+        "dim": "陷不利星占比不低：烛光不是坏命，是要求在低光环境里把路走认真的人——聚焦、择境、以小搏大，历来是烛光型的主场。",
+        "balanced": "明暗相间：顺境的星与要修行的星并存，人生剧本有对比也有伏笔；把庙旺星用在刀刃上，给烛光星选好舞台。"
+      }
+    }
+  }
+}

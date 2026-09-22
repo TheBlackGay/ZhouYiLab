@@ -8,6 +8,7 @@ import fmt;
 
 // 导入干支系统模块
 import ZhouYi.GanZhi;
+import ZhouYi.Common.Calendar;
 
 // 导入农历时间库模块
 import ZhouYi.tyme;
@@ -141,16 +142,8 @@ private:
      * @brief 字符串转天干枚举
      */
     static TianGan string_to_tian_gan(std::string_view str) {
-        static const std::unordered_map<std::string_view, TianGan> map = {
-            {"甲", TianGan::Jia}, {"乙", TianGan::Yi}, 
-            {"丙", TianGan::Bing}, {"丁", TianGan::Ding},
-            {"戊", TianGan::Wu}, {"己", TianGan::Ji},
-            {"庚", TianGan::Geng}, {"辛", TianGan::Xin},
-            {"壬", TianGan::Ren}, {"癸", TianGan::Gui}
-        };
-        
-        if (auto it = map.find(str); it != map.end()) {
-            return it->second;
+        if (const auto value = Mapper::from_zh_gan(str); value.has_value()) {
+            return *value;
         }
         throw std::invalid_argument(std::string("无效的天干: ") + std::string(str));
     }
@@ -159,17 +152,8 @@ private:
      * @brief 字符串转地支枚举
      */
     static DiZhi string_to_di_zhi(std::string_view str) {
-        static const std::unordered_map<std::string_view, DiZhi> map = {
-            {"子", DiZhi::Zi}, {"丑", DiZhi::Chou},
-            {"寅", DiZhi::Yin}, {"卯", DiZhi::Mao},
-            {"辰", DiZhi::Chen}, {"巳", DiZhi::Si},
-            {"午", DiZhi::Wu}, {"未", DiZhi::Wei},
-            {"申", DiZhi::Shen}, {"酉", DiZhi::You},
-            {"戌", DiZhi::Xu}, {"亥", DiZhi::Hai}
-        };
-        
-        if (auto it = map.find(str); it != map.end()) {
-            return it->second;
+        if (const auto value = Mapper::from_zh_zhi(str); value.has_value()) {
+            return *value;
         }
         throw std::invalid_argument(std::string("无效的地支: ") + std::string(str));
     }
@@ -255,13 +239,12 @@ struct BaZi {
      */
     static BaZi from_solar(int year, int month, int day, int hour, int minute = 0, int second = 0) {
         // 创建公历时间
-        auto solar_time = tyme::SolarTime::from_ymd_hms(year, month, day, hour, minute, second);
+        auto solar_time = ZhouYi::Common::Calendar::to_solar_time(
+            ZhouYi::Common::SolarDateTime{year, month, day, hour, minute, second});
         
         // 获取农历时间
-        auto lunar_hour = solar_time.get_lunar_hour();
-        
         // 获取八字
-        auto eight_char = lunar_hour.get_eight_char();
+        auto eight_char = ZhouYi::Common::Calendar::eight_char_from_solar_time(solar_time);
         
         // 获取各柱
         auto year_cycle = eight_char.get_year();
@@ -299,10 +282,11 @@ struct BaZi {
      */
     static BaZi from_lunar(int year, int month, int day, int hour, int minute = 0, int second = 0) {
         // 创建农历时间
-        auto lunar_hour = tyme::LunarHour::from_ymd_hms(year, month, day, hour, minute, second);
+        auto lunar_hour = ZhouYi::Common::Calendar::to_lunar_hour(
+            ZhouYi::Common::LunarDateTime{year, month, day, hour, minute, second});
         
         // 获取八字
-        auto eight_char = lunar_hour.get_eight_char();
+        auto eight_char = ZhouYi::Common::Calendar::eight_char_from_lunar_time(lunar_hour);
         
         // 获取各柱
         auto year_cycle = eight_char.get_year();

@@ -1,0 +1,162 @@
+{
+  "schema_version": "astro-natal-templates/1.0",
+  "core_text": {
+    "ascendant": {"revision": 1, "text": "上升点落在{sign_name}，座内 {degree_in_sign}°。"},
+    "sun": {"revision": 1, "text": "{point_name}落在{sign_name}{house_text}，黄经 {longitude}°。"},
+    "moon": {"revision": 1, "text": "{point_name}落在{sign_name}{house_text}，黄经 {longitude}°。"},
+    "chart_ruler": {"revision": 1, "text": "上升{sign_name}由{ruler_name}定位，{ruler_name}落在{ruler_sign_name}{ruler_house_text}。"}
+  },
+  "planet_core": {
+    "sun": {"revision": 1, "title": "核心意志", "short": "想要成为的样子", "text": "太阳代表核心意志、想要被看见的部分，以及最需要被自己认可的东西。"},
+    "moon": {"revision": 1, "title": "情绪本能", "short": "内在的安全感", "text": "月亮代表情绪反应、安全感来源，以及不需要解释就能放松下来的方式。"},
+    "mercury": {"revision": 1, "title": "思考与表达", "short": "怎么想、怎么说", "text": "水星代表思维方式、语言习惯、信息处理和学习节奏。"},
+    "venus": {"revision": 1, "title": "关系与价值", "short": "喜欢什么、看重什么", "text": "金星代表喜欢什么、怎么建立关系，以及对美和价值的标准。"},
+    "mars": {"revision": 1, "title": "行动与冲劲", "short": "怎么出手、怎么坚持", "text": "火星代表行动方式、争取的力度，以及在冲突里的第一反应。"},
+    "jupiter": {"revision": 1, "title": "扩展与信念", "short": "在哪里放开、在哪里相信", "text": "木星代表扩张的方向、信念体系，以及愿意持续投入热情的领域。"},
+    "saturn": {"revision": 1, "title": "责任与边界", "short": "认真对待、也容易紧绷", "text": "土星代表责任感、结构与限制，以及需要长期练习才稳下来的部分。"},
+    "uranus": {"revision": 1, "title": "独立与突破", "short": "想不一样、想打破", "text": "天王星代表独立需求、突破常规的冲动，以及需要留出空间的地方。"},
+    "neptune": {"revision": 1, "title": "想象与消融", "short": "容易沉浸、也容易模糊", "text": "海王星代表想象力、共情与理想化倾向，以及边界容易模糊的地方。"},
+    "pluto": {"revision": 1, "title": "深度与重塑", "short": "会较真、会彻底改变", "text": "冥王星代表深度、掌控与放手，以及需要彻底重来的主题。"},
+    "true_node": {"revision": 1, "title": "交点方向", "short": "需要往外走的方向", "text": "北交点代表这一轮要练习的方向，往往是不太顺手但值得往外走的一侧。"},
+    "chiron": {"revision": 1, "title": "敏感与修复", "short": "容易疼、也容易懂别人", "text": "凯龙星代表反复触碰的敏感处，以及在同类问题上对别人的理解力。"}
+  },
+  "sign_style": {
+    "aries": {"revision": 1, "label": "白羊座", "lead": "表现为", "short": "直接、上手快", "text": "反应快，先动手再修正，遇到阻力时倾向正面推进。"},
+    "taurus": {"revision": 1, "label": "金牛座", "lead": "表现为", "short": "稳定、重实际", "text": "节奏偏慢，先确认安全感，再决定投入多少。"},
+    "gemini": {"revision": 1, "label": "双子座", "lead": "表现为", "short": "灵活、信息量大", "text": "一边收集一边表达，习惯用几个角度试探同一件事。"},
+    "cancer": {"revision": 1, "label": "巨蟹座", "lead": "表现为", "short": "敏感、重关系", "text": "先感受气氛和关系远近，安心之后才愿意展开。"},
+    "leo": {"revision": 1, "label": "狮子座", "lead": "表现为", "short": "有主张、要体面", "text": "需要被看见和被认可，表达时带一点舞台感。"},
+    "virgo": {"revision": 1, "label": "处女座", "lead": "表现为", "short": "细致、重方法", "text": "先拆细节再动手，习惯用可核对的标准要求事情。"},
+    "libra": {"revision": 1, "label": "天秤座", "lead": "表现为", "short": "讲平衡、看关系", "text": "会同时衡量双方立场，倾向先保住关系再看结论。"},
+    "scorpio": {"revision": 1, "label": "天蝎座", "lead": "表现为", "short": "专注、留有余地", "text": "投入时很彻底，不容易中途放手，也不太愿意一次把想法说完。"},
+    "sagittarius": {"revision": 1, "label": "射手座", "lead": "表现为", "short": "看得远、要空间", "text": "先拉到大方向上看，不太受眼前细节约束。"},
+    "capricorn": {"revision": 1, "label": "摩羯座", "lead": "表现为", "short": "克制、重结果", "text": "先想清楚责任和后果，按能落地的方式一步步来。"},
+    "aquarius": {"revision": 1, "label": "水瓶座", "lead": "表现为", "short": "抽离、有自己一套", "text": "习惯先站远一点看，再决定要不要跟随常规。"},
+    "pisces": {"revision": 1, "label": "双鱼座", "lead": "表现为", "short": "感受强、边界柔", "text": "容易接收到环境和别人的情绪，表达偏感受而非条列。"}
+  },
+  "house_field": {
+    "1": {"revision": 1, "label": "第1宫", "lead": "放在", "short": "自我呈现与起步方式", "text": "自我形象、给人的第一印象，以及开始一件事时最先亮出来的那部分。"},
+    "2": {"revision": 1, "label": "第2宫", "lead": "放在", "short": "个人资源与价值", "text": "收入、日常物质基础、自己认定的价值标准，以及怎么把能力变成可用的资源。"},
+    "3": {"revision": 1, "label": "第3宫", "lead": "放在", "short": "表达、学习与近处往来", "text": "日常沟通、短期学习，以及兄弟姐妹、邻里同学之间的往来。"},
+    "4": {"revision": 1, "label": "第4宫", "lead": "放在", "short": "家庭与内在基地", "text": "家庭、居住环境、安全感来源，以及不太外露的那部分自己。"},
+    "5": {"revision": 1, "label": "第5宫", "lead": "放在", "short": "创造、玩乐与恋爱", "text": "兴趣创作、玩乐方式、恋爱表达，以及被欣赏时的样子。"},
+    "6": {"revision": 1, "label": "第6宫", "lead": "放在", "short": "日常事务与身体节奏", "text": "工作日常、习惯养成、作息健康，以及服务他人的方式。"},
+    "7": {"revision": 1, "label": "第7宫", "lead": "放在", "short": "一对一关系与合作", "text": "伴侣关系、长期合作，以及和别人一对一相处时的分工方式。"},
+    "8": {"revision": 1, "label": "第8宫", "lead": "放在", "short": "共享资源与深层联结", "text": "共同财务、信任与亲密，以及需要交出控制感的部分。"},
+    "9": {"revision": 1, "label": "第9宫", "lead": "放在", "short": "远方与高等学习", "text": "远行、高等教育、信念体系与跨文化经验，是需要拉长时间看的那一块。"},
+    "10": {"revision": 1, "label": "第10宫", "lead": "放在", "short": "事业与社会位置", "text": "职业方向、公开身份、社会责任，以及被外部评价的那一面。"},
+    "11": {"revision": 1, "label": "第11宫", "lead": "放在", "short": "群体与长远目标", "text": "朋友、团队、社群参与，以及希望和人一起完成的长期目标。"},
+    "12": {"revision": 1, "label": "第12宫", "lead": "放在", "short": "独处与内在整理", "text": "独处、休息、潜意识整理，以及不太适合拿到台面上的部分。"}
+  },
+  "aspect_style": {
+    "conjunction": {"revision": 1, "label": "合相", "tone": "merge", "short": "强度叠加", "text": "两个点落在同一处，性质会叠加放大，具体走向取决于参与者本身。"},
+    "sextile": {"revision": 1, "label": "六合", "tone": "harmony", "short": "顺手可用", "text": "两点之间配合顺畅，需要主动用起来才会显出来。"},
+    "trine": {"revision": 1, "label": "拱相", "tone": "harmony", "short": "自然顺畅", "text": "两点之间流动顺畅，不太费力就能互相支持。"},
+    "square": {"revision": 1, "label": "刑相", "tone": "tension", "short": "需要协调", "text": "两点互相牵制，需要在两种需求之间反复协调。"},
+    "opposition": {"revision": 1, "label": "对冲", "tone": "tension", "short": "需要平衡", "text": "两点分处两端，容易在两者之间来回摆动，需要找到中间位置。"},
+    "quincunx": {"revision": 1, "label": "梅花", "tone": "adjust", "short": "需要刻意调整", "text": "两点之间的角度别扭，要刻意调整才能对接上。"}
+  },
+  "ascendant_sign": {
+    "aries": {"revision": 1, "short": "直接、上手快", "text": "给人直接的印象，习惯用行动开场，不太等准备好才开始。"},
+    "taurus": {"revision": 1, "short": "踏实、慢热", "text": "给人踏实的印象，需要一点时间才放松下来，节奏不容易被推快。"},
+    "gemini": {"revision": 1, "short": "好聊、反应快", "text": "给人好聊的印象，靠交流建立连接，话题切换得很快。"},
+    "cancer": {"revision": 1, "short": "温和、有保护感", "text": "给人温和的印象，会先照顾气氛，再表达自己的立场。"},
+    "leo": {"revision": 1, "short": "大方、有存在感", "text": "给人有主张的印象，不太介意被注意到，愿意先把态度摆出来。"},
+    "virgo": {"revision": 1, "short": "克制、有条理", "text": "给人靠谱、讲细节的印象，习惯先观察再回应。"},
+    "libra": {"revision": 1, "short": "客气、好相处", "text": "给人有分寸的印象，习惯先照应对方的感受再谈自己的想法。"},
+    "scorpio": {"revision": 1, "short": "内敛、有距离", "text": "给人不易看透的印象，先保留一部分，再决定交出多少。"},
+    "sagittarius": {"revision": 1, "short": "爽快、心大", "text": "给人不拘小节的印象，先看大方向，不太纠缠细节。"},
+    "capricorn": {"revision": 1, "short": "稳重、有分寸", "text": "给人认真稳重的印象，先看清责任，再决定怎么接。"},
+    "aquarius": {"revision": 1, "short": "有距离、有想法", "text": "给人不太随大流的印象，按自己的逻辑来，不太解释。"},
+    "pisces": {"revision": 1, "short": "柔和、有共情", "text": "给人柔软的印象，容易先接收到对方的情绪。"}
+  },
+  "sun_sign": {
+    "aries": {"revision": 1, "short": "要有行动的自由", "text": "想成为能自己决定方向的人，最在意有没有行动的自由。"},
+    "taurus": {"revision": 1, "short": "要确定和安稳", "text": "想成为靠得住的人，最在意手里的东西是不是自己确认过的。"},
+    "gemini": {"revision": 1, "short": "要保持好奇和选择", "text": "想成为随时能换角度的人，最在意有没有新的信息和选择。"},
+    "cancer": {"revision": 1, "short": "要被需要和归属", "text": "想成为能照顾人的人，最在意身边的关系是否安稳。"},
+    "leo": {"revision": 1, "short": "要被看见和认可", "text": "想成为有分量的人，最在意自己的付出有没有被认真对待。"},
+    "virgo": {"revision": 1, "short": "要做得对、做得好", "text": "想成为值得信赖的人，最在意事情有没有做到该有的标准。"},
+    "libra": {"revision": 1, "short": "要体面和平衡", "text": "想成为好相处的人，最在意关系里的分寸是否对等。"},
+    "scorpio": {"revision": 1, "short": "要真实和深度", "text": "想成为能扛住事的人，最在意关系和信息是不是真的。"},
+    "sagittarius": {"revision": 1, "short": "要方向感和远方", "text": "想成为看得远的人，最在意有没有值得奔赴的方向。"},
+    "capricorn": {"revision": 1, "short": "要站稳和结果", "text": "想成为说了能算的人，最在意位置是不是自己挣来的。"},
+    "aquarius": {"revision": 1, "short": "要独立和不同", "text": "想成为按自己方式活的人，最在意有没有保留独立的空间。"},
+    "pisces": {"revision": 1, "short": "要意义和容纳", "text": "想成为能理解别人的人，最在意做的事有没有意义。"}
+  },
+  "moon_sign": {
+    "aries": {"revision": 1, "short": "需要直接回应", "text": "情绪来得快也去得快，需要有人正面接住，不喜欢被晾着。"},
+    "taurus": {"revision": 1, "short": "需要稳定节律", "text": "情绪需要可预期的节奏，环境一变会先紧一下，安稳下来就好。"},
+    "gemini": {"revision": 1, "short": "需要说出来", "text": "情绪要靠讲出来才理得清，有人愿意听就已经缓解一半。"},
+    "cancer": {"revision": 1, "short": "需要被照顾", "text": "情绪反应细，容易被气氛影响，需要明确的在乎和照顾。"},
+    "leo": {"revision": 1, "short": "需要被肯定", "text": "情绪需要被认真对待，一句敷衍比分歧更让人不舒服。"},
+    "virgo": {"revision": 1, "short": "需要秩序感", "text": "情绪通过处理细节来消化，事情理顺了心里也会顺。"},
+    "libra": {"revision": 1, "short": "需要关系平稳", "text": "情绪起伏多来自关系距离，对方态度一变就会先察觉。"},
+    "scorpio": {"revision": 1, "short": "需要真实和确定", "text": "情绪浓度高但不常外露，需要确定对方没有保留。"},
+    "sagittarius": {"revision": 1, "short": "需要留出余地", "text": "情绪需要空间缓过来，被逼着立刻表态会更想走开。"},
+    "capricorn": {"revision": 1, "short": "需要自己扛住", "text": "情绪习惯先收着，不轻易示弱，需要有可以不用撑着的对象。"},
+    "aquarius": {"revision": 1, "short": "需要不被干涉", "text": "情绪上需要距离感，先跳出来看清楚再谈感受。"},
+    "pisces": {"revision": 1, "short": "需要被接纳", "text": "情绪容易跟着环境和别人走，被接纳时最放松。"}
+  },
+  "house_ruler": {
+    "1": {"revision": 1, "text": "第1宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，自我呈现这件事会跟着这条落点展开。"},
+    "2": {"revision": 1, "text": "第2宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，资源与价值的主线要看这条落点。"},
+    "3": {"revision": 1, "text": "第3宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，日常表达与学习会往这个方向接。"},
+    "4": {"revision": 1, "text": "第4宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，家庭与内在基地的主线在这一头。"},
+    "5": {"revision": 1, "text": "第5宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，创造与玩乐的节奏跟着这条落点走。"},
+    "6": {"revision": 1, "text": "第6宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，日常事务的安排会受这条落点影响。"},
+    "7": {"revision": 1, "text": "第7宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，一对一关系的主线连着这条落点。"},
+    "8": {"revision": 1, "text": "第8宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，共享与信任的主题会往这里延伸。"},
+    "9": {"revision": 1, "text": "第9宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，远方与信念的主线接在这条落点上。"},
+    "10": {"revision": 1, "text": "第10宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，事业与社会位置的主线连着这条落点。"},
+    "11": {"revision": 1, "text": "第11宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，群体与长期目标会沿着这条落点铺开。"},
+    "12": {"revision": 1, "text": "第12宫由{sign_name}主导，主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，独处与内在整理的方向由这条落点提示。"}
+  },
+  "summary": {
+    "point": "{point_name}落在{sign_name}{house_label}：{sign_short}，重心放在{house_short}。",
+    "house_empty": "{house_label}宫头在{sign_name}，宫内没有十大行星落入。",
+    "house_planets": "{house_label}宫头在{sign_name}，宫内有{point_names}。",
+    "house_planets_virtual": "{house_label}宫头在{sign_name}，宫内有{point_names}，另有{virtual_names}。",
+    "house_virtual_only": "{house_label}宫头在{sign_name}，没有十大行星落入，宫内另有{point_names}。",
+    "aspect": "{pair_text}形成{aspect_label}，容许度 {orb}°（{phase_label}），{aspect_short}。"
+  },
+  "overrides": {
+    "point_sign": {},
+    "point_house": {},
+    "point_sign_house": {}
+  },
+  "labels": {
+    "hemisphere": {"left": "左半盘", "right": "右半盘", "above": "上半盘", "below": "下半盘"},
+    "quadrant": {"1": "第一象限", "2": "第二象限", "3": "第三象限", "4": "第四象限"},
+    "element": {"fire": "火", "earth": "土", "air": "风", "water": "水"},
+    "modality": {"cardinal": "基本", "fixed": "固定", "mutable": "变动"},
+    "aspect": {"conjunction": "合相", "sextile": "六合", "square": "刑相", "trine": "拱相", "opposition": "对冲", "quincunx": "梅花"},
+    "phase": {"applying": "入相", "separating": "出相"}
+  },
+  "layout_text": {
+    "natal.hemisphere_left_majority": {"revision": 1, "text": "{count}/{total} 个行星落在左半盘（{houses} 宫），盘面结构重心更多集中在这一侧。"},
+    "natal.hemisphere_right_majority": {"revision": 1, "text": "{count}/{total} 个行星落在右半盘（{houses} 宫），盘面结构重心更多集中在这一侧。"},
+    "natal.hemisphere_above_majority": {"revision": 1, "text": "{count}/{total} 个行星落在上半盘（{houses} 宫），盘面结构重心更多集中在这一侧。"},
+    "natal.hemisphere_below_majority": {"revision": 1, "text": "{count}/{total} 个行星落在下半盘（{houses} 宫），盘面结构重心更多集中在这一侧。"},
+    "natal.quadrant_emphasis": {"revision": 1, "text": "{quadrant_label}（{houses} 宫）集中了 {count} 个行星，是四个象限里点位较多的一块。"},
+    "natal.empty_house": {"revision": 1, "text": "第 {house} 宫没有十大行星落入（宫头{sign_name}）。"},
+    "natal.aspect_harmony_majority": {"revision": 1, "text": "已计算的 {total} 条主要相位中，顺畅连接 {harmony} 条（{harmony_percent}%）、张力连接 {tension} 条，整体以顺畅连接为主。"},
+    "natal.aspect_tension_majority": {"revision": 1, "text": "已计算的 {total} 条主要相位中，张力连接 {tension} 条（{tension_percent}%）、顺畅连接 {harmony} 条，整体以需要协调的连接为主。"},
+    "natal.chart_ruler_placement": {"revision": 1, "text": "命主星{ruler_name}落在{ruler_sign_name}{ruler_house_text}，是这张盘上被上升点指向的点位。"},
+    "natal.angular_planet": {"revision": 1, "text": "{point_names}落在第 {house} 宫，靠近四轴。"},
+    "natal.retrograde_point": {"revision": 1, "text": "{point_names}在本命盘中为逆行视运动，表达上偏向向内、回看与重做。"},
+    "natal.element_emphasis": {"revision": 1, "text": "{element_label}元素点位数达到 {count}（阈值 {threshold}），是本盘上数量较多的元素。"},
+    "natal.modality_emphasis": {"revision": 1, "text": "{modality_label}模式点位数达到 {count}（阈值 {threshold}），是本盘上数量较多的模式。"},
+    "natal.house_stellium": {"revision": 1, "text": "第 {house} 宫聚集了 {count} 个点位：{point_names}。"},
+    "natal.sign_stellium": {"revision": 1, "text": "{sign_name}聚集了 {count} 个点位：{point_names}。"},
+    "natal.tight_aspect": {"revision": 1, "text": "{pair_text}形成{aspect_label}，容许度 {orb}°，是连接较紧密的一组。"}
+  },
+  "boundaries": [
+    "布局速读只描述排盘结构事实（点位、宫位、相位、统计口径），不判断吉凶，也不给出人生结论。",
+    "半球、象限、星座与宫位占据只统计十大行星；真交点、凯龙等虚点不参与分布统计，但会出现在逐点位卡片里。",
+    "空宫只表示该宫没有十大行星落入，不代表该领域缺失或空白。",
+    "相位只按顺畅 / 张力两轴描述，不使用吉凶相位分类。",
+    "逆行只表示视运动方向，不表述为负面事件。",
+    "星体 × 星座 × 宫位是组合式表达的通用倾向，不是针对个人的确定性判断。"
+  ]
+}
