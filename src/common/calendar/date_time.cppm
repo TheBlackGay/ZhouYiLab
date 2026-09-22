@@ -94,6 +94,12 @@ inline std::string format(const SolarDateTime& value) {
 }
 
 inline std::string format(const LunarDateTime& value) {
+    if (value.month < 0) {
+        // 闰月（负月约定）以"闰NN"呈现，避免 "{:02d}" 直落负数产生 "--2" 类畸形串。
+        return std::format("{:04d}-闰{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
+            value.year, -value.month, value.day,
+            value.hour, value.minute, value.second);
+    }
     return std::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
         value.year, value.month, value.day,
         value.hour, value.minute, value.second);

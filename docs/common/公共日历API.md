@@ -97,8 +97,8 @@ const SolarTimeCorrection correction = calculate_true_solar_time(
 
 响应 `data` 包含 `source`、`solar` 和 `lunar`。两个日期对象均包含年月日时分秒及 `display` 字段；农历对象额外包含 `leap_month`。
 
-> 已知瑕疵：闰月时 `lunar.display` 出现双负号格式（实测 `2023--2-01 09:05:00`，
-> 负月编号直接进了 `%02d`）。程序消费请用结构化的 `month`+`leap_month` 字段，勿解析 `display`。
+> 闰月时 `lunar.display` 的月位以“闰NN”呈现（实测 `2023-闰02-01 09:05:00`）；
+> 程序消费请优先使用结构化的 `month`+`leap_month` 字段，不要解析 `display`。
 
 ### `POST /api/v1/calendar/true-solar-time`
 

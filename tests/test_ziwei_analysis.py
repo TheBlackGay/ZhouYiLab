@@ -64,6 +64,12 @@ class ZiWeiAnalysisTests(unittest.TestCase):
             patterns=self.patterns,
         )
 
+    def test_scope_must_be_object_not_array(self):
+        # scope 传数组/字符串曾直落 AttributeError→HTTP 500，应 400 INVALID_REQUEST
+        for bad in (["natal"], "natal", 123):
+            with self.assertRaises(AnalysisRequestError):
+                self.analyze(scope=bad)
+
     def test_all_twelve_palaces_are_analyzed_by_default(self):
         result = self.analyze()
         self.assertEqual(12, len(result["palaces"]))

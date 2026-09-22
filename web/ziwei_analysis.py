@@ -199,6 +199,8 @@ def analyze_natal_chart(
         cases = cases or loaded_cases
         shen_sha = shen_sha or loaded_shen_sha
         patterns = patterns or loaded_patterns
+    if scope is not None and not isinstance(scope, dict):
+        raise AnalysisRequestError("scope 必须是 JSON 对象")
     scope = scope or {}
     layers = scope.get("layers", ["natal"])
     if layers != ["natal"] and set(layers) != {"natal"}:
