@@ -49,7 +49,7 @@
       </section>
       <button class="primary-action" type="submit">开始排盘</button><p id="form-error" class="error-message" role="alert" hidden></p>
     </form></aside>
-    <section class="results" aria-live="polite"><div id="empty-state" class="empty-state"><div class="empty-symbol">爻</div><h2>等待起卦</h2><p>输入起卦时间与六位卦码，生成纳甲、六亲和动爻信息。</p></div>
+    <section class="results"><div id="empty-state" class="empty-state"><div class="empty-symbol" aria-hidden="true">爻</div><h2>等待起卦</h2><p>输入起卦时间与六位卦码，生成纳甲、六亲和动爻信息。</p></div>
       <div id="result-content" hidden><header class="result-summary"><div><span>六爻排盘</span><strong id="summary-title">--</strong><small id="summary-date" class="muted">--</small></div><dl id="metrics" class="metrics"></dl></header>
         <div id="chart-panel" role="tabpanel" aria-labelledby="chart-tab"><div class="beginner-summary" aria-label="入门摘要"><div class="beginner-summary-heading"><span>先看这三点</span><small>先看事实，再看解释</small></div><div id="beginner-summary-list" class="beginner-summary-list"></div></div><div class="board-heading"><div><span>六爻明细</span><strong>从上爻到初爻</strong></div><button id="toggle-advanced" class="secondary-action compact-action" type="button" aria-expanded="false">显示辅助信息</button></div><div id="yao-list" class="yao-list advanced-collapsed"></div><div class="profile-zone"><div id="ly-profile-charts"></div><p id="ly-profile-fallback" hidden>卦面画像暂不可用，不影响盘面事实与其他功能。</p></div></div>
         <div id="summary-panel" role="tabpanel" aria-labelledby="summary-tab" hidden><div class="reading-guide"><strong>建议顺序</strong><span>先看世应，再找用神，最后看动爻和变卦。</span></div><div id="summary-grid" class="result-grid"></div><details class="term-help"><summary>术语速查</summary><dl><div><dt>世爻</dt><dd>通常代表求测者或事情主体。</dd></div><div><dt>应爻</dt><dd>通常代表对方、环境或所问对象。</dd></div><div><dt>用神</dt><dd>针对具体问题选择的观察对象，需结合问题类型判断。</dd></div><div><dt>旺衰</dt><dd>爻在当前月令下的状态，不等于直接的吉凶结论。</dd></div></dl></details><p class="fact-boundary"><strong>阅读提示</strong> 页面中的干支、六亲、旺衰和动爻是计算出的盘面事实；吉凶和趋势属于结合问题后的参考判断。</p></div>
@@ -75,6 +75,7 @@
     <div class="coin-header"><div><span>六爻起卦</span><h2 id="coin-title">模拟投币起卦</h2></div><button id="close-coin" type="button" aria-label="关闭模拟投币" title="关闭">×</button></div>
     <div class="coin-content"><p id="coin-status" class="coin-status">每次点击一次，投掷三枚硬币，共投六次。第一次记录为初爻。</p><div class="coin-stage" aria-live="polite"><div class="coin" data-coin="1">?</div><div class="coin" data-coin="2">?</div><div class="coin" data-coin="3">?</div></div><div id="coin-history" class="coin-history" aria-label="投币记录"></div><div class="coin-actions"><button id="start-coin" class="primary-action" type="button">投第 1 次</button><button id="reset-coin" class="secondary-action" type="button">重置进度</button></div><p class="coin-note">采用正面=3、反面=2：6 老阴、7 少阳、8 少阴、9 老阳。完成后会自动填入左侧表单。</p></div>
   </dialog>
+  <script src="/state-sync.js"></script>
   <script src="/navigation.js" defer></script><script src="/profile-charts.js" defer></script><script src="/liu-yao.js" defer></script>
 </body>
 </html>

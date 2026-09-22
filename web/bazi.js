@@ -384,6 +384,11 @@ form.addEventListener('submit', async event => {
           standard_meridian: Number(document.querySelector('#meridian').value),
           daylight_saving_minutes: Number(document.querySelector('#dst').value),
         },
+        location: window.PlacePickerState?.summary ? {
+          latitude: window.PlacePickerState.summary.lat,
+          longitude: window.PlacePickerState.summary.lon,
+          timezone: window.PlacePickerState.summary.tz_name,
+        } : undefined,
       }),
     });
     const result = await response.json();

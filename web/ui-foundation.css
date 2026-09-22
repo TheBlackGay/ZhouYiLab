@@ -1,33 +1,172 @@
-/* Shared UI contract for every divination workspace. Page styles may specialize tokens. */
+/* ============================================================
+ * ZhouYiLab · 设计 token 唯一真源（Source of Truth）
+ *
+ * 全站加载顺序固定为：ui-foundation.css → <模块>.css → app-shell.css
+ * 模块 CSS 只允许“覆盖” token（如 lab 页重定义 --accent 语义），
+ * 不得重新定义中性色/调色板的十六进制值。
+ * 所有 --ink/--paper/--muted 等中性色均已实测 WCAG AA（正文 ≥4.5:1）。
+ * ============================================================ */
 :root {
-  --paper: #f3f2ee;
-  --surface: #fff;
-  --ink: #1d2421;
-  --muted: #68716c;
-  --line: #d8dcd8;
-  --jade: #25634d;
-  --cinnabar: #a43b32;
-  --gold: #a67b2e;
   color-scheme: light;
   font-synthesis: none;
+
+  /* 表面 */
+  --paper: #f3f2ee;            /* 应用底色（宣纸） */
+  --bg: var(--paper);          /* 历史别名，勿在新规则中使用 */
+  --background: var(--paper);  /* 历史别名，勿在新规则中使用 */
+  --surface: #ffffff;
+  --panel: var(--surface);     /* 历史别名，勿在新规则中使用 */
+  --surface-alt: #f8f8f6;
+  --surface-muted: #f1f2ef;
+
+  /* 文字与分隔线 */
+  --ink: #1d2421;
+  --muted: #646d68;            /* 白底 5.34 / 纸底 4.77 */
+  --line: #d9ddd9;
+  --line-strong: #aeb6b0;
+
+  /* 品牌强调色 */
+  --jade: #25634d;             /* 黛青 */
+  --jade-soft: #e6efe9;
+  --cinnabar: #a43b32;         /* 朱砂 */
+  --accent: var(--cinnabar);
+  --accent-dark: #842525;
+  --gold: #8f6514;             /* 鎏金（由 #a67b2e 3.82:1 加深修复 AA） */
+  --navy: #1e3a5f;             /* lab 页（AI 审校/盲评）主色 */
+  --navy-soft: #e9eff6;
+
+  /* 状态色 */
+  --green: #087a5b;
+  --green-soft: #e5f4ee;
+  --amber: #a15c00;
+  --amber-soft: #fff4dc;
+  --danger: #b42318;
+  --danger-soft: #fff0ee;
+  --focus: #226c94;
+
+  /* 运限盘层色（紫微叠加层专用，白底均 ≥4.5:1） */
+  --layer-limit: #59625d;
+  --layer-year: #286fa6;
+  --layer-month: #a85a14;      /* 由 #bc681b 4.09:1 加深修复 AA */
+  --layer-day: #7650a3;
+  --layer-hour: #a43b32;
+
+  /* 字体栈（声明优先 Noto；系统回退已排好） */
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-serif: "Noto Serif SC", "Songti SC", Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* 圆角与阴影 */
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --shadow-dialog: 0 24px 70px rgb(20 29 25 / 24%);
 }
 
+/* ---------- 基础层（原先散落在各模块 CSS 的全局规则收敛至此） ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { overflow-x: hidden; }
-body { min-width: 320px; }
-.workspace, .input-panel, .results { min-width: 0; }
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
 [hidden] { display: none !important; }
 button, input, select, textarea { font: inherit; }
 button, a, label:has(input) { cursor: pointer; }
-button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
-  outline: 3px solid rgb(37 99 77 / 25%);
+button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, a:focus-visible, [tabindex]:focus-visible, summary:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--jade) 30%, transparent);
   outline-offset: 2px;
 }
 
 @media (max-width: 760px) {
+  /* 移动端输入防 iOS 缩放 */
   input, select, textarea { font-size: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ---------- 跨页共享组件 ---------- */
+
+/* 次要动作按钮（复制 AI 素材、复制排盘链接等） */
+.secondary-action {
+  min-height: 42px;
+  padding: 0 14px;
+  color: var(--jade);
+  background: transparent;
+  border: 1px solid var(--jade);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.secondary-action:hover { color: #fff; background: var(--jade); }
+.secondary-action:disabled { opacity: .6; cursor: wait; }
+
+/* 排盘链接操作行（state-sync.js 注入） */
+.link-copy-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.link-copy-row .secondary-action { flex: 0 0 auto; font-size: 13px; }
+.link-copy-status { min-height: 1.5em; margin: 0; color: var(--jade); font-size: 12px; }
+
+/* 错误块的重试按钮（state-sync.js 注入，紧邻 role="alert" 显示） */
+.error-retry {
+  min-height: 36px;
+  margin-top: 8px;
+  padding: 0 12px;
+  color: var(--cinnabar);
+  background: transparent;
+  border: 1px solid var(--cinnabar);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+}
+.error-retry:hover { color: #fff; background: var(--cinnabar); }
+
+/* 骨架屏（内容加载占位） */
+.skeleton {
+  display: block;
+  min-height: 14px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--surface-muted) 25%, #e8eae6 37%, var(--surface-muted) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-pan 1.4s ease infinite;
+}
+@keyframes skeleton-pan {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+.skeleton-stack { display: grid; gap: 10px; width: min(100%, 560px); }
+.skeleton-stack .skeleton:nth-child(2) { width: 88%; }
+.skeleton-stack .skeleton:nth-child(3) { width: 64%; }
+
+/* ---------- 触控目标（≤760px 提升至 ≥44px；行内术语小标签放宽至 36） ---------- */
+@media (max-width: 760px) {
+  .compact-action,
+  .secondary-action,
+  .mode-toggle span,
+  .input-panel .segmented span,
+  .card-sort button,
+  .wheel-orientation button,
+  .natal-locate,
+  .wheel-highlight-note button,
+  .research-link,
+  .section-heading button,
+  .provider-card > header button,
+  .connection-row button,
+  .overview-actions button,
+  .history-band header button,
+  .run-section select,
+  .lab-header nav a { min-height: 44px; }
+  .dlr-term { min-height: 36px; }
 }

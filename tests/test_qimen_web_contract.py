@@ -26,8 +26,17 @@ class QiMenWebContractTests(unittest.TestCase):
         self.assertIn('id="help-dialog"', HTML)
         self.assertIn('id="subject-birth-date"', HTML)
         self.assertIn('id="counterpart-birth-date"', HTML)
+        self.assertIn('id="true-solar"', HTML)
+        self.assertIn('id="longitude"', HTML)
+        self.assertIn('id="meridian"', HTML)
         self.assertNotIn('id="subject-stem"', HTML)
         self.assertNotIn('id="counterpart-stem"', HTML)
+
+    def test_time_correction_and_place_picker_are_wired(self):
+        self.assertIn("time_correction", JAVASCRIPT)
+        self.assertIn("true_solar_time", JAVASCRIPT)
+        self.assertIn("/place-picker.js", HTML)
+        self.assertIn("PLACE_PICKER_CONFIG", HTML)
 
     def test_all_palaces_have_learning_metadata(self):
         palace_entries = re.findall(

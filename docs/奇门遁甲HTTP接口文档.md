@@ -45,11 +45,40 @@ python3 web/server.py --port 8765
 }
 ```
 
+需要按出生地真太阳时起局时，在请求中加入统一的 `time_correction`：
+
+```json
+{
+  "calendar": "solar",
+  "date": {
+    "year": 2026,
+    "month": 9,
+    "day": 2,
+    "hour": 20,
+    "minute": 20
+  },
+  "time_correction": {
+    "mode": "true_solar_time",
+    "longitude": 121.4737,
+    "standard_meridian": 120,
+    "daylight_saving_minutes": 0
+  },
+  "location": {
+    "latitude": 31.2304,
+    "longitude": 121.4737,
+    "timezone": "Asia/Shanghai"
+  }
+}
+```
+
+奇门会先将农历输入转换为公历，再按 `time_correction` 计算 `chart_time`，最后使用校正后的日期、节气、日干支和时干支起局。未提供该字段时默认使用标准时间，保持兼容。
+
 农历请求使用 `calendar: "lunar"`，闰月需额外传入 `"leap_month": true`。
 
 成功响应的 `data` 包含：
 
 - `method` 与 `center_lodging` 算法规则标识；
+- `birth_date`、`birth_time` 及 `time_correction` 校正明细；
 - 公历、农历和四柱信息；
 - 阴阳遁、三元、局数和节气；
 - 直符、直使及直符所在宫；

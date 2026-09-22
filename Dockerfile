@@ -1,38 +1,50 @@
 # syntax=docker/dockerfile:1
 
-FROM silkeh/clang:20 AS builder
+ARG BUILDER_IMAGE=silkeh/clang:20
+ARG RUNTIME_IMAGE=ubuntu:24.04
+ARG BUILD_JOBS=auto
+
+FROM ${BUILDER_IMAGE} AS builder
+
+ARG BUILD_JOBS=auto
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,target=/root/.cache/pip \
+    apt-get update \
     && apt-get install -y --no-install-recommends cmake ninja-build python3 python3-pip ca-certificates \
-    && pip3 install --break-system-packages --no-cache-dir 'cmake>=3.28' \
-    && rm -rf /var/lib/apt/lists/*
+    && pip3 install --break-system-packages 'cmake>=3.28'
 
 WORKDIR /src
 COPY . .
 
-RUN cmake -S . -B build-docker -G Ninja \
+RUN jobs="${BUILD_JOBS}"; if [ "$jobs" = "auto" ]; then jobs="$(nproc)"; fi; \
+    cmake -S . -B build-docker -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_CXX_COMPILER=clang++ \
       -DBUILD_EXAMPLES=OFF \
-    && cmake --build build-docker --parallel 2 --target \
+    && cmake --build build-docker --parallel "$jobs" --target \
       zi_wei_web_cli qi_men_web_cli ba_zi_web_cli liu_yao_web_cli da_liu_ren_web_cli mei_hua_web_cli common_calendar_web_cli astro_web_cli
 
-FROM ubuntu:24.04 AS runtime
+FROM ${RUNTIME_IMAGE} AS runtime
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     ZHOUYILAB_BIND_HOST=0.0.0.0 \
     ZHOUYILAB_EPHEMERIS_PATH=/app/data/ephemeris
-RUN apt-get update \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update \
     && apt-get install -y --no-install-recommends python3 python3-pip ca-certificates libc++1 libc++abi1 \
-    && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home --uid 10001 --shell /usr/sbin/nologin zhouyi
 
 WORKDIR /app
+COPY --from=builder /src/web/requirements.txt ./web/requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip3 install --break-system-packages -r ./web/requirements.txt
 COPY --from=builder /src/web ./web
-RUN pip3 install --break-system-packages --no-cache-dir -r ./web/requirements.txt
 COPY --from=builder /src/config ./config
 COPY --from=builder /src/data/ephemeris ./data/ephemeris
 COPY --from=builder /src/data/geo ./data/geo

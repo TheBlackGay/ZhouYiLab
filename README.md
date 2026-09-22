@@ -151,6 +151,24 @@ python3 web/server.py --port 8768
 如需临时覆盖端口或目标目录，可通过 `ZHOUYILAB_DEPLOY_PORT`、
 `ZHOUYILAB_DEPLOY_DIR` 等同名环境变量覆盖默认值。
 
+#### 一键部署到 10.10.8.99
+
+本机已配置 SSH 别名 `cloud-deploy-99` 时，在项目根目录执行：
+
+```bash
+./scripts/deploy-zhouyilab-99.sh
+```
+
+脚本会同步当前代码到 `/home/h3c/zhouyilab`，在服务器上重新构建并启动容器，
+最后检查 `/api/v1/health`。可用环境变量覆盖默认目标：
+
+```bash
+ZHOUYILAB_DEPLOY_HOST=cloud-deploy-99 \
+ZHOUYILAB_DEPLOY_DIR=/home/h3c/zhouyilab \
+ZHOUYILAB_DEPLOY_PORT=8768 \
+./scripts/deploy-zhouyilab-99.sh
+```
+
 #### 从源码构建并启动
 
 ```bash
@@ -176,44 +194,72 @@ docker compose restart
 docker compose down
 ```
 
-#### 构建并推送 Docker Hub 镜像
+#### 构建并推送阿里云 Container Registry 镜像
 
-镜像仓库为 `1047028213/zhouyilab`：
+以下命令使用阿里云个人版 Container Registry。登录密码请按阿里云提示输入，
+不要把密码写入命令或提交到仓库。
 
 ```bash
-docker login -u 1047028213
-docker build -t 1047028213/zhouyilab:latest .
-docker push 1047028213/zhouyilab:latest
+docker login --username=tb63126440 crpi-ip3van137b8rcj4d.cn-hangzhou.personal.cr.aliyuncs.com
+docker build --build-arg BUILD_JOBS=auto -t tb63126440/zhouyilab:3.0.0 .
+docker tag tb63126440/zhouyilab:3.0.0 crpi-ip3van137b8rcj4d.cn-hangzhou.personal.cr.aliyuncs.com/zhuifengderen/zhouyilab:3.0.0
+docker push crpi-ip3van137b8rcj4d.cn-hangzhou.personal.cr.aliyuncs.com/zhuifengderen/zhouyilab:3.0.0
 ```
 
-建议同时发布版本标签：
+如果基础镜像下载较慢，可先配置 Docker 镜像加速器，或将基础镜像同步到可访问的仓库后替换：
 
 ```bash
-docker build -t 1047028213/zhouyilab:1.6.0 -t 1047028213/zhouyilab:latest .
-docker push 1047028213/zhouyilab:1.6.0
-docker push 1047028213/zhouyilab:latest
+docker build --build-arg BUILDER_IMAGE=<你的镜像仓库>/silkeh/clang:20 \
+  --build-arg RUNTIME_IMAGE=<你的镜像仓库>/ubuntu:24.04 \
+  --build-arg BUILD_JOBS=auto -t tb63126440/zhouyilab:3.0.0 .
 ```
 
-#### 使用 Docker Hub 镜像部署
+> `BUILD_JOBS=auto` 会使用容器可见的 CPU 核数；内存较小的机器可改为 `BUILD_JOBS=2`。
 
-在目标服务器安装 Docker 后，拉取并启动最新镜像：
+#### 他人部署（使用已发布镜像）
+
+部署者只需要一台安装 Docker Engine 24+ 和 Docker Compose v2+ 的服务器，
+不需要安装 C++、CMake 或 Python。先获取 Compose 配置：
 
 ```bash
-docker login -u 1047028213
+git clone --depth 1 https://github.com/TheBlackGay/ZhouYiLab.git
+cd ZhouYiLab
+```
+
+该 ACR 仓库如果设置为私有，需要每位部署者使用自己的阿里云账号登录；密码按终端提示输入，
+不要写入脚本或提交到仓库。然后拉取并启动已发布镜像：
+
+```bash
+export ZHOUYILAB_IMAGE=crpi-ip3van137b8rcj4d.cn-hangzhou.personal.cr.aliyuncs.com/zhuifengderen/zhouyilab:3.0.0
+docker login --username=tb63126440 crpi-ip3van137b8rcj4d.cn-hangzhou.personal.cr.aliyuncs.com
 docker compose pull
-docker compose up -d
+docker compose up -d --no-build
 ```
+
+启动后访问 `http://服务器IP:8768/`，或检查健康接口：
+
+```bash
+curl http://127.0.0.1:8768/api/v1/health
+```
+
+如果宿主机的 `8768` 端口已被占用，可以换端口：
+
+```bash
+ZHOUYILAB_PORT=9000 docker compose up -d --no-build
+```
+
+此时访问 `http://服务器IP:9000/`。公网部署还需要在防火墙或安全组放行对应端口。
 
 只使用 Docker CLI 运行（不使用 Compose）：
 
 ```bash
-docker pull 1047028213/zhouyilab:latest
+docker pull crpi-ip3van137b8rcj4d.cn-hangzhou.personal.cr.aliyuncs.com/zhuifengderen/zhouyilab:3.0.0
 docker volume create zhouyilab-data
 docker run -d --name zhouyilab \
   --restart unless-stopped \
   -p 8768:8768 \
   -v zhouyilab-data:/app/.zhouyilab \
-  1047028213/zhouyilab:latest
+  crpi-ip3van137b8rcj4d.cn-hangzhou.personal.cr.aliyuncs.com/zhuifengderen/zhouyilab:3.0.0
 ```
 
 查看运行状态：
@@ -227,17 +273,9 @@ curl http://127.0.0.1:8768/api/v1/health
 
 ```bash
 docker compose pull
-docker compose up -d
+docker compose up -d --no-build
 docker image prune -f
 ```
-
-自定义宿主机端口（容器内部仍使用 `8768`）：
-
-```bash
-ZHOUYILAB_PORT=9000 docker compose up -d
-```
-
-此时访问 `http://127.0.0.1:9000/`。如果服务器通过公网访问，请在防火墙或安全组中放行对应端口。
 
 ### 2.x 产品规划
 

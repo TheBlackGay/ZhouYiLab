@@ -626,6 +626,11 @@ form.addEventListener('submit', async event => {
         standard_meridian: Number(document.querySelector('#meridian').value),
         daylight_saving_minutes: Number(document.querySelector('#dst').value),
       },
+      location: window.PlacePickerState?.summary ? {
+        latitude: window.PlacePickerState.summary.lat,
+        longitude: window.PlacePickerState.summary.lon,
+        timezone: window.PlacePickerState.summary.tz_name,
+      } : undefined,
       target: {
         ...dateAndTime('#target-date', '#target-time'),
         second: 0,
@@ -647,7 +652,10 @@ form.addEventListener('submit', async event => {
 });
 
 document.querySelectorAll('.tabs button').forEach(button => button.addEventListener('click', () => {
-  document.querySelectorAll('.tabs button').forEach(item => item.setAttribute('aria-selected', String(item === button)));
+  document.querySelectorAll('.tabs button').forEach(item => {
+    item.setAttribute('aria-selected', String(item === button));
+    item.tabIndex = item === button ? 0 : -1;
+  });
   document.querySelectorAll('.tab-panel').forEach(panel => { panel.hidden = panel.id !== `tab-${button.dataset.tab}`; });
 }));
 
@@ -673,12 +681,18 @@ document.querySelector('#analysis-pattern-list').addEventListener('click', event
   document.querySelector('#analysis-content').scrollIntoView({ block: 'start', behavior: 'smooth' });
 });
 
+function setBoardView(view) {
+  document.querySelector('#palace-board').dataset.view = view;
+  document.querySelectorAll('.board-view-toggle button').forEach(item => item.setAttribute('aria-pressed', String(item.dataset.view === view)));
+}
 document.querySelector('.board-view-toggle').addEventListener('click', event => {
   const button = event.target.closest('button[data-view]');
   if (!button) return;
-  document.querySelector('#palace-board').dataset.view = button.dataset.view;
-  document.querySelectorAll('.board-view-toggle button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  setBoardView(button.dataset.view);
 });
+/* 小屏默认列表视图：16 宫全盘在手机宽度下文字密度过高，列表保留全部信息；
+ * 用户仍可通过工具条上的「全盘」按钮切回全盘视图。 */
+if (window.matchMedia('(max-width: 900px)').matches) setBoardView('list');
 
 trueSolarInput.addEventListener('change', () => { solarOptions.hidden = !trueSolarInput.checked; });
 document.querySelector('#birth-date').addEventListener('change', updateAge);

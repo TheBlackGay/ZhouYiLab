@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="/divination.css">
   <link rel="stylesheet" href="/app-shell.css">
   <style>
-    .yao-row { display:flex; align-items:center; gap:10px; font-family:ui-monospace,Menlo,monospace; font-size:15px; letter-spacing:1px; padding:2px 0; }
-    .yao-row small { color:var(--muted,#68716c); font-family:inherit; letter-spacing:0; }
-    .yao-row .moving { color:var(--gold,#a67b2e); font-weight:700; }
+    .yao-row { display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:15px; letter-spacing:1px; padding:2px 0; }
+    .yao-row small { color:var(--muted); font-family:inherit; letter-spacing:0; }
+    .yao-row .moving { color:var(--gold); font-weight:700; }
     .gua-card h3 { margin:0 0 4px; }
-    .gua-card .palace { color:var(--muted,#68716c); font-size:12.5px; margin:0 0 10px; }
+    .gua-card .palace { color:var(--muted); font-size:12.5px; margin:0 0 10px; }
     .tiyong-flow { display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
     .tiyong-flow b { font-size:15px; }
-    .tiyong-flow .rel { padding:4px 12px; border:1px solid var(--line,#d8dcd8); border-radius:14px; background:#f7f3e9; }
+    .tiyong-flow .rel { padding:4px 12px; border:1px solid var(--line); border-radius:14px; background:#f7f3e9; }
   </style>
 </head>
 <body>
@@ -58,8 +58,8 @@
       <button class="primary-action" type="submit">起卦</button><p id="form-error" class="error-message" role="alert" hidden></p>
     </form></aside>
 
-    <section class="results" aria-live="polite">
-      <div id="empty-state" class="empty-state"><div class="empty-symbol">卦</div><h2>等待起卦</h2><p>选择时间或报数方式，生成体用互变事实盘。</p></div>
+    <section class="results">
+      <div id="empty-state" class="empty-state"><div class="empty-symbol" aria-hidden="true">卦</div><h2>等待起卦</h2><p>选择时间或报数方式，生成体用互变事实盘。</p></div>
       <div id="result-content" hidden>
         <header class="result-summary"><div><span>梅花易数</span><strong id="summary-title">--</strong><small id="summary-date" class="muted">--</small></div><dl id="metrics" class="metrics"></dl></header>
         <p class="fact-boundary"><strong>阅读提示</strong> 卦码、体用与月令旺衰是盘面计算事实；体用生克判词为结构关系描述，不构成吉凶断语。本模块算法口径校核中（pending）。</p>
@@ -73,6 +73,7 @@
       </div>
     </section>
   </main>
+  <script src="/state-sync.js"></script>
   <script src="/navigation.js" defer></script><script src="/profile-charts.js" defer></script><script src="/meihua.js" defer></script>
 </body>
 </html>

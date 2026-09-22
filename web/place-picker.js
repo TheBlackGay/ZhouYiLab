@@ -12,7 +12,7 @@
  *   window.PLACE_PICKER_CONFIG = {
  *     mount, dateInput, timeInput, houseInput,
  *     mode: 'geo+offset',
- *     outputs: { offset, lat, lon },
+ *     outputs: { offset, meridian, dst, lat, lon },
  *     popular: [{ id, name }],   // G1 空输入快捷项；最近使用属 G2
  *   };
  */
@@ -511,6 +511,8 @@
         selected = data.place || selected;
         if (!keepValues) {
           if (data.time.utc_offset_minutes != null) writeOutput('offset', data.time.utc_offset_minutes);
+          if (data.time.std_offset_minutes != null) writeOutput('meridian', data.time.std_offset_minutes / 4);
+          if (data.time.dst_minutes != null) writeOutput('dst', data.time.dst_minutes);
           if (data.place) {
             writeOutput('lat', data.place.lat);
             writeOutput('lon', data.place.lon);
@@ -653,8 +655,7 @@
 
     tuneToggle.addEventListener('click', openTune);
 
-    if (dateInput) {
-      dateInput.addEventListener('change', function () {
+    function refreshTimeResolution() {
         if (state === 'auto' && lastResolution && lastResolution.place) {
           resolveById(lastResolution.place.id);
         } else if (state === 'manual' && selected && selected.id) {
@@ -662,8 +663,9 @@
         } else if (state === 'manual' || state === 'unresolved') {
           rederive();
         }
-      });
     }
+    if (dateInput) dateInput.addEventListener('change', refreshTimeResolution);
+    if (timeInput) timeInput.addEventListener('change', refreshTimeResolution);
     if (houseInput) {
       houseInput.addEventListener('change', function () {
         if (state === 'auto' && lastResolution && lastResolution.place) resolveById(lastResolution.place.id);

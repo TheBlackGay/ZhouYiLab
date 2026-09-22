@@ -14,28 +14,28 @@
 .pillar { min-width: 0; display: grid; grid-template-rows: auto auto auto auto auto 1fr; background: var(--surface); text-align: center; }
 .pillar header { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 9px 13px; border-bottom: 1px solid var(--line); }
 .pillar header strong { font-size: 13px; }
-.pillar header span { color: var(--muted); font-size: 10px; }
+.pillar header span { color: var(--muted); font-size: 11px; }
 .pillar-main { display: grid; gap: 3px; padding: 17px 8px 13px; }
 .pillar-main small { color: var(--cinnabar); font-size: 11px; font-weight: 700; }
 .pillar-main strong { font: 600 38px/1.15 "Noto Serif SC", serif; }
 .pillar-main strong.stem { color: var(--cinnabar); }
 .pillar-main strong.branch { color: var(--jade); }
-.pillar-main em { color: var(--muted); font-size: 10px; font-style: normal; }
+.pillar-main em { color: var(--muted); font-size: 11px; font-style: normal; }
 .hidden-stems { display: grid; align-content: start; gap: 7px; min-height: 96px; padding: 12px; border-top: 1px solid var(--line); }
-.hidden-stems > small { color: var(--muted); font-size: 10px; }
+.hidden-stems > small { color: var(--muted); font-size: 11px; }
 .hidden-stems div { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
 .hidden-stems span { display: inline-flex; align-items: baseline; gap: 3px; padding: 4px 6px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 3px; font-weight: 700; }
-.hidden-stems span small { color: var(--muted); font-size: 9px; font-weight: 400; }
+.hidden-stems span small { color: var(--muted); font-size: 10px; font-weight: 400; }
 .pillar-facts { margin: 0; border-top: 1px solid var(--line); }
 .pillar-facts div { min-height: 37px; display: grid; grid-template-columns: 42px 1fr; align-items: center; gap: 5px; padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; }
 .pillar-facts div:last-child { border-bottom: 0; }
-.pillar-facts dt { color: var(--muted); font-size: 10px; }
+.pillar-facts dt { color: var(--muted); font-size: 11px; }
 .pillar-facts dd { margin: 0; font-size: 11px; font-weight: 700; }
 .pillar-shensha { display: grid; align-content: start; gap: 7px; min-height: 92px; padding: 11px 10px; border-top: 1px solid var(--line); text-align: left; }
-.pillar-shensha > small { color: var(--muted); font-size: 10px; }
+.pillar-shensha > small { color: var(--muted); font-size: 11px; }
 .pillar-shensha > div { display: flex; flex-wrap: wrap; gap: 5px; }
 .pillar-shensha span,
-.pillar-shensha button { min-height: 28px; display: inline-flex; align-items: center; padding: 3px 6px; color: #745b28; background: #fbf8ef; border: 1px solid #ddd2b8; border-radius: 3px; font-size: 10px; font-weight: 700; line-height: 1.35; }
+.pillar-shensha button { min-height: 28px; display: inline-flex; align-items: center; padding: 3px 6px; color: #745b28; background: #fbf8ef; border: 1px solid #ddd2b8; border-radius: 3px; font-size: 11px; font-weight: 700; line-height: 1.35; }
 .pillar-shensha button { min-height: 44px; cursor: pointer; font-family: inherit; text-decoration: underline; text-decoration-color: #ad9a70; text-underline-offset: 3px; }
 .pillar-shensha button:hover { color: var(--cinnabar); border-color: var(--gold); }
 .pillar-shensha button:focus-visible { outline: 3px solid color-mix(in srgb, var(--jade) 34%, transparent); outline-offset: 2px; }
@@ -64,7 +64,7 @@
 .shen-sha-catalog-item:hover, .shen-sha-catalog-item:focus-visible { border-color: var(--gold); background: var(--paper); }
 .shen-sha-catalog-item.matched { border-color: var(--accent); }
 .shen-sha-catalog-item span { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
-.shen-sha-catalog-item small { flex: 0 0 auto; color: var(--muted); font-size: 10px; }
+.shen-sha-catalog-item small { flex: 0 0 auto; color: var(--muted); font-size: 11px; }
 .source-document { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
 .source-document summary { cursor: pointer; color: var(--accent); font-size: 12px; }
 .source-document pre { max-height: 420px; overflow: auto; margin: 10px 0 0; white-space: pre-wrap; color: var(--muted); font: 12px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -84,7 +84,7 @@
 .help-table-wrap table { width: 100%; min-width: 580px; border-collapse: collapse; font-size: 12px; }
 .help-table-wrap th,
 .help-table-wrap td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-.help-table-wrap thead th { color: var(--muted); background: var(--paper); font-size: 10px; }
+.help-table-wrap thead th { color: var(--muted); background: var(--paper); font-size: 11px; }
 .help-table-wrap tbody tr:last-child th,
 .help-table-wrap tbody tr:last-child td { border-bottom: 0; }
 .dialog-loading,
@@ -93,7 +93,7 @@
 .time-correction-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 18px 0 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .time-correction-summary div { min-width: 0; display: grid; gap: 4px; padding: 12px; border-right: 1px solid var(--line); }
 .time-correction-summary div:last-child { border-right: 0; }
-.time-correction-summary dt { color: var(--muted); font-size: 10px; }
+.time-correction-summary dt { color: var(--muted); font-size: 11px; }
 .time-correction-summary dd { margin: 0; overflow-wrap: anywhere; font-size: 12px; font-weight: 700; }
 .fortune-heading { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .fortune-heading > div { display: grid; gap: 4px; }
@@ -104,9 +104,9 @@
 .fortune-card.current { box-shadow: inset 0 0 0 2px var(--gold); background: #fbf8ef; }
 .fortune-card header { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
 .fortune-card header strong { color: var(--jade); font: 600 22px/1.2 "Noto Serif SC", serif; }
-.fortune-card header span { color: var(--gold); font-size: 9px; font-weight: 800; }
+.fortune-card header span { color: var(--gold); font-size: 10px; font-weight: 800; }
 .fortune-card p { margin: 0; color: var(--ink); font-size: 11px; line-height: 1.55; }
-.fortune-card small { color: var(--muted); font-size: 10px; line-height: 1.5; }
+.fortune-card small { color: var(--muted); font-size: 11px; line-height: 1.5; }
 
 @media (max-width: 780px) {
   .pillar-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }

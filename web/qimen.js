@@ -3,6 +3,7 @@ const submitButton = form.querySelector('.primary-action');
 const errorBox = document.querySelector('#form-error');
 const solarFields = document.querySelector('#solar-fields');
 const lunarFields = document.querySelector('#lunar-fields');
+const trueSolarInput = document.querySelector('#true-solar');
 const resultContent = document.querySelector('#result-content');
 const emptyState = document.querySelector('#empty-state');
 const tabs = [...document.querySelectorAll('[role="tab"]')];
@@ -498,11 +499,25 @@ helpDialog.addEventListener('click', event => {
   if (event.target === helpDialog) helpDialog.close();
 });
 
-async function requestQiMenChart(calendar, date) {
+async function requestQiMenChart(calendar, date, includeLocation = false) {
+  const payload = { calendar, date };
+  if (includeLocation && trueSolarInput) {
+    payload.time_correction = {
+      mode: trueSolarInput.checked ? 'true_solar_time' : 'standard_time',
+      longitude: Number(document.querySelector('#longitude').value),
+      standard_meridian: Number(document.querySelector('#meridian').value),
+      daylight_saving_minutes: Number(document.querySelector('#dst').value),
+    };
+    payload.location = window.PlacePickerState?.summary ? {
+      latitude: window.PlacePickerState.summary.lat,
+      longitude: window.PlacePickerState.summary.lon,
+      timezone: window.PlacePickerState.summary.tz_name,
+    } : undefined;
+  }
   const response = await fetch('/api/v1/qimen/charts', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ calendar, date }),
+    body: JSON.stringify(payload),
   });
   const result = await response.json();
   if (!response.ok || !result.success) throw new Error(result.error?.message || '奇门排盘失败');
@@ -561,7 +576,7 @@ form.addEventListener('submit', async event => {
     const subjectBirthDate = document.querySelector('#subject-birth-date').value;
     const counterpartBirthDate = document.querySelector('#counterpart-birth-date').value;
     const [chart, subjectLife, counterpartLife] = await Promise.all([
-      requestQiMenChart(calendar, date),
+      requestQiMenChart(calendar, date, true),
       loadLifeProfile(subjectBirthDate),
       loadLifeProfile(counterpartBirthDate),
     ]);
