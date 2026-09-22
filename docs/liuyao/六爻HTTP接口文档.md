@@ -7,7 +7,7 @@
 ## 对外访问地址
 
 - 本地：`http://127.0.0.1:8765`（开发端口）或部署机 `:8768`
-- 生产：`https://zhouyilab.k8s.gold`（详见 [HTTP 接口访问地址](HTTP接口访问地址.md)）
+- 生产：`https://zhouyilab.k8s.gold`（详见 [HTTP 接口访问地址](../HTTP接口访问地址.md)）
 
 ## 起卦（排盘）
 
@@ -74,7 +74,7 @@
 
 - 起卦归人：接口只接受编码，"心诚则灵"式随机源不代供（摇卦器在页面）；
 - 伏神可用结论、古籍验例：待《增删卜易》原文逐字校勘
-  （[`伏神章校勘工作底稿`](product/伏神章校勘工作底稿.md)）；
+  （[`伏神章校勘工作底稿`](../product/伏神章校勘工作底稿.md)）；
 - 结构回归锁：`test_liuyao_hexagram_table_contract`（64 卦全表）、
   `test_liuyao_jin_tui_contract`（四对扫描）、`test_liuyao_cases`（七例重放）、
   `test_wang_shuai_contract`（五表）。

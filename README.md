@@ -426,11 +426,11 @@ curl -sS \
 
 - [紫微斗数 HTTP 接口文档](docs/ziwei/紫微斗数HTTP接口文档.md)
 - [公共日历 API 文档](docs/common/公共日历API.md)
-- [奇门遁甲 HTTP 接口文档](docs/奇门遁甲HTTP接口文档.md)
-- [梅花易数 HTTP 接口文档](docs/梅花易数HTTP接口文档.md)
-- [六爻 HTTP 接口文档](docs/六爻HTTP接口文档.md)
-- [八字 HTTP 接口文档](docs/八字HTTP接口文档.md)
-- [大六壬 HTTP 接口文档](docs/大六壬HTTP接口文档.md)
+- [奇门遁甲 HTTP 接口文档](docs/qimen/奇门遁甲HTTP接口文档.md)
+- [梅花易数 HTTP 接口文档](docs/meihua/梅花易数HTTP接口文档.md)
+- [六爻 HTTP 接口文档](docs/liuyao/六爻HTTP接口文档.md)
+- [八字 HTTP 接口文档](docs/bazi/八字HTTP接口文档.md)
+- [大六壬 HTTP 接口文档](docs/daliuren/大六壬HTTP接口文档.md)
 - [西洋占星 HTTP 接口文档](docs/astro/西洋占星HTTP接口文档.md)
 - [统一 HTTP 接口访问地址](docs/HTTP接口访问地址.md)
 - [Swiss Ephemeris 集成设计与 Astro 接口契约](docs/astro/Swiss-Ephemeris-集成设计.md)
@@ -603,8 +603,8 @@ ZhouYiLab/
 
 - [模块说明](MODULES.md)
 - [紫微斗数命盘与运限分析准则](docs/ziwei/紫微斗数命盘与运限分析准则.md)
-- [紫微斗数安星诀](docs/紫微斗数-安星决.md)
-- [奇门遁甲起课步骤](docs/奇门遁甲起课%20步骤.md)
+- [紫微斗数安星诀](docs/ziwei/紫微斗数-安星决.md)
+- [奇门遁甲起课步骤](docs/qimen/奇门遁甲起课-步骤.md)
 - [盲评与一致性分析方案](docs/ziwei/research/盲评与一致性分析方案-v0.1.md)
 - [紫微斗数星曜作用模型研究协议](docs/ziwei/research/紫微斗数星曜作用模型研究协议-v0.1.md)
 

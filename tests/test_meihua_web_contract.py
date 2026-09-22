@@ -57,7 +57,7 @@ class MeiHuaPlatformWiringTests(unittest.TestCase):
                 self.assertIn('href="/meihua.html"', html)
 
     def test_docs_and_readme_consistent(self):
-        doc = (ROOT / "docs" / "梅花易数HTTP接口文档.md").read_text(encoding="utf-8")
+        doc = (ROOT / "docs" / "meihua" / "梅花易数HTTP接口文档.md").read_text(encoding="utf-8")
         self.assertIn("/api/v1/mei-hua/plates", doc)
         self.assertIn("十五分界", doc)
         self.assertIn("meihua-plate/1.0", doc)

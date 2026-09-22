@@ -48,7 +48,7 @@
     },
     "doc": {
       "type": "string",
-      "description": "仓库内文档路径，如 docs/毕法赋.md"
+      "description": "仓库内文档路径，如 docs/daliuren/毕法赋.md"
     }
   }
 }

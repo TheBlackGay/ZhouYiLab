@@ -6,7 +6,7 @@
 ## 对外访问地址
 
 - 本地：`http://127.0.0.1:8765` 或部署机 `:8768`
-- 生产：`https://zhouyilab.k8s.gold`（详见 [HTTP 接口访问地址](HTTP接口访问地址.md)）
+- 生产：`https://zhouyilab.k8s.gold`（详见 [HTTP 接口访问地址](../HTTP接口访问地址.md)）
 
 ## 排盘
 

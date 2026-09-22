@@ -4,7 +4,7 @@
   "name": "梅花易数",
   "engine_cli": "build/examples/mei_hua_web_cli",
   "calibration_status": "pending",
-  "interface_doc": "docs/梅花易数HTTP接口文档.md",
+  "interface_doc": "docs/meihua/梅花易数HTTP接口文档.md",
   "rule_profile_version": "meihua-rules/0.1",
   "pages": [
     "meihua.html"
