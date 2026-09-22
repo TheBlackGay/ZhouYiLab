@@ -49,7 +49,16 @@ const SolarTimeCorrection correction = calculate_true_solar_time(
 
 ## HTTP API
 
-公共接口使用与其他服务相同的响应包装：`success`、`data`、`meta`。
+公共接口使用与其他服务相同的响应包装：`success`、`data`、`meta`
+（顶层 `meta` 仅 `api_version`/`algorithm_version`/`request_id`）。
+
+### 部署与 CLI 依赖
+
+两个 HTTP 端点由 server.py 调 `build/examples/common_calendar_web_cli`（注入
+`operation` 字段：`calendar_convert` / `calendar_true_solar_time`）。该工具在清单中
+`required_at_startup: false`：日历 CLI 缺失**不阻塞服务启动**，但调用两端点将返回
+500 `ENGINE_UNAVAILABLE`（消息"计算引擎尚未构建"）。接入前可用
+`GET /api/v1/health` 的 `calendar_cli_available` 预检。
 
 ### `POST /api/v1/calendar/convert`
 
@@ -88,6 +97,9 @@ const SolarTimeCorrection correction = calculate_true_solar_time(
 
 响应 `data` 包含 `source`、`solar` 和 `lunar`。两个日期对象均包含年月日时分秒及 `display` 字段；农历对象额外包含 `leap_month`。
 
+> 已知瑕疵：闰月时 `lunar.display` 出现双负号格式（实测 `2023--2-01 09:05:00`，
+> 负月编号直接进了 `%02d`）。程序消费请用结构化的 `month`+`leap_month` 字段，勿解析 `display`。
+
 ### `POST /api/v1/calendar/true-solar-time`
 
 请求：
@@ -110,4 +122,12 @@ const SolarTimeCorrection correction = calculate_true_solar_time(
 
 响应 `data` 包含 `recorded_time`、`standard_time`、`true_solar_time`、`chart_time` 和全部校正明细。`chart_time` 与现有紫微接口保持同名兼容，`true_solar_time` 是公共接口的明确名称。
 
-错误输入返回统一错误对象，常见错误码为 `INVALID_REQUEST`、`INVALID_ARGUMENT` 和 `CALCULATION_FAILED`。
+错误输入返回统一错误对象 `{"error": {"code", "message"}, "meta": …}`，按状态码：
+
+| HTTP | code | 场景 |
+|---|---|---|
+| 400 | `INVALID_REQUEST` | 请求体非 JSON 等 server 层校验 |
+| 422 | `INVALID_ARGUMENT` | 引擎/tyme 校验：非法 `calendar` 值、不存在的闰月、日期越界（消息透传，英文） |
+| 500 | `ENGINE_UNAVAILABLE` | 日历 CLI 未构建（见"部署与 CLI 依赖"） |
+| 500 | `CALCULATION_FAILED` | 引擎崩溃兜底（正常输入不应出现，非"常见"） |
+| 504 | `CALCULATION_TIMEOUT` | 引擎超时 |

@@ -1,7 +1,8 @@
 # 梅花易数 HTTP 接口
 
-梅花易数网页与接口由 `web/server.py` 提供，默认只监听本机地址。路由由工具清单
-`config/platform/tools/mei_hua.json` 注册（平台注册表 `engine_chart` 分发，非手写分支）。
+梅花易数网页与接口由 `web/server.py` 提供，默认只监听本机地址。路由在工具清单
+`config/platform/tools/mei_hua.json` 声明：`/plates`（`engine_chart`）走平台注册表分发；
+`/distribution` 的 `python_service` 仅为元数据声明，实际由 server.py 专用分支处理。
 
 内核契约：`meihua-plate/1.0` 事实盘；规则口径：`meihua-rules/0.1`（calibration
 **pending**——只输出盘面事实与体用生克结构判词，不输出吉凶、应期与事类断语）。
@@ -10,16 +11,17 @@
 
 - 生产 Base URL：`https://zhouyilab.k8s.gold`
 - 内网直连 Base URL：`http://192.168.31.183:8768`
-- 本地开发 Base URL：`http://127.0.0.1:8768`
+- 本地开发 Base URL：`http://127.0.0.1:8765`（裸跑 server.py 默认端口）或
+  `http://127.0.0.1:8768`（`./start.sh` 默认端口，可用 `ZHOUYILAB_PORT` 覆盖）
 
 ## 启动
 
 ```bash
 ./build.sh
-python3 web/server.py
+python3 web/server.py --port 8765
 ```
 
-浏览器访问 `http://127.0.0.1:8768/meihua.html`。
+浏览器访问 `http://127.0.0.1:8765/meihua.html`（`./start.sh` 则访问 `:8768`）。
 
 ## 起卦
 
@@ -61,6 +63,10 @@ python3 web/server.py
   十五日前作本闰月，十六日起作下月，闰十二下半月回绕作正月。
 - 起卦公式：上卦 =（年支序+月+日）mod 8，下卦 =（+时支序）mod 8，动爻 = 总数 mod 6；
   余 0 一律作满数（8/6）。先天卦数乾1兑2离3震4巽5坎6艮7坤8。
+- `numbers` 模式的 `casting` 形状不同：`{method: "numbers", reported: [3, 7], upper_sum,
+  lower_sum, formula}`——无 `lunar_*`/`year_branch_order` 等历法取数键（历法信息只进 `ba_zi`，
+  供月令旺衰使用）。`time` 模式的 `casting.lunar_month_input_signed` 为签名农历月
+  （负数=闰月，与公共日历约定一致）。
 
 ## 响应（envelope 下 data 即事实盘）
 
@@ -68,7 +74,8 @@ python3 web/server.py
 {
   "schema_version": "meihua-plate/1.0",
   "casting": { "method": "time", "year_branch_order": 5, "lunar_month_used": 12,
-               "lunar_day": 17, "hour_branch_order": 9, "upper_sum": 34, "lower_sum": 43,
+               "lunar_month_input_signed": 12, "lunar_day": 17, "hour_branch_order": 9,
+               "upper_sum": 34, "lower_sum": 43,
                "leap_month_rule": "fifteen_boundary", "formula": "..." },
   "ba_zi": { "year": {"stem":"丙","branch":"辰"}, "...": {},
              "month_command": "丑" },

@@ -1,7 +1,9 @@
 # 大六壬 HTTP 接口
 
-大六壬网页与接口由 `web/server.py` 提供，默认只监听本机地址。路由由工具清单
-`config/platform/tools/da_liu_ren.json` 注册（平台注册表分发，非手写分支）。
+大六壬网页与接口由 `web/server.py` 提供，默认只监听本机地址。路由在工具清单
+`config/platform/tools/da_liu_ren.json` 声明：`/charts`（`engine_chart`）与 `/glossary`
+（`static_config`）走平台注册表分发；`/distribution` 的 `python_service` 仅为元数据声明，
+实际由 server.py 专用分支处理。
 
 ## 对外访问地址
 
@@ -48,11 +50,11 @@ python3 web/server.py --port 8765
 - `tian_di_pan`：12 项数组，`position`/`tian_pan`/`dun_gan`/`shen_jiang`；
 - `shen_sha`：按 基础/年/月/日/地支神煞 分组的结构化对象；
 - `gua_ti`：卦体名称数组（只命名，不断吉凶）；
-- `meta.rule_profile`：本盘生成所依据的规则口径标识，见下节；
+- `meta.rule_profile`：本盘生成所依据的规则口径标识，见下节（此处均指响应 `data` 内的盘内 `meta`；顶层 envelope `meta` 仅 `api_version`/`algorithm_version`/`request_id`）；
 - `meta.yuejiang_method`：本盘实际使用的月将取法（`zhongqi` / `guifa_suicha`）。
 
-错误：输入非法返回 HTTP 422，`error.code` 为 `INVALID_ARGUMENT` 等；
-不存在的闰月由引擎拒绝（`illegal leap month`，页面已本地化为可操作提示）。
+错误：输入非法返回 HTTP 422，`error.code` 为 `INVALID_ARGUMENT` 等（HTTP 层 `message` 为引擎原文，英文；中文可操作提示仅在页面本地化）；
+不存在的闰月由引擎拒绝（`illegal leap month`）；请求体非法 JSON 等 400 `INVALID_REQUEST`；超时 504 `CALCULATION_TIMEOUT`；引擎未构建 500 `ENGINE_UNAVAILABLE`。
 
 ## 规则口径 `meta.rule_profile`
 
@@ -87,23 +89,26 @@ python3 web/server.py --port 8765
 - 问题类型与描述仅存在于浏览器页面，不发送给服务、不进访问日志；
 - 小白模式不输出吉凶断语；专业模式“规则口径”页签展示本次 `rule_profile`。
 
-## 已知边界（2.0.0）
+## 已知边界（2.1.0）
 
 - 算法整体处于**待校准**状态（README 校准状态表），本接口只保证盘面事实与
   结构命名的可追溯性；
-- 2.0.0 不含天地盘 SVG 可视化（2.1.0）、规则解释（2.2.0）与案例校准报告（2.3.0）。
+- 天地盘 SVG 可视化已随 2.1.0 交付（`web/dlr-plate.js`，小白/专业两处同一份课数据渲染）；
+  规则解释（2.2.0）与案例校准报告（2.3.0）尚未实现。
 
 ## 盘面画像（人性化图表数据包）
 
 `POST /api/v1/da-liu-ren/distribution`
 
-入参：`{"chart": <课盘对象>} 或 {"chart_request": {calendar, date, yuejiang_method?}}，可选 `"label"`。
+入参：`{"chart": <课盘对象>}` 或 `{"chart_request": {calendar, date, yuejiang_method?}}`（二选一），
+可选 `"label"`（≤60 字符）；互斥违规与 label 超长均返回 400 `INVALID_REQUEST`。
 
 返回 `dlr-distribution/1.0` 数据包，与占星/紫微画像同构：
 
-- `charts[signs]` 盘面上神五行：十二宫天盘上神地支的五行（木火土金水），课面气象叙事；
-- `charts[stems]` 天盘遁干五行：旬空两位自动不入分母（`point_total` 自释）；
-- `charts[polarity]` 上神支阴阳：阳支子寅辰午申戌 / 阴支丑卯巳未酉亥；
+`data.charts` 为 3 元素数组，每图以 `id` 区分：
+- `signs` 盘面上神五行：十二宫天盘上神地支的五行（木火土金水），课面气象叙事；
+- `stems` 天盘遁干五行：旬空两位自动不入分母（`point_total` 自释，实测例 10=12−2）；
+- `polarity` 上神支阴阳：阳支子寅辰午申戌 / 阴支丑卯巳未酉亥；
 - 顶层 `summary_zh` 三合一底色句；文案一律"气象描写"（升发/升腾/稳重……），**无吉凶断语**——六壬 calibration 仍为 pending。
 
 数据源全部为课盘既有字段 + 与内核一致的标准五行表（契约测试交叉锁定），零新增算法。
