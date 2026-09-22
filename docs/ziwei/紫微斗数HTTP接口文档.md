@@ -1,8 +1,8 @@
 # ZhouYiLab 紫微斗数 HTTP API
 
 > API 版本：`v1`
-> 文档版本：`1.4.1`
-> 更新日期：`2026-08-31`
+> 文档版本：`2.0.0`
+> 更新日期：`2026-09-22`
 > 字符编码：UTF-8
 > 当前服务：本地 Python HTTP 适配层 + C++ 紫微斗数计算核心
 
@@ -79,7 +79,7 @@ Content-Type: application/json
   "data": {},
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.4.1",
+    "algorithm_version": "zhouyilab-core/2.0.0",
     "request_id": "b416827b90274e5c837d1ef12f39e776"
   }
 }
@@ -96,7 +96,7 @@ Content-Type: application/json
   },
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.4.1",
+    "algorithm_version": "zhouyilab-core/2.0.0",
     "request_id": "e2481168ad76405995b163e0a758fe2d"
   }
 }
@@ -178,7 +178,7 @@ Content-Type: application/json
   },
   "meta": {
     "api_version": "v1",
-    "algorithm_version": "zhouyilab-core/1.4.1",
+    "algorithm_version": "zhouyilab-core/2.0.0",
     "request_id": "..."
   }
 }
@@ -195,7 +195,7 @@ Content-Type: application/json
 ```json
 {
   "api_version": "v1",
-  "algorithm_version": "zhouyilab-core/1.4.1",
+  "algorithm_version": "zhouyilab-core/2.0.0",
   "capabilities": [
     "natal_chart",
     "true_solar_time",
@@ -266,7 +266,7 @@ GET  /api/v1/ziwei/research/ai-review/experiments/{id}/results
 POST /api/v1/ziwei/research/ai-review/experiments/{id}/cancel
 ```
 
-模型连接只从 `ai_model_providers.local.json` 读取。创建实验时客户端只提交 `provider_ids` 和可选的 `temperature`、`repetitions`、`model_seed` 覆盖值，不提交服务地址或 API Key。响应和数据库不会返回或持久化 `api_key`。
+模型连接只从 `ai_model_providers.local.json` 读取。创建实验的请求体为 `{ seed?, provider_ids, overrides }`：`seed` 可选（缺省 `pilot-2026`，≤128 字符）；`provider_ids` 为字符串数组（1–10 个，不可重复）；`overrides` 按连接分组传覆盖值，形如 `{"<provider_id>": { "temperature": 0.7, "repetitions": 2, "model_seed": 42 }}`，三个键均可省略。客户端不提交服务地址或 API Key，响应和数据库不会返回或持久化 `api_key`。
 
 AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统计字段为：
 
@@ -496,8 +496,8 @@ AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统�
         {
           "name": "天喜",
           "display_name": "年喜",
-          "palace_index": 10,
-          "palace": "奴仆宫",
+          "palace_index": 1,
+          "palace": "财帛宫",
           "liang_du": "旺"
         }
       ]
@@ -508,7 +508,28 @@ AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统�
       "palace": "命宫",
       "dou_jun_index": 11,
       "dou_jun_palace": "迁移宫",
-      "si_hua": []
+      "si_hua": [
+        {"type": "禄", "star": "天同"},
+        {"type": "权", "star": "天机"},
+        {"type": "科", "star": "文昌"},
+        {"type": "忌", "star": "廉贞"}
+      ],
+      "transit_stars": [
+        {
+          "name": "文昌",
+          "display_name": "月昌",
+          "palace_index": 0,
+          "palace": "疾厄宫",
+          "liang_du": "陷"
+        },
+        {
+          "name": "天马",
+          "display_name": "月马",
+          "palace_index": 0,
+          "palace": "疾厄宫",
+          "liang_du": "旺"
+        }
+      ]
     }
   }
 }
@@ -516,7 +537,7 @@ AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统�
 
 `fortune` 只包含请求的层级。客户端必须按字段是否存在进行渲染，不能假设六层始终全部返回。
 
-除小限外，各层的 `transit_stars` 返回魁、钺、昌、曲、禄、羊、陀、马、鸾、喜十类流曜；流年另含年解。`name` 是标准星名，`display_name` 是层级简称：大限使用“大”前缀，流年、流月、流日、流时分别使用“年、月、日、时”，例如天喜显示为“大喜、年喜、月喜、日喜、时喜”。`liang_du` 按实际落宫从亮度配置补充，无资料时省略。
+除小限外，各层的 `transit_stars` 返回魁、钺、昌、曲、禄、羊、陀、马、鸾、喜十类流曜；流年另含年解（流年 11 项、流月/流日/流时 10 项，上文示例数组为节选）。`name` 是标准星名，`display_name` 是层级简称：大限使用“大”前缀，流年、流月、流日、流时分别使用“年、月、日、时”，例如天喜显示为“大喜、年喜、月喜、日喜、时喜”。`liang_du` 按实际落宫从亮度配置补充，无资料时省略。
 
 ## 10. 状态码与错误码
 
