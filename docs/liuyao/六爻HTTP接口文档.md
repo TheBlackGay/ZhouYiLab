@@ -1,7 +1,7 @@
 # 六爻 HTTP 接口
 
-引擎：`ZhouYi.LiuYao`（`liu_yao_web_cli`）；口径：`meta.rule_profile`
-= `liu-yao-rules/0.2`（**D1=A 以《增删卜易》为主**，2026-09-20 拍板）；
+引擎：`ZhouYi.LiuYao`（`liu_yao_web_cli`）；口径：`data.meta.rule_profile.profile_version`
+= `liu-yao-rules/0.2`（顶层 envelope `meta` 仅 `api_version`/`algorithm_version`/`request_id`）（**D1=A 以《增删卜易》为主**，2026-09-20 拍板）；
 校准状态：`in_progress`（结构层案例 ✅ `config/liuyao/cases/`，古籍验例待校勘）。
 
 ## 对外访问地址
@@ -32,7 +32,7 @@
 ```
 {
   "ben_gua_name": "艮宫: 山泽损",   // 卦名带宫（"宫: 卦名"）
-  "bian_gua_name": "风泽中孚",      // 无动爻时缺省
+  "bian_gua_name": "艮宫: 山天大畜", // 同样带宫前缀；三爻动下卦艮→乾；无动爻时缺省
   "ba_zi": { "day": {"stem":"壬","branch":"子"}, ..., "xun_kong_1": "寅", "xun_kong_2": "卯" },
   "shen_sa": { "劫煞": ["巳"], ... },  // 日课神煞 → 落爻地支
   "yao": [ {…六爻逐爻对象，见下} ],
@@ -49,6 +49,7 @@
 | 世应六神 | `shiYingMark`（世/应）/ `spirit`（六神）/ `changeMark`（X/O）/ `mainYaoType` | |
 | 旺衰 | `wangShuai`（旺相休囚死五态） | 月令通行表，DEF-4 修复后口径 |
 | 状态标签 | `yue_po` `xun_kong` `he_ban` `an_dong` `jin_shen` `tui_shen` `hua_po` `hua_mu` `ru_mu` `ri_shengke` `ri_yue_hechong` `state_tags` `state_note` | 进退神＝《增删卜易》四对（子→丑/巳→午进，镜像退）；暗动须旺/相且被日冲 |
+| 爻位 | `position`（1-6，自下而上）/ `isChanging`（布尔） | 上表 29 个标注键之外另此两键，合计 31 |
 | 伏神 | `hidden_state_tags` / `hidden_state_note` | 只标月破/旬空/入飞神墓等**事实**；"出不出、破空可否用"待伏神章校勘（DEF-5），接口不下结论 |
 
 ## 卦面画像（人性化图表数据包）
@@ -58,9 +59,7 @@
 入参：`{"chart": <卦盘对象>}` 或 `{"chart_request": <起卦入参原样透传>}`（二选一），
 可选 `"label"`（≤60 字符）。返回 `liuyao-distribution/1.0`：
 
-- `charts[rels]` 六亲重心分布（父母/兄弟/子孙/妻财/官鬼）；
-- `charts[signs]` 爻之五行分布（木火土金水）；
-- `charts[states]` 月令旺衰五态分布（旺相休囚死）；
+`data.charts` 为 3 元素数组，每图以 `id` 区分：`rels` 六亲重心分布（父母/兄弟/子孙/妻财/官鬼）、`signs` 爻之五行分布（木火土金水）、`states` 月令旺衰五态分布（旺相休囚死）；
 - 顶层 `summary_zh` 三合一底色句；**无吉凶断语**——claim 为 in_progress，
   画像 basis 文案注明通行表出处。
 
@@ -68,7 +67,8 @@
 
 - 入参非法（卦码非 0/1 六位、动爻越界、日期非法等）：422
   `{"error": {"code": "INVALID_ARGUMENT", "message": "卦象代码只能包含 '0' 和 '1'"…}}`；
-- distribution 入参二选一违规/label 超长：400 `INVALID_REQUEST`。
+- distribution 入参二选一违规/label 超长、请求体非 JSON：400 `INVALID_REQUEST`；
+- 引擎超时：504 `CALCULATION_TIMEOUT`；引擎未构建：500 `ENGINE_UNAVAILABLE`。
 
 ## 已知边界
 

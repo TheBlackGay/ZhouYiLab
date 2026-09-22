@@ -20,7 +20,7 @@ https://zhouyilab.k8s.gold/api/v1/qimen/charts
 
 ```bash
 cmake -S . -B build
-cmake --build build --target zi_wei_web_cli qi_men_web_cli
+cmake --build build --target qi_men_web_cli
 python3 web/server.py --port 8765
 ```
 
@@ -73,18 +73,18 @@ python3 web/server.py --port 8765
 
 奇门会先将农历输入转换为公历，再按 `time_correction` 计算 `chart_time`，最后使用校正后的日期、节气、日干支和时干支起局。未提供该字段时默认使用标准时间，保持兼容。
 
-农历请求使用 `calendar: "lunar"`，闰月需额外传入 `"leap_month": true`。
+农历请求使用 `calendar: "lunar"`，闰月需额外传入 `"leap_month": true`——该键位于 `date` 对象内，顶层同名键会被静默忽略。
 
 成功响应的 `data` 包含：
 
 - `method` 与 `center_lodging` 算法规则标识；
-- `birth_date`、`birth_time` 及 `time_correction` 校正明细；
+- `birth_date` 与 `birth_time`：校正明细**嵌在 `data.birth_time` 内**（`mode`、`recorded_time`、`standard_time`、`chart_time`、`longitude`、`standard_meridian`、`daylight_saving_minutes`、`longitude_offset_seconds`、`equation_of_time_seconds`、`total_offset_seconds`、`crossed_date_boundary`），`data` 顶层无 `time_correction` 键；
 - 公历、农历和四柱信息；
 - 阴阳遁、三元、局数和节气；
 - 直符、直使及直符所在宫；
 - 九宫的九星、八门、八神、天盘干和地盘干。
 
-接口返回统一的 `success`、`data`、`meta` 结构。输入错误返回 HTTP 422，并在 `error.code` 和 `error.message` 中说明原因。
+接口返回统一的 `success`、`data`、`meta` 结构（顶层 `meta` 仅 `api_version`/`algorithm_version`/`request_id`）。引擎口径自述位于 `data.meta.rule_profile`。输入错误返回 HTTP 422 `INVALID_ARGUMENT`；请求体非法 JSON/缺运算字段返回 400 `INVALID_REQUEST`；超时 504 `CALCULATION_TIMEOUT`；引擎未构建 500 `ENGINE_UNAVAILABLE`。错误说明见 `error.code` 与 `error.message`。
 
 ## 排盘规则
 
@@ -98,3 +98,11 @@ python3 web/server.py --port 8765
 - 中宫不配置八门和八神，JSON 中对应字段为空字符串。
 
 不同网站可能采用置闰法、超神接气、真太阳时或不同的中宫寄法，跨来源比较前必须先确认规则一致。
+
+## 规则口径
+
+响应 `data.meta.rule_profile`：`profile_version` = `qi-men-rules/1.0`，
+`calibration_status` = `calibrated`，`rules` 共 8 键：`jia_hidden`、`pan_method`、
+`qi_ju_method`、`shen_sha_set`、`shichen_scope`、`time_correction`、`zhi_fu_zhi_shi`、
+`zhong_gong_ji_kun`（实测 2026-09-02 例响应）。回归锁：`tests.test_qimen_learning_rules`、
+`tests.test_qimen_regression`（`config/platform/calibration_suites.json` 登记）。
