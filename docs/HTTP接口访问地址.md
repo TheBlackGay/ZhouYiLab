@@ -29,7 +29,7 @@
 
 未列入上表的端点：
 
-- 研究工具（非对外契约，见校准 TODO D4）：`GET /api/v1/ziwei/research/blind-review/packet`、`/api/v1/ziwei/research/ai-review/*`；
+- 研究工具族（盲评包 / AI 预评审）**已于 r_3.1.0 移除**（决策 D4），端点与页面不再存在，请求返回 404；协议文档保留在 `docs/ziwei/research/`；
 - 历史兼容（勿新增接入）：`POST /api/calculate`（旧紫微链，内部代理到 `/api/v1/ziwei/charts`）。
 
 ### 平台端点

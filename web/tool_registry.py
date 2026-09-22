@@ -84,7 +84,6 @@ def builtin_tools():
                 {"method": "GET", "path": "/api/v1/ziwei/meta", "handler": "python_service"},
                 {"method": "GET", "path": "/api/v1/ziwei/symbols", "handler": "python_service"},
                 {"method": "POST", "path": "/api/v1/ziwei/distribution", "handler": "python_service"},
-                {"method": "GET", "path": "/api/v1/ziwei/research/blind-review/packet", "handler": "python_service"},
             ],
         },
         {

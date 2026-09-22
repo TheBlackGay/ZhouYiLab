@@ -34,8 +34,6 @@
 | 分布画像（人性化） | 可用 | 六平台同款图表数据包 API（`/api/v1/<模块>/distribution`）：西洋占星/紫微/八字/六爻/梅花/大六壬，三环形图 + 暖场解读 + 整体底色总结；图示数据一律源自内核事实字段，梅花侧带运行时内核交叉锁（漂移拒出图） |
 | 紫微格局引擎 | 可用 | 39 条声明式规则配置，逐宫匹配、条件追踪、规则库清单与未命中展示 |
 | 奇门遁甲 | 可用 | 拆补法时家转盘奇门、公历/农历起局、九宫盘、直符直使与学习提示 |
-| 紫微盲评研究 | 可用 | 匿名盲评包、维度量尺、协议与一致性研究配置 |
-| AI 多模型预评审 | 实验性 | Ollama/OpenAI 兼容接口、多模型重复实验、结果统计与 SQLite 留档 |
 | 八字 | 初步可用 | 公历/农历输入、真太阳时、四柱、十神、藏干、十二长生、逐柱旬空、纳音、首批神煞、起运与十步大运 |
 | 西洋占星 | 实验性 | Swiss Ephemeris 本命盘、主要行星、四轴、十二宫、主要相位、黄道与宫位布局速读、逐点位/十二宫/相位解读卡片和 Moshier 降级提示 |
 | 大六壬 | 2.1.0 开发中 | 快速/专业双模式、问题上下文、术语口径弹层、`meta.rule_profile` 规则口径；2.1.0 新增天地盘 SVG 可视化（十二宫位、上神/神将/遁干/三传徽章/旬空）；算法仍待校准，不断吉凶 |
@@ -111,15 +109,12 @@ cmake --build build --target all_examples
 - 大六壬：[http://127.0.0.1:8768/da-liu-ren.html](http://127.0.0.1:8768/da-liu-ren.html)
 - 梅花易数：[http://127.0.0.1:8768/meihua.html](http://127.0.0.1:8768/meihua.html)
 - 西洋占星：[http://127.0.0.1:8768/astro.html](http://127.0.0.1:8768/astro.html)
-- 人工盲评：[http://127.0.0.1:8768/blind-review.html](http://127.0.0.1:8768/blind-review.html)
-- AI 预评审：[http://127.0.0.1:8768/ai-review.html](http://127.0.0.1:8768/ai-review.html)
 
 运行时文件位于 `.zhouyilab/`：
 
 ```text
 .zhouyilab/server.pid
 .zhouyilab/server.log
-.zhouyilab/research/ai_review.sqlite3
 ```
 
 自定义端口：
@@ -395,8 +390,6 @@ docker image prune -f
 | POST | `/api/v1/astro/natal-analysis` | 将本命盘读成黄道与宫位布局统计、原始信号和规则命中 |
 | POST | `/api/v1/astro/natal-reading` | 将布局统计与规则命中渲染为无评分布局速读解析包 |
 | POST | `/api/v1/astro/distribution` | 占星分布画像（元素/阴阳/三性质三图） |
-| GET | `/api/v1/ziwei/research/blind-review/packet` | 生成匿名盲评包 |
-| GET/POST | `/api/v1/ziwei/research/ai-review/*` | AI 预评审配置、实验和结果 |
 
 紫微本命盘示例：
 
@@ -492,25 +485,6 @@ config/ziwei/patterns/pattern.schema.json
 `symbolism_dictionary.json` 的星名 ⊆ 内核符号集，拼错星名会在审计期暴露；
 格局引擎的星名校验以此为上游。
 
-## AI 预评审配置
-
-AI 服务连接从本机配置读取：
-
-```text
-config/ziwei/research/ai_model_providers.local.json
-```
-
-该文件已被 Git 忽略。可以配置：
-
-- 本地 Ollama。
-- OpenAI、DeepSeek、LM Studio、vLLM 等 OpenAI 兼容接口。
-- 每个模型的重复次数、温度和随机种子。
-- API Key 明文或环境变量名。
-
-不要把真实 API Key 写入已跟踪的 `ai_model_providers.json`。
-
-详细说明见 [AI 多模型定性预评审平台](docs/ziwei/research/AI多模型定性预评审平台-v0.1.md)。
-
 ## 构建要求
 
 - CMake `3.28+`。
@@ -572,7 +546,6 @@ ZhouYiLab/
 │   │   └── tools/           # 工具注册清单（manifest + schema）
 │   └── ziwei/
 │       ├── patterns/        # 声明式格局配置
-│       ├── research/        # 盲评与 AI 预评审协议
 │       ├── symbolism_dictionary.json
 │       └── star_brightness.json
 ├── docs/                     # API、算法和研究文档

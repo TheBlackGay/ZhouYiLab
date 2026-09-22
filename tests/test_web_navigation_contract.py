@@ -12,7 +12,6 @@ PAGES = {
     "bazi.html": ("八字", ["四柱命盘", "大运"]),
     "astro.html": ("西洋占星", ["本命盘", "结构事实", "解析提示词"]),
 }
-RESEARCH_PAGES = ("blind-review.html", "ai-review.html")
 
 
 class WebNavigationContractTests(unittest.TestCase):
@@ -46,15 +45,12 @@ class WebNavigationContractTests(unittest.TestCase):
         self.assertIn(".secondary-tabs", css)
         self.assertIn("overflow-x: auto", css)
 
-    def test_research_pages_keep_global_navigation_and_research_tabs(self):
-        for filename in RESEARCH_PAGES:
-            with self.subTest(filename=filename):
-                html = (WEB_ROOT / filename).read_text(encoding="utf-8")
-                self.assertIn('href="/app-shell.css"', html)
-                self.assertIn('class="app-navigation"', html)
-                self.assertIn('aria-label="命理类型"', html)
-                self.assertNotIn('href="/blind-review.html"', html)
-                self.assertNotIn('href="/ai-review.html"', html)
+    def test_removed_research_pages_are_not_linked_anywhere(self):
+        # r_3.1.0 研究模块已整体移除；主页面与导航不得残留其入口
+        for extra in ("navigation.js", "app-shell.css"):
+            body = (WEB_ROOT / extra).read_text(encoding="utf-8")
+            self.assertNotIn("blind-review", body)
+            self.assertNotIn("ai-review", body)
 
     def test_experimental_research_links_are_hidden_from_main_navigation(self):
         for filename in PAGES:

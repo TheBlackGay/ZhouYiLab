@@ -56,19 +56,6 @@
 .engine-status span { width: 8px; height: 8px; border-radius: 50%; background: #2f8b58; box-shadow: 0 0 0 3px #e3f1e8; }
 
 /* 页内工具链接与帮助按钮 */
-.research-link {
-  min-height: 38px;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 11px;
-  color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 700;
-}
-.research-link:hover { border-color: var(--line-strong); background: var(--surface-alt); }
 .header-help {
   min-width: 52px;
   min-height: 44px;

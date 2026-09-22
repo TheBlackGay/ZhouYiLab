@@ -40,13 +40,6 @@ from ziwei_brightness import (
     apply_star_brightness,
     normalize_brightness_response,
 )
-from ziwei_blind_review import generate_blind_packet, load_blind_review_resources
-from ziwei_ai_review import (
-    AiReviewError,
-    AiReviewProviderError,
-    AiReviewService,
-)
-from ziwei_research_engine import ResearchConfigError
 from astro_analysis import (
     AstroAnalysisConfigError,
     AstroAnalysisRequestError,
@@ -141,8 +134,6 @@ BAZI_SHEN_SHA_ALIASES = {
 API_VERSION = "v1"
 ALGORITHM_VERSION = "zhouyilab-core/2.0.0"
 MAX_BODY_BYTES = 256 * 1024
-_AI_REVIEW_SERVICE = None
-_AI_REVIEW_LOCK = None
 _ZIWEI_SYMBOLS_CACHE = None
 _DISTRIBUTION_READING_CACHE = None
 _ZIWEI_DISTRIBUTION_READING_CACHE = None
@@ -233,16 +224,6 @@ def platform_discovery():
     }
 
 
-def get_ai_review_service():
-    global _AI_REVIEW_SERVICE, _AI_REVIEW_LOCK
-    if _AI_REVIEW_LOCK is None:
-        import threading
-        _AI_REVIEW_LOCK = threading.Lock()
-    with _AI_REVIEW_LOCK:
-        if _AI_REVIEW_SERVICE is None:
-            _AI_REVIEW_SERVICE = AiReviewService()
-    return _AI_REVIEW_SERVICE
-
 
 def legacy_request(payload):
     birth = payload["birth"]
@@ -287,7 +268,6 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         if not self._governance_gate(parsed):
             return
-        ai_prefix = "/api/v1/ziwei/research/ai-review"
         if parsed.path == "/api/v1/health":
             self.send_api_success(self._health_payload())
             return
@@ -370,8 +350,6 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                     "declarative_pattern_engine",
                     "pattern_condition_trace",
                     "focus_palace_pattern_attribution",
-                    "local_blind_review_packet",
-                    "ai_multi_model_review_lab",
                 ],
                 "genders": ["male", "female"],
                 "time_correction_modes": ["standard_time", "true_solar_time"],
@@ -381,63 +359,6 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                 "analysis_layers": ["natal"],
                 "analysis_input_modes": ["chart_request", "chart"],
             })
-            return
-        if parsed.path == f"{ai_prefix}/meta":
-            try:
-                service = get_ai_review_service()
-                provider_meta = service.provider_meta()
-                self.send_api_success({
-                    "protocol": service.protocol,
-                    "provider_config_path": provider_meta["config_path"],
-                    "providers": provider_meta["providers"],
-                    "storage": {
-                        "database": str(service.store.path),
-                        "api_keys_persisted": False,
-                    },
-                })
-            except ResearchConfigError as error:
-                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
-            return
-        if parsed.path == f"{ai_prefix}/experiments":
-            try:
-                self.send_api_success(get_ai_review_service().store.list_experiments())
-            except ResearchConfigError as error:
-                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
-            return
-        if parsed.path.startswith(f"{ai_prefix}/experiments/"):
-            parts = parsed.path[len(f"{ai_prefix}/experiments/"):].split("/")
-            experiment_id = parts[0]
-            try:
-                service = get_ai_review_service()
-                if len(parts) == 1:
-                    data = service.store.get_experiment(experiment_id)
-                elif len(parts) == 2 and parts[1] == "results":
-                    data = service.results(experiment_id)
-                else:
-                    self.send_api_error(404, "ENDPOINT_NOT_FOUND", "接口不存在")
-                    return
-                self.send_api_success(data)
-            except AiReviewError as error:
-                self.send_api_error(404, "AI_REVIEW_NOT_FOUND", str(error))
-            except ResearchConfigError as error:
-                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
-            return
-        if parsed.path == "/api/v1/ziwei/research/blind-review/packet":
-            try:
-                seed = parse_qs(
-                    parsed.query, keep_blank_values=True
-                ).get("seed", ["pilot-2026"])[0]
-                if not seed or len(seed) > 128:
-                    raise ValueError("seed 长度必须为 1-128 个字符")
-            except (TypeError, ValueError) as error:
-                self.send_api_error(400, "INVALID_REQUEST", str(error))
-                return
-            try:
-                resources, protocol = load_blind_review_resources()
-                packet, _ = generate_blind_packet(resources, protocol, seed)
-                self.send_api_success(packet)
-            except (ResearchConfigError, KeyError, TypeError, ValueError) as error:
-                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
             return
         if parsed.path.startswith("/api/v1/bazi/shen-sha/"):
             shen_sha_id = parsed.path.rsplit("/", 1)[-1]
@@ -483,7 +404,6 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         if not self._governance_gate(parsed):
             return
-        ai_prefix = "/api/v1/ziwei/research/ai-review"
         binding = TOOL_REGISTRY.resolve("POST", parsed.path)
         if binding is not None and binding[1].handler == "engine_chart":
             self._handle_engine_chart(binding)
@@ -748,41 +668,6 @@ class ZhouYiHandler(SimpleHTTPRequestHandler):
                     "EPHEMERIS_UNAVAILABLE", "HOUSE_CALCULATION_FAILED", "INVALID_REQUEST",
                 } else 500
                 self.send_api_error(status, error.code, error.message)
-            return
-        if parsed.path == f"{ai_prefix}/connections/test":
-            try:
-                payload = self.read_json_body()
-                service = get_ai_review_service()
-                provider_id = payload.get("provider_id")
-                if not isinstance(provider_id, str):
-                    raise AiReviewError("必须提供 provider_id")
-                self.send_api_success(service.test_connection(provider_id))
-            except AiReviewProviderError as error:
-                self.send_api_error(502, "AI_PROVIDER_UNAVAILABLE", str(error))
-            except (AiReviewError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
-                self.send_api_error(400, "INVALID_AI_PROVIDER", str(error))
-            except ResearchConfigError as error:
-                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
-            return
-        if parsed.path == f"{ai_prefix}/experiments":
-            try:
-                payload = self.read_json_body()
-                self.send_api_success(get_ai_review_service().create_experiment(payload), 202)
-            except (AiReviewError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
-                self.send_api_error(400, "INVALID_AI_EXPERIMENT", str(error))
-            except ResearchConfigError as error:
-                self.send_api_error(500, "RESEARCH_CONFIG_ERROR", str(error))
-            return
-        cancel_prefix = f"{ai_prefix}/experiments/"
-        if parsed.path.startswith(cancel_prefix) and parsed.path.endswith("/cancel"):
-            experiment_id = parsed.path[len(cancel_prefix):-len("/cancel")]
-            try:
-                self.read_json_body()
-                service = get_ai_review_service()
-                service.store.request_cancel(experiment_id)
-                self.send_api_success(service.store.get_experiment(experiment_id), 202)
-            except (AiReviewError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
-                self.send_api_error(400, "INVALID_AI_EXPERIMENT", str(error))
             return
 
         is_legacy = parsed.path == "/api/calculate"

@@ -34,13 +34,6 @@ https://zhouyilab.k8s.gold/api/v1/ziwei/charts
 | 运限计算 | `POST` | `/api/v1/ziwei/fortune` | 已实现 |
 | 本命十二宫结构化解读 | `POST` | `/api/v1/ziwei/analysis` | 已实现 |
 | 分布画像数据包 | `POST` | `/api/v1/ziwei/distribution` | 已实现 |
-| 本地研究盲评包 | `GET` | `/api/v1/ziwei/research/blind-review/packet` | 研究工具 |
-| AI 预评审元数据 | `GET` | `/api/v1/ziwei/research/ai-review/meta` | 研究工具 |
-| AI 模型连接测试 | `POST` | `/api/v1/ziwei/research/ai-review/connections/test` | 研究工具 |
-| AI 预评审实验 | `GET/POST` | `/api/v1/ziwei/research/ai-review/experiments` | 研究工具 |
-| AI 实验进度 | `GET` | `/api/v1/ziwei/research/ai-review/experiments/{id}` | 研究工具 |
-| AI 实验结果 | `GET` | `/api/v1/ziwei/research/ai-review/experiments/{id}/results` | 研究工具 |
-| AI 实验取消 | `POST` | `/api/v1/ziwei/research/ai-review/experiments/{id}/cancel` | 研究工具 |
 
 本命盘、真太阳时、运限和本命结构化解读已经通过接口提供。命盘解读必须遵守[紫微斗数命盘与运限分析准则](./紫微斗数命盘与运限分析准则.md)。`1.4.1` 完善格局结果的页面展示；解读接口仍只开放本命层，大限和流年结构化解读完成前不得返回占位性结果。
 
@@ -218,9 +211,7 @@ Content-Type: application/json
     "natal_shen_sha_analysis",
     "declarative_pattern_engine",
     "pattern_condition_trace",
-    "focus_palace_pattern_attribution",
-    "local_blind_review_packet",
-    "ai_multi_model_review_lab"
+    "focus_palace_pattern_attribution"
   ],
   "genders": ["male", "female"],
   "time_correction_modes": ["standard_time", "true_solar_time"],
@@ -246,62 +237,13 @@ Content-Type: application/json
 | `star_temperament` | 34 项星性条目 `{name, group, element, polarity, key_trait}`（十四主星+十四吉星+六煞星） |
 | `meta.rule_profile` | 口径自述块，与各 POST 端点 `data.meta` 同源 |
 
-## 6. 本地研究盲评包
+## 6. 研究接口（已移除）
 
-### `GET /api/v1/ziwei/research/blind-review/packet`
-
-生成可复现的匿名盲评包，供本地研究页面 `/blind-review.html` 使用。该接口是研究工具，不是面向 App 用户的命盘解读接口。
-
-查询参数：
-
-| 字段 | 类型 | 必填 | 默认值 | 约束 |
-|---|---|---|---|---|
-| `seed` | string | 否 | `pilot-2026` | 1-128 个字符；同版本配置与同种子必须生成相同包 |
-
-请求示例：
-
-```http
-GET /api/v1/ziwei/research/blind-review/packet?seed=pilot-2026
-```
-
-响应中的 `data` 包含：
-
-- `packet_id`：包版本与种子的稳定指纹。
-- `dimensions`：冻结的研究维度及定义（11 维，各含 `id/name/definition/positive_direction/negative_direction/includes/excludes`）。
-- `cases`：随机化后的匿名案例与可见事实，每项 `{case_code, focus, ratings, source_layer, stars, transformation_signals}`；`case_code` 为原始案例 ID 的单向哈希。
-- `submission_template`：评分提交模板。
-- `dimension_dictionary_version` / `experiment_version`：维度词典与研究协议版本（实验版本当前 `0.1.0`）。
-- `protocol`：`{id, version}`，如 `protocol.lianzhen_qisha.blind_review`。
-- `rating_scale`：`{allowed_values: [-1, -0.5, 0, 0.5, 1], anchors}`，锚点为中文量尺描述。
-- `instructions`、`fixture_boundary`：作答说明与题面边界声明。
-
-默认响应绝不包含 `answer_key`、原始实验案例 ID、预期结果或格局名称。带答案映射的包只能由研究负责人在命令行离线生成，HTTP 接口不提供该能力。
-
-### AI 多模型预评审
-
-AI 实验台位于 `/ai-review.html`，完整说明见 [AI 多模型定性预评审平台](./research/AI多模型定性预评审平台-v0.1.md)。
-
-```http
-GET  /api/v1/ziwei/research/ai-review/meta
-POST /api/v1/ziwei/research/ai-review/connections/test
-GET  /api/v1/ziwei/research/ai-review/experiments
-POST /api/v1/ziwei/research/ai-review/experiments
-GET  /api/v1/ziwei/research/ai-review/experiments/{id}
-GET  /api/v1/ziwei/research/ai-review/experiments/{id}/results
-POST /api/v1/ziwei/research/ai-review/experiments/{id}/cancel
-```
-
-模型连接只从 `ai_model_providers.local.json` 读取。创建实验的请求体为 `{ seed?, provider_ids, overrides }`：`seed` 可选（缺省 `pilot-2026`，≤128 字符）；`provider_ids` 为字符串数组（1–10 个，不可重复）；`overrides` 按连接分组传覆盖值，形如 `{"<provider_id>": { "temperature": 0.7, "repetitions": 2, "model_seed": 42 }}`，三个键均可省略。客户端不提交服务地址或 API Key，响应和数据库不会返回或持久化 `api_key`。
-
-AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统计字段为：
-
-- `direction_prevalence_ratio`：所有模型-案例单元中，最常见方向所占的比例。
-- `within_case_cross_model_agreement`：先合并同一模型的重复运行，再按同一案例比较不同模型，最后对案例求平均的众数一致比例。
-- `unanimous_case_count` / `comparable_case_count`：完全同向案例数与可比较案例数。
-- `pairwise_direction_agreement`：同一案例内，不同模型两两同向的比例。
-- `cross_model_descriptive_consensus_ratio`：兼容旧客户端的别名，值等同于 `within_case_cross_model_agreement`。
-
-这些指标均为描述性指标，不是人工专家一致性、准确率或星曜权重。只有一个模型时不能计算跨模型一致度，相关字段返回 `null`。
+> 原"本地研究盲评包"与"AI 多模型预评审"能力（`GET /api/v1/ziwei/research/blind-review/packet`、
+> `/api/v1/ziwei/research/ai-review/*`）连同页面 `/blind-review.html`、`/ai-review.html`，
+> 已于 r_3.1.0 按校准 TODO 决策 D4 **整体移除**：端点不再注册，请求一律返回 404
+> `ENDPOINT_NOT_FOUND`。研究方法与协议文档保留于
+> [docs/ziwei/research](./research/)（仅文档，不提供 HTTP 接口）。
 
 ## 7. 真太阳时校正
 
@@ -425,7 +367,7 @@ AI 结果使用 `results_schema_version: "0.2.0"`。维度汇总中的主要统�
 }
 ```
 
-`si_hua` 与 `liang_du` 均为可选字段。`liang_du` 来自版本化星曜亮度表，可能值为 `庙、旺、得、利、平、陷、不`；配置为空白或 `-` 时不返回该字段，也不参与结构化解读。
+`si_hua` 与 `liang_du` 均为可选字段。`liang_du` 分两层：**引擎原生仅十四主星赋表**（CLI 原始输出辅煞、杂曜为空），HTTP 适配层按版本化星曜亮度表（`data.brightness_table_version`）回填空星、煞星与杂曜中的有效星；台辅、天厨、天巫、天月、封诰、月德、空亡、蜚廉、阴煞、龙德等神煞类杂曜不赋亮度。可能值为 `庙、旺、得、利、平、陷、不`；无亮度时不返回该字段，也不参与结构化解读。
 
 ## 9. 运限计算
 

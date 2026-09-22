@@ -3,9 +3,9 @@
 与 astro_distribution 同构（复用 build_package 通用构建器），差异只在点位采集：
 * presence28（`point_basis.id`，旧注释误作 core28）：全盘十四主星 + 六吉六煞二辅
   （`sha_xing` 与 `fu_xing` 文档重叠，按名去重）；
-* 星性（五行、阴阳）与亮度一律来自内核 symbols 导出（安星诀文档库为唯一数据源），
-  配置层不手编任何映射；
-* 明暗图仅统计有亮度字段的十四主星（辅煞亮度未入档），各图 basis 自释分母。
+* 五行、阴阳取自内核 symbols 导出（star_temperament）；亮度读本命盘各星 liang_du
+  （引擎仅主星赋表，辅煞与有效杂曜由 HTTP 适配层版本化星表回填，见 ziwei_brightness）；
+* 明暗图分母固定为十四主星——辅星、煞星虽带亮度也不入明暗分母，各图 basis 自释。
 """
 import json
 from pathlib import Path
