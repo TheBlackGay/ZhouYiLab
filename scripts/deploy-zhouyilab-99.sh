@@ -41,6 +41,6 @@ ssh "${SSH_OPTS[@]}" "$REMOTE" \
 ssh "${SSH_OPTS[@]}" "$REMOTE" \
   "cd '${REMOTE_DIR}' && \
    docker compose ps && \
-   curl --fail --silent --show-error http://127.0.0.1:8768/api/v1/health"
+   curl --fail --silent --show-error http://127.0.0.1:${REMOTE_PORT}/api/v1/health"
 
 echo "Deployment completed: http://${REMOTE_HOST}:${REMOTE_PORT}/"
